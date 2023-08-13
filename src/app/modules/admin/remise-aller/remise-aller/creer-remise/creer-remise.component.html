@@ -1,4 +1,13 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{ alert.message }}
+
+        <a mat-icon-button [matTooltip]="'Close'" (click)="closeAlert()">
+            <mat-icon class="flex flex-col" [color]="'primary'"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </a>
+    </fuse-alert>
     <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
 
         <!-- Drawer -->
@@ -18,8 +27,10 @@
                     <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
                 </div>
                 <!-- Title -->
+                
                 <div class="flex flex-auto items-center min-w-0">
-
+                    
+        
                     <div class="flex flex-col min-w-0 ml-4">
                         <ng-container>
                             <div
@@ -29,11 +40,6 @@
                         <app-status [status]="scannerIsConnected"></app-status>
                     </div>
                 </div>
-
-
-
-
-
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
                         <mat-form-field class="max-w-xs fuse-mat-dense  fuse-mat-rounded min-w-64 mt-10">
@@ -53,65 +59,47 @@
                             <span class="">Scanner chèque</span>
                         </button>
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="!compteClientForm.valid">
+                            [disabled]="(!compteClientForm.valid )|| (remiseIsInCorrect)">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
                             <span class="ml-2">Enregistrer</span>
                         </button>
-
-
                     </form>
                 </div>
-
-
-
-
-
-
             </div>
-
-
-
-
             <form class="flex flex-col ">
 
                 <!-- Main -->
                 <div class="flex flex-auto overflow-hidden">
                     <!-- remiseCheques list -->
                     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
-
-
-
-
                         <div class="flex space-x-4">
                             <ng-container>
-                              <span class="inline-block align-middle">
-                                
-                               Nombre de chèque : {{ nombreCheque }}
-                                
+                                <span class="inline-block align-middle">
 
-                              </span>
+                                    Nombre de chèque : {{ nombreCheque }}
+                                </span>
                             </ng-container>
                             <ng-container>
-                              <span class="inline-block align-middle">
-                          
-                               Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2'  }}
-                          
-                              </span>
+                                <span class="inline-block align-middle">
+
+                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
+
+                                </span>
                             </ng-container>
-                          </div>
-                          
+                        </div>
+
 
 
 
                         <!-- TABLEAU DES CHEQUES-->
                         <ng-container *ngIf="dataSource != null  else noData">
                             <div class="grid overflow-x-auto overflow-y-auto">
-                                
+
 
 
                                 <div class="flex flex-col flex-auto mt-2 h-150">
 
-                                    
+
                                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
                                         <!-- Column Structure -->
                                         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
@@ -122,12 +110,12 @@
                                         </ng-container>
 
 
-                                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
+                                            class="cursor-pointer border-b"></tr>
                                         <tr (click)="selectedRow(row)" mat-row
-                                            *matRowDef="let row; columns: displayedColumns;"></tr>
-
-
-
+                                            *matRowDef="let row; columns: displayedColumns;"
+                                            [ngClass]="{'bg-red-100 text-white': row.chequeIsCorrect==false}">
+                                        </tr>
                                     </table>
                                     <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage"
                                         (pageSize)="pageSize" [pageSizeOptions]="pageSizeOptions"
@@ -178,11 +166,6 @@
                             </div>
                         </ng-template>
 
-                        <ng-template #noremiseCheques>
-                            <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">Aucun
-                                cheque
-                            </div>
-                        </ng-template>
 
                     </div>
 

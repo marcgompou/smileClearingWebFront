@@ -33,6 +33,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   listeCompteEntreprise: any[] = [];
   montantTotal:number=0;
   nombreCheque:number=0;
+  remiseIsInCorrect:boolean=true;
   //listeCompteEntreprise: any;
   enregistrerRemise() {
     throw new Error('Method not implemented.');
@@ -51,7 +52,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   currentPage = 0;
   pageSizeOptions: number[] = [10, 25];
 
-  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -159,17 +160,24 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (table) => {
         console.log("-------table------", table);
         if(table!=null){
+          
+          //Verifier si le cheque est valide
+          this.remiseIsInCorrect = !table.reduce((accumulator: boolean, cheque: Cheque) => {
+            return accumulator && cheque.chequeIsCorrect && (cheque.montant>=1000) ;}, true);
+          
+
+
+
           this.montantTotal=table.reduce((total, obj) => total + obj.montant, 0);
           this.nombreCheque=table.length;
         }else{
 
           this.montantTotal=0;
-          this.nombreCheque=0
+          this.nombreCheque=0;
+          this.remiseIsInCorrect=true;
           table=[]
         }
-        
         this.dataSource = new MatTableDataSource(table);
-
         this._changeDetectorRef.markForCheck();
       }
     });
@@ -184,7 +192,10 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
    
 
   ) {
-    _websocketService.messages.subscribe(msg => {
+
+
+    
+    _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
 
       //
       // const predefinedJson = [
@@ -238,26 +249,45 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
       // CHargement du tableau des chèques dans la creation de remise
       else {
         if (msg.action === "neoResult") {
-          this.received.push(JSON.parse(msg.result) as Cheque);
-          this._chequeService.setRemise$(this.received);
-          console.log("Response received: --------", this.received);
+          let chqScanned=JSON.parse(msg.result) as Cheque;
 
-          console.log("Response dataSource verifier -------: ", this.dataSource);
-
+          //Si le cheque est déjà dans le tableau  ne pas l'ajouter 
+          let findCheque=this.received.find(chq=>{
+          return chq.codeAgence==chqScanned.codeAgence &&  
+            chq.codeBanque==chqScanned.codeBanque &&  
+            chq.codeAgence==chqScanned.codeAgence &&
+            chq.compte==chqScanned.compte &&
+            chq.numChq==chqScanned.numChq ;
+          });
+ 
+          if(!findCheque){
+            this.received.push(chqScanned);
+            this._chequeService.setRemise$(this.received);
+            console.log("Response received: --------", this.received);
+            console.log("Response dataSource verifier -------: ", this.dataSource);
+          }
+          else{
+            const errorMessage=`Vous avez déjà scanné ce chèque (${chqScanned.numChq}) plus d'une fois`;
+            console.log("cheque exist=====>",errorMessage)
+            this.alert = { type: 'error', message:errorMessage };
+            this.showAlert = true;
+          }
         }
       }
       console.log("Response from websocket: ", msg);
-
       this._changeDetectorRef.markForCheck();
     });
   }
 
+  
+
+  closeAlert() {
+    this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
+  }
   selectedRow(row) {
 
-    const index = this.received.findIndex(chq => chq.numChq === row.numChq);
-  
+    const index= this.dataSource.data.indexOf(row);
     this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
-    // this..disable();
     this._changeDetectorRef.markForCheck();
     this.chequeData = row;
 
@@ -283,80 +313,57 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     component.endpoint = "compteClient";
     component.formTitle = "CHEQUE";
     component.chequeData = this.chequeData;
-    // component.dataSource = this.dataSource;
-
-
+    //Initialisation formulaire details
     component.formFields = [
-      // {
-      //   key: "default",
-      //   libelle: "default",
-       
-
-      // },
-     
       {
         key: "numChq",
         libelle: "Numero de Cheque",
         validators: {
           min: 7,
           max: 7,
-          required: true,
-          // required:true
-          //regex
+          required: true
         }
-
       },
       {
         key: "codeBanque",
         libelle: "Code Banque",
-        //type:"number",
-        // maxlengh:5,
-        placeholder: "Ex: 01001",
+        placeholder: "Ex: CI131",
         validators: {
           min: 5,
           max: 5,
           required: true,
-          // required:true
-          //regex
         }
-
       },
       {
         key: "codeAgence",
         libelle: "Code Agence",
+        placeholder: "Ex: 01001",
         validators: {
           min: 5,
           max: 5,
-          required: true,
+          required: true
         }
-
       },
 
       {
         key: "compte",
         libelle: "Compte",
-
         validators: {
           min: 12,
           max: 12,
-          required: true,
+          required: true
         }
-
       },
-
       {
         key: "cleRib",
         libelle: "Cle Rib",
         validators: {
           min: 2,
           max: 50,
-          required: true,
-          //  email:true
+          required: true
         }
 
       },
-
-
       {
         key: "montant",
         libelle: "Montant",
@@ -365,9 +372,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
           minValue: 1000,
           min: 1,
           max: 11,
-
-          required: true,
-          //  email:true
+          required: true
         }
 
       },
@@ -375,14 +380,9 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
         key: "tire",
         libelle: "Titulaire",
         validators: {
-          min: 2,
-          max: 50,
-          required: true,
-          //  email:true
+          max: 50
         }
-
       }
-
     ]
   }
   onBackdropClicked(): void {
@@ -398,7 +398,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     this._chequeService.compteEntreprises$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
         next: (response:any) => {
-          console.log("ResponsecompteEntreprises===>------------------ :", response);
+          console.log("Response compteEntreprises ===>", response);
           if(response==null){response=[];}
          
           this.listeCompteEntreprise = response.data;
@@ -484,8 +484,9 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 // }
 
   onSubmit() {
-  
-   if(this.compteClientForm.valid){
+   
+   
+    if(this.compteClientForm.valid && ! this.remiseIsInCorrect){
 
     
     let idCompteClient=this.compteClientForm.value.idCompteClient;
@@ -493,8 +494,8 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let chqObject:any={};
     this.received.forEach(chq=> {
-        chqObject.imageVerso = img;
-        chqObject.imageRecto = img;
+        chqObject.imageVerso =chq.imageVerso || img;
+        chqObject.imageRecto = chq.imageRecto || img;
         chqObject.numChq=chq.numChq;
         chqObject.codeBanque=chq.codeBanque;
         chqObject.titulaire=chq.tire;

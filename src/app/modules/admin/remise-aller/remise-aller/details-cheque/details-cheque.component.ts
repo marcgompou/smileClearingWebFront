@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 import { BigNumber } from 'bignumber.js';
 import { img } from '../creer-remise/image';
+import { Cheque } from '../../cheque.type';
 
 @Component({
   selector: 'app-details-cheque',
@@ -78,27 +79,6 @@ export class DetailsChequeComponent implements OnInit {
 
     })
     
-    // this._remiseService.getTire(this.chequeData).subscribe({
-    //   next: (response: any) => {
-    //     console.log("Response===> titulaire ====> :", response);
-    //     this._titulaire = response.data.titulaire;
-    //     console.log("titulaire=====>",this._titulaire)
-        
-    //     this.form.patchValue({
-    //       tire:response.data.titulaire
-    //     });
-    //     this.form.get('tire').disable();
-
-    //     this._changeDetectorRef.detectChanges();
-
-    //   },
-    //   error: (error) => {
-    //     this._titulaire ="";
-    //     console.error('Error : ', error);
-    //     this.setupFormFields();
-    //     this._changeDetectorRef.detectChanges();
-    //   },
-    // });
 
     this.getTitulaire(this.chequeData)
 
@@ -322,51 +302,77 @@ export class DetailsChequeComponent implements OnInit {
     // });
   }
 
-  // updateContact(): void
-  //   {
-  //       // Get the contact object
-  //       const contact = this.contactForm.getRawValue();
+ 
 
-  //       // Go through the contact object and clear empty values
-  //       contact.emails = contact.emails.filter(email => email.email);
+  
+  //Verifie si le cheque existe deja
+  chequeExist(cheques:Cheque[],cheque:any): boolean {
+    const seen = new Map<string, Cheque>();
+    let find:boolean=false;
+    const key = `${cheque.numChq}-${cheque.codeBanque}-${cheque.codeAgence}-${cheque.compte}`;
+    
+    //Ajout de l'element dans le set
+    seen.set(key, cheque);
+    //Recherche de l'element dans le tableau
+    for (const item of cheques) {
+      const itemKey=`${item.numChq}-${item.codeBanque}-${item.codeAgence}-${item.compte}`
+      if (seen.has(itemKey)) {
+        
+        let messageDuplicate="Chèque existant, prière de supprimmer la seconde occurence avant modification";
+        this.alert = { type: 'error', message: messageDuplicate};
+        // Show the alert
+        this.showAlert = true;
+        this._changeDetectorRef.markForCheck();
+        find=true;
+        break;
+      }
+    }
+    return find;
+  }
 
-  //       contact.phoneNumbers = contact.phoneNumbers.filter(phoneNumber => phoneNumber.phoneNumber);
+  
 
-  //       // Update the contact on the server
-  //       this._contactsService.updateContact(contact.id, contact).subscribe(() => {
 
-  //           // Toggle the edit mode off
-  //           this.toggleEditMode(false);
-  //       });
-  //   }
+
 
   updateCheque(): void {
+    
     if (this.form.valid) {
 
 
-      const formData = this.form.getRawValue();
+      let formData:any = this.form.getRawValue();
+      formData.codeBanqueIsCorrect = true;
+      formData.codeAgenceIsCorrect = true;
+      formData.compteIsCorrect = true;
+      formData.cleRibIsCorrect = true;
+      formData.numChequeIsCorrect = true;
+      formData.chequeIsCorrect=true;
 
+      let chequeExist=this.chequeExist(this.tableData,formData);
+      //Si le cheque existe déja on affiche un message d'erreur et la modification est interrompue
+      if(!chequeExist){
+        if (!this.calculcleRibIsNotCorrect(formData)) {
 
-      if (!this.calculcleRibIsNotCorrect(formData)) {
-        this.tableData[this.id] = formData
-        this._remiseService.updateDataTable(this.tableData)
+          this.tableData[this.id] = formData;
+          this._remiseService.updateDataTable(this.tableData);
 
-        this.closeForm()
-      }
-      else {
-        this.alert = {
-          type: 'error', message: "Clé RIB incorrect , veuiller verifier les informations du formulaire"
+          this.closeForm()
         }
-        this.showAlert = true;
-        this._changeDetectorRef.detectChanges();
+        else {
+          this.alert = {
+            type: 'error', message: "Clé RIB incorrect , veuiller verifier les informations du formulaire"
+          }
+          this.showAlert = true;
+          this._changeDetectorRef.detectChanges();
+        }
       }
-
 
     }
 
   }
 
 
+  
 
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
@@ -409,6 +415,7 @@ export class DetailsChequeComponent implements OnInit {
       return !calculCleRib.isEqualTo(bigCleRib);
     } catch (error) {
       this.alert = {
+      
         type: 'error', message: "Clé RIB incorrect , veuiller verifier les informations du formulaire"
       }
       this.showAlert = true;
