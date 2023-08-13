@@ -306,7 +306,7 @@ export class DetailsChequeComponent implements OnInit {
 
   
   //Verifie si le cheque existe deja
-  chequeExist(cheques:Cheque[],cheque:any): boolean {
+  chequeExist(cheques:Cheque[],cheque:any,indexCheque:number): boolean {
     const seen = new Map<string, Cheque>();
     let find:boolean=false;
     const key = `${cheque.numChq}-${cheque.codeBanque}-${cheque.codeAgence}-${cheque.compte}`;
@@ -314,9 +314,11 @@ export class DetailsChequeComponent implements OnInit {
     //Ajout de l'element dans le set
     seen.set(key, cheque);
     //Recherche de l'element dans le tableau
+    let index=0;
+
     for (const item of cheques) {
       const itemKey=`${item.numChq}-${item.codeBanque}-${item.codeAgence}-${item.compte}`
-      if (seen.has(itemKey)) {
+      if (seen.has(itemKey) && indexCheque!=index) {
         
         let messageDuplicate="Chèque existant, prière de supprimmer la seconde occurence avant modification";
         this.alert = { type: 'error', message: messageDuplicate};
@@ -326,6 +328,8 @@ export class DetailsChequeComponent implements OnInit {
         find=true;
         break;
       }
+      index++;
+
     }
     return find;
   }
@@ -348,9 +352,8 @@ export class DetailsChequeComponent implements OnInit {
       formData.numChequeIsCorrect = true;
       formData.chequeIsCorrect=true;
 
-      let chequeExist=this.chequeExist(this.tableData,formData);
       //Si le cheque existe déja on affiche un message d'erreur et la modification est interrompue
-      if(!chequeExist){
+      if(!this.chequeExist(this.tableData,formData,parseInt(this.id))){
         if (!this.calculcleRibIsNotCorrect(formData)) {
 
           this.tableData[this.id] = formData;

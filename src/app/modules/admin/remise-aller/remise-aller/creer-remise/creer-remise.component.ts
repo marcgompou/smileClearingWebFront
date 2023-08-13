@@ -485,30 +485,29 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onSubmit() {
    
-   
+    
     if(this.compteClientForm.valid && ! this.remiseIsInCorrect){
 
     
     let idCompteClient=this.compteClientForm.value.idCompteClient;
     let listCheques:any[] = [];
 
-    let chqObject:any={};
     this.received.forEach(chq=> {
-        chqObject.imageVerso =chq.imageVerso || img;
-        chqObject.imageRecto = chq.imageRecto || img;
-        chqObject.numChq=chq.numChq;
-        chqObject.codeBanque=chq.codeBanque;
-        chqObject.titulaire=chq.tire;
-        chqObject.cleRib=chq.cleRib;
-        chqObject.chequeIsCorrect=true;
-        chqObject.agence=chq.codeAgence;
-        chqObject.compte=chq.compte;
-        chqObject.montant=chq.montant;
-
-        console.log("chq------",chq);
-        listCheques.push(chqObject);
+        console.log("enregistrer chq======>",chq);
+        listCheques.push({
+          imageVerso :chq.imageVerso || img,
+          imageRecto : chq.imageRecto || img,
+          numChq:chq.numChq,
+          codeBanque:chq.codeBanque,
+          titulaire:chq.tire,
+          cleRib:chq.cleRib,
+          chequeIsCorrect:true,
+          agence:chq.codeAgence,
+          compte:chq.compte,
+          montant:chq.montant
+        });
       })
-      console.log("chqObject------",listCheques);
+      console.log("chqObjectVERIF-------------",listCheques);
 
     
       this._chequeService.create({idCompte:idCompteClient, cheques:listCheques}).subscribe({
