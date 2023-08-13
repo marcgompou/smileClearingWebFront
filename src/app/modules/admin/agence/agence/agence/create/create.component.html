@@ -1,0 +1,129 @@
+<div class="flex flex-col w-full">
+
+    <!-- Header -->
+    <div class="relative w-full h-40 sm:h-36 px-8 sm:px-12">
+         <!-- Close button -->
+         <div class="flex items-center justify-between w-full max-w-3xl mx-auto pt-6 ">
+            <div class="text-3xl font-extrabold tracking-tight leading-none">Créer une agence</div>
+            <a
+                mat-icon-button
+                [matTooltip]="'Close'"
+                (click)="closeForm()">
+                <mat-icon
+                    [color]="'primary'"
+                    [svgIcon]="'heroicons_outline:x'"></mat-icon>
+            </a>
+        </div>
+        
+    </div>
+
+    <!-- Contact -->
+    <div class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0">
+        <div class="w-full max-w-3xl">
+
+            <div class="flex flex-col space-y-4">
+                <!-- Form -->
+                <form 
+                    class="flex flex-col rounded overflow-hidden"
+                    [formGroup]="createAgenceForm"
+                    #createAgenceNgForm="ngForm">
+
+                    <!-- Alert -->
+                    <fuse-alert
+                        *ngIf="showAlert"
+                        [appearance]="'outline'"
+                        [showIcon]="false"
+                        [type]="alert.type"
+                        [@shake]="alert.type === 'error'">
+                        {{alert.message}}
+                    </fuse-alert>
+
+                    <!-- Email field -->
+                  
+
+                    <!-- Nom field -->
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Code Agence</mat-label>
+                            <input
+                                id="codeAgence"
+                                matInput
+                                [formControlName]="'codeAgence'"
+                                placeholder="Ex: 01001" 
+                                minlength = "5" maxlength = "5">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
+
+
+                            <mat-error *ngIf="createAgenceForm.get('codeAgence').errors?.required">
+                                Le Code Agence est obligatoire
+                            </mat-error>
+                          
+                            <mat-error *ngIf="createAgenceForm.get('codeAgence').errors?.maxlength">
+                                    Le code Agence doit être au plus 5 caractères
+                            </mat-error>
+
+                            
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Prenoms field -->
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Libelle Agence</mat-label>
+                            <input
+                                id="libelle"
+                                matInput
+                                [formControlName]="'libelle'"
+                                placeholder="Ex:  AGENCE COCODY" 
+                                minlength = "2" maxlength = "50">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
+                            <mat-error *ngIf="createAgenceForm.get('libelle').errors?.required">
+                                Le Libelle Agence est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createAgenceForm.get('libelle').errors?.minlength">
+                                    Le Libelle Agence doit être au moins deux caractères
+                            </mat-error>
+                            <mat-error *ngIf="createAgenceForm.get('libelle').errors?.maxlength">
+                                    Le Libelle Agence doit être au plus 50 caractères
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end border-t -mx-8 mt-4 px-8 py-2">
+                        <button mat-button (click)="annuler()">
+                            Annuler
+                        </button>
+                        <button
+                            class="px-6 ml-3"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="createAgenceForm.disabled || createAgenceForm.invalid"
+                            (click)="creer()">
+                            <span *ngIf="!createAgenceForm.disabled">
+                                Enregistrer
+                            </span>
+                            <mat-progress-spinner
+                                *ngIf="createAgenceForm.disabled"
+                                [diameter]="24"
+                                [mode]="'indeterminate'">
+                            </mat-progress-spinner>
+                        </button>
+                    </div>
+
+
+                </form>
+
+            </div>
+            
+        </div>
+    </div>
+
+</div>

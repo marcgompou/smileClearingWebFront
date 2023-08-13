@@ -1,0 +1,38 @@
+
+<ng-container *ngIf="dataSource != null && dataSource.filteredData.length > 0; else noData">
+    <div class="grid overflow-x-auto overflow-y-auto">
+        <div class="flex flex-col flex-auto mt-2 h-150">
+            <!-- <mat-table [dataSource]="_dataSource" matSort>
+                    
+                <mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: _displayedColumns;" class="z-20 flex items-center cursor-pointer border-b"
+                        (click)="selctedRow(row)" 
+                        [ngClass]="{'bg-primary-50 dark:bg-hover': selectedRowIndex && selectedRowIndex == row.actionDate,
+                        'hover:bg-gray-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !== row.actionDate}">
+                </mat-row>
+            </mat-table> -->
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <!-- Column Structure -->
+                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                    <th mat-header-cell *matHeaderCellDef class="mat-header-style"> {{ getColumnHeaderText(column) }} </th>
+                    <td mat-cell *matCellDef="let element" class="mat-column-style"> {{  element[column] | dataTablePipe: getColumnType(column)  }} </td>
+                </ng-container>
+                
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr (click)="selectedRow(row)"  mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                
+
+            </table>
+            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" (pageSize)="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+        </mat-paginator>
+        </div>
+        
+    </div>
+    
+</ng-container>
+<ng-template #noData>
+    <div class="p-8 sm:p-8 border-t text-sm font-semibold tracking-tight text-center">Aucune donnée</div>
+</ng-template>

@@ -1,0 +1,29 @@
+<div class="ml-2 flex" *ngIf="breadcrumbs?.length > 0">
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li *ngFor="let breadcrumb of breadcrumbs; last as isLast; index as index">
+                <div class="flex items-center">
+        
+                    <ng-container *ngIf="!isLast; else elseTemplate">
+                        <ng-container *ngIf="index==0; else elseTemplate0">
+                            <span class="md:text-base tracking-tight leading-7 md:leading-snug truncate text-primary ">{{ breadcrumb.label}}</span>
+                        </ng-container>
+                        <ng-template #elseTemplate0>
+                            <a href="{{breadcrumb.url}}"
+                                class="md:text-base tracking-tight leading-7 md:leading-snug truncate dark:text-gray-400 dark:hover:text-white cursor-pointer">
+                                {{ breadcrumb.label}}
+                            </a>
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <span class="md:text-base tracking-tight leading-7 md:leading-snug truncate text-gray-500 dark:text-gray-400">{{ breadcrumb.label}}</span>
+                    </ng-template>
+
+                    <mat-icon *ngIf="!isLast" class="icon-size-5" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+            
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+</div>

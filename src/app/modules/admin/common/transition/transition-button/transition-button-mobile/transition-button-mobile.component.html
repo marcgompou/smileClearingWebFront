@@ -1,0 +1,11 @@
+
+<ng-container *ngFor="let transition of transitions">
+    <button *ngIf="enableBtn(transition)"
+        id="{{transition.origine.code}}_{{transition.destination.code}}"
+        mat-menu-item 
+        (click)="openPopUpConfirm(transition)"
+        [color]="transition.btn_color">
+        <mat-icon [svgIcon]="transition.icon"></mat-icon>
+        <span>{{transition.libelle}}</span>
+    </button>
+</ng-container>

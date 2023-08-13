@@ -1,0 +1,137 @@
+<ng-container>
+
+    <div class="flex items-center md:mt-auto -mx-3">
+
+        <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript max-w-64 fuse-mat-rounded w-full px-3">
+            <mat-select
+                [panelClass]="'max-h-none'"
+                [value]="'Tableau'"
+                disableOptionCentering
+                (selectionChange)="onChangeMode($event)">
+                <mat-select-trigger class="text-md">
+                    <span>Mode d'Affichage:</span>
+                    <span class="ml-1 font-medium">{{affichageMode | titlecase}}</span>
+                </mat-select-trigger>
+                <mat-option
+                    class="h-auto py-4 leading-none"
+                    [value]="'Tableau'">
+                    <div class="font-medium"><mat-icon svgIcon="heroicons_outline:view-list"></mat-icon>Tableau</div>
+                    <div class="mt-1.5 text-sm whitespace-normal leading-normal text-secondary">L'historique sera affiché dans un tableau</div>
+                </mat-option>
+                <mat-option
+                    class="h-auto py-4 leading-none"
+                    [value]="'Time line'">
+                    <div class="font-medium"><mat-icon svgIcon="timeline"></mat-icon>Time line</div>
+                    <div class="mt-1.5 text-sm whitespace-normal leading-normal text-secondary">L'historique sera affiché sous forme de diagramme de temps</div>
+                </mat-option>
+
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Search -->
+        <div class="flex-auto pr-5" *ngIf="_dataSource != null ">
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded w-full min-w-50">
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                <input
+                    matInput
+                    id="filter_historique"
+                    (keyup)="applyFilter($event)"
+                    [autocomplete]="'off'"
+                    [placeholder]="'Filter l\'historique'">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <!-- Alert -->
+    <fuse-alert class="mt-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+        [@shake]="alert.type === 'error'">
+        {{alert.message}}
+    </fuse-alert>
+
+    <ng-container *ngIf="affichageMode === 'Tableau'">
+        <ng-container *ngIf="_dataSource != null && _dataSource.filteredData.length > 0; else noHistoriques">
+            <div class="grid overflow-x-auto overflow-y-auto">
+                <div class="flex flex-col flex-auto mt-2 h-100">
+                    <mat-table [dataSource]="_dataSource" matSort>
+
+                        <!-- DATE -->
+                        <ng-container matColumnDef="date">
+                            <mat-header-cell *matHeaderCellDef class="min-w-50 text-sm"> #DATE </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="mx-2 min-w-50 text-md font-medium text-primary-500">
+                                {{ element.creationDate | date: 'dd/MM/yyyy HH:mm:ss.SSS' }}
+                            </mat-cell>
+                        </ng-container>
+                    
+                        <!-- AUTEUR -->
+                        <ng-container matColumnDef="auteur">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-52 text-sm"> AUTEUR </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="mx-2 min-w-52 text-md font-medium">
+                                {{ element.actionAuteur }}
+                            </mat-cell>
+                        </ng-container>
+                    
+                        <!-- ACTION -->
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-52 text-sm"> ACTION </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="mx-2 min-w-52 text-md font-medium">
+                                {{ element.actionType }}
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- ETAT INITIAL -->
+                        <ng-container matColumnDef="etatInitial">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-40 text-sm"> ÉTAT INITIAL </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="min-w-40 mx-2 text-md font-medium">
+                                {{ element.etatInitial }} 
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- ETAT FINAL -->
+                        <ng-container matColumnDef="etatFinal">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-40 text-sm"> ÉTAT FINAL </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="min-w-40 mx-2 text-md font-medium">
+                                {{ element.etatFinal }} 
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- COMMENTAIRES -->
+                        <ng-container matColumnDef="commentaires">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-100 text-sm"> COMMENTAIRES </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="mx-4 min-w-100 text-md font-medium">
+                                {{ element.description }}
+                            </mat-cell>
+                        </ng-container>
+                    
+                        <mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: _displayedColumns;" class="z-20 flex items-center cursor-pointer border-b"
+                                (click)="selctedRow(row)" 
+                                [ngClass]="{'bg-primary-50 dark:bg-hover': selectedRowIndex && selectedRowIndex == row.actionDate,
+                                'hover:bg-gray-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !== row.actionDate}">
+                        </mat-row>
+
+                    </mat-table>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #noHistoriques>
+            <div class="p-8 sm:p-8 border-t text-sm font-semibold tracking-tight text-center">Aucun historique trouvé!</div>
+        </ng-template>
+    </ng-container>
+
+    <ng-container *ngIf="affichageMode === 'Time line'">
+        <ng-container *ngIf="_historiques != null && _historiques.length > 0; else noHistoriques">
+            <div class="grid overflow-x-auto overflow-y-auto">
+                <time-line [_historiques]="_filteredHistoriques" class="mt-6"></time-line>
+            </div>
+        </ng-container>
+
+        <ng-template #noHistoriques>
+            <div class="p-8 sm:p-8 border-t text-sm font-semibold tracking-tight text-center">Aucun historique trouvé!</div>
+        </ng-template>
+    </ng-container>
+   
+</ng-container>

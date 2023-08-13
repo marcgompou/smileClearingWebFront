@@ -1,0 +1,65 @@
+.mat-column-style {
+  /* Use 'min-width' instead of 'width' to allow the cell to expand based on content */
+  min-width: 150px; /* You can adjust the minimum width as needed */
+}
+.mat-header-style {
+  /* Use 'min-width' instead of 'width' to allow the cell to expand based on content */
+  min-width: 200px; /* You can adjust the minimum width as needed */
+}
+
+
+/* Custom CSS for Material Table */
+.mat-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.mat-header-cell,
+.mat-cell {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.mat-header-row {
+  border-bottom-width: 2px;
+  border-bottom-color: #e2e8f0;
+  background-color: #f9fafb;
+}
+
+.mat-row:nth-child(odd) {
+  background-color: #f7fafc;
+}
+
+.mat-cell {
+  border-bottom-width: 1px;
+  border-bottom-color: #e2e8f0;
+}
+
+.mat-footer-row {
+  border-top-width: 2px;
+  border-top-color: #e2e8f0;
+  background-color: #f9fafb;
+}
+
+/* Custom styles for pagination */
+.mat-paginator {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px;
+}
+
+.mat-paginator-page-size {
+  margin-right: 14px;
+}
+
+/* Add smooth bottom border for rows */
+.mat-row:not(:last-child) .mat-cell,
+.mat-footer-row:not(:last-child) .mat-footer-cell {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Add beautiful shadow effect to the table */
+.mat-table {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

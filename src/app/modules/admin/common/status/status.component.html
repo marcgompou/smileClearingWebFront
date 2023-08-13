@@ -1,0 +1,8 @@
+<div class="flex items-center">
+    <mat-icon 
+        [ngStyle]="status ? { 'color':'green'}:{ 'color':'red'}"
+        class="icon-size-5"
+        [svgIcon]="'heroicons_solid:bell'" ></mat-icon>
+        
+    <div [ngClass]= "status ? 'text-green-900 ml-1.5 leading-6 truncate' : 'text-red-500 ml-1.5 leading-6 truncate'">Scanner{{status ? " Connecté":" Déconnecté"}} </div>
+</div>

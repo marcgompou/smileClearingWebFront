@@ -1,0 +1,223 @@
+<div class="flex flex-col w-full">
+
+    <!-- Header -->
+    <div class="relative w-full h-40 sm:h-36 px-8 sm:px-12">
+         <!-- Close button -->
+         <div class="flex items-center justify-between w-full max-w-3xl mx-auto pt-6 ">
+            <div class="text-3xl font-extrabold tracking-tight leading-none">Créer un client</div>
+            <a
+                mat-icon-button
+                [matTooltip]="'Close'"
+                (click)="closeForm()">
+                <mat-icon
+                    [color]="'primary'"
+                    [svgIcon]="'heroicons_outline:x'"></mat-icon>
+            </a>
+        </div>
+        
+    </div>
+
+    <!-- Contact -->
+    <div class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0">
+        <div class="w-full max-w-3xl">
+
+            <div class="flex flex-col space-y-4">
+                <!-- Form -->
+                <form 
+                    class="flex flex-col rounded overflow-hidden"
+                    [formGroup]="createUserForm"
+                    #createUserNgForm="ngForm">
+
+                    <!-- Alert -->
+                    <fuse-alert
+                        *ngIf="showAlert"
+                        [appearance]="'outline'"
+                        [showIcon]="false"
+                        [type]="alert.type"
+                        [@shake]="alert.type === 'error'">
+                        {{alert.message}}
+                    </fuse-alert>
+
+                    <!-- Email field -->
+                    <div class="flex flex-col mt-4">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Adresse email</mat-label>
+                            <input
+                                id="email"
+                                matInput
+                                [formControlName]="'email'"
+                                placeholder="Ex: abc@becao.int" >
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                            <mat-error *ngIf="createUserForm.get('email').errors?.required">
+                                L'adresse Email est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('email').errors?.email">
+                                Entrez une adresse email valide svp
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Nom field -->
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Nom</mat-label>
+                            <input
+                                id="nom"
+                                matInput
+                                [formControlName]="'nom'"
+                                placeholder="Ex: ZIBIKOU" 
+                                minlength = "2" maxlength = "50">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
+                            <mat-error *ngIf="createUserForm.get('nom').errors?.required">
+                                Le nom est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('nom').errors?.minlength">
+                                    Le nom doit être au moins deux caractères
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('nom').errors?.maxlength">
+                                    Le nom doit être au plus 50 caractères
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Prenoms field -->
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Prénom(s)</mat-label>
+                            <input
+                                id="prenom"
+                                matInput
+                                [formControlName]="'prenom'"
+                                placeholder="Ex:  Bi Francis" 
+                                minlength = "2" maxlength = "150">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
+                            <mat-error *ngIf="createUserForm.get('prenom').errors?.required">
+                                Le prénom est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('prenom').errors?.minlength">
+                                    Le prénom doit être au moins deux caractères
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('prenom').errors?.maxlength">
+                                    Le prénom doit être au plus 150 caractères
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- site field -->
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Site</mat-label>
+                            <input
+                                id="site"
+                                matInput
+                                [formControlName]="'site'"
+                                [placeholder]="'Ex:  Siège'"
+                                minlength = "2" maxlength = "100">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'mat_solid:home_work'"></mat-icon>
+                            <mat-error *ngIf="createUserForm.get('site').errors?.required">
+                                Le site est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('site').errors?.minlength">
+                                    Le site doit être au moins deux caractères
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('site').errors?.maxlength">
+                                    Le site doit être au plus 100 caractères
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- structure field -->
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Structure</mat-label>
+                            <input
+                                id="structure"
+                                matInput
+                                [formControlName]="'structure'"
+                                [placeholder]="'Ex:  DSI'"
+                                minlength = "2" maxlength = "100">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'mat_solid:workspaces'"></mat-icon>
+                            <mat-error *ngIf="createUserForm.get('structure').errors?.required">
+                                La structure est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('structure').errors?.minlength">
+                                    La structure doit être au moins deux caractères
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('structure').errors?.maxlength">
+                                    La structure doit être au plus 100 caractères
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- fonction field -->
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Fonction</mat-label>
+                            <input
+                                id="fonction"
+                                matInput
+                                [formControlName]="'fonction'"
+                                [placeholder]="'Ex:  Developpeur Concepteur'"
+                                minlength = "2" maxlength = "100">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'mat_solid:work_outline'"></mat-icon>
+                            <mat-error *ngIf="createUserForm.get('fonction').errors?.required">
+                                La fonction est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('fonction').errors?.minlength">
+                                    La fonction doit être au moins deux caractères
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('fonction').errors?.maxlength">
+                                    La fonction doit être au plus 100 caractères
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end border-t -mx-8 mt-4 px-8 py-2">
+                        <button mat-button (click)="annuler()">
+                            Annuler
+                        </button>
+                        <button
+                            class="px-6 ml-3"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="createUserForm.disabled || createUserForm.invalid"
+                            (click)="creer()">
+                            <span *ngIf="!createUserForm.disabled">
+                                Enregistrer
+                            </span>
+                            <mat-progress-spinner
+                                *ngIf="createUserForm.disabled"
+                                [diameter]="24"
+                                [mode]="'indeterminate'">
+                            </mat-progress-spinner>
+                        </button>
+                    </div>
+
+
+                </form>
+
+            </div>
+            
+        </div>
+    </div>
+
+</div>

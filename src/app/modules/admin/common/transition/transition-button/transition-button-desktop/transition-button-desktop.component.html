@@ -1,0 +1,15 @@
+
+<ng-container *ngFor="let transition of transitions" id="transition_btn">
+    <button *ngIf="enableBtn(transition)"
+        class="ml-2"
+        id="{{transition.origine.code}}_{{transition.destination.code}}"
+        mat-stroked-button
+        (click)="openPopUpConfirm(transition)"
+        [color]="transition.btn_color">
+        <mat-icon
+            class="icon-size-5"
+            [svgIcon]="transition.btn_icon"></mat-icon>
+        <span >{{transition.libelle}}</span>
+    </button>
+</ng-container>
+

@@ -1,0 +1,162 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <mat-drawer-container
+        class="flex-auto h-full bg-card dark:bg-transparent"
+        (backdropClick)="onBackdropClicked()">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="drawerMode"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer>
+            <router-outlet></router-outlet>
+        </mat-drawer>
+
+        <mat-drawer-content class="flex flex-col">
+
+            <!-- Main -->
+            <div class="flex-auto">
+
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
+
+                    <!-- Title -->
+                    <div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des clients</div>
+                        <div class="ml-0.5 font-medium text-secondary">
+                            <ng-container *ngIf="_dataSource ">
+                                <ng-container *ngIf="_dataSource.filteredData ">
+                                    <span >
+                                        {{_dataSource.filteredData.length | i18nPlural: {
+                                            '=0'   : 'Aucun client',
+                                            '=1'   : 'client',
+                                            'other': 'clients'
+                                        } }}
+                                    </span>
+                                </ng-container>
+                            </ng-container>
+                            
+                             
+                         
+                        </div>
+                    </div>
+
+                    <!-- Main actions -->
+                    <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
+                        <!-- Search -->
+                        <div class="flex-auto">
+                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded w-full min-w-50">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                <input
+                                    id="filter_table"
+                                    matInput
+                                    (keyup)="applyFilter($event)"
+                                    [autocomplete]="'off'"
+                                    [placeholder]="'Rechercher des clients'">
+                            </mat-form-field>
+                        </div>
+                        <!-- Add client button -->
+                        <button
+                            *ngIf="canCreate()"
+                            class="ml-4"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [routerLink]="['./creation/add']">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 mr-1">Créer un client</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Users list -->
+                 <!-- <ng-container *ngIf="_dataSource ">
+                    <ng-container *ngIf="_dataSource.filteredData ">
+                        <span >
+                            {{_dataSource.filteredData.length | i18nPlural: {
+                                '=0'   : 'Aucun client',
+                                '=1'   : 'client',
+                                'other': 'clients'
+                            } }}
+                        </span>
+                    </ng-container>
+                </ng-container>-->
+                <div class="relative">
+                    
+                    <ng-container *ngIf="_dataSource ">
+                        <ng-container *ngIf="_dataSource.filteredData">
+                        <div class="grid">
+                            <div class="flex flex-col flex-auto mt-2 overflow-x-auto overflow-y-auto h-160">
+                                <mat-table [dataSource]="_dataSource" matSort class="mat-elevation-z8 overflow-y-visible">
+
+                                    <!-- ID -->
+                                    <ng-container matColumnDef="date">
+                                        <mat-header-cell *matHeaderCellDef> #DATE CRÉATION </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" class="px-4">
+                                            <a class="text-md font-medium text-primary-500 hover:underline cursor-pointer">
+                                                {{ element.creationDate | date: 'dd/MM/yyyy HH:mm:ss.SSS' }}
+                                            </a>
+                                        </mat-cell>
+                                    </ng-container>
+                                
+                                    <!-- EMAIL -->
+                                    <ng-container matColumnDef="email">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" class="px-4">
+                                            <span class="pr-6 whitespace-nowrap text-md font-medium">
+                                                {{ element.email }}
+                                            </span>
+                                        </mat-cell>
+                                    </ng-container>
+                                
+                                     <!-- NOM COMPLET -->
+                                    <ng-container matColumnDef="nomComplet">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> NOM COMPLET </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" class="px-4">
+                                            <span class="pr-6 whitespace-nowrap text-md font-medium">
+                                                {{ element.nom! }} {{ element.prenom! }}
+                                            </span>
+                                        </mat-cell>
+                                    </ng-container>
+                                
+                                    <!-- ÉTAT -->
+                                    <ng-container matColumnDef="etat">
+                                        <mat-header-cell *matHeaderCellDef> ETAT </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" class="px-4"> 
+                                            <span [ngClass]="getEtatColor(element.etat)"
+                                                class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase">
+                                                <span class="leading-relaxed whitespace-nowrap"> {{element.etat!}}</span>
+                                            </span>
+                                        </mat-cell>
+                                    </ng-container>
+                                
+                                    <mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: _displayedColumns;" class="z-20 flex items-center py-2 cursor-pointer border-b"
+                                            (click)="selctedRow(row)" 
+                                            [ngClass]="{'bg-primary-50 dark:bg-hover': selectedRowIndex && selectedRowIndex == row.id,
+                                            'hover:bg-gray-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !== row.id}"></mat-row>
+
+                                </mat-table>
+                            </div>
+                            <mat-paginator [pageSizeOptions]="[25, 50]" aria-label="Select page of elements"></mat-paginator>
+                        </div>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #noUtilisateurs>
+                        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">Aucun client trouvé!</div>
+                    </ng-template>
+
+                </div>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>
