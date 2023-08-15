@@ -23,9 +23,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
-import { DetailsModule } from '../common/details/details.module';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DetailsRemiseComponent } from './details-remise/details-remise.component';
 
 
 
@@ -34,6 +34,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ValiderRemiseComponent,
     RemiseValiderComponent,
     ValiderRemiseComponent,
+    DetailsRemiseComponent
   ],
   imports: [
     CommonModule,
@@ -57,8 +58,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         SharedModule,
         TableDataModule,
         MatAutocompleteModule,
-        
-    RouterModule.forChild(validerRemiseRoutes)
+        RouterModule.forChild(validerRemiseRoutes)
 
   ]
 })

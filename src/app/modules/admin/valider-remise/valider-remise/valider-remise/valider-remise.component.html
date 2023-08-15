@@ -8,7 +8,7 @@
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
         </a>
     </fuse-alert>
-    <router-outlet></router-outlet>
+    <!-- <router-outlet></router-outlet> -->
 
 
     <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
@@ -17,7 +17,6 @@
         <mat-drawer class="w-full md:w-160 " [mode]="drawerMode" [opened]="false" [position]="'end'"
             [disableClose]="true" #matDrawer>
             <!-- <router-outlet (activate)="openDetailComponent($event)"></router-outlet> -->
-            <button>VALIDER</button>
         </mat-drawer>
 
         <mat-drawer-content class="flex flex-col">
