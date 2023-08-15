@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValiderRemiseComponent } from './valider-remise/valider-remise/valider-remise.component';
-import { DetailsRemiseComponent } from './valider-remise/details-remise/details-remise.component';
 import { RouterModule } from '@angular/router';
-import { remiseRoutes } from './valider-remise.routing';
+import { validerRemiseRoutes } from './valider-remise.routing';
 import { SharedModule } from 'app/shared/shared.module';
 import { StatusComponent } from '../common/status/status.component';
 import { RemiseValiderComponent } from './valider-remise/valider-remise.component';
@@ -35,7 +34,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ValiderRemiseComponent,
     RemiseValiderComponent,
     ValiderRemiseComponent,
-    DetailsRemiseComponent
   ],
   imports: [
     CommonModule,
@@ -58,11 +56,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         FuseFindByKeyPipeModule,
         SharedModule,
         TableDataModule,
-        DetailsModule,
         MatAutocompleteModule,
         
-    
-    RouterModule.forChild(remiseRoutes)
+    RouterModule.forChild(validerRemiseRoutes)
 
   ]
 })

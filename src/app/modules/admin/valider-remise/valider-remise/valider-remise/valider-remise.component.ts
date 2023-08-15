@@ -9,7 +9,6 @@ import { ValiderRemiseService } from '../valider-remise.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
-import { DetailsRemiseComponent } from '../details-remise/details-remise.component';
 import { FuseAlertType } from '@fuse/components/alert';
 //import {img} from './image';
 
@@ -180,83 +179,83 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
 
   }
 
-  openDetailComponent(component: DetailsRemiseComponent) {
+  // openDetailComponent(component: DetailsRemiseComponent) {
 
-    component.matDrawer = this.matDrawer;
-    component.formTitle = "CHEQUE";
-    //component.chequeData = this.remiseData;
-    //Initialisation formulaire details
-    component.formFields = [
-      {
-        key: "id",
-        libelle: "Identifiant de Remise",
-        validators: {
-          min: 7,
-          max: 7,
-          required: true
-        }
-      },
-      {
-        key: "codeBanque",
-        libelle: "Code Banque",
-        placeholder: "Ex: CI131",
-        validators: {
-          min: 5,
-          max: 5,
-          required: true,
-        }
-      },
-      {
-        key: "codeAgence",
-        libelle: "Code Agence",
-        placeholder: "Ex: 01001",
-        validators: {
-          min: 5,
-          max: 5,
-          required: true
-        }
-      },
+  //   component.matDrawer = this.matDrawer;
+  //   component.formTitle = "CHEQUE";
+  //   //component.chequeData = this.remiseData;
+  //   //Initialisation formulaire details
+  //   component.formFields = [
+  //     {
+  //       key: "id",
+  //       libelle: "Identifiant de Remise",
+  //       validators: {
+  //         min: 7,
+  //         max: 7,
+  //         required: true
+  //       }
+  //     },
+  //     {
+  //       key: "codeBanque",
+  //       libelle: "Code Banque",
+  //       placeholder: "Ex: CI131",
+  //       validators: {
+  //         min: 5,
+  //         max: 5,
+  //         required: true,
+  //       }
+  //     },
+  //     {
+  //       key: "codeAgence",
+  //       libelle: "Code Agence",
+  //       placeholder: "Ex: 01001",
+  //       validators: {
+  //         min: 5,
+  //         max: 5,
+  //         required: true
+  //       }
+  //     },
 
-      {
-        key: "compte",
-        libelle: "Compte",
-        validators: {
-          min: 12,
-          max: 12,
-          required: true
-        }
-      },
-      {
-        key: "cleRib",
-        libelle: "Cle Rib",
-        validators: {
-          min: 2,
-          max: 50,
-          required: true
-        }
+  //     {
+  //       key: "compte",
+  //       libelle: "Compte",
+  //       validators: {
+  //         min: 12,
+  //         max: 12,
+  //         required: true
+  //       }
+  //     },
+  //     {
+  //       key: "cleRib",
+  //       libelle: "Cle Rib",
+  //       validators: {
+  //         min: 2,
+  //         max: 50,
+  //         required: true
+  //       }
 
-      },
-      {
-        key: "montant",
-        libelle: "Montant",
-        type: "number",
-        validators: {
-          minValue: 1000,
-          min: 1,
-          max: 11,
-          required: true
-        }
+  //     },
+  //     {
+  //       key: "montant",
+  //       libelle: "Montant",
+  //       type: "number",
+  //       validators: {
+  //         minValue: 1000,
+  //         min: 1,
+  //         max: 11,
+  //         required: true
+  //       }
 
-      },
-      {
-        key: "tire",
-        libelle: "Titulaire",
-        validators: {
-          max: 50
-        }
-      }
-    ]
-  }
+  //     },
+  //     {
+  //       key: "tire",
+  //       libelle: "Titulaire",
+  //       validators: {
+  //         max: 50
+  //       }
+  //     }
+  //   ]
+  // }
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['./'], { relativeTo: this._activatedRoute });
