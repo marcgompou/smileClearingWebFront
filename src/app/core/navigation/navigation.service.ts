@@ -106,11 +106,11 @@ export class NavigationService
                     children: 
                     [
                         {
-                            id   : 'validationRemise',
+                            id   : 'validerRemise',
                             title: 'Validation Remise',
                             type : 'basic',
                             icon : 'heroicons_outline:template',
-                            link : '/validationRemise',
+                            link : '/validerRemise',
                             permission: SecService.permissions.ROLE_SCAN
                         },
                         {

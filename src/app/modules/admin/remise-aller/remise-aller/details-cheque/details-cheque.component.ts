@@ -28,7 +28,7 @@ export class DetailsChequeComponent implements OnInit {
   @Input() formFields!: any;
   @Input() constructorPayload!: (args: any) => any;
   @Input("formTitle") formTitle: string = "Formulaire Détails/Modification"
-  @Input("endpoint") endpoint: string;
+  // @Input("endpoint") endpoint: string;
   @ViewChild('formNgForm') formNgForm: NgForm;
   _titulaire  : string = "";
   editMode: boolean = false;
@@ -177,19 +177,17 @@ export class DetailsChequeComponent implements OnInit {
 
   }
 
-
+ /**
+    * Close the drawer
+    */
   closeForm() {
+    //Remettre le tableau comme il etait
     this.matDrawer.close();
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
   }
 
 
-  /**
-    * Close the drawer
-    */
-  closeDrawer(): Promise<MatDrawerToggleResult> {
-    return this.matDrawer.close();
-  }
+
 
   setupFormFields(): void {
 
@@ -231,6 +229,7 @@ export class DetailsChequeComponent implements OnInit {
 
     // this._changeDetectorRef.markForCheck();
     console.log("Form====>", this.form)
+    console.log("this.chequeData====>", this.chequeData)
   }
 
   onSubmit() {
@@ -272,34 +271,7 @@ export class DetailsChequeComponent implements OnInit {
     * bouton supprimer
     */
   supprimer(): void {
-    // const deleteObjectDialog = this._dialog.open(
-    //     DeleteConfirmationComponent,
-    //     {
-    //       data:  { 
-    //           id:this.id,
-    //           endpoint:this.endpoint
-    //         }
-    //     }
-    // );
-    // deleteObjectDialog.afterClosed().subscribe({
-
-    //     next:(response)=>{
-
-    //       console.log("delete response=====>",response)
-    //       if(response?.isDeleted){
-    //           this._tableDataService.getDatas().pipe().subscribe();
-    //           this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
-    //           this.matDrawer.close();
-    //       }
-
-    //     },
-    //     error: (error) => {
-    //       console.error('Error : ', JSON.stringify(error));
-    //       this.alert = { type: 'error', message: error.error.message??error.message };
-    //       this.showAlert = true;
-    //       this._changeDetectorRef.detectChanges();
-    //   }
-    // });
+    
   }
 
 
@@ -352,11 +324,16 @@ export class DetailsChequeComponent implements OnInit {
       formData.numChequeIsCorrect = true;
       formData.chequeIsCorrect=true;
 
+
+
+
       //Si le cheque existe déja on affiche un message d'erreur et la modification est interrompue
       if(!this.chequeExist(this.tableData,formData,parseInt(this.id))){
         if (!this.calculcleRibIsNotCorrect(formData)) {
 
-          this.tableData[this.id] = formData;
+          //Mise à jour du tableau tout en conservant l'image 
+          this.tableData[this.id] ={...this.tableData[this.id], ...formData};
+          
           this._remiseService.updateDataTable(this.tableData);
 
           this.closeForm()

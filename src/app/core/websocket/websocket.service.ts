@@ -1,6 +1,6 @@
 // src\app\services\websocket.service.ts
 import { Injectable } from "@angular/core";
-import { Observable, Observer, fromEvent } from 'rxjs';
+import { BehaviorSubject, Observable, Observer, fromEvent } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -17,6 +17,7 @@ export interface Message {
 export class WebsocketService {
     private subject: AnonymousSubject<MessageEvent>;
     public messages: Subject<Message>;
+    private connexionState: BehaviorSubject<any> = new BehaviorSubject(null);
 
     constructor() {
         this.messages = <Subject<Message>>this.connect(environment.SOCKET_URL).pipe(

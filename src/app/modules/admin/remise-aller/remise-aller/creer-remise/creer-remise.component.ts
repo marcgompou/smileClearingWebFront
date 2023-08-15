@@ -94,6 +94,15 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       "key": "tire",
       "label": "Titulaire"
+    },
+    {
+      "key": "imagerecto",
+      "label": "imagerecto"
+    },
+
+    {
+      "key": "imageverso",
+      "label": "imageverso"
     }
 
   ];
@@ -115,6 +124,51 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   })
 
+  constructor(private _websocketService: WebsocketService,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _formBuilder: UntypedFormBuilder,
+    private _chequeService: CreerRemiseService,
+    private _activatedRoute: ActivatedRoute,
+    private _router: Router) 
+    {
+
+      _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
+
+      if (msg.action === "neoEtat") {
+        this.scannerIsConnected = msg.result === "demarré";
+      }
+      // CHargement du tableau des chèques dans la creation de remise
+      else {
+        if (msg.action === "neoResult"){
+          let chqScanned=JSON.parse(msg.result) as Cheque;
+
+          //Si le cheque est déjà dans le tableau  ne pas l'ajouter 
+          let findCheque=this.received.find(chq=>{
+          return chq.codeAgence==chqScanned.codeAgence &&  
+            chq.codeBanque==chqScanned.codeBanque &&  
+            chq.codeAgence==chqScanned.codeAgence &&
+            chq.compte==chqScanned.compte &&
+            chq.numChq==chqScanned.numChq ;
+          });
+ 
+          if(!findCheque){
+            this.received.push(chqScanned);
+            this._chequeService.setRemise$(this.received);
+            console.log("Response received: --------", this.received);
+            console.log("Response dataSource verifier -------: ", this.dataSource);
+          }
+          else{
+            const errorMessage=`Vous avez déjà scanné ce chèque (${chqScanned.numChq}) plus d'une fois`;
+            console.log("cheque exist=====>",errorMessage)
+            this.alert = { type: 'error', message:errorMessage };
+            this.showAlert = true;
+          }
+        }
+      }
+      console.log("Response from websocket: ", msg);
+      this._changeDetectorRef.markForCheck();
+    });
+  }
 
   //CYCLE DE VIE
   ngOnInit() {
@@ -183,101 +237,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
   }
-  constructor(private _websocketService: WebsocketService,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _formBuilder: UntypedFormBuilder,
-    private _chequeService: CreerRemiseService,
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router,
-   
 
-  ) {
-
-
-    
-    _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
-
-      //
-      // const predefinedJson = [
-
-
-      //   {
-      //     "imageVerso": "....",
-      //     "imageRecto": "....",
-      //     "numChq": "0000001",
-      //     "montant": 100,
-      //     "codeBanque": "CI131",
-      //     "codeAgence": "01001",
-      //     "cleRib": "78",
-      //     "compte": "012345678901",
-      //     "cleRibIsCorrect": true,
-      //     "numChequeIsCorrect": true,
-      //     "compteIsCorrect": true,
-      //     "codeBanqueIsCorrect": true,
-      //     "codeAgenceIsCorrect": true,
-      //     "chequeIsCorrect": true,
-      //     "tire": "GOMPOU MARC"
-      //   },
-
-      //   {
-      //     "imageVerso": "....",
-      //     "imageRecto": "....",
-      //     "numChq": "0000021",
-      //     "montant": 200,
-      //     "codeBanque": "CI131",
-      //     "codeAgence": "01002",
-      //     "cleRib": "78",
-      //     "compte": "012345678905",
-      //     "cleRibIsCorrect": true,
-      //     "numChequeIsCorrect": true,
-      //     "compteIsCorrect": true,
-      //     "codeBanqueIsCorrect": true,
-      //     "codeAgenceIsCorrect": true,
-      //     "chequeIsCorrect": true,
-      //     "tire": "AHOUE CEDRICK"
-      //   }
-
-      //   , ];
-
-      // Charger le tableau received à partir du JSON
-      // this.received = predefinedJson as Cheque[] ;
-      //this._chequeService.setRemise$(this.received);
-
-      if (msg.action === "neoEtat") {
-        this.scannerIsConnected = msg.result === "demarré";
-      }
-      // CHargement du tableau des chèques dans la creation de remise
-      else {
-        if (msg.action === "neoResult") {
-          let chqScanned=JSON.parse(msg.result) as Cheque;
-
-          //Si le cheque est déjà dans le tableau  ne pas l'ajouter 
-          let findCheque=this.received.find(chq=>{
-          return chq.codeAgence==chqScanned.codeAgence &&  
-            chq.codeBanque==chqScanned.codeBanque &&  
-            chq.codeAgence==chqScanned.codeAgence &&
-            chq.compte==chqScanned.compte &&
-            chq.numChq==chqScanned.numChq ;
-          });
- 
-          if(!findCheque){
-            this.received.push(chqScanned);
-            this._chequeService.setRemise$(this.received);
-            console.log("Response received: --------", this.received);
-            console.log("Response dataSource verifier -------: ", this.dataSource);
-          }
-          else{
-            const errorMessage=`Vous avez déjà scanné ce chèque (${chqScanned.numChq}) plus d'une fois`;
-            console.log("cheque exist=====>",errorMessage)
-            this.alert = { type: 'error', message:errorMessage };
-            this.showAlert = true;
-          }
-        }
-      }
-      console.log("Response from websocket: ", msg);
-      this._changeDetectorRef.markForCheck();
-    });
-  }
 
   
 
@@ -310,14 +270,14 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   openDetailComponent(component: DetailsChequeComponent) {
 
     component.matDrawer = this.matDrawer;
-    component.endpoint = "compteClient";
+    // component.endpoint = "compteClient";
     component.formTitle = "CHEQUE";
     component.chequeData = this.chequeData;
     //Initialisation formulaire details
     component.formFields = [
       {
         key: "numChq",
-        libelle: "Numero de Cheque",
+        libelle: "N° de Cheque",
         validators: {
           min: 7,
           max: 7,
@@ -383,6 +343,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
           max: 50
         }
       }
+      
     ]
   }
   onBackdropClicked(): void {
@@ -495,8 +456,8 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     this.received.forEach(chq=> {
         console.log("enregistrer chq======>",chq);
         listCheques.push({
-          imageVerso :chq.imageVerso || img,
-          imageRecto : chq.imageRecto || img,
+          imageVerso :chq.imageVerso ,
+          imageRecto : chq.imageRecto ,
           numChq:chq.numChq,
           codeBanque:chq.codeBanque,
           titulaire:chq.tire,
@@ -517,6 +478,8 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
             message: response.message
           };
           this.showAlert = true;
+          //Vide le tableau
+          this._chequeService.updateDataTable([]);
         },
         error: (error) => {
           console.error('Error : ', JSON.stringify(error));
