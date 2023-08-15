@@ -74,6 +74,16 @@ export const appRoutes: Route[] = [
                 data: { breadcrumb: 'Remise aller' },
                 loadChildren: () => import('app/modules/admin/remise-aller/remise-aller.module').then(m => m.RemiseAllerModule)
             },
+
+
+            // {
+            //     path: 'validerRemise/details/:id',
+            //     data: { breadcrumb: 'Details remise' },
+            //     loadChildren: () => import('app/modules/admin/details-remise/details-remise.module').then(m => m.DetailsRemiseModule)
+            // },
+
+
+
             {
                 path: 'validerRemise',
                 data: { breadcrumb: 'Remise valider' },
