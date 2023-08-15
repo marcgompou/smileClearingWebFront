@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, F
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { WebsocketService } from 'app/core/websocket/websocket.service';
-import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable } from 'rxjs';
+import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable, startWith } from 'rxjs';
 import { Cheque } from '../../cheque.type';
 import { fuseAnimations } from '@fuse/animations';
 import { CreerRemiseService } from '../remise.service';
@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DetailsChequeComponent } from '../details-cheque/details-cheque.component';
 import { FuseAlertType } from '@fuse/components/alert';
 import {img} from './image';
+import {remise} from './example_remise';
 
 @Component({
   selector: 'app-creer-remise',
@@ -51,7 +52,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   pageSize = 10;
   currentPage = 0;
   pageSizeOptions: number[] = [10, 25];
-
+  filteredOptionCompteEnt: Observable<string[]>;
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -115,12 +116,11 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedCheque: any | null = null;
   selectedChequeForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  // cheques$: Observable<Cheque[]>;
   scannerIsConnected = false;
 
 
   compteClientForm = new FormGroup({
-    idCompteClient: new FormControl('', Validators.required),
+    idCompteClient: new FormControl<any>('', Validators.required)
 
   })
 
@@ -131,7 +131,16 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _router: Router) 
     {
+      
+      
+  //     const predefinedJson =remise;
 
+  //  //   Charger le tableau received à partir du JSON
+  //     this.received = predefinedJson as Cheque[] ;
+  //     this._chequeService.setRemise$(this.received);
+
+      
+    
       _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
 
       if (msg.action === "neoEtat") {
@@ -155,7 +164,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
             this.received.push(chqScanned);
             this._chequeService.setRemise$(this.received);
             console.log("Response received: --------", this.received);
-            console.log("Response dataSource verifier -------: ", this.dataSource);
+            //console.log("Response dataSource verifier -------: ", this.dataSource);
           }
           else{
             const errorMessage=`Vous avez déjà scanné ce chèque (${chqScanned.numChq}) plus d'une fois`;
@@ -170,21 +179,15 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+
+
+
+  
+
   //CYCLE DE VIE
   ngOnInit() {
 
-    this.selectedChequeForm = this._formBuilder.group({
-      numChq: [''],
-      codeBanque: [''],
-      codeAgence: ['', [Validators.required]],
-      compte: [''],
-      cleRib: [[]],
-      montant: [''],
-      tire: ['']
-      // thumbnail        : [''],
-      // images           : [[]],
-      // currentImageIndex: [0], // Image index that is currently being viewed
-    });
+  
   
     //getCompteByEntreprise();
     this.loadCompte();

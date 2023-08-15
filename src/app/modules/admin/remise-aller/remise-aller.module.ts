@@ -28,6 +28,7 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { CreateModule } from '../common/create/create.module';
 import { DetailsModule } from '../common/details/details.module';
 import { TableDataModule } from '../common/table-data/table-data.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -62,6 +63,7 @@ import { TableDataModule } from '../common/table-data/table-data.module';
         TableDataModule,
         CreateModule,
         DetailsModule,
+        MatAutocompleteModule,
     
     RouterModule.forChild(remiseRoutes)
 

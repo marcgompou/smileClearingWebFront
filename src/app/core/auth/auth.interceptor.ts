@@ -5,13 +5,11 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor
-{
+export class AuthInterceptor implements HttpInterceptor {
     /**
      * Constructor
      */
-    constructor(private _authService: AuthService)
-    {
+    constructor(private _authService: AuthService) {
     }
 
     /**
@@ -20,8 +18,7 @@ export class AuthInterceptor implements HttpInterceptor
      * @param req
      * @param next
      */
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>
-    {
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Clone the request object
         let newReq = req.clone({
             withCredentials: true
@@ -36,22 +33,20 @@ export class AuthInterceptor implements HttpInterceptor
         // for the protected API routes which our response interceptor will
         // catch and delete the access token from the local storage while logging
         // the user out from the app.
-        if ( this._authService.accessToken && !AuthUtils.isTokenExpired(this._authService.accessToken) )
-        {
-            if(this._authService.accessToken){
+        if (this._authService.accessToken && !AuthUtils.isTokenExpired(this._authService.accessToken)) {
+            if (this._authService.accessToken) {
                 newReq = req.clone({
                     headers: req.headers.set('Authorization', 'Bearer ' + this._authService.accessToken)
                 });
             }
         }
-        else
-        {
-            if(this._authService.mfaToken){
-                newReq= req.clone({
+        else {
+            if (this._authService.mfaToken) {
+                newReq = req.clone({
                     headers: req.headers.set('Authorization', 'Bearer ' + this._authService.mfaToken),
                     withCredentials: true
                 })
-            
+
             }
         }
 
@@ -59,12 +54,12 @@ export class AuthInterceptor implements HttpInterceptor
         // Response
         return next.handle(newReq).pipe(
             catchError((error) => {
-
+                console.log(error);
                 // Catch "401 Unauthorized" responses
-                if ( error instanceof HttpErrorResponse && error.status === 401 )
-                {
+                if (error instanceof HttpErrorResponse && error.status === 401) {
+                    
                     // Sign out
-                    let resp:any=this._authService.signOut();
+                    let resp: any = this._authService.signOut();
 
                     // Reload the app
                     location.reload();

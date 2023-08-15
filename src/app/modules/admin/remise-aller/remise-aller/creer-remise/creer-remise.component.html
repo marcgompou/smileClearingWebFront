@@ -3,7 +3,7 @@
         [@shake]="alert.type === 'error'">
         {{ alert.message }}
 
-        <a mat-icon-button [matTooltip]="'Close'" (click)="closeAlert()">
+        <a mat-icon-button [matTooltip]="'fermer'" (click)="closeAlert()">
             <mat-icon class="flex flex-col" [color]="'primary'"
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
         </a>
@@ -14,6 +14,7 @@
         <mat-drawer class="w-full md:w-160 " [mode]="drawerMode" [opened]="false" [position]="'end'"
             [disableClose]="true" #matDrawer>
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
+            <button>VALIDER</button>
         </mat-drawer>
 
         <mat-drawer-content class="flex flex-col">
@@ -46,10 +47,10 @@
                             <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required
                                 placeholder="Selectionner un compte">
                                 <mat-option value=""></mat-option>
-                                <mat-option *ngFor="let listeCompte of listeCompteEntreprise" [value]="listeCompte.id">
-                                    {{listeCompte.designation }} - {{ listeCompte.compte.slice(-4)}}
+                                <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.id"> 
+                                    {{compteEntreprise.designation }} - {{ compteEntreprise.compte.slice(-4)}}
                                 </mat-option>
-                            </mat-select>
+                            </mat-select> 
                         </mat-form-field>
 
 

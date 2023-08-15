@@ -28,22 +28,19 @@
 
             <!-- Email field -->
             <mat-form-field class="w-full">
-                <mat-label>Email address</mat-label>
+                <mat-label>Email</mat-label>
                 <input
                     id="username"
                     matInput
                     [formControlName]="'username'">
                 <mat-error *ngIf="signInForm.get('username').hasError('required')">
-                    Email address is required
-                </mat-error>
-                <mat-error *ngIf="signInForm.get('username').hasError('username')">
-                    Please enter a valid email address
+                  Veuillez renseigner une adresse email valide
                 </mat-error>
             </mat-form-field>
 
             <!-- Password field -->
             <mat-form-field class="w-full">
-                <mat-label>Password</mat-label>
+                <mat-label>Mot de passe</mat-label>
                 <input
                     id="password"
                     matInput
@@ -65,7 +62,7 @@
                         [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                 </button>
                 <mat-error>
-                    Password is required
+                    Veuillez renseigner un mot de passe valide
                 </mat-error>
             </mat-form-field>
 
