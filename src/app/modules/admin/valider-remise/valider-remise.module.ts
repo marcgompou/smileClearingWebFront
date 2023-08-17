@@ -25,7 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-//import { DetailsRemiseComponent } from './details-remise/details-remise.component';
+import { DetailsRemiseComponent } from './details-remise/details-remise.component';
 
 
 
@@ -34,7 +34,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ValiderRemiseComponent,
     RemiseValiderComponent,
     ValiderRemiseComponent,
-    //DetailsRemiseComponent
+    DetailsRemiseComponent
   ],
   imports: [
     CommonModule,
