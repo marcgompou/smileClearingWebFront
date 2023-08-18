@@ -133,7 +133,7 @@ export class DetailsRemiseComponent implements OnInit {
   openDetailComponent(component: DetailsChequeComponent) {
     component.matDrawer = this.matDrawer;
     // component.endpoint = "compteClient";
-    component.formTitle = "CHEQUE";
+    component.formTitle = "DETAILS CHEQUE";
     component.chequeData = this.chequeData;
     //Initialisation formulaire details
     component.formFields = [
