@@ -40,6 +40,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     DetailsChequeComponent,
     StatusComponent
   ],
+  exports: [
+    DetailsChequeComponent
+  ],
   imports: [
     CommonModule,
         MatButtonModule,

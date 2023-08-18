@@ -45,6 +45,7 @@ export class TableDataComponent  implements OnInit, AfterViewInit {
   @Input("title") title:string;
   @Input('canClick') canClick:boolean=false;
   @Input('idRow') idRow:string="";
+  @Input('dataKey') dataKey="data";
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
@@ -75,6 +76,7 @@ export class TableDataComponent  implements OnInit, AfterViewInit {
   _displayedColumns:string[]
   
   
+  
   ngOnInit(): void {
 
 
@@ -90,7 +92,8 @@ export class TableDataComponent  implements OnInit, AfterViewInit {
   selectedRow(row){
     if(this.canClick){
       this._router.navigate(['./details', row[this.idRow]], { relativeTo: this._activatedRoute });
-     // this..disable();
+     
+      this._tableDateService.setData$(row);
       this._changeDetectorRef.markForCheck();
     }
     
@@ -138,6 +141,27 @@ export class TableDataComponent  implements OnInit, AfterViewInit {
     return found ? found.type : "";
   }
 
+  //Retrieve response data from dynamic json path;
+  getValueByPath(obj, path) {
+    const pathParts = path.split('.');
+    let value = obj;
+  
+    for (const part of pathParts) {
+      if (value.hasOwnProperty(part)) {
+        value = value[part];
+      } else {
+        value = [];
+        break;
+      }
+    }
+  
+    return value;
+  }
+  
+  // Usage
+  // const valueToRetrieve = getValueByPath(responseData, 'data.cheques[0].numChq');
+  // console.log(valueToRetrieve); // Output: "7111689"
+  
 
 
 
@@ -155,16 +179,18 @@ export class TableDataComponent  implements OnInit, AfterViewInit {
         next: (response:any) => {
           console.log("Response===> :", response);
           
-          
+          let data:any[]=[];
           if(response==null){response=[];}
+          data=this.getValueByPath(response, this.dataKey);
        
+
           
      
-          this.dataSource = new MatTableDataSource(response.data);
+          this.dataSource = new MatTableDataSource(data);
           
-          this.totalRows=response.totalCount;
-          this.currentPage=response.page;
-          this.pageSize=response.pageSize;
+          this.totalRows=response?.totalCount||data.length;
+          this.currentPage=response?.page ||0;
+          this.pageSize=response?.pageSize || 0;
           this._changeDetectorRef.markForCheck();
         }, 
         error: (error) => {

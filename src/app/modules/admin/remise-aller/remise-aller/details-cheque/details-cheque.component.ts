@@ -113,12 +113,21 @@ export class DetailsChequeComponent implements OnInit {
         console.log("Response===> titulaire ====> :", response);
         this._titulaire = response.data.titulaire;
         console.log("titulaire=====>",this._titulaire)
+        if( this.form.get('tire')){
+          this.form.patchValue({
+            tire:response.data.titulaire
+          });
+          this.form.get('tire').disable();
+
+        }
         
-        this.form.patchValue({
-          tire:response.data.titulaire
-        });
-        this.form.get('tire').disable();
-  
+        if( this.form.get('titulaire')){
+          this.form.patchValue({
+            tire:response.data.titulaire
+          });
+          this.form.get('titulaire').disable();
+
+        }
         this._changeDetectorRef.detectChanges();
   
       },
@@ -148,7 +157,7 @@ export class DetailsChequeComponent implements OnInit {
     let chequeData={
       codeBanque:this.form.value.codeBanque,
       codeAgence:this.form.value.codeAgence,
-      compte:this.form.value.compte
+      compte:this.form.value?.compte
     }
 
     console.log("chequeData------->",chequeData);
@@ -162,17 +171,22 @@ export class DetailsChequeComponent implements OnInit {
         this.getTitulaire(chequeData);    
       });
 
-    this.form.get('codeAgence').valueChanges.subscribe(value => {
-        console.log('codeAgence',value)
-        chequeData.codeAgence=value;
-        this.getTitulaire(chequeData);
-    });
 
-    this.form.get('compte').valueChanges.subscribe(value => {
-      console.log('compte',value)
-      chequeData.compte=value;
-      this.getTitulaire(chequeData);
-    });
+    if(this.form.get('codeAgence')){
+        this.form.get('codeAgence').valueChanges.subscribe(value => {
+            console.log('codeAgence',value)
+            chequeData.codeAgence=value;
+            this.getTitulaire(chequeData);
+        });
+    }
+    if(this.form.get('compte')){
+
+      this.form.get('compte').valueChanges.subscribe(value => {
+        console.log('compte',value)
+        chequeData.compte=value;
+        this.getTitulaire(chequeData);
+      });
+    }
 
 
   }

@@ -19,7 +19,8 @@ export class LoadDataResolver implements Resolve<boolean> {
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
 
         this._tableDataService._endpoint = route.data['endpoint'];
-        console.log("=====>",route.data['endpoint']);
+        this._tableDataService._id = route.params?.id;
+        this._tableDataService._hasPagination = false;
         return this._tableDataService.getDatas();
     }
 }

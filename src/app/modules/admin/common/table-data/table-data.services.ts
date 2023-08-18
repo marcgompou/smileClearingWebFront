@@ -16,9 +16,10 @@ export class TableDataService {
 
     private datas: BehaviorSubject<any[] | null> = new BehaviorSubject(null);
     private data: BehaviorSubject<any | null> = new BehaviorSubject(null);
-    public _endpoint: String;
+    public _endpoint: String; //endpoint
     public _paginationObject: any;
-
+    public _id:string|null="";  //Pour la recuperation du path parameter
+    public _hasPagination:Boolean=true; //permet de savoir si on doit tenir compte de la pagination
     public _filterObject: any;
 
     /**
@@ -30,66 +31,72 @@ export class TableDataService {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Getter for utilisateurs
+     * Getter for datas
      */
     get datas$(): Observable<any[]> {
         return this.datas.asObservable();
     }
+    set datas$(data){
+        this.data.next(data);
+    }
+
 
     /**
-     * Getter for utilisateur
+     * Getter for data
      */
     get data$(): Observable<any> {
         return this.data.asObservable();
     }
 
+    public setData$(data): void{
+        this.data.next(data);
+    }
 
-
-   
 
     getDatas(): Observable<any> {
         //Verifier que filter object exist
-        if (!this._paginationObject) {
-            this._paginationObject = {
-                page: 0,
-                size: 3000
-            };
-        }
-
-        // Definir une valeur par defaut
-        this._paginationObject.page = this._paginationObject.page || 0;
-        this._paginationObject.size = this._paginationObject.size || 10;
-
-
-
         let filterString = "";
-
-        filterString = Object.entries(this._paginationObject)
-            .filter(([key, value]) => value) // Exclude falsy values
-            .map(([key, value]) => `${key}=${value}`)
-            .join('&');
-
-        // Creation de la chaine de recherche
-        if (this._filterObject) {
-
-            filterString = Object.entries(this._filterObject)
+        let paginationString="";
+        //PATH PARAMETER IS SET 
+        if(this._id){
+            filterString=this._id;
+        }
+        //Si On tient compte de la pagination
+        if(this._hasPagination){
+            
+            if(!this._paginationObject){
+                this._paginationObject = {
+                    page: 0,
+                    size: 3000
+                };
+            }
+            // Definir une valeur par defaut
+            this._paginationObject.page = this._paginationObject.page || 0;
+            this._paginationObject.size = this._paginationObject.size || 10;
+            
+            paginationString = Object.entries(this._paginationObject)
                 .filter(([key, value]) => value) // Exclude falsy values
                 .map(([key, value]) => `${key}=${value}`)
-                .join('&') + "&" + filterString;
+                .join('&');
+            // Creation de la chaine de recherche
+            if (this._filterObject) {
+                paginationString = Object.entries(this._filterObject)
+                    .filter(([key, value]) => value) // Exclude falsy values
+                    .map(([key, value]) => `${key}=${value}`)
+                    .join('&') + "&" + paginationString;
+            }
+            console.log("filtering-----------------", paginationString);
+            filterString=filterString+"?"+paginationString;
 
         }
-
-        console.log("filtering-----------------", filterString);
-     
-
-        return this._httpClient.get<any>(`${environment.apiUrl}/${this._endpoint}/?${filterString}`).pipe(
+        return this._httpClient.get<any>(`${environment.apiUrl}/${this._endpoint}/${filterString}`).pipe(
             tap((response) => {
                 //response.sort((a, b) => (a.creationDate < b.creationDate) ? 1 : -1);
                 console.log("=Service response========>", response)
                 this.datas.next(response);
             })
         );
-       
+
     }
 
 

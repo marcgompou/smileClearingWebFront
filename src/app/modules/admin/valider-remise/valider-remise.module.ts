@@ -26,6 +26,8 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DetailsRemiseComponent } from './details-remise/details-remise.component';
+import { DetailsComponent } from '../common/details/details/details.component';
+import { DetailsModule } from '../common/details/details.module';
 
 
 
@@ -34,7 +36,7 @@ import { DetailsRemiseComponent } from './details-remise/details-remise.componen
     ValiderRemiseComponent,
     RemiseValiderComponent,
     ValiderRemiseComponent,
-    DetailsRemiseComponent
+    DetailsRemiseComponent,
   ],
   imports: [
     CommonModule,
@@ -57,6 +59,7 @@ import { DetailsRemiseComponent } from './details-remise/details-remise.componen
         FuseFindByKeyPipeModule,
         SharedModule,
         TableDataModule,
+        DetailsModule,
         MatAutocompleteModule,
         RouterModule.forChild(validerRemiseRoutes)
 
