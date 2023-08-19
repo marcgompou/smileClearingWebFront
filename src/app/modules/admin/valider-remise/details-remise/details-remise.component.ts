@@ -176,7 +176,7 @@ export class DetailsRemiseComponent implements OnInit {
     });
   }
 
-  
+
 
 
 

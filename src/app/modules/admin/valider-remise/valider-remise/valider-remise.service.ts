@@ -101,6 +101,18 @@ export class ValiderRemiseService {
 
 
   }
+  exporterRemise(){
+
+    return this._httpClient.put<any>(`${environment.apiUrl}/remise/exportation`,null).pipe(
+      tap((response) => {
+        console.log('test======================================');
+        console.log(response);
+        //this._remiseAvalides.next(response);
+      })
+    );
+
+
+  }
 
   //TODO AJOUTER UN MODAL DE CONFIRMATION
   supprimerRemise(idRemise:string){

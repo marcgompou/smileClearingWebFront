@@ -143,6 +143,7 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
     private _remiseService: ValiderRemiseService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
+    private _validerRemiseService:ValiderRemiseService,
 
 
   ) {
@@ -338,8 +339,15 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
 
   onSubmit() {
 
-    let listRemises: any[] = [];
+    //let listRemises: any[] = [];
     
+  this._validerRemiseService.exporterRemise().pipe().subscribe({
+
+    next:(response)=>{
+          console.log(response);
+      }
+    })
+
 
 
 

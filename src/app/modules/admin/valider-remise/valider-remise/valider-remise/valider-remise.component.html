@@ -45,8 +45,7 @@
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="(!compteClientForm.valid )|| (remiseIsInCorrect)">
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
                             <span class="ml-2">Exporter</span>
                         </button>
