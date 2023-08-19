@@ -101,9 +101,11 @@ export class ValiderRemiseService {
 
 
   }
+
+  //TODO AJOUTER UN MODAL DE CONFIRMATION
   supprimerRemise(idRemise:string){
 
-    return this._httpClient.delete<any>(`${environment.apiUrl}/remise/suppression/${idRemise}`).pipe(
+    return this._httpClient.delete<any>(`${environment.apiUrl}/remise/${idRemise}`).pipe(
       tap((response) => {
         console.log('test======================================');
         console.log(response);

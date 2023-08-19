@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DetailsRemiseComponent } from './details-remise/details-remise.component';
 import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -44,6 +45,7 @@ import { DetailsModule } from '../common/details/details.module';
         MatCheckboxModule,
         MatDatepickerModule,
         MatDividerModule,
+        MatDialogModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,

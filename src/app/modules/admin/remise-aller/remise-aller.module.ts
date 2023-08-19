@@ -43,7 +43,8 @@ import { DeleteChequeConfirmationComponent } from './remise-aller/details-cheque
     StatusComponent
   ],
   exports: [
-    DetailsChequeComponent
+    DetailsChequeComponent,
+    DeleteChequeConfirmationComponent
   ],
   imports: [
     CommonModule,

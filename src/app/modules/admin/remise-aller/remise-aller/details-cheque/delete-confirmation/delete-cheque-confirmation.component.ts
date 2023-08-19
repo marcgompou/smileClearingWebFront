@@ -24,8 +24,8 @@ export class DeleteChequeConfirmationComponent {
 
   constructor(
     private _creerRemiseService: CreerRemiseService,
-    private _dialog: MatDialogRef<DeleteChequeConfirmationComponent>,
     private _fuseConfirmationService: FuseConfirmationService,
+    private _dialog: MatDialogRef<DeleteChequeConfirmationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: 
     { 
       id:any

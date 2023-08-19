@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
@@ -13,6 +13,8 @@ import { TableDataService } from '../../common/table-data/table-data.services';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { ValiderRemiseService } from '../valider-remise/valider-remise.service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DeleteChequeConfirmationComponent } from '../../remise-aller/remise-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
 
 @Component({
   selector: 'app-details-remise',
@@ -120,12 +122,9 @@ export class DetailsRemiseComponent implements OnInit {
     private _validerRemiseService:ValiderRemiseService,
     private _tableDataService: TableDataService,
     private _fuseMediaWatcherService: FuseMediaWatcherService,
-
+    private _dialog: MatDialog,
     private _activatedRoute: ActivatedRoute,
-    private _router: Router) {
-
-
-  }
+    private _router: Router) {}
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des remise de tableData common
@@ -168,35 +167,52 @@ export class DetailsRemiseComponent implements OnInit {
   }
 
   validerRemise(){
-
     console.log("valider remise id", this.chequeData);
-
     this._validerRemiseService.validerRemise(this.chequeData.id).pipe().subscribe({
-
       next:(response)=>{
           console.log(response);
-
+          this.goBackToList();
       }
-
     });
-
-    //console.log("8022")
   }
 
+  
+
+
+
+
+
   supprimerRemise(){
+    
+    const deleteObjectDialog = this._dialog.open(
+        DeleteChequeConfirmationComponent,
+        {
+          data:  { 
+              id:this.id,
+              cheques:null,
+              endpoint:"remise"
+            }
+        }
+    );
+    deleteObjectDialog.afterClosed().subscribe({
+        next:(response)=>{
 
-    console.log("supoprimer remise id", this.chequeData);
-
-    this._validerRemiseService.supprimerRemise(this.chequeData.id).pipe().subscribe({
-
-      next:(response)=>{
-          console.log(response);
-
+          console.log("delete response=====>",response)
+          if(response?.isDeleted){
+              this.goBackToList();
+              console.log("delete remise response===>",response)
+          }
+        },
+        error: (error) => {
+          console.error('Error : ', JSON.stringify(error));
+          this.alert = { type: 'error', message: error.error.message??error.message };
+          this.showAlert = true;
+          this._changeDetectorRef.detectChanges();
       }
-
     });
 
-    //console.log("8022")
+
+
   }
 
 
