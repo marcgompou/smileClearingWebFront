@@ -134,12 +134,12 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
       
       
       //  //   Charger le tableau received à partir du JSON
-      const predefinedJson =remise;
-      this.received = predefinedJson as Cheque[] ;
-      this._chequeService.setRemise$(this.received);
+      // const predefinedJson =remise;
+      // this.received = predefinedJson as Cheque[] ;
+      // this._chequeService.setRemise$(this.received);
 
       
-    /*
+
       _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
 
       if (msg.action === "neoEtat") {
@@ -175,7 +175,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       console.log("Response from websocket: ", msg);
       this._changeDetectorRef.markForCheck();
-    });*/
+    })
   }
 
 
