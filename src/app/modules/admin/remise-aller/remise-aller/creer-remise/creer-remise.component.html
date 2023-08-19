@@ -14,7 +14,6 @@
         <mat-drawer class="w-full md:w-160 " [mode]="drawerMode" [opened]="false" [position]="'end'"
             [disableClose]="true" #matDrawer>
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
-            <button>VALIDER</button>
         </mat-drawer>
 
         <mat-drawer-content class="flex flex-col">
@@ -43,7 +42,8 @@
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
-                        <mat-form-field class="max-w-xs fuse-mat-dense  fuse-mat-rounded min-w-64 mt-10">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8">
+                            <mat-label>Compte</mat-label>
                             <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required
                                 placeholder="Selectionner un compte">
                                 <mat-option value=""></mat-option>
@@ -54,15 +54,15 @@
                         </mat-form-field>
 
 
-                        <button class="ml-4 " mat-flat-button [disabled]="!scannerIsConnected"
+                        <button class="ml-4 mt-14" mat-flat-button [disabled]="!scannerIsConnected"
                             (click)="scannerCheque()">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="">Scanner chèque</span>
+                            <span>Scanner chèque</span>
                         </button>
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="(!compteClientForm.valid )|| (remiseIsInCorrect)">
+                            [disabled]="(!compteClientForm.valid )|| (remiseIsInCorrect) || dataSource.data.length==0">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
-                            <span class="ml-2">Enregistrer</span>
+                            <span>Enregistrer</span>
                         </button>
                     </form>
                 </div>

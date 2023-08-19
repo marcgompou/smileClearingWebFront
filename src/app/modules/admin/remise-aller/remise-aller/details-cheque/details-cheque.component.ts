@@ -13,6 +13,7 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 import { BigNumber } from 'bignumber.js';
 import { img } from '../creer-remise/image';
 import { Cheque } from '../../cheque.type';
+import { DeleteChequeConfirmationComponent } from './delete-confirmation/delete-cheque-confirmation.component';
 
 @Component({
   selector: 'app-details-cheque',
@@ -28,7 +29,7 @@ export class DetailsChequeComponent implements OnInit {
   @Input() formFields!: any;
   @Input() constructorPayload!: (args: any) => any;
   @Input("formTitle") formTitle: string = "Formulaire Détails/Modification"
-  // @Input("endpoint") endpoint: string;
+  @Input("endpoint") endpoint: string="";
   @ViewChild('formNgForm') formNgForm: NgForm;
   _titulaire  : string = "";
   editMode: boolean = false;
@@ -38,6 +39,8 @@ export class DetailsChequeComponent implements OnInit {
     message: ''
   };
   id: string = "0";
+  _noCheck:boolean=false;
+  //Tableau de cheque scanner dans le component de création de cheque
   tableData: any[];
   constructor(
     private _router: Router,
@@ -64,10 +67,7 @@ export class DetailsChequeComponent implements OnInit {
     this.form = this.formBuilder.group({});
     this.setupFormFields();
 
-    
-
-
-
+  
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       if(this.id=="-1"){
@@ -78,22 +78,10 @@ export class DetailsChequeComponent implements OnInit {
       console.log("id in details", this.id);
 
     })
-    
-
     this.getTitulaire(this.chequeData)
-
-   
-
-
     this.setupFieldListeners();
     
     
-
-
-
-
-
-
     //Details service ngOnInit
     this._remiseService.remise$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
@@ -137,7 +125,12 @@ export class DetailsChequeComponent implements OnInit {
         this.form.patchValue({
           tire:""
         });
-        this.form.get('tire').enable();
+        if( this.form.get('titulaire')){
+          this.form.get('titulaire').enable();
+        }
+        if( this.form.get('tire')){
+          this.form.get('tire').enable();
+        }
         this._changeDetectorRef.detectChanges();
       },
     });
@@ -198,15 +191,23 @@ export class DetailsChequeComponent implements OnInit {
     //Remettre le tableau comme il etait
     this.matDrawer.close();
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+    this._changeDetectorRef.markForCheck();
+  }
+
+  /**
+  * Go back to list check
+  */
+  goBackToListCheck() {
+    //Remettre le tableau comme il etait
+    this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+    this._changeDetectorRef.markForCheck();
   }
 
 
-
-
   setupFormFields(): void {
-
+    try{
     
-    console.log("======>details form fields", this.formFields);
+    console.log("======>CHEQUE details form fields", this.formFields);
     this.formFields.forEach(field => {
       
       const validators = [];
@@ -237,7 +238,13 @@ export class DetailsChequeComponent implements OnInit {
         this.form.addControl(field.key, this.formBuilder.control(fieldValue, validators));
       }
     });
+    this._changeDetectorRef.markForCheck();
+    }
+    catch(error){
 
+      console.log(error)
+      this.closeForm()
+    }
     
 
 
@@ -281,12 +288,68 @@ export class DetailsChequeComponent implements OnInit {
     this._changeDetectorRef.detectChanges();
   }
 
-  /**
-    * bouton supprimer
-    */
-  supprimer(): void {
-    
-  }
+/**
+ * bouton supprimer
+ */
+supprimer(): void {
+  this._noCheck=false;
+
+  const deleteObjectDialog = this._dialog.open(
+      DeleteChequeConfirmationComponent,
+      {
+        data:  { 
+            id:this.id,
+            cheques:this.tableData,
+            endpoint:this.endpoint
+          }
+      }
+  );
+  deleteObjectDialog.afterClosed().subscribe({
+      next:(response)=>{
+
+        console.log("delete response=====>",response)
+        if(response?.isDeleted){
+            if(this.endpoint){
+              this._tableDataService.getDatasByPath().pipe().subscribe({
+                next:(rep)=>{
+                  console.log("=====>",rep)
+                  console.log("check size==>",rep.data.cheques.length)
+                  if(rep.data.cheques.length==0){
+                   // this._noCheck=true;
+                    this.closeForm();
+                    this.goBackToListCheck();
+                  }
+                },
+                error:(error)=>{
+                  console.log(error)
+                  this.closeForm();
+                }
+
+              });
+            }else{
+
+
+              
+            }
+            // this.closeForm();
+            // if(this._noCheck){
+            //   this.goBackToListCheck();
+            // }
+        }
+            
+      },
+      error: (error) => {
+        console.error('Error : ', JSON.stringify(error));
+        this.alert = { type: 'error', message: error.error.message??error.message };
+        this.showAlert = true;
+        this._changeDetectorRef.detectChanges();
+    }
+  });
+
+  
+
+
+}
 
 
 

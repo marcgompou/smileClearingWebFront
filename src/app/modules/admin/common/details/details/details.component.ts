@@ -63,7 +63,7 @@ export class DetailsComponent implements OnInit,OnChanges {
   
   }
 
-
+  //Close the form and go back
   closeForm(){
     this.matDrawer.close();
     this._router.navigate(['../../'], {relativeTo: this._activatedRoute});
@@ -79,6 +79,9 @@ export class DetailsComponent implements OnInit,OnChanges {
 
   setupFormFields(): void {
 
+    try{
+
+ 
 
     console.log("======>details form fields",this.formFields);
     this.formFields.forEach(field => {
@@ -111,6 +114,12 @@ export class DetailsComponent implements OnInit,OnChanges {
     });
 
     console.log("Form====>",this.form)
+    }
+    catch(error){
+
+      console.log(error)
+      this.closeForm()
+    }
   }
 
   onSubmit(){

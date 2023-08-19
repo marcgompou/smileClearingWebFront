@@ -61,6 +61,10 @@ export class TableDataService {
         if(this._id){
             filterString=this._id;
         }
+
+        if(this._id===this._endpoint){
+            filterString="";
+        }
         //Si On tient compte de la pagination
         if(this._hasPagination){
             
@@ -99,7 +103,18 @@ export class TableDataService {
 
     }
 
+    getDatasByPath(): Observable<any> {
 
+
+        return this._httpClient.get<any>(`${environment.apiUrl}/${this._endpoint}`).pipe(
+            tap((response) => {
+                //response.sort((a, b) => (a.creationDate < b.creationDate) ? 1 : -1);
+                console.log("=Service response========>", response)
+                this.datas.next(response);
+            })
+        );
+
+    }
     // getDatas(filerObject:any,paginationObject:any): Observable<any[]> {
 
 

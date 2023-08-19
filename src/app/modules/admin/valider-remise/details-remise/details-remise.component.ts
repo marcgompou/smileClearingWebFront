@@ -10,6 +10,9 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreerRemiseService } from '../../remise-aller/remise-aller/remise.service';
 import { TableDataService } from '../../common/table-data/table-data.services';
+import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { Subject, takeUntil } from 'rxjs';
+import { ValiderRemiseService } from '../valider-remise/valider-remise.service';
 
 @Component({
   selector: 'app-details-remise',
@@ -42,7 +45,7 @@ export class DetailsRemiseComponent implements OnInit {
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: ''
@@ -91,12 +94,19 @@ export class DetailsRemiseComponent implements OnInit {
 
   onBackdropClicked(): void {
     // Go back to the list
-    this._router.navigate(['./'], { relativeTo: this._activatedRoute });
+    this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
 
     // Mark for check
     this._changeDetectorRef.markForCheck();
   }
 
+  goBackToList(): void {
+    // Go back to the list
+    this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+
+    // Mark for check
+    this._changeDetectorRef.markForCheck();
+  }
 
   getColumnHeaderText(column: string): string {
     //  console.log("column===>",column)
@@ -107,7 +117,10 @@ export class DetailsRemiseComponent implements OnInit {
   constructor(private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _chequeService: CreerRemiseService,
+    private _validerRemiseService:ValiderRemiseService,
     private _tableDataService: TableDataService,
+    private _fuseMediaWatcherService: FuseMediaWatcherService,
+
     private _activatedRoute: ActivatedRoute,
     private _router: Router) {
 
@@ -115,26 +128,85 @@ export class DetailsRemiseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this._tableDataService.data$.pipe().subscribe((response)=>{
+    //Recuperation de la ligne selectionner dans la liste des remise de tableData common
+    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("details cheque remise response=======>",response)
       this.chequeData=response;
     })
+
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       console.log("id in details", this.id);
     })
+
+    // Subscribe to MatDrawer opened change
+    this.matDrawer.openedChange.subscribe((opened) => {
+      if ( !opened )
+      {
+          // Mark for check
+          this._changeDetectorRef.markForCheck();
+      }
+  });
+
+  // Subscribe to media changes
+  this._fuseMediaWatcherService.onMediaChange$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(({matchingAliases}) => {
+          // Set the drawerMode if the given breakpoint is active
+          if ( matchingAliases.includes('lg') )
+          {
+              this.drawerMode = 'side';
+          }
+          else
+          {
+              this.drawerMode = 'over';
+          }
+          // Mark for check
+          this._changeDetectorRef.markForCheck();
+      }
+  );
+  }
+
+  validerRemise(){
+
+    console.log("valider remise id", this.chequeData);
+
+    this._validerRemiseService.validerRemise(this.chequeData.id).pipe().subscribe({
+
+      next:(response)=>{
+          console.log(response);
+
+      }
+
+    });
+
+    //console.log("8022")
+  }
+
+  supprimerRemise(){
+
+    console.log("supoprimer remise id", this.chequeData);
+
+    this._validerRemiseService.supprimerRemise(this.chequeData.id).pipe().subscribe({
+
+      next:(response)=>{
+          console.log(response);
+
+      }
+
+    });
+
+    //console.log("8022")
   }
 
 
-
-
-
   openDetailComponent(component: DetailsChequeComponent) {
+
     component.matDrawer = this.matDrawer;
-    // component.endpoint = "compteClient";
     component.formTitle = "DETAILS CHEQUE";
     component.chequeData = this.chequeData;
+    //Endpoint pour supprimer un cheque
+    component.endpoint="remise/suppression/cheque";
     //Initialisation formulaire details
     component.formFields = [
       {

@@ -11,7 +11,7 @@ export class ValiderRemiseService {
   // private _remise: BehaviorSubject<Remise | null> = new BehaviorSubject(null);
   private _remises: BehaviorSubject<Remise[] | null> = new BehaviorSubject(null);
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
-   private _remiseAvalides: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
+  private _remiseAvalides: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
   
 
   /**
@@ -84,12 +84,35 @@ export class ValiderRemiseService {
 
    //Table data service
 
-   updateDataTable(value: any) {
+  updateDataTable(value: any) {
 
     this._remises.next(value);
-}
+  }
+
+  validerRemise(idRemise:string){
+
+    return this._httpClient.put<any>(`${environment.apiUrl}/remise/validation/${idRemise}`,null).pipe(
+      tap((response) => {
+        console.log('test======================================');
+        console.log(response);
+        //this._remiseAvalides.next(response);
+      })
+    );
 
 
+  }
+  supprimerRemise(idRemise:string){
+
+    return this._httpClient.delete<any>(`${environment.apiUrl}/remise/suppression/${idRemise}`).pipe(
+      tap((response) => {
+        console.log('test======================================');
+        console.log(response);
+        //this._remiseAvalides.next(response);
+      })
+    );
+
+
+  }
 
 
 

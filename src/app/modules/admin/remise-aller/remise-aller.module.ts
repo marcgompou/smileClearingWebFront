@@ -29,6 +29,7 @@ import { CreateModule } from '../common/create/create.module';
 import { DetailsModule } from '../common/details/details.module';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DeleteChequeConfirmationComponent } from './remise-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
 
 
 
@@ -38,6 +39,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     RemiseAllerComponent,
     ValiderRemiseComponent,
     DetailsChequeComponent,
+    DeleteChequeConfirmationComponent,    
     StatusComponent
   ],
   exports: [
