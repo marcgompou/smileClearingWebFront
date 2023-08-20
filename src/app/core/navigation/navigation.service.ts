@@ -135,19 +135,19 @@ export class NavigationService
                     [
                        
                {
-                id   : 'exportationRemise',
-                title: 'Exportation Remise',
+                id   : 'importerRemise',
+                title: 'Importation Remise GR',
                 type : 'basic',
                 icon : 'heroicons_outline:template',
-                link : '/remiseExporter',
+                link : '/importerRemise',
                 permission: SecService.permissions.ROLE_EXPORT
             },
             {
-                id   : 'impressionRemiseExporter',
-                title: 'Impression Remise Exporter',
+                id   : 'impressionRemiseImporter',
+                title: 'Impression Remise Importer',
                 type : 'basic',
                 icon : 'heroicons_solid:printer',
-                link : '/impressionRemiseExporter',
+                link : '/impressionRemiseImporter',
                 permission: SecService.permissions.ROLE_EXPORT
             },
             {

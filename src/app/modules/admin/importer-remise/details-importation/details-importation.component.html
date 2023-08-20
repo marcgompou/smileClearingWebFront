@@ -6,6 +6,7 @@
         <a mat-icon-button [matTooltip]="'fermer'" (click)="closeAlert()">
             <mat-icon class="flex flex-col" [color]="'primary'"
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                
         </a>
     </fuse-alert>
     <!-- <router-outlet></router-outlet> -->
@@ -16,7 +17,8 @@
         <!-- Drawer -->
         <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
             [disableClose]="true" #matDrawer>
-            <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
+            <!-- <router-outlet (activate)="openDetailComponent($event)"></router-outlet> -->
+              <router-outlet></router-outlet>
         </mat-drawer>
 
         <mat-drawer-content class="flex flex-col">
@@ -87,12 +89,12 @@
 
                         <!-- TABLEAU DES CHEQUES-->
                         <app-table-data 
-                            [endpoint]="'remise/export'+id" 
-                            [title]="'Liste des Remise'"
-                            [dataKey]="'data.cheques'"
+                            [endpoint]="'exportation/'+id" 
+                            [title]="'Liste des Remise à Importer'"
                             [displayedColumns]="displayedColumns" 
                             [dataStructure]="dataStructure" 
-                            [idRow]="'id'"
+                          
+                            [idRow]="'reference'"
                             [canClick]="true">
                         </app-table-data>
 

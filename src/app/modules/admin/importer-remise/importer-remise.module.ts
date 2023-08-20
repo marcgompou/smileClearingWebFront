@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ValiderRemiseComponent } from './valider-remise/valider-remise/valider-remise.component';
+import { ImporterRemiseComponent } from './importer-remise/importer-remise/importer-remise.component';
 import { RouterModule } from '@angular/router';
-import { validerRemiseRoutes } from './valider-remise.routing';
+import { importerRemiseRoutes } from './importer-remise.routing';
 import { SharedModule } from 'app/shared/shared.module';
 import { StatusComponent } from '../common/status/status.component';
-import { RemiseValiderComponent } from './valider-remise/valider-remise.component';
+import { RemiseImporterComponent } from './importer-remise/importer-remise.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -25,21 +25,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { DetailsRemiseComponent } from './details-remise/details-remise.component';
+import { DetailsImportationComponent } from './details-importation/details-importation.component';
 import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsRemiseComponent } from '../valider-remise/details-remise/details-remise.component';
 
 
 
 @NgModule({
   declarations: [
-    ValiderRemiseComponent,
-    RemiseValiderComponent,
-    ValiderRemiseComponent,
-    DetailsRemiseComponent,
+    ImporterRemiseComponent,
+    RemiseImporterComponent,
+    ImporterRemiseComponent,
+    DetailsImportationComponent,
+    
   ],
-  exports:[DetailsRemiseComponent],
   imports: [
     CommonModule,
         MatButtonModule,
@@ -64,8 +65,9 @@ import { MatDialogModule } from '@angular/material/dialog';
         TableDataModule,
         DetailsModule,
         MatAutocompleteModule,
-        RouterModule.forChild(validerRemiseRoutes)
+        
+        RouterModule.forChild(importerRemiseRoutes)
 
   ]
 })
-export class RemiseValiderModule { }
+export class RemiseImporterModule { }
