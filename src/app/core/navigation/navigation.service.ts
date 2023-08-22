@@ -127,7 +127,7 @@ export class NavigationService
 
                 {
                     id      : 'pages',
-                    title   : 'Exporter Remise',
+                    title   : 'Importer Remise',
                     type    : 'collapsable',
                     icon    : 'heroicons_outline:document',
                     permission: SecService.permissions.ROLE_EXPORT,
