@@ -22,7 +22,7 @@ interface filterForm {
 //AJOUTER DANS  APPMODULE   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
 
 
-export class TableDataComponent  implements OnInit, AfterViewInit {
+export class TableDataComponent  implements OnInit, AfterViewInit  {
 
  
 
@@ -83,7 +83,9 @@ export class TableDataComponent  implements OnInit, AfterViewInit {
 
     //Load initial data
     this.loadData();
+    this._changeDetectorRef.markForCheck();
   }
+  
   
   // ngOnChanges(changes: SimpleChanges): void {
   //   throw new Error('Method not implemented.');

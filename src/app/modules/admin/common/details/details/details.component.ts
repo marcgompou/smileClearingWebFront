@@ -233,7 +233,7 @@ toggleEditMode(editMode: boolean | null = null): void
     this._detaisService.data$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
         next: (response:any) => {
-          console.log("Response===> :", response);
+          console.log("Response=> :", response);
           // this.dataSource = new MatTableDataSource(response.data);
           
           if(response==null){

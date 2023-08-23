@@ -30,6 +30,7 @@ import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsRemiseComponent } from '../valider-remise/details-remise/details-remise.component';
+import { DetailsChequeImporterComponent } from './details-cheque-importer/details-cheque-importer.component';
 
 
 
@@ -39,6 +40,7 @@ import { DetailsRemiseComponent } from '../valider-remise/details-remise/details
     RemiseImporterComponent,
     ImporterRemiseComponent,
     DetailsImportationComponent,
+    DetailsChequeImporterComponent,
     
   ],
   imports: [

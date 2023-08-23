@@ -9,6 +9,7 @@ import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsImportationComponent } from './details-importation/details-importation.component';
 import { DetailsRemiseComponent } from '../valider-remise/details-remise/details-remise.component';
 import { DetailsChequeComponent } from '../remise-aller/remise-aller/details-cheque/details-cheque.component';
+import { DetailsChequeImporterComponent } from './details-cheque-importer/details-cheque-importer.component';
 
 const endpoint = "exportation";
 const endpointDetails = "exportation";
@@ -28,40 +29,41 @@ export const importerRemiseRoutes: Route[] =
                 resolve: {
                     data: LoadDataResolver,
                 },
-            },
-             {
-                 path: 'details/:id',
-                 component: DetailsImportationComponent,
-                 resolve: {
-                     data: LoadDataResolver,
-                },
-                 data: { breadcrumb: 'Details Remise importer', endpoint: endpointDetails },
-                children: [
-                    
-                    
+                children:[
                     {
                         path: 'details/:id',
-                        component: DetailsRemiseComponent,
+                        component: DetailsImportationComponent,
                         resolve: {
                             data: LoadDataResolver,
-                        },
-                        data: { breadcrumb: 'Details remise', endpoint: endpointDetailsRemise },
-                        children: [
-                            {
-                                path: 'details/:id',
-                                component: DetailsChequeComponent,
-                                //canDeactivate: [CanDeactivateDetailsSuivi]
-        
-                            }
-                        ]
-                    }
-
-
+                       },
+                        data: { breadcrumb: 'Details Remise importer', endpoint: endpointDetails },
+                       children: [
+                           
+                           
+                           {
+                               path: 'details/:id',
+                               component: DetailsChequeImporterComponent,
+                               resolve: {
+                                   data: LoadDataResolver,
+                               },
+                               data: { breadcrumb: 'Details cheques', endpoint: endpointDetailsRemise },
+                               children: [
+                                   {
+                                       path: 'details/:id',
+                                       component: DetailsChequeComponent,
+                                       //canDeactivate: [CanDeactivateDetailsSuivi]
+               
+                                   }
+                               ]
+                           }
+       
+       
+                       ]
+                   },
                 ]
             },
             
-
-           
+            
         ]
     }
 ]
