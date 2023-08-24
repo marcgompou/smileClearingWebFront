@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 //import {img} from './image';
 
 @Component({
@@ -32,9 +33,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   nombreRemise: number = 0;
   remiseIsInCorrect: boolean = true;
   //listEntreprise: any;
-  enregistrerRemise() {
-    throw new Error('Method not implemented.');
-  }
+
   selectedProject: string = 'ACME Corp. Backend App';
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
@@ -142,6 +141,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _remiseService: ImporterRemiseService,
+    private _tableDataService:TableDataService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _importerRemiseService:ImporterRemiseService,
@@ -345,6 +345,10 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   this._importerRemiseService.importerRemise("1000").pipe(takeUntil(this._unsubscribeAll)).subscribe({
     next:(response)=>{
         console.log(response);
+        this._tableDataService._endpoint="/exportation/1000";
+        this._tableDataService.getDatasByPath().subscribe();
+        this._changeDetectorRef.markForCheck();
+
     } 
   })
 
