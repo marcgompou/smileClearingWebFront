@@ -77,34 +77,38 @@ export class ImporterRemiseService {
 
 
   }
-  exporterRemise(){
 
-    return this._httpClient.put<any>(`${environment.apiUrl}/remise/exportation`,null).pipe(
-      tap((response) => {
-        console.log('test======================================');
-        console.log(response);
-        //this._remiseAvalides.next(response);
-      })
-    );
-
-
+  
+  importerRemise(idEntreprise:string|null ="1000"):  Observable<any>{
+    return this._httpClient.put<any>(`${environment.apiUrl}importation/${idEntreprise}`,null)
   }
+
+  // exporterRemise(){
+
+  //   return this._httpClient.put<any>(`${environment.apiUrl}/remise/exportation`,null).pipe(
+  //     tap((response) => {
+  //       console.log('test======================================');
+  //       console.log(response);
+  //       //this._remiseAvalides.next(response);
+  //     })
+  //   );
+
+
+  // }
 
   //TODO AJOUTER UN MODAL DE CONFIRMATION
-  supprimerRemise(idRemise:string){
+  // supprimerRemise(idRemise:string){
 
-    return this._httpClient.delete<any>(`${environment.apiUrl}/remise/${idRemise}`).pipe(
-      tap((response) => {
-        console.log('test======================================');
-        console.log(response);
-        //this._remiseAvalides.next(response);
-      })
-    );
-
-
-  }
+  //   return this._httpClient.delete<any>(`${environment.apiUrl}/remise/${idRemise}`).pipe(
+  //     tap((response) => {
+  //       console.log('test======================================');
+  //       console.log(response);
+  //       //this._remiseAvalides.next(response);
+  //     })
+  //   );
 
 
+  // }
 
 
 }

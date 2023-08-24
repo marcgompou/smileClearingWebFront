@@ -27,11 +27,11 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   drawerMode: 'side' | 'over';
   noData: any;
   remiseData: any;
-  listeCompteEntreprise: any[] = [];
+  listEntreprise: any[] = [];
   montantTotal: number = 0;
   nombreRemise: number = 0;
   remiseIsInCorrect: boolean = true;
-  //listeCompteEntreprise: any;
+  //listEntreprise: any;
   enregistrerRemise() {
     throw new Error('Method not implemented.');
   }
@@ -274,7 +274,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
         console.log("Response compteEntreprises ===>", response);
         if (response == null) { response = []; }
 
-        this.listeCompteEntreprise = response.data;
+        this.listEntreprise = response.data;
 
         this._changeDetectorRef.markForCheck();
       },
@@ -342,12 +342,11 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 
     //let listRemises: any[] = [];
     
-  this._importerRemiseService.exporterRemise().pipe().subscribe({
-
+  this._importerRemiseService.importerRemise("1000").pipe(takeUntil(this._unsubscribeAll)).subscribe({
     next:(response)=>{
-          console.log(response);
-      }
-    })
+        console.log(response);
+    } 
+  })
 
 
 

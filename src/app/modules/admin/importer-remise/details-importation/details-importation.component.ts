@@ -81,12 +81,16 @@ export class DetailsImportationComponent implements OnInit {
       "label": "Montant Total"
 
     },
+    {
+      "key": "mtTotal2",
+      "label": "Montant Total2"
 
+    },
 
   ];
 
 
-  public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal'];
+  public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal','mtTotal2'];
 
   onBackdropClicked(): void {
     // Go back to the list

@@ -12,58 +12,23 @@ import { DetailsChequeComponent } from '../remise-aller/remise-aller/details-che
 import { DetailsChequeImporterComponent } from './details-cheque-importer/details-cheque-importer.component';
 
 const endpoint = "exportation";
-const endpointDetails = "exportation";
 const endpointDetailsRemise = "remise/export";
 
 
 export const importerRemiseRoutes: Route[] =
-[
-    {
-        path: '',
-        component: RemiseImporterComponent,
-        data: { breadcrumb: 'Liste', endpoint: endpoint },
-        children: [
-            {
-                path: '',
-                component: ImporterRemiseComponent,
-                resolve: {
-                    data: LoadDataResolver,
+    [
+        {
+            path: '',
+            component: RemiseImporterComponent,
+            children: [
+                {
+                    path: '',
+                    component: ImporterRemiseComponent,
+                    resolve: {
+                        data: LoadDataResolver,
+                    },
+                    data: { breadcrumb: 'Liste exportation', endpoint: endpoint },
                 },
-                children:[
-                    {
-                        path: 'details/:id',
-                        component: DetailsImportationComponent,
-                        resolve: {
-                            data: LoadDataResolver,
-                       },
-                        data: { breadcrumb: 'Details Remise importer', endpoint: endpointDetails },
-                       children: [
-                           
-                           
-                           {
-                               path: 'details/:id',
-                               component: DetailsChequeImporterComponent,
-                               resolve: {
-                                   data: LoadDataResolver,
-                               },
-                               data: { breadcrumb: 'Details cheques', endpoint: endpointDetailsRemise },
-                               children: [
-                                   {
-                                       path: 'details/:id',
-                                       component: DetailsChequeComponent,
-                                       //canDeactivate: [CanDeactivateDetailsSuivi]
-               
-                                   }
-                               ]
-                           }
-       
-       
-                       ]
-                   },
-                ]
-            },
-            
-            
-        ]
-    }
-]
+            ]
+        }
+    ]
