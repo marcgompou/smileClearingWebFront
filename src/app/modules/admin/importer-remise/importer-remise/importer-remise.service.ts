@@ -80,7 +80,7 @@ export class ImporterRemiseService {
 
   
   importerRemise(idEntreprise:string|null ="1000"):  Observable<any>{
-    return this._httpClient.put<any>(`${environment.apiUrl}/importation/${idEntreprise}`,null)
+    return this._httpClient.put<any>(`${environment.apiUrl}/remise/importation/${idEntreprise}`,null)
   }
 
   // exporterRemise(){
