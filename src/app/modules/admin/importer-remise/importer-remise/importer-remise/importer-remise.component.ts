@@ -345,7 +345,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   this._importerRemiseService.importerRemise("1000").pipe(takeUntil(this._unsubscribeAll)).subscribe({
     next:(response)=>{
         console.log(response);
-        this._tableDataService._endpoint="/exportation/1000";
+        this._tableDataService._endpoint="exportation/1000";
         this._tableDataService.getDatasByPath().subscribe();
         this._changeDetectorRef.markForCheck();
 
