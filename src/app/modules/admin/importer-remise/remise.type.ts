@@ -14,4 +14,9 @@ export interface Remise {
 }
 
 
-  
+export class Entreprises {
+    identreprise: string;
+    statut: string;
+    nomEntreprise: string;
+    dateCreation: string;
+    descriptionActivite: string;}

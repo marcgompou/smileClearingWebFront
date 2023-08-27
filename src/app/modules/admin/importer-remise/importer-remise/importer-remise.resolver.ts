@@ -4,9 +4,9 @@ import { catchError, Observable } from 'rxjs';
 import { ImporterRemiseService } from './importer-remise.service';
 
 //Pas necessaire pour l'instant
-// @Injectable({
-//     providedIn: 'root'
-// })
+ @Injectable({
+     providedIn: 'root'
+ })
 // export class LoadDataRemiseEntrepriseResolver implements Resolve<boolean> {
 //     /**
 //      * Constructor
@@ -17,3 +17,15 @@ import { ImporterRemiseService } from './importer-remise.service';
 //         return this._validerRemiseEntrepriseService.getRemiseAvalider();
 //     }
 //}
+
+export class LoadDataEntrepriseResolver implements Resolve<boolean> {
+    /**
+     * Constructor
+     */
+    constructor( private _entreprises: ImporterRemiseService) {}
+
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {
+        return this._entreprises.getEntreprise();
+    }
+
+}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, filter, catchError, Observable, of, switchMap, tap, map, take, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
-import { Remise } from '../remise.type';
+import { Entreprises, Remise } from '../remise.type';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,9 @@ export class ImporterRemiseService {
   private _remises: BehaviorSubject<Remise[] | null> = new BehaviorSubject(null);
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _remiseAvalides: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
-  
+  private _entreprises: BehaviorSubject<Entreprises[] | null> = new BehaviorSubject(null);
+
+
 
   /**
    * Constructor
@@ -38,7 +40,9 @@ export class ImporterRemiseService {
     this._remises.next(newArray);
   }
 
-  
+  get entreprises$(): Observable<any[]> {
+    return this._entreprises.asObservable();
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -77,6 +81,18 @@ export class ImporterRemiseService {
 
 
   }
+
+
+  getEntreprise(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/?size=9500`).pipe(
+      tap((response) => {
+        console.log('test======================================');
+        console.log(response);
+        this._entreprises.next(response);
+      })
+    );
+  }
+
 
   
   importerRemise(idEntreprise:string|null ="1000"):  Observable<any>{

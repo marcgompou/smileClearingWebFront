@@ -10,6 +10,7 @@ import { DetailsImportationComponent } from './details-importation/details-impor
 import { DetailsRemiseComponent } from '../valider-remise/details-remise/details-remise.component';
 import { DetailsChequeComponent } from '../remise-aller/remise-aller/details-cheque/details-cheque.component';
 import { DetailsChequeImporterComponent } from './details-cheque-importer/details-cheque-importer.component';
+import { LoadDataEntrepriseResolver } from './importer-remise/importer-remise.resolver';
 
 const endpoint = "exportation";
 const endpointDetailsRemise = "remise/export";
@@ -26,6 +27,7 @@ export const importerRemiseRoutes: Route[] =
                     component: ImporterRemiseComponent,
                     resolve: {
                         data: LoadDataResolver,
+                        entrepriseData: LoadDataEntrepriseResolver,
                     },
                     data: { breadcrumb: 'Liste exportation', endpoint: endpoint },
                 },

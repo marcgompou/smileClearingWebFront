@@ -11,6 +11,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
+import { MatSelectChange } from '@angular/material/select';
 //import {img} from './image';
 
 @Component({
@@ -28,7 +29,9 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   drawerMode: 'side' | 'over';
   noData: any;
   remiseData: any;
-  listEntreprise: any[] = [];
+  listeEntreprise: any[] = [];
+  //public selectedValue: string;
+  idEntreprise: string = "0";
   montantTotal: number = 0;
   nombreRemise: number = 0;
   remiseIsInCorrect: boolean = true;
@@ -101,11 +104,13 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   scannerIsConnected = false;
 
 
-  compteClientForm = new FormGroup({
-    idCompteClient: new FormControl('', Validators.required),
+  entrepriseForm = new FormGroup({
+    
+    identreprise: new FormControl('', Validators.required),
 
   })
 
+  
 
   //CYCLE DE VIE
   ngOnInit() {
@@ -114,7 +119,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 
     //getCompteByEntreprise();
     this.loadCompte();
-   
+    this.loadEntreprise();
 
     // Subscribe to search input field value changes
     this.searchInputControl.valueChanges
@@ -145,6 +150,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _importerRemiseService:ImporterRemiseService,
+    private _entrepriseService: ImporterRemiseService,
 
 
   ) {
@@ -274,7 +280,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
         console.log("Response compteEntreprises ===>", response);
         if (response == null) { response = []; }
 
-        this.listEntreprise = response.data;
+        this.listeEntreprise = response.data;
 
         this._changeDetectorRef.markForCheck();
       },
@@ -294,6 +300,15 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
 
+
+onSelectChange(event: MatSelectChange) {
+this.idEntreprise = event.value?event.value:"0";
+  console.log('Valeur sélectionnée :', this.idEntreprise);
+  this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
+  this._tableDataService.getDatasByPath().subscribe();
+  this._changeDetectorRef.markForCheck();
+  // Utilisez selectedValue pour prendre des mesures en conséquence
+}
   /**
      * After view init
      */
@@ -342,10 +357,10 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 
     //let listRemises: any[] = [];
     
-  this._importerRemiseService.importerRemise("1000").pipe(takeUntil(this._unsubscribeAll)).subscribe({
+  this._importerRemiseService.importerRemise(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
     next:(response)=>{
         console.log(response);
-        this._tableDataService._endpoint="exportation/1000";
+        this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
         this._tableDataService.getDatasByPath().subscribe();
         this._changeDetectorRef.markForCheck();
 
@@ -358,6 +373,31 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
 
+  loadEntreprise(){
+    this._entrepriseService.entreprises$.pipe(takeUntil(this._unsubscribeAll)
+    ).subscribe({
+        next: (response:any) => {
+          console.log("===Response Entreprises =============>", response);
+          if(response==null){response=[];}
+         
+          this.listeEntreprise = response.data;
+
+          this._changeDetectorRef.markForCheck();
+        }, 
+        error: (error) => {
+          //not show historique
+          //this.showData = false;
+          console.error('Error : ',JSON.stringify(error));
+          // Set the alert
+          this.alert = { type: 'error', message: error.error.message??error.error };
+          // Show the alert
+          this.showAlert = true;
+          
+          this._changeDetectorRef.markForCheck();
+        }
+    });
+
+  }
 
 
 
