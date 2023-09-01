@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
+import { MatSelectChange } from '@angular/material/select';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 //import {img} from './image';
 
 @Component({
@@ -30,6 +32,7 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
   listeCompteEntreprise: any[] = [];
   montantTotal: number = 0;
   nombreRemise: number = 0;
+  statut: string = "0";
   remiseIsInCorrect: boolean = true;
   //listeCompteEntreprise: any;
   enregistrerRemise() {
@@ -102,16 +105,23 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
 
 
   compteClientForm = new FormGroup({
-    idCompteClient: new FormControl('', Validators.required),
+    statut: new FormControl('', Validators.required),
 
   })
+
+ 
+
 
 
   //CYCLE DE VIE
   ngOnInit() {
 
     
-
+this._tableDataService.datas$.subscribe((res:any) => {
+  console.log ("res-----------", res.data.length);
+  this.dataSource = new MatTableDataSource(res.data);
+ 
+})
     //getCompteByEntreprise();
     this.loadCompte();
    
@@ -142,6 +152,7 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
     private _formBuilder: UntypedFormBuilder,
     private _remiseService: ValiderRemiseService,
     private _activatedRoute: ActivatedRoute,
+    private _tableDataService:TableDataService,
     private _router: Router,
     private _validerRemiseService:ValiderRemiseService,
 
@@ -292,7 +303,7 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
 
   }
 
-
+ 
   /**
      * After view init
      */
@@ -335,20 +346,81 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
+  onSelectChange(event: MatSelectChange) {
+    this.statut = event.value?event.value:"0";
+      console.log('Valeur sélectionnée :', this.statut);
+      this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
+      this._tableDataService.getDatasByPath().subscribe();
+      this._changeDetectorRef.markForCheck();
+      // Utilisez selectedValue pour prendre des mesures en conséquence
+    }
+
+
+    // this._importerRemiseService.importerRemise(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+    //   next:(response)=>{
+    //       console.log(response);
+    //       this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
+    //       this._tableDataService.getDatasByPath().subscribe();
+    //       this._changeDetectorRef.markForCheck();
   
+    //   } 
+    // })
+  //   return this._httpClient.get<any>(`${environment.apiUrl}/remise/entreprise?statut=1`).pipe(
+  //     tap((response) => {
+  //       console.log('test======================================');
+  //       console.log(response);
+  //         this._remiseAvalides.next(response);
+  //     })
+  // );
 
   onSubmit() {
 
     //let listRemises: any[] = [];
     
-  this._validerRemiseService.exporterRemise().pipe().subscribe({
+  this._validerRemiseService.exporterRemise().pipe(takeUntil(this._unsubscribeAll)).subscribe({
 
     next:(response)=>{
-          console.log(response);
-      }
-    })
+      console.log(response);
+      this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
+      this._tableDataService.getDatasByPath().subscribe();
+      this._changeDetectorRef.markForCheck();
+
+  } 
+}
+    )
 
 
+//     {
+//       next: (response:any) => {
+//         console.log("Response===> :", response);
+        
+//         let data:any[]=[];
+//         if(response==null){response=[];}
+//         data=this.getValueByPath(response, this.dataKey);
+     
+
+        
+   
+//         this.dataSource = new MatTableDataSource(data);
+        
+//         this.totalRows=response?.totalCount||data.length;
+//         this.currentPage=response?.page ||0;
+//         this.pageSize=response?.pageSize || 0;
+//         this._changeDetectorRef.markForCheck();
+//       }, 
+//       error: (error) => {
+//         //not show historique
+//         this.showData = false;
+//         console.error('Error : ',JSON.stringify(error));
+//         // Set the alert
+//         this.alert = { type: 'error', message: error.error.message??error.error };
+//         // Show the alert
+//         this.showAlert = true;
+        
+//         this._changeDetectorRef.markForCheck();
+//       }
+//   });
+// }
 
 
   }

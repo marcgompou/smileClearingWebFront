@@ -45,8 +45,20 @@
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit">
-                            <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8">
+                            <mat-label>Statut</mat-label>
+                            <mat-select formControlName="statut" matInput id="statut" required
+                                placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
+                                <mat-option value="1">A Valider</mat-option>
+                                <mat-option value="3">A Exporter</mat-option>
+                            </mat-select> 
+                        </mat-form-field>
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
+                        [disabled]="(!compteClientForm.valid )|| compteClientForm.get('statut').value === '1' || dataSource.data.length === 0">
+                          
+                        
+                        
+                        <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
                             <span class="ml-2">Exporter</span>
                         </button>
                     </form>

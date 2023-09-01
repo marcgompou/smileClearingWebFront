@@ -299,6 +299,15 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
 
+  // this._importerRemiseService.importerRemise(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+  //   next:(response)=>{
+  //       console.log(response);
+  //       this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
+  //       this._tableDataService.getDatasByPath().subscribe();
+  //       this._changeDetectorRef.markForCheck();
+
+  //   } 
+  // })
 
 
 onSelectChange(event: MatSelectChange) {
