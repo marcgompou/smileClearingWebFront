@@ -91,6 +91,11 @@ export const appRoutes: Route[] = [
             },
 
             {
+                path: 'imprimerRemise',
+                data: { breadcrumb: 'Imprimer Remise' },
+                loadChildren: () => import('app/modules/admin/imprimer-remise/imprimer-remise.module').then(m => m.RemiseImprimerModule)
+            },
+            {
                 path: 'importerRemise',
                 data: { breadcrumb: 'Importer Remise' },
                 loadChildren: () => import('app/modules/admin/importer-remise/importer-remise.module').then(m => m.RemiseImporterModule)

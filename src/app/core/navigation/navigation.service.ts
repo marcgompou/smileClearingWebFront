@@ -114,11 +114,11 @@ export class NavigationService
                             permission: SecService.permissions.ROLE_SCAN
                         },
                         {
-                            id   : 'impressionRemise',
+                            id   : 'imprimerRemise',
                             title: 'Impression Remise',
                             type : 'basic',
                             icon : 'heroicons_solid:printer',
-                            link : '/impressionRemise',
+                            link : '/imprimerRemise',
                             permission: SecService.permissions.ROLE_SCAN
                         },
                         ]
@@ -143,11 +143,11 @@ export class NavigationService
                 permission: SecService.permissions.ROLE_EXPORT
             },
             {
-                id   : 'impressionRemiseImporter',
+                id   : 'imprimerRemiseImporter',
                 title: 'Impression Remise Importer',
                 type : 'basic',
                 icon : 'heroicons_solid:printer',
-                link : '/impressionRemiseImporter',
+                link : '/imprimerRemiseImporter',
                 permission: SecService.permissions.ROLE_EXPORT
             },
             {
