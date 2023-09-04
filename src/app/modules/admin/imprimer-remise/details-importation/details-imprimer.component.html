@@ -3,7 +3,7 @@
 
 
 
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden" >
     <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
         [@shake]="alert.type === 'error'">
         {{ alert.message }}
@@ -24,7 +24,7 @@
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
         </mat-drawer> -->
 
-        <mat-drawer-content class="flex flex-col">
+        <mat-drawer-content  class="flex flex-col">
 
             <!-- Header -->
 
@@ -35,7 +35,7 @@
                 </div>
                 <!-- Title -->
                 
-                <div class="flex flex-auto items-center min-w-0">
+                <div class="flex flex-auto items-center min-w-0" >
                     
         
                     <div class="flex flex-col min-w-0 ml-4">
@@ -53,7 +53,8 @@
                             <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
                             <span class="ml-2">Retour</span>
                         </button>
-                        <button class="ml-4" mat-flat-button [color]="'warn'" >
+                        <!-- <button class="ml-4" mat-flat-button [color]="'warn'" (click)="imprimerPDF()" >-->
+                            <button class="ml-4" mat-flat-button [color]="'warn'"  > 
                             <mat-icon [svgIcon]="'mat_solid:print'"></mat-icon>
                             <span class="ml-2">Imprimer </span>
                         </button>
@@ -105,7 +106,8 @@
                             [canClick]="true">
                         </app-table-data> -->
 
-
+                        <div  >
+                    
                         <app-table-data 
     [endpoint]="'exportation'" 
     [title]="'Liste des exportations'" 
@@ -113,7 +115,7 @@
     [dataStructure]="dataStructure" 
     [idRow]="'id'" [canClick]="false">
 </app-table-data>
-
+</div>
                     </div>
 
                 </div>

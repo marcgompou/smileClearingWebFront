@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +16,12 @@ import { ImprimerRemiseService } from '../imprimer-remise/imprimer-remise.servic
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteChequeConfirmationComponent } from '../../remise-aller/remise-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
 import { DetailsRemiseComponent } from '../../valider-remise/details-remise/details-remise.component';
+//import {jsPDF} from "jspdf";
+import html2pdf from 'html2pdf.js';
+
+
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-details-remise',
@@ -33,7 +39,7 @@ export class DetailsImprimerComponent implements OnInit {
   id: string = "";
   isLoading = false;
 
-
+@ViewChild('content',{static: false}) el!: ElementRef;
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
@@ -92,6 +98,44 @@ export class DetailsImprimerComponent implements OnInit {
 
   public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal','mtTotal2'];
 
+  
+// imprimerPDF(){
+ 
+
+//    // Créez une nouvelle instance de jsPDF
+ 
+//    // Définissez le contenu de l'en-tête HTML
+//    const headerHTML = `
+//      <div style="text-align: center;">
+//        <h1>Mon En-tête HTML</h1>
+//        <p>Informations d'en-tête</p>
+//      </div>
+//    `;
+
+//    // Ajoutez l'en-tête HTML à chaque page
+//    doc.setPage(1); // Page 1
+//    doc.html(headerHTML, {
+//      callback: () => {
+//        // Après avoir ajouté l'en-tête, générez le contenu du PDF ici
+//        // Par exemple, ajoutez une table avec jspdf-autotable
+//        doc.autoTable({
+//          startY: 40, // Ajustez la position en fonction de la hauteur de votre en-tête
+//          head: [['Nom', 'Âge']],
+//          body: [['John Doe', 30], ['Jane Smith', 28]],
+//        });
+
+//        // Générez d'autres pages si nécessaire
+//        doc.addPage();
+//        // ... Ajoutez du contenu à d'autres pages ici
+//      },
+//    });
+
+   // Sauvegardez ou affichez le PDF
+//    doc.save('document.pdf');
+ 
+  
+ 
+// }
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });

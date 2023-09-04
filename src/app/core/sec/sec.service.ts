@@ -5,13 +5,13 @@ import { HttpClient } from '@angular/common/http';
 export class SecService
 {
     static permissions = {
-        ROLE_SCAN: "ADMIN", 
+        ROLE_SCAN: "EXPORTATION", 
         //ROLE_SCAN: "SCAN", 
         ROLE_ADMIN: "ADMIN",
-        ROLE_EXPORT:"ADMIN",
+        ROLE_EXPORT:"EXPORTATION",
         ROLE_CONSULT:"VISUALISATION",
-        ROLE_VISU_RETOUR:"SUPERADMIN",
-        ROLE_SUPERADMIN:"SUPERADMIN",
+        ROLE_VISU_RETOUR:"EXPORTATION",
+        ROLE_SUPERADMIN:"EXPORTATION",
         ROLE_VALID:"VALIDATION",
     }
     //EXPORTATION
