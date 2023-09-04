@@ -95,8 +95,13 @@ export class ImprimerRemiseService {
 
 
   
-  imprimerRemise(idEntreprise:string|null ="1000"):  Observable<any>{
-    return this._httpClient.put<any>(`${environment.apiUrl}/remise/importation/${idEntreprise}`,null)
+  getRemiseImprimer(idEntreprise:string|null ="1000"):  Observable<any>{
+    return this._httpClient.put<any>(`${environment.apiUrl}/exportation/18/cheques`,null).pipe(
+      tap((response) => {
+        console.log('=======test======================================');
+        console.log(response);
+      })
+    )
   }
 
 

@@ -16,11 +16,11 @@ import { ImprimerRemiseService } from '../imprimer-remise/imprimer-remise.servic
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteChequeConfirmationComponent } from '../../remise-aller/remise-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
 import { DetailsRemiseComponent } from '../../valider-remise/details-remise/details-remise.component';
-//import {jsPDF} from "jspdf";
+import {jsPDF} from "jspdf";
 import html2pdf from 'html2pdf.js';
 
 
-import * as jsPDF from 'jspdf';
+//import * as jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 @Component({
@@ -99,43 +99,21 @@ export class DetailsImprimerComponent implements OnInit {
   public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal','mtTotal2'];
 
   
-// imprimerPDF(){
- 
+imprimerPDF(){
 
-//    // Créez une nouvelle instance de jsPDF
- 
-//    // Définissez le contenu de l'en-tête HTML
-//    const headerHTML = `
-//      <div style="text-align: center;">
-//        <h1>Mon En-tête HTML</h1>
-//        <p>Informations d'en-tête</p>
-//      </div>
-//    `;
 
-//    // Ajoutez l'en-tête HTML à chaque page
-//    doc.setPage(1); // Page 1
-//    doc.html(headerHTML, {
-//      callback: () => {
-//        // Après avoir ajouté l'en-tête, générez le contenu du PDF ici
-//        // Par exemple, ajoutez une table avec jspdf-autotable
-//        doc.autoTable({
-//          startY: 40, // Ajustez la position en fonction de la hauteur de votre en-tête
-//          head: [['Nom', 'Âge']],
-//          body: [['John Doe', 30], ['Jane Smith', 28]],
-//        });
+   // Créez une nouvelle instance de jsPDF
+const doc = new jsPDF({ format: 'a4', orientation: 'portrait' });
 
-//        // Générez d'autres pages si nécessaire
-//        doc.addPage();
-//        // ... Ajoutez du contenu à d'autres pages ici
-//      },
-//    });
+   // Définissez le contenu de l'en-tête HTML
+
 
    // Sauvegardez ou affichez le PDF
-//    doc.save('document.pdf');
+   doc.save('document.pdf');
  
   
  
-// }
+}
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });

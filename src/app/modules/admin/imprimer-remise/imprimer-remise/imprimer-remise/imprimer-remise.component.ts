@@ -358,7 +358,7 @@ this.idEntreprise = event.value?event.value:"0";
 
     //let listRemises: any[] = [];
     
-  this._imprimerRemiseService.imprimerRemise(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
+  this._imprimerRemiseService.getRemiseImprimer(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
     next:(response)=>{
         console.log(response);
         this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
