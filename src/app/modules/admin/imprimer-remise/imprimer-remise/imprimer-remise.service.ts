@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, filter, catchError, Observable, of, switchMap, tap, map, take, throwError } from 'rxjs';
+import { BehaviorSubject, filter, catchError, Observable, of, switchMap, tap, map, take, throwError, shareReplay } from 'rxjs';
 import { environment } from 'environments/environment';
 import { Entreprises, Remise } from '../remise.type';
 
@@ -95,12 +95,13 @@ export class ImprimerRemiseService {
 
 
   
-  getRemiseImprimer(idEntreprise:string|null ="1000"):  Observable<any>{
-    return this._httpClient.put<any>(`${environment.apiUrl}/exportation/18/cheques`,null).pipe(
+  getRemiseImprimer(idExportation:string):  Observable<any>{
+    return this._httpClient.get<any>(`${environment.apiUrl}/exportation/${idExportation}/cheques`).pipe(
       tap((response) => {
         console.log('=======test======================================');
         console.log(response);
-      })
+      }),
+      shareReplay(1)
     )
   }
 

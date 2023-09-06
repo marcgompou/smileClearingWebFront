@@ -11,17 +11,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CreerRemiseService } from '../../remise-aller/remise-aller/remise.service';
 import { TableDataService } from '../../common/table-data/table-data.services';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, map, takeUntil } from 'rxjs';
 import { ImprimerRemiseService } from '../imprimer-remise/imprimer-remise.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteChequeConfirmationComponent } from '../../remise-aller/remise-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
 import { DetailsRemiseComponent } from '../../valider-remise/details-remise/details-remise.component';
-import {jsPDF} from "jspdf";
-import html2pdf from 'html2pdf.js';
+// import { jsPDF } from "jspdf";
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
 
-
-//import * as jsPDF from 'jspdf';
-import 'jspdf-autotable';
 
 @Component({
   selector: 'app-details-remise',
@@ -38,13 +38,9 @@ export class DetailsImprimerComponent implements OnInit {
   remiseIsInCorrect: boolean = true;
   id: string = "";
   isLoading = false;
-
-@ViewChild('content',{static: false}) el!: ElementRef;
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
-
-
-  action = 'CONNECT';
+  user: User;
   received: Remise[] = [];
   totalRows = 0;
   pageSize = 10;
@@ -64,7 +60,7 @@ export class DetailsImprimerComponent implements OnInit {
   showAlert: boolean = false;
 
   public dataStructure = [
-    
+
     {
       "key": "reference",
       "label": "Reference"
@@ -85,35 +81,174 @@ export class DetailsImprimerComponent implements OnInit {
     {
       "key": "mtTotal",
       "label": "Montant Total"
-
-    },
-    {
-      "key": "mtTotal2",
-      "label": "Montant Total2"
-
-    },
+    }
 
   ];
 
 
-  public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal','mtTotal2'];
-
-  
-imprimerPDF(){
+  public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal'];
 
 
-   // Créez une nouvelle instance de jsPDF
-const doc = new jsPDF({ format: 'a4', orientation: 'portrait' });
-
-   // Définissez le contenu de l'en-tête HTML
 
 
-   // Sauvegardez ou affichez le PDF
-   doc.save('document.pdf');
- 
-  
- 
-}
+
+  constructor(private _changeDetectorRef: ChangeDetectorRef,
+    private _userService: UserService,
+    private _formBuilder: UntypedFormBuilder,
+    private _imprimerRemiseService: ImprimerRemiseService,
+    private _tableDataService: TableDataService,
+    private _fuseMediaWatcherService: FuseMediaWatcherService,
+    private _dialog: MatDialog,
+    private _activatedRoute: ActivatedRoute,
+    private _router: Router) {
+
+
+    this._userService.user$
+      .subscribe((user: User) => {
+        this.user = user;
+      });
+
+  }
+
+  ngOnInit(): void {
+    //Recuperation de la ligne selectionner dans la liste des remise de tableData common
+    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response) => {
+      console.log("details imprimer remise response=======>", response)
+      this.remiseImprimerData = response;
+    })
+
+    this._activatedRoute.params.subscribe(params => {
+      this.id = params['id'];
+      console.log("id in details", this.id);
+    })
+
+    // Subscribe to MatDrawer opened change
+    //   this.matDrawer.openedChange.subscribe((opened) => {
+    //     if ( !opened )
+    //     {
+    //         // Mark for check
+    //         this._changeDetectorRef.markForCheck();
+    //     }
+    // }
+
+    //  );
+
+    // Subscribe to media changes
+    this._fuseMediaWatcherService.onMediaChange$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(({ matchingAliases }) => {
+        // Set the drawerMode if the given breakpoint is active
+        if (matchingAliases.includes('lg')) {
+          this.drawerMode = 'side';
+        }
+        else {
+          this.drawerMode = 'over';
+        }
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+      }
+      );
+  }
+
+
+  imprimerPDF() {
+    //Affichage de la barre de chargement
+    this.isLoading = true;
+
+    this._imprimerRemiseService.getRemiseImprimer(this.id).pipe(
+      takeUntil(this._unsubscribeAll),
+      map((response) => {
+        console.log("map response====>", response);
+        return {
+          ...response,
+          data: response.data.map((item) => ({
+            ...item,
+            montant: item.montant.toString(),
+            mtTotal: item.mtTotal.toString(),
+          }))
+        };
+      })
+    ).subscribe({
+      next: (response) => {
+        console.log(this._userService.user);
+        //Permet d'initialiser les polices à utiliser
+        pdfMake.vfs = {
+          ...pdfFonts.pdfMake.vfs,
+        };
+        //Declaration des en-têtes du tableau
+        var headers = ["Numero de compte", "Montant", "Compte beneficiaire"];
+
+        //Generation du pdf
+        const documentDefinition = {
+
+          header: function (currentPage, pageCount, pageSize) {
+            // you can apply any logic and return any valid pdfmake element
+            return [
+              {
+                columns: [
+                  {
+                    width: '50%',
+                    // margin: [left, top, right, bottom]
+                    margin: [50, 20, 40, 10],
+                    text: 'BRIDGE COLLECT'
+                  },
+                  {
+
+                    width: '50%',
+                    margin: [50, 20, 40, 10],
+                    text: 'Entreprise NAME' //TODO : add company name
+                  }
+                ],
+                columnGap: 200
+              }
+            ]
+          },
+          footer: function (currentPage, pageCount) { 
+            return {
+              text: currentPage.toString() + ' sur ' + pageCount,
+              alignment: 'center',
+              fontSize: 10,
+            }
+          },
+
+          content: [
+            {
+              //style: 'tableExample',
+              table: {
+                body: [
+                  headers,
+                  ...response.data.map(item => [item.numCompteTitu, item.montant, item.numCompteBenef]),
+                ],
+                alignment: 'center'
+              }
+            },
+          ]
+        };
+        pdfMake.createPdf(documentDefinition).download("report.pdf");
+      },
+      error: (error) => {
+        //not show historique
+        //this.showData = false;
+        console.error('Error : ', JSON.stringify(error));
+        // Set the alert
+        this.alert = { type: 'error', message: error?.error?.message ?? error?.error };
+        // Show the alert
+        // this.showAlert = false;
+        // this._changeDetectorRef.markForCheck();
+
+      }, complete: () => {
+        this.isLoading = false;
+        this._changeDetectorRef.markForCheck();
+      }
+
+
+    })
+
+
+
+
+
+  }
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
@@ -129,67 +264,12 @@ const doc = new jsPDF({ format: 'a4', orientation: 'portrait' });
     // Mark for check
     this._changeDetectorRef.markForCheck();
   }
-
-  
-
-  constructor(private _changeDetectorRef: ChangeDetectorRef,
-    private _formBuilder: UntypedFormBuilder,
-    private _chequeService: CreerRemiseService,
-    private _imprimerRemiseService:ImprimerRemiseService,
-    private _tableDataService: TableDataService,
-    private _fuseMediaWatcherService: FuseMediaWatcherService,
-    private _dialog: MatDialog,
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router) {}
-
-  ngOnInit(): void {
-    //Recuperation de la ligne selectionner dans la liste des remise de tableData common
-    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details imprimer remise response=======>",response)
-      this.remiseImprimerData=response;
-    })
-
-    this._activatedRoute.params.subscribe(params => {
-      this.id = params['id'];
-      console.log("id in details", this.id);
-    })
-
-    // Subscribe to MatDrawer opened change
-  //   this.matDrawer.openedChange.subscribe((opened) => {
-  //     if ( !opened )
-  //     {
-  //         // Mark for check
-  //         this._changeDetectorRef.markForCheck();
-  //     }
-  // }
-  
-//  );
-
-  // Subscribe to media changes
-  this._fuseMediaWatcherService.onMediaChange$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(({matchingAliases}) => {
-          // Set the drawerMode if the given breakpoint is active
-          if ( matchingAliases.includes('lg') )
-          {
-              this.drawerMode = 'side';
-          }
-          else
-          {
-              this.drawerMode = 'over';
-          }
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
-      }
-  );
-  }
-
-  validerRemise(){
+  validerRemise() {
     console.log("valider remise id", this.chequeData);
     this._imprimerRemiseService.validerRemise(this.chequeData.id).pipe().subscribe({
-      next:(response)=>{
-          console.log(response);
-          this.goBackToList();
+      next: (response) => {
+        console.log(response);
+        this.goBackToList();
       }
     });
   }
@@ -200,32 +280,32 @@ const doc = new jsPDF({ format: 'a4', orientation: 'portrait' });
 
 
 
-  supprimerRemise(){
-    
+  supprimerRemise() {
+
     const deleteObjectDialog = this._dialog.open(
-        DeleteChequeConfirmationComponent,
-        {
-          data:  { 
-              id:this.id,
-              cheques:null,
-              endpoint:"exportation"
-            }
+      DeleteChequeConfirmationComponent,
+      {
+        data: {
+          id: this.id,
+          cheques: null,
+          endpoint: "exportation"
         }
+      }
     );
     deleteObjectDialog.afterClosed().subscribe({
-        next:(response)=>{
+      next: (response) => {
 
-          console.log("delete response=====>",response)
-          if(response?.isDeleted){
-              this.goBackToList();
-              console.log("delete remise response===>",response)
-          }
-        },
-        error: (error) => {
-          console.error('Error : ', JSON.stringify(error));
-          this.alert = { type: 'error', message: error.error.message??error.message };
-          this.showAlert = true;
-          this._changeDetectorRef.detectChanges();
+        console.log("delete response=====>", response)
+        if (response?.isDeleted) {
+          this.goBackToList();
+          console.log("delete remise response===>", response)
+        }
+      },
+      error: (error) => {
+        console.error('Error : ', JSON.stringify(error));
+        this.alert = { type: 'error', message: error.error.message ?? error.message };
+        this.showAlert = true;
+        this._changeDetectorRef.detectChanges();
       }
     });
 

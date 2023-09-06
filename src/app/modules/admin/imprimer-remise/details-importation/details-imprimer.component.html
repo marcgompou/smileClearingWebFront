@@ -29,10 +29,10 @@
             <!-- Header -->
 
             <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
-                <!-- Loader -->
+                <!-- Loader
                 <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
                     <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-                </div>
+                </div> -->
                 <!-- Title -->
                 
                 <div class="flex flex-auto items-center min-w-0" >
@@ -91,11 +91,7 @@
                                 </span>
                             </ng-container>
                         </div>
-
-
-
-
-                        <!-- TABLEAU DES CHEQUES-->
+                       
                         <!-- <app-table-data 
                             [endpoint]="'remise/export'+id" 
                             [title]="'Liste des Cheques'"
@@ -105,17 +101,14 @@
                             [idRow]="'reference'"
                             [canClick]="true">
                         </app-table-data> -->
-
-                        <div  >
-                    
+                         <!-- TABLEAU DES REMISES EXPORTEES-->
                         <app-table-data 
-    [endpoint]="'exportation'" 
-    [title]="'Liste des exportations'" 
-    [displayedColumns]="displayedColumns"
-    [dataStructure]="dataStructure" 
-    [idRow]="'id'" [canClick]="false">
-</app-table-data>
-</div>
+                            [endpoint]="'exportation'" 
+                            [title]="'Liste des exportations'" 
+                            [displayedColumns]="displayedColumns"
+                            [dataStructure]="dataStructure" 
+                            [idRow]="'id'" [canClick]="false">
+                        </app-table-data>
                     </div>
 
                 </div>

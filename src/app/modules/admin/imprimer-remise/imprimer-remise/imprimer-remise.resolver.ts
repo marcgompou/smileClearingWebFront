@@ -23,18 +23,7 @@ export class LoadDataEntrepriseResolver implements Resolve<boolean> {
      * Constructor
      */
     constructor( private _entreprises: ImprimerRemiseService) {}
-
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         return this._entreprises.getEntreprise();
     }
-
-   
-}
-
-export class LoadDataImprimerResolver implements Resolve<boolean> {
-    constructor( private _imprimerRemiseService: ImprimerRemiseService) {}
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        return this._imprimerRemiseService.getRemiseImprimer();
-    }
-
 }

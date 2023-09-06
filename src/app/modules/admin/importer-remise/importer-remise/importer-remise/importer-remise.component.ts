@@ -42,9 +42,9 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
-  title = 'socketrv';
-  command = 'StartScanner';
-  action = 'CONNECT';
+  // title = 'socketrv';
+  // command = 'StartScanner';
+  // action = 'CONNECT';
   received: Remise[] = [];
   totalRows = 0;
   pageSize = 10;
