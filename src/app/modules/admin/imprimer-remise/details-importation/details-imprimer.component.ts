@@ -223,7 +223,7 @@ export class DetailsImprimerComponent implements OnInit {
                 body: [
                   headers,
                   ...response.data.map(item => [item.numChqTitu, item.codeBanqueTitu, item.numCompteTitu, item.cleRibTitu, item.montant]),
-                  [{ text: 'Montant Total ', colSpan: 4 }, {}, {},{},{}, response.data.reduce((sum, d) => sum + d.montant, 0)]  
+                  [{ text: 'Montant Total ', colSpan: 4 }, {}, {},{}, response.data.reduce((sum, d) => sum + d.montant, 0)]  
 
                 ],
                 alignment: 'center'
