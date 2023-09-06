@@ -21,6 +21,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
+import { LogoBGG } from '../../common/imagesBase64/logoBBG';
 
 
 @Component({
@@ -157,50 +158,52 @@ export class DetailsImprimerComponent implements OnInit {
 
     this._imprimerRemiseService.getRemiseImprimer(this.id).pipe(
       takeUntil(this._unsubscribeAll),
-      map((response) => {
-        console.log("map response====>", response);
-        return {
-          ...response,
-          data: response.data.map((item) => ({
-            ...item,
-            montant: item.montant.toString(),
-            mtTotal: item.mtTotal.toString(),
-          }))
-        };
-      })
+      // map((response) => {
+      //   console.log("map response====>", response);
+      //   return {
+      //     ...response,
+      //     data: response.data.map((item) => ({
+      //       ...item,
+      //       //montant: item.montant.toString(),
+      //       //mtTotal: item.mtTotal.toString(),
+      //     }))
+      //   };
+      // })
     ).subscribe({
       next: (response) => {
         console.log(this._userService.user);
-        //Permet d'initialiser les polices à utiliser
-        pdfMake.vfs = {
-          ...pdfFonts.pdfMake.vfs,
-        };
-        //Declaration des en-têtes du tableau
-        var headers = ["Numero de compte", "Montant", "Compte beneficiaire"];
 
+        //Permet d'initialiser les polices à utiliser
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+        var headers = ["N° Chèque","Agence","Compte","Clé RIB","Montant" ];
+        //Code BANQUE, N cheque, Agence, Compte (titulaire) , clerib , mongant
+        
         //Generation du pdf
         const documentDefinition = {
-
+          pageSize:'A4',
+          pageMargins: [40, 60, 40, 80],
           header: function (currentPage, pageCount, pageSize) {
             // you can apply any logic and return any valid pdfmake element
             return [
               {
                 columns: [
                   {
-                    width: '50%',
-                    // margin: [left, top, right, bottom]
-                    margin: [50, 20, 40, 10],
-                    text: 'BRIDGE COLLECT'
+                    width: '*', // Take up remaining space
+                    text: 'Entreprise NAME', // Specify the header text
+                    alignment: 'left', // Align the text to the left
+                   // margin: [10, 0], // Adjust the margin for the text (optional)
                   },
                   {
-
-                    width: '50%',
-                    margin: [50, 20, 40, 10],
-                    text: 'Entreprise NAME' //TODO : add company name
-                  }
+                    //width: 'auto', // Auto size to fit the content
+                    image: LogoBGG, // Specify the image URL or base64 data for the header image
+                    fit: [200, 65], // Adjust the image dimensions as needed [width, height]
+                    alignment: 'right', // Align the image to the right
+                  },
                 ],
-                columnGap: 200
-              }
+                //columnGap: 200,
+                margin: [25, 20, 25, 0],
+              },
+              
             ]
           },
           footer: function (currentPage, pageCount) { 
@@ -213,18 +216,43 @@ export class DetailsImprimerComponent implements OnInit {
 
           content: [
             {
-              //style: 'tableExample',
+              style: 'tableExample',
+              margin: [50, 80, 50, 0],
               table: {
+                headerRows: 1,
                 body: [
                   headers,
-                  ...response.data.map(item => [item.numCompteTitu, item.montant, item.numCompteBenef]),
+                  ...response.data.map(item => [item.numChqTitu, item.codeBanqueTitu, item.numCompteTitu, item.cleRibTitu, item.montant]),
+                  [{ text: 'Montant Total ', colSpan: 4 }, {}, {},{},{}, response.data.reduce((sum, d) => sum + d.montant, 0)]  
+
                 ],
                 alignment: 'center'
               }
             },
-          ]
+          ],
+          styles: {
+            header: {
+              fontSize: 18,
+              bold: true,
+              margin: [0, 25, 0, 0],
+              decoration: 'underline'
+            },
+            subheader: {
+              fontSize: 16,
+              bold: true,
+              margin: [0, 10, 0, 5]
+            },
+            tableExample: {
+              margin: [0, 5, 0, 15]
+            },
+            tableHeader: {
+              bold: true,
+              fontSize: 13,
+              color: 'black'
+            }
+          },
         };
-        pdfMake.createPdf(documentDefinition).download("report.pdf");
+        pdfMake.createPdf(documentDefinition).open();
       },
       error: (error) => {
         //not show historique
