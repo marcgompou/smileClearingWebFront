@@ -36,6 +36,7 @@ export class DetailsImprimerComponent implements OnInit {
   remiseData: any;
   montantTotal: number = 0;
   nombreRemise: number = 0;
+ 
   remiseIsInCorrect: boolean = true;
   id: string = "";
   isLoading = false;
@@ -181,24 +182,31 @@ export class DetailsImprimerComponent implements OnInit {
         //Generation du pdf
         const documentDefinition = {
           pageSize:'A4',
-          pageMargins: [40, 60, 40, 80],
+          pageMargins: [20, 60, 40, 80],
           header: function (currentPage, pageCount, pageSize) {
             // you can apply any logic and return any valid pdfmake element
             return [
               {
                 columns: [
                   {
-                    width: '*', // Take up remaining space
-                    text: 'Entreprise NAME', // Specify the header text
-                    alignment: 'left', // Align the text to the left
-                   // margin: [10, 0], // Adjust the margin for the text (optional)
+                    columns: [
+                      {
+                        width: '*',
+                        text: 'Entreprise NAME',
+                        alignment: 'left',
+                        fontSize: 14,
+                        bold: true,
+                        margin: [20, 10, 0, 0],
+                      },          
+                      {
+                        image: LogoBGG,
+                        fit: [150, 40],
+                        alignment: 'right',
+                        margin: [0, 10, 20, 0],
+                      },
+                    ],
                   },
-                  {
-                    //width: 'auto', // Auto size to fit the content
-                    image: LogoBGG, // Specify the image URL or base64 data for the header image
-                    fit: [200, 65], // Adjust the image dimensions as needed [width, height]
-                    alignment: 'right', // Align the image to the right
-                  },
+                
                 ],
                 //columnGap: 200,
                 margin: [25, 20, 25, 0],
@@ -217,6 +225,7 @@ export class DetailsImprimerComponent implements OnInit {
           content: [
             {
               style: 'tableExample',
+              
               margin: [50, 80, 50, 0],
               table: {
                 headerRows: 1,
@@ -226,6 +235,8 @@ export class DetailsImprimerComponent implements OnInit {
                   [{ text: 'Montant Total ', colSpan: 4 }, {}, {},{}, response.data.reduce((sum, d) => sum + d.montant, 0)]  
 
                 ],
+                widths: [80, 80, 100, 50, 100], // Largeurs des colonnes, ajustez-les selon vos besoins
+     
                 alignment: 'center'
               }
             },
