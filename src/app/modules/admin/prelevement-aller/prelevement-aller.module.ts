@@ -20,6 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -38,6 +39,7 @@ import { SharedModule } from 'app/shared/shared.module';
     MatIconModule,
     MatInputModule,
     MatMenuModule,
+    MatPaginatorModule,
     MatMomentDateModule,
     MatProgressBarModule,
     MatRadioModule,

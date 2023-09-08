@@ -76,12 +76,6 @@ export const appRoutes: Route[] = [
             },
 
 
-            // {
-            //     path: 'validerRemise/details/:id',
-            //     data: { breadcrumb: 'Details remise' },
-            //     loadChildren: () => import('app/modules/admin/details-remise/details-remise.module').then(m => m.DetailsRemiseModule)
-            // },
-
 
 
             {
@@ -101,11 +95,15 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/importer-remise/importer-remise.module').then(m => m.RemiseImporterModule)
             },
             {
+                path: 'chargerPrelevement',
+                data: { breadcrumb: 'Charger prélèvement' },
+                loadChildren: () => import('app/modules/admin/prelevement-aller/prelevement-aller.module').then(m => m.PrelevementAllerModule)
+            },
+            {
                 path: 'help-center',
                 data: { breadcrumb: 'Support' },
                 loadChildren: () => import('app/modules/admin/help-center/help-center.module').then(m => m.HelpCenterModule)
             },
-
             {
                 path: 'help-centerfaqs',
                 data: { breadcrumb: 'Faqs' },
@@ -122,8 +120,6 @@ export const appRoutes: Route[] = [
                 data: { breadcrumb: 'Ouvrir un ticket' },
                 loadChildren: () => import('app/modules/admin/help-center/help-center.module').then(m => m.HelpCenterModule)
             },
-           
-
             {
                 path: 'parametreUser',
                 data: { breadcrumb: 'Parametrage de compte utilisateur' },
@@ -134,7 +130,6 @@ export const appRoutes: Route[] = [
                 data: { breadcrumb: 'Parametrage de compte bancaire' },
                 loadChildren: () => import('app/modules/admin/compte/compte/compte.module').then(m => m.CompteModule)
             },
-
             {
                 path: 'parametreAgence',
                 data: { breadcrumb: 'Parametrage de agence bancaire' },

@@ -27,7 +27,7 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
-  noData: any;
+  // noData: any;
   remiseData: any;
   listeCompteEntreprise: any[] = [];
   montantTotal: number = 0;
