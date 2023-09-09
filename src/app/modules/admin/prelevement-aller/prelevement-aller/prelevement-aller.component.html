@@ -37,11 +37,24 @@
                         </ng-container>
                     </div>
                 </div>
-                <div class="flex items-center sm:mt-0 sm:ml-4">
+                <!-- <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="prelevementForm">
                         <input type="file" [formControl]="ficherPrelevement" (change)="onFileSelected($event)" />
                     </form>
-                </div>
+                </div> -->
+
+                <div class="flex items-center sm:mt-0 sm:ml-4">
+                    <form [formGroup]="prelevementForm">
+                      <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Uploader un fichier</mat-label>
+                        <input matInput formControlName="fichierPrelevement" placeholder="Choisir un fichier" readonly />
+                        <mat-icon matSuffix (click)="fileInput.click()">folder</mat-icon>
+                        <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" />
+                      </mat-form-field>
+                    </form>
+                  </div>
+                  
+                  
             </div>
             <div class="flex flex-col">
                 <!-- Main -->
