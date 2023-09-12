@@ -44,13 +44,18 @@
                 </div> -->
 
                 <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form [formGroup]="prelevementForm">
-                      <mat-form-field appearance="outline" class="w-full">
+                    <form [formGroup]="prelevementForm" (ngSubmit)="onSubmit()">
+                      <mat-form-field appearance="outline" class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8">
                         <mat-label>Uploader un fichier</mat-label>
                         <input matInput formControlName="fichierPrelevement" placeholder="Choisir un fichier" readonly />
                         <mat-icon matSuffix (click)="fileInput.click()">folder</mat-icon>
                         <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" />
                       </mat-form-field>
+                      <button class="ml-4 mt-4" mat-flat-button [color]="'primary'" type="submit"
+                      [disabled]="(!prelevementForm.valid) ">
+                      <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
+                      <span>Enregistrer</span>
+                  </button>
                     </form>
                   </div>
                   

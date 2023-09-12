@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { PrelevementAllerService } from '../prelevement-aller.service';
+import { Prelevement } from '../prelevement-aller.type';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   // remiseIsInCorrect:boolean=true;
  
 
-
+  received: Prelevement[] = [];
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
@@ -90,6 +91,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _prelevementAllerService: PrelevementAllerService,
+   // private _chequeService: CreerRemiseService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router) {
   
@@ -146,9 +148,27 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
   onSubmit() { 
 
+    let data={
+      prelevementEntete: this.headerData,
+      prelevementDetails: this.detailsData,
+      prelevementTotal: this.totalData
+  }
 
+  console.log("---------------data--------test-----",data);
+
+  this._prelevementAllerService.createPrelevement(data).subscribe({
+    next: (data) => {
+      console.log("---------------data--------test-----",data);
+    },
+  })
+  this.dataSource=new MatTableDataSource<any>([]);
+  this.headerData.nom="";
+  this.totalData.montant="0";
+  this._changeDetectorRef.detectChanges();
+  
     //If form is valid
-    this.detailsData=[]
+   // this.detailsData=[]
+   
   }
   
 
@@ -241,21 +261,45 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     this.loadData(pageSize, pageIndex);
   }
 
-
-
+   convertDateToDateTime(dateStr: string): string  {
+    if (dateStr.length !== 6) {
+      // Vérifier la longueur de la chaîne d'entrée
+      console.error("La chaîne de date doit avoir une longueur de 6 caractères.");
+      return "";
+    }
+  
+    try {
+      const year = parseInt(dateStr.substring(0, 2)) + 2000;
+      const month = parseInt(dateStr.substring(2, 4)) - 1;
+      const day = parseInt(dateStr.substring(4, 6));
+  
+      if (isNaN(year) || isNaN(month) || isNaN(day)) {
+       return "";
+      }
+  
+      const dateEmission = new Date(year, month, day);
+      return dateEmission.toISOString().substring(0, 10);
+    } catch (error) {
+      console.error("Erreur lors de la conversion de la date : " + error.message);
+      return "";
+    }
+  }
+ // const dateEmission = convertDateToDateTime(dateStr);
   extractHeaderValues(headerLine: string) {
      this.headerData = {
+      nomfichier : "nomParDefaut",
       codeOperation: headerLine.substring(0, 2).trim(),
       codeEnreg: headerLine.substring(2, 3).trim(),
       numLigne: parseInt(headerLine.substring(3, 8).trim(), 10),
-      dateEmission: headerLine.substring(8, 14).trim(),
+      dateEmission: this.convertDateToDateTime(headerLine.substring(8, 14).trim()),
       banque: headerLine.substring(14, 17).trim(),
       guichet: headerLine.substring(17, 22).trim(),
       compteCredite: headerLine.substring(22, 33).trim(),
       nom: headerLine.substring(33, 57).trim(),
       codeEmeteur: headerLine.substring(57, 62).trim(),
-      dateOper: headerLine.substring(63, 69).trim(),
-      zoneVide: headerLine.substring(69, 128).trim(),
+      dateOper:  this.convertDateToDateTime(headerLine.substring(63, 69).trim()),
+      zoneVide: "zoneVide",
+      
     };
   
   }
@@ -264,7 +308,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     const codeOperation = data.substring(0, 2).trim();
     const codeEnreg = data.substring(2, 3).trim();
     const numLigne = data.substring(3, 8).trim() || null;
-    const dateEmission = data.substring(8, 14).trim() || null;
+    const dateEmission =  this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
     const zoneVide1 = data.substring(14, 22).trim();
     const compte = data.substring(22, 33).trim() || null;
     const zoneVide2 = data.substring(33, 108).trim();
@@ -294,7 +338,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
         const codeOperation = data.substring(0, 2).trim();
         const codeEnreg = data.substring(2, 3).trim();
         const numLigne = parseInt(data.substring(3, 8).trim()) || null;
-        const dateEcheance = data.substring(8, 14).trim() || null;
+        const dateEcheance = this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
         const banque = data.substring(14, 17).trim();
         const guichet = data.substring(17, 22).trim();
         const compteDebite = data.substring(22, 33).trim();
@@ -302,7 +346,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
         const nomBanque = data.substring(57, 74).trim() || null;
         const libelleOperat = data.substring(74, 104).trim();
         const montant = parseFloat(data.substring(104, 116).trim()) || null;
-        const zoneVide = data.substring(116, 128).trim() || null;
+        const zoneVide = "zoneVide";
         return  {
             codeOperation,
             codeEnreg,
