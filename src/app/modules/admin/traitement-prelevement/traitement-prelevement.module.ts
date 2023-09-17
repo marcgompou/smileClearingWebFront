@@ -37,8 +37,7 @@ import { TraitementPrelevementComponent } from './traitement-prelevement/traitem
   declarations: [
     TraitementPrelevementComponent,
     ListeTraitementPrelevementComponent,
-   DetailsPrelevementComponent,
- 
+    DetailsPrelevementComponent,
   ],
   exports:[DetailsPrelevementComponent],
   imports: [

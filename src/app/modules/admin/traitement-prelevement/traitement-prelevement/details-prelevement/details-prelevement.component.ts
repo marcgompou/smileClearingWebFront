@@ -14,6 +14,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { TraitementPrelevementService } from '../traitement-prelevement.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
 //import { DeleteChequeConfirmationComponent } from '../../prelevement-aller/prelevement-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
 
 @Component({
@@ -209,82 +210,90 @@ export class DetailsPrelevementComponent implements OnInit {
 
 
 
-openDetailComponent(component: DetailsModifierPrelevementComponent) {
+  openDetailComponent(component: DetailsComponent) {
 
-  component.matDrawer = this.matDrawer;
-  component.formTitle = "DETAILS CHEQUE";
-  component.chequeData = this.chequeData;
-  //Endpoint pour supprimer un cheque
-  component.endpoint="remise/suppression/cheque";
-  //Initialisation formulaire details
-  component.formFields = [
-    {
-      key: "numChq",
-      libelle: "N° de Cheque",
-      validators: {
-        min: 7,
-        max: 7,
-        required: true
-      }
-    },
-    {
-      key: "codeBanque",
-      libelle: "Code Banque",
-      placeholder: "Ex: CI131",
-      validators: {
-        min: 5,
-        max: 5,
-        required: true,
-      }
-    },
-    {
-      key: "agence",
-      libelle: "Code Agence",
-      placeholder: "Ex: 01001",
-      validators: {
-        min: 5,
-        max: 5,
-        required: true
-      }
-    },
+    component.matDrawer = this.matDrawer;
+    component.formTitle = "Prélèvement";
+    component.constructorPayload = Prelevement.constructorPrelevement;
+    component.endpoint="prelevement/admin/modificationEtatPaiement";
+    component.loadDataOnInit=false;
+    component.canDelete=false;
+    component.staticDatas=[
+      {
+        libelle: "codeBanque",
+        value: "131",
+      },
+      {
+        libelle: "codeagence",
+        value: "01010",
+      },
+      {
+        libelle: "dateEcheance",
+        value: "2022-06-20T00:00:00",
+      },
+      {
+        libelle: "montant",
+        value: 500000,
+      },
+      {
+        libelle: "motif",
+        value: "CI17C02360 059 08022633 CI131",
+      },
+      {
+        libelle: "nomBanque",
+        value: "ABJ-PLTEAU",
+      },
+      {
+        libelle: "nomClient",
+        value: "BUREAUTIQUE PROFESSIONNE",
+      },
+      {
+        libelle: "nomfichier",
+        value: "avp_1000_17092023161640",
+      },
+      {
+        libelle: "numCompte",
+        value: "19001260002",
+      },
+      {
+        libelle: "statut",
+        value: 3,
+      },
+    ];
+    
 
-    // {
-    //   key: "compte",
-    //   libelle: "Compte",
-    //   validators: {
-    //     min: 12,
-    //     max: 12,
-    //     required: true
-    //   }
-    // },
-    {
-      key: "cleRib",
-      libelle: "Cle Rib",
-      validators: {
-        min: 2,
-        max: 50,
-        required: true
-      }
-    },
-    {
-      key: "montant",
-      libelle: "Montant",
-      type: "number",
-      validators: {
-        minValue: 1000,
-        min: 1,
-        max: 11,
-        required: true
-      }
-    },
-    {
-      key: "titulaire",
-      libelle: "Titulaire",
-      validators: {
-        max: 50
-      }
-    }
-  ]
-}
+
+    
+    //Endpoint pour supprimer un cheque
+    //component.endpoint="remise/suppression/cheque";
+    
+    //Initialisation formulaire details
+    component.formFields = [
+      {
+        key: "statut",
+        libelle: "Etat Paiement",
+        type:"select",
+        options:[
+          {
+            value:"",
+            libelle: "",
+          },
+          {
+            value: 60,
+            libelle: "Rejeté",
+          },
+          {
+            value: 0,
+            libelle: "Reglé",
+          }
+
+        ],
+
+        validators: {
+          required: true
+        }
+      },
+    ]
+  }
 
 }

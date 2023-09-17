@@ -22,6 +22,12 @@ export class DetailsComponent implements OnInit,OnChanges {
 
   @Input() matDrawer!:MatDrawer;
   @Input() formFields!:any;
+
+  @Input() loadDataOnInit:boolean=true;
+  @Input() canDelete:boolean=true;
+  @Input() staticDatas:{libelle:any,value:any}[]=[];
+
+
   @Input() constructorPayload!:(args: any) => any;
   @Input("formTitle") formTitle:string ="Formulaire Détails/Modification"
   @Input("endpoint") endpoint:string ;
@@ -54,10 +60,16 @@ export class DetailsComponent implements OnInit,OnChanges {
 
   ngOnInit(): void {
     this.matDrawer.open();
-    this.loadData();
+    if(this.loadDataOnInit){
+
+      this.loadData();
+
+    }else{
+      this.setupFormFields();
+
+    }
     this._activatedRoute.params.subscribe(params=>{
       this.id = params['id'];
-
       console.log("id in details",this.id);
     })
   
@@ -75,51 +87,55 @@ export class DetailsComponent implements OnInit,OnChanges {
     */
   closeDrawer(): Promise<MatDrawerToggleResult> {
     return this.matDrawer.close();
-}
+  }
 
   setupFormFields(): void {
 
     try{
+        console.log("======>details form fields",this.formFields);
+        this.formFields.forEach(field => {
+          const validators = [];
+          if (field.validators.required) {
+            validators.push(Validators.required);
+            //validators.push(Validators.pattern("\\S"))
+          }
+          if (field.validators.min) {
+            validators.push(Validators.minLength(field.validators.min));
+          }
+          if (field.validators.max) {
+            validators.push(Validators.maxLength(field.validators.max));
+          }
+          if (field.validators.email) {
+            validators.push(Validators.email);
+          }
+          if (field.validators.minValue) {
+            validators.push(Validators.min(field.validators.minValue));
+          }
+          if(field.validators.regex){
+            validators.push(Validators.pattern(field.validators.regex));
+          }
+          let fieldValue="";
 
- 
+          
+          if(this.data){          
+              if(this.data[field.key]!==null && this.data[field.key]!==undefined ){
+                fieldValue=this.data[field.key];
+              }
+          }
+          if(!this.form){
+            this.form = this.formBuilder.group({});
+          }
+          this.form.addControl(field.key, this.formBuilder.control(fieldValue, validators));
+        });
 
-    console.log("======>details form fields",this.formFields);
-    this.formFields.forEach(field => {
-      const validators = [];
-      if (field.validators.required) {
-        validators.push(Validators.required);
-        //validators.push(Validators.pattern("\\S"))
-      }
-      if (field.validators.min) {
-        validators.push(Validators.minLength(field.validators.min));
-      }
-      if (field.validators.max) {
-        validators.push(Validators.maxLength(field.validators.max));
-      }
-      if (field.validators.email) {
-        validators.push(Validators.email);
-      }
-      if (field.validators.minValue) {
-        validators.push(Validators.min(field.validators.minValue));
-      }
-      if(field.validators.regex){
-        validators.push(Validators.pattern(field.validators.regex));
-      }
-      let fieldValue="";
-      if(this.data[field.key]!==null && this.data[field.key]!==undefined ){
-        fieldValue=this.data[field.key];
-      }
 
-      this.form.addControl(field.key, this.formBuilder.control(fieldValue, validators));
-    });
+      console.log("Form====>",this.form)
+      }
+      catch(error){
 
-    console.log("Form====>",this.form)
-    }
-    catch(error){
-
-      console.log(error)
-      this.closeForm()
-    }
+        console.log(error)
+        this.closeForm()
+      }
   }
 
   onSubmit(){

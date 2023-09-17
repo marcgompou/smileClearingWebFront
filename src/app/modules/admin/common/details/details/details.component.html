@@ -42,22 +42,15 @@
                 </fuse-alert>
             </div>
 
+            <div *ngFor="let item of staticDatas">
+                <p><strong>Libelle:</strong> {{ item.libelle }}</p>
+                <p><strong>Value:</strong> {{ item.value }}</p>
+              </div>
 
-                <!-- Form Fields -->
-                <form class="flex flex-col rounded overflow-hidden" #formNgForm="ngForm" [formGroup]="form"
+            <form class="flex flex-col rounded overflow-hidden" #formNgForm="ngForm" [formGroup]="form"
                     (ngSubmit)="onSubmit()">
                     <div class="pl-6 pr-6 pt- py-2 sm:p-12 sm:pt-0">
                         <ng-container *ngFor="let fieldConfig of formFields">
-
-                            <!-- <mat-form-field [ngClass]="_fieldClass">
-                    <mat-label>{{ fieldConfig.libelle }}</mat-label>
-                    <input id="{{ fieldConfig.key }}" matInput [formControlName]="fieldConfig.key"/>
-
-
-
-                </mat-form-field> -->
-
-
 
                             <mat-form-field [ngClass]="_fieldClass" *ngIf=" fieldConfig.type === 'textarea'">
                                 <mat-label>{{ fieldConfig.libelle }}</mat-label>
@@ -177,10 +170,13 @@
 
                         <div
                             class="flex items-center mt-10 -mx-10 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
-                            <!-- Delete  (click)="deleteContact()"  (click)="toggleEditMode(false)"  (click)="updateContact()"-->
-                            <button mat-button [color]="'warn'" type="button" [matTooltip]="'Delete'" (click)="supprimer()">
-                                Supprimer
-                            </button>
+                            
+                            <ng-container *ngIf="this.canDelete">
+                                <button mat-button [color]="'warn'" type="button" [matTooltip]="'Delete'" (click)="supprimer()">
+                                    Supprimer
+                                </button>
+                            </ng-container>
+
                             <!-- Cancel -->
                             <button class="ml-auto mr-1"  
                             mat-flat-button
