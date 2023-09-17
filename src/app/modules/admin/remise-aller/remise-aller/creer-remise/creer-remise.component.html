@@ -42,8 +42,8 @@
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8">
-                            <mat-label>Compte</mat-label>
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8" appearance="outline">
+                            
                             <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required
                                 placeholder="Selectionner un compte">
                                 <mat-option value=""></mat-option>

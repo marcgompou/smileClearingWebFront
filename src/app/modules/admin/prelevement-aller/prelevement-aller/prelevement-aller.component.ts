@@ -13,6 +13,7 @@ import { PrelevementAllerService } from '../prelevement-aller.service';
 import { Prelevement } from '../prelevement-aller.type';
 
 
+
 @Component({
   selector: 'app-prelevement-aller',
   templateUrl: './prelevement-aller.component.html',
@@ -32,7 +33,8 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   // montantTotal:number=0;
   // nombreCheque:number=0;
   // remiseIsInCorrect:boolean=true;
- 
+  nomFichierCharger: string | undefined;
+  nomFichierChargerNormal: string | undefined;
 
   received: Prelevement[] = [];
   totalRows = 0;
@@ -86,11 +88,14 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
   
   displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant'];
+  
+  
 
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _prelevementAllerService: PrelevementAllerService,
+  
    // private _chequeService: CreerRemiseService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router) {
@@ -156,18 +161,30 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
   console.log("---------------data--------test-----",data);
 
-  this._prelevementAllerService.createPrelevement(data).subscribe({
+
+
+
+   this._prelevementAllerService.createPrelevement(data).subscribe({
     next: (data) => {
-      console.log("---------------data--------test-----",data);
+      console.log("---------------data--------test-----", data);
+      // Réinitialisation des données du formulaire et de la table
+      this.dataSource = new MatTableDataSource<any>([]);
+      this.headerData.nom = "";
+      this.totalData.montant = "0";
+      this._changeDetectorRef.detectChanges();
+      
+      // Affichage d'un message de succès
+      // Vous pouvez ajouter ici un message de succès si nécessaire
     },
-  })
-  this.dataSource=new MatTableDataSource<any>([]);
-  this.headerData.nom="";
-  this.totalData.montant="0";
-  this._changeDetectorRef.detectChanges();
-  
-    //If form is valid
-   // this.detailsData=[]
+    error: (error) => {
+      
+      // Affichage d'un message d'erreur
+      console.error('Error : ', JSON.stringify(error));
+      this.alert = { type: 'error', message: error.error.message ?? error.message };
+      this.showAlert = true;
+      this._changeDetectorRef.detectChanges();
+    }
+  });
    
   }
   
@@ -187,8 +204,16 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
+   
+    const fileNameWithExtension = selectedFile.name;
+    const fileNameWithoutExtension = fileNameWithExtension.split('.').slice(0, -1).join('.');
+    this.nomFichierCharger = fileNameWithoutExtension;
+
+    console.log('Nom du fichier sélectionné :', this.nomFichierCharger);
+
     if (selectedFile) {
       this.detailsData=[];
+    
       // Now, you can read the file content or perform other operations with it.
       const fileReader = new FileReader();
       fileReader.onload = (e) => {
@@ -269,9 +294,9 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     }
   
     try {
-      const year = parseInt(dateStr.substring(0, 2)) + 2000;
+      const  day = parseInt(dateStr.substring(0, 2)) ;
       const month = parseInt(dateStr.substring(2, 4)) - 1;
-      const day = parseInt(dateStr.substring(4, 6));
+      const year = parseInt(dateStr.substring(4, 6)) + 2000;
   
       if (isNaN(year) || isNaN(month) || isNaN(day)) {
        return "";
@@ -287,7 +312,8 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
  // const dateEmission = convertDateToDateTime(dateStr);
   extractHeaderValues(headerLine: string) {
      this.headerData = {
-      nomfichier : "nomParDefaut",
+      nomFichier : this.nomFichierCharger ,
+      nomFichierGenerer : "nomParDefaut",
       codeOperation: headerLine.substring(0, 2).trim(),
       codeEnreg: headerLine.substring(2, 3).trim(),
       numLigne: parseInt(headerLine.substring(3, 8).trim(), 10),

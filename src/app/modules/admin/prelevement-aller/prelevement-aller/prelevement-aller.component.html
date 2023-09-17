@@ -82,7 +82,7 @@
                         <ng-container *ngIf="dataSource.filteredData.length >0 else noData">
                             <div class="grid overflow-x-auto overflow-y-auto">
                                 <div class="flex flex-col flex-auto mt-2 h-150">
-                                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
                                         <!-- Column Structure -->
                                         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
                                             <th mat-header-cell *matHeaderCellDef class="mat-header-style"> {{

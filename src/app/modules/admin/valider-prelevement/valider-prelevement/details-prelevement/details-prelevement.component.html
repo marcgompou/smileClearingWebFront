@@ -8,13 +8,22 @@
                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
         </a>
     </fuse-alert>
+    <!-- <router-outlet></router-outlet> -->
+
 
     <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
+
+        <!-- Drawer -->
+        <!-- <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
+            [disableClose]="true" #matDrawer>
+            <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
+        </mat-drawer> -->
+
         <mat-drawer-content class="flex flex-col">
 
+            <!-- Header -->
 
-            <div
-                class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
                 <!-- Loader -->
                 <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
                     <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
@@ -28,37 +37,34 @@
                         <ng-container>
                             <div
                                 class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
-                                Importation remise </div>
+                                Validation Prelevement</div>
                         </ng-container>
-              
                     </div>
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form [formGroup]="entrepriseForm" (ngSubmit)="onSubmit()">
-
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8" appearance="outline">
-                            <!-- <mat-label>Entreprise</mat-label> -->
-                            <mat-select formControlName="identreprise" matInput id="identreprise" required
-                                placeholder="Selectionner une Entreprise" (selectionChange)="onSelectChange($event)">
-                                <!-- <mat-option value=""></mat-option> -->
-                                <mat-option *ngFor="let  Entreprise of listeEntreprise" [value]="Entreprise.identreprise"> 
-                                    {{Entreprise.nomEntreprise }} 
-                                </mat-option>
-                            </mat-select> 
-                        </mat-form-field>
-
-
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                              [disabled]="(!entrepriseForm.valid ) || dataSource.data.length==0 ">
-                         
-                            <mat-icon [svgIcon]="'mat_solid:arrow_downward'"></mat-icon>
-                            <span class="ml-2">Importer</span>
+                    <!-- <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()"> -->
+                    <form>
+                        <button class="ml-4" type="'button'" (click)="goBackToList()" mat-stroked-button [color]="'accent'">
+                            <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
+                            <span class="ml-2">Retour</span>
                         </button>
+                       
+                        <ng-container *ngIf="prelevementData.statut==1" >
+                        <button class="ml-4" mat-flat-button [color]="'primary'" (click)="validerPrelevement()">
+                            <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
+                            <span class="ml-2">Valider</span>
+                        </button></ng-container>
+
+                        <ng-container *ngIf="prelevementData.statut==16">
+                            <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerPrelevement()" >
+                                <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
+                                <span class="ml-2">Gérérer Fichier Retour</span>
+                            </button></ng-container>
+                      
                     </form>
                 </div>
             </div>
             <form class="flex flex-col ">
-
                 <!-- Main -->
                 <div class="flex flex-auto overflow-hidden">
                     <!-- remiseCheques list -->
@@ -66,23 +72,29 @@
                         <div class="flex space-x-4">
                             <ng-container>
                                 <span class="inline-block align-middle">
-
                                     <!-- Nombre de chèque : {{ nombreCheque }} -->
                                 </span>
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-
                                     Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
-
                                 </span>
                             </ng-container>
                         </div>
-                        
-                    <app-table-data [endpoint]="'exportation'" [title]="'Liste des exportations'"
-                    [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
-                    [canClick]="false">
-                    </app-table-data> 
+
+
+
+
+                        <!-- TABLEAU DES CHEQUES-->
+                        <app-table-data 
+                            [endpoint]="'prelevement'+id" 
+                            [title]="'Liste des Prelevement'"
+                            [dataKey]="'data'"
+                            [displayedColumns]="displayedColumns" 
+                            [dataStructure]="dataStructure" 
+                            [idRow]="'id'"
+                            [canClick]="true">
+                        </app-table-data>
 
                     </div>
 

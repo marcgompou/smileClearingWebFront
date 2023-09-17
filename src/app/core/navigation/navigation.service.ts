@@ -124,41 +124,7 @@ export class NavigationService {
                 },
 
 
-                {
-                    id: 'pages',
-                    title: 'Importer Remise',
-                    type: 'collapsable',
-                    icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_EXPORT,
-                    children:
-                        [
-
-                            {
-                                id: 'importerRemise',
-                                title: 'Importation Remise GR',
-                                type: 'basic',
-                                icon: 'heroicons_outline:template',
-                                link: '/importerRemise',
-                                permission: SecService.permissions.ROLE_EXPORT
-                            },
-                            {
-                                id: 'imprimerRemiseImporter',
-                                title: 'Impression Remise Importer',
-                                type: 'basic',
-                                icon: 'heroicons_solid:printer',
-                                link: '/imprimerRemiseImporter',
-                                permission: SecService.permissions.ROLE_EXPORT
-                            },
-                            {
-                                id: 'impressionCheque',
-                                title: 'Impression Chèque',
-                                type: 'basic',
-                                icon: 'heroicons_solid:printer',
-                                link: '/impressionCheque',
-                                permission: SecService.permissions.ROLE_EXPORT
-                            },
-                        ]
-                },
+                
 
 
             ]
@@ -217,11 +183,11 @@ export class NavigationService {
                         [
 
                             {
-                                id: 'chargerprelevement',
+                                id: 'validerPrelevement',
                                 title: 'Valider Prélèvement',
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
-                                link: '/remiseExporter',
+                                link: '/validerPrelevement',
                                 permission: SecService.permissions.ROLE_SCAN
                             },
                             {
@@ -237,61 +203,7 @@ export class NavigationService {
                 },
 
 
-                {
-                    id: 'pages',
-                    title: 'manager Prélèvement',
-                    type: 'collapsable',
-                    icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_SCAN,
-                    children:
-                        [
-
-                            {
-                                id: 'chargerprelevement',
-                                title: 'Exporter Prélèvement',
-                                type: 'basic',
-                                icon: 'heroicons_outline:template',
-                                link: '/remiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
-                            {
-                                id: 'impressionPrelevementvalider',
-                                title: 'Impression Prelevement exporter',
-                                type: 'basic',
-                                icon: 'heroicons_solid:printer',
-                                link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
-
-                            {
-                                id: 'retourPrelevement',
-                                title: 'Retour prélèvement',
-                                type: 'basic',
-                                icon: 'heroicons_outline:clipboard-check',
-                                link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
-
-                            {
-                                id: 'rattrappagePrelevement',
-                                title: 'Rattrappage prélèvement',
-                                type: 'basic',
-                                icon: 'heroicons_outline:clipboard-check',
-                                link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
-
-                            {
-                                id: 'relancePrelevement',
-                                title: 'Relance prélèvement',
-                                type: 'basic',
-                                icon: 'heroicons_outline:clipboard-check',
-                                link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
-
-                        ]
-                },
+                
 
 
             ]
@@ -364,6 +276,123 @@ export class NavigationService {
                 },
             ]
         },
+
+        {
+            id: 'smilecheckweb-prelevement',
+            title: 'ADMINISTRATION',
+            subtitle: '',
+            type: 'group',
+            icon: 'heroicons_outline:home',
+            children: [
+               
+                {
+                    id: 'pages',
+                    title: 'Importer Remise',
+                    type: 'collapsable',
+                    icon: 'heroicons_outline:document',
+                    permission: SecService.permissions.ROLE_EXPORT,
+                    children:
+                        [
+
+                            {
+                                id: 'importerRemise',
+                                title: 'Importation Remise GR',
+                                type: 'basic',
+                                icon: 'heroicons_outline:template',
+                                link: '/importerRemise',
+                                permission: SecService.permissions.ROLE_EXPORT
+                            },
+                            {
+                                id: 'imprimerRemiseImporter',
+                                title: 'Impression Remise Importer',
+                                type: 'basic',
+                                icon: 'heroicons_solid:printer',
+                                link: '/imprimerRemiseImporter',
+                                permission: SecService.permissions.ROLE_EXPORT
+                            },
+                            {
+                                id: 'impressionCheque',
+                                title: 'Impression Chèque',
+                                type: 'basic',
+                                icon: 'heroicons_solid:printer',
+                                link: '/impressionCheque',
+                                permission: SecService.permissions.ROLE_EXPORT
+                            },
+                        ]
+                },
+                {
+                    id: 'pages',
+                    title: 'Manager Prélèvement',
+                    type: 'collapsable',
+                    icon: 'heroicons_outline:document',
+                    permission: SecService.permissions.ROLE_SCAN,
+                    children:
+                        [
+
+                            {
+                                id: 'traitementPrelevement',
+                                title: 'Traitement Prélèvement',
+                                type: 'basic',
+                                icon: 'heroicons_outline:template',
+                                link: '/traitementPrelevement',
+                                permission: SecService.permissions.ROLE_SCAN
+                            },
+
+                            {
+                                id: 'chargerprelevement',
+                                title: 'Cloturer Prélèvement',
+                                type: 'basic',
+                                icon: 'heroicons_outline:template',
+                                link: '/remiseExporter',
+                                permission: SecService.permissions.ROLE_SCAN
+                            },
+
+                            {
+                                id: 'impressionPrelevementvalider',
+                                title: 'Impression Prelevement exporter',
+                                type: 'basic',
+                                icon: 'heroicons_solid:printer',
+                                link: '/impressionRemiseExporter',
+                                permission: SecService.permissions.ROLE_SCAN
+                            },
+
+                            {
+                                id: 'retourPrelevement',
+                                title: 'Retour prélèvement',
+                                type: 'basic',
+                                icon: 'heroicons_outline:clipboard-check',
+                                link: '/impressionRemiseExporter',
+                                permission: SecService.permissions.ROLE_SCAN
+                            },
+
+                            {
+                                id: 'rattrappagePrelevement',
+                                title: 'Rattrappage prélèvement',
+                                type: 'basic',
+                                icon: 'heroicons_outline:clipboard-check',
+                                link: '/impressionRemiseExporter',
+                                permission: SecService.permissions.ROLE_SCAN
+                            },
+
+                            {
+                                id: 'relancePrelevement',
+                                title: 'Relance prélèvement',
+                                type: 'basic',
+                                icon: 'heroicons_outline:clipboard-check',
+                                link: '/impressionRemiseExporter',
+                                permission: SecService.permissions.ROLE_SCAN
+                            },
+
+                        ]
+                },
+
+
+            ]
+
+
+        },
+
+
 
         {
             id: 'smilecheckweb-parametre',
@@ -455,63 +484,7 @@ export class NavigationService {
                 },
             ]
         },
-        // //BLOCK PRELEVEMENT
-        // {
-        //     id      : 'smilecheckweb-prelevement',
-        //     title   : 'PRELEVEMENT',
-        //     subtitle: 'Module client',
-        //     type    : 'group',
-        //     icon    : 'heroicons_outline:home',
-        //     children: [
-        //         {
-        //             id   : 'creerRemise',
-        //             title: 'Creer remise',
-        //             type : 'basic',
-        //             icon : 'heroicons_outline:template',
-        //             link : '/remise',
-        //             permission: SecService.permissions.ROLE_SCAN
-        //         },
-        //         {
-        //             id   : 'creerRemise',
-        //             title: 'Creer remise',
-        //             type : 'basic',
-        //             icon : 'heroicons_outline:template',
-        //             link : '/remise',
-        //             permission: SecService.permissions.ROLE_SCAN
-        //         },
-
-
-        //     ]
-        // },
-
-        //BLOCK PARAMETRAGE
-        // {
-        //     id      : 'smilecheckweb-parametrage',
-        //     title   : 'PRELEVEMENT',
-        //     subtitle: 'Module client',
-        //     type    : 'group',
-        //     icon    : 'heroicons_outline:home',
-        //     children: [
-        //         {
-        //             id   : 'creerRemise',
-        //             title: 'Creer remise',
-        //             type : 'basic',
-        //             icon : 'heroicons_outline:template',
-        //             link : '/remise',
-        //             permission: SecService.permissions.ROLE_SCAN
-        //         },
-        //         {
-        //             id   : 'creerRemise',
-        //             title: 'Creer remise',
-        //             type : 'basic',
-        //             icon : 'heroicons_outline:template',
-        //             link : '/remise',
-        //             permission: SecService.permissions.ROLE_SCAN
-        //         },
-
-
-        //     ]
-        // },
+      
     ];
     user: User;
 

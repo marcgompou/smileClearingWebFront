@@ -2,15 +2,7 @@
 <ng-container *ngIf="dataSource != null && dataSource.filteredData.length > 0; else noData">
     <div class="grid overflow-x-auto overflow-y-auto">
         <div class="flex flex-col flex-auto mt-2 h-150">
-            <!-- <mat-table [dataSource]="_dataSource" matSort>
-                    
-                <mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: _displayedColumns;" class="z-20 flex items-center cursor-pointer border-b"
-                        (click)="selctedRow(row)" 
-                        [ngClass]="{'bg-primary-50 dark:bg-hover': selectedRowIndex && selectedRowIndex == row.actionDate,
-                        'hover:bg-gray-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !== row.actionDate}">
-                </mat-row>
-            </mat-table> -->
+          
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
                 <!-- Column Structure -->
                 <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">

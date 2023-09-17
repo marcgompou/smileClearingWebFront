@@ -38,7 +38,7 @@
                         <ng-container>
                             <div
                                 class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
-                                Validation remise</div>
+                                Validation Prelevement</div>
                         </ng-container>
               
                     </div>
@@ -46,21 +46,23 @@
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
                         <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8" appearance="outline">
-                         
+
+                            <!-- <mat-label>Statut</mat-label> -->
                             <mat-select formControlName="statut" matInput id="statut" required
                                 placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
                                 <mat-option value="1">A Valider</mat-option>
-                                <mat-option value="3">A Exporter</mat-option>
+                                <mat-option value="3">Exporté</mat-option>
+                                <mat-option value="16">Prelevement Clôturé</mat-option>
                             </mat-select> 
                         </mat-form-field>
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
+                        <!-- <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
                         [disabled]="(!compteClientForm.valid )|| compteClientForm.get('statut').value === '1' || dataSource.data.length === 0">
                           
                         
                         
                         <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
-                            <span class="ml-2">Exporter</span>
-                        </button>
+                            <span class="ml-2">Valider</span>
+                        </button> -->
                     </form>
                 </div>
             </div>
@@ -130,8 +132,8 @@
                                 </div>
                             </div>
                         </ng-template>
-                        <app-table-data [endpoint]="'remise/entreprise'" [title]="'Liste des Remise'"
-                        [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'reference'"
+                        <app-table-data [endpoint]="'prelevement'" [title]="'Liste des prelevements'"
+                        [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
                         [canClick]="true">
 
 

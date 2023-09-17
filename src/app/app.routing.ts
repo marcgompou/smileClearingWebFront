@@ -99,6 +99,18 @@ export const appRoutes: Route[] = [
                 data: { breadcrumb: 'Charger prélèvement' },
                 loadChildren: () => import('app/modules/admin/prelevement-aller/prelevement-aller.module').then(m => m.PrelevementAllerModule)
             },
+
+            {
+                path: 'validerPrelevement',
+                data: { breadcrumb: 'Valider prélèvement' },
+                loadChildren: () => import('app/modules/admin/valider-prelevement/valider-prelevement.module').then(m => m.PrelevementValiderModule)
+            },
+            {
+                path: 'traitementPrelevement',
+                data: { breadcrumb: 'Traitement prélèvement' },
+                loadChildren: () => import('app/modules/admin/traitement-prelevement/traitement-prelevement.module').then(m => m.TraitementPrelevementModule)
+            },
+            
             {
                 path: 'help-center',
                 data: { breadcrumb: 'Support' },
