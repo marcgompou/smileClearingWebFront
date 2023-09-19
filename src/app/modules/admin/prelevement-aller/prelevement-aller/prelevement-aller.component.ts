@@ -199,6 +199,15 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     return item.id || index;
   }
 
+  clearFile(){
+    this.prelevementForm.get('fichierPrelevement')?.setValue("");
+    this.dataSource.data=[];
+    this._changeDetectorRef.detectChanges();
+    this.headerData={}
+    this.totalData={}
+
+  }
+
   onFileSelected(event: any) {
     
     const selectedFile = event.target.files[0];

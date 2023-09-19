@@ -30,7 +30,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
   // montantTotal:number=0;
   // nombreCheque:number=0;
   // remiseIsInCorrect:boolean=true;
-  nomFichierCharger: string | undefined;
+  nomFichierCharger: string | undefined="";
   nomFichierChargerNormal: string | undefined;
 
   received: Prelevement[] = [];
@@ -159,7 +159,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
   console.log("---------------data--------test-----",data);
 
 
-
+  
 
    this._prelevementRetourService.chargerRetourPrelevement(data).subscribe({
     next: (data) => {
@@ -169,16 +169,19 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       this.headerData.nom = "";
       this.totalData.montant = "0";
       this._changeDetectorRef.detectChanges();
-      
       // Affichage d'un message de succès
       // Vous pouvez ajouter ici un message de succès si nécessaire
     },
     error: (error) => {
-      
+      this.detailsData=[]
       // Affichage d'un message d'erreur
       console.error('Error : ', JSON.stringify(error));
       this.alert = { type: 'error', message: error.error.message ?? error.message };
       this.showAlert = true;
+      this._changeDetectorRef.detectChanges();
+    },
+    complete: () => {
+      this.nomFichierCharger="";
       this._changeDetectorRef.detectChanges();
     }
   });
@@ -199,19 +202,27 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
     return item.id || index;
   }
 
+  clearFile(){
+    this.prelevementForm.get('fichierPrelevement')?.setValue("");
+    this.dataSource.data=[];
+    this._changeDetectorRef.detectChanges();
+    this.headerData={}
+    this.totalData={}
+  }
+
   onFileSelected(event: any) {
     try{
-
+          this.detailsData=[];
           const selectedFile = event.target.files[0];
-        
-          const fileNameWithExtension = selectedFile.name;
-          const fileNameWithoutExtension = fileNameWithExtension.split('.').slice(0, -1).join('.');
-          this.nomFichierCharger = fileNameWithoutExtension;
-
           console.log('Nom du fichier sélectionné :', this.nomFichierCharger);
 
           if (selectedFile) {
-            this.detailsData=[];
+            const selectedFile = event.target.files[0];
+        
+            const fileNameWithExtension = selectedFile.name;
+            const fileNameWithoutExtension = fileNameWithExtension.split('.').slice(0, -1).join('.');
+            this.nomFichierCharger = fileNameWithoutExtension;
+            this.prelevementForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
           
             // Now, you can read the file content or perform other operations with it.
             const fileReader = new FileReader();
@@ -256,7 +267,8 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
           }
       }catch(e){
         console.log(e)
-        this.detailsData=[];
+        this.dataSource.data=[];
+        this._changeDetectorRef.detectChanges();
       }
   }
 

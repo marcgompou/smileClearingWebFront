@@ -29,20 +29,20 @@
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="prelevementForm" (ngSubmit)="onSubmit()">
-                        <mat-form-field appearance="outline"
-                            class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8">
-                            <mat-label>Choisir un fichier</mat-label>
-                            <input matInput formControlName="fichierPrelevement" readonly />
-                            <mat-icon matSuffix (click)="fileInput.click()">folder</mat-icon>
-                            <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" />
-                        </mat-form-field>
-                        <button class="ml-4 mt-4" mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="(!prelevementForm.valid) || detailsData.length==0 ">
-                            <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
-                            <span>Enregistrer</span>
-                        </button>
+                      <mat-form-field appearance="outline" class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8">
+                        <mat-label>Choisir un fichier </mat-label>
+                        <input matInput formControlName="fichierPrelevement"  readonly />
+                        <mat-icon *ngIf="this.prelevementForm.get('fichierPrelevement').value==''" matSuffix (click)="fileInput.click()">folder</mat-icon>
+                        <mat-icon matSuffix (click)="clearFile()" *ngIf="this.prelevementForm.get('fichierPrelevement').value!='' && this.prelevementForm.get('fichierPrelevement').value!=null && this.prelevementForm.get('fichierPrelevement').value!=undefined">clear</mat-icon>
+                        <input type="file" #fileInput (change)="onFileSelected($event)"  accept=".emi ,.rec,.txt"   style="display: none" />
+                      </mat-form-field>
+                      <button class="ml-4 mt-4" mat-flat-button [color]="'primary'" type="submit"
+                      [disabled]="(!prelevementForm.valid) || dataSource.data.length==0 ">
+                      <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
+                      <span>Enregistrer</span>
+                  </button>
                     </form>
-                </div>
+                  </div>
             </div>
             <div class="flex flex-col">
                 <!-- Main -->
