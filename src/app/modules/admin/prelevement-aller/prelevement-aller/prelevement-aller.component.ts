@@ -169,7 +169,8 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
       this.headerData.nom = "";
       this.totalData.montant = "0";
       this._changeDetectorRef.detectChanges();
-      
+      this.clearFile();
+      this.closeAlert();
       // Affichage d'un message de succès
       // Vous pouvez ajouter ici un message de succès si nécessaire
     },
@@ -183,6 +184,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     }
   });
    
+
   }
   
 
