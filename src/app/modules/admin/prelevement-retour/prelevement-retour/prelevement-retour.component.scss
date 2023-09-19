@@ -1,0 +1,7 @@
+/* Align the MatPaginator to the right */
+/* Align the MatPaginator to the right */
+.table-container ::ng-deep .mat-paginator {
+    justify-content: flex-end;
+    display: flex;
+  }
+  

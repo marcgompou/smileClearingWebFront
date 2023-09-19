@@ -361,7 +361,7 @@ export class NavigationService {
                                 title: 'Retour prélèvement',
                                 type: 'basic',
                                 icon: 'heroicons_outline:clipboard-check',
-                                link: '/impressionRemiseExporter',
+                                link: '/traitementRetourPrelevement',
                                 permission: SecService.permissions.ROLE_SCAN
                             },
 

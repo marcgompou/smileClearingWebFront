@@ -112,6 +112,13 @@ export const appRoutes: Route[] = [
             },
             
             {
+                path: 'traitementRetourPrelevement',
+                data: { breadcrumb: 'Retour prélèvement' },
+                loadChildren: () => import('app/modules/admin/prelevement-retour/prelevement-retour.module').then(m => m.PrelevementRetourModule)
+            },
+
+
+            {
                 path: 'help-center',
                 data: { breadcrumb: 'Support' },
                 loadChildren: () => import('app/modules/admin/help-center/help-center.module').then(m => m.HelpCenterModule)
