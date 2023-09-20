@@ -190,14 +190,14 @@ export class NavigationService {
                                 link: '/validerPrelevement',
                                 permission: SecService.permissions.ROLE_SCAN
                             },
-                            {
-                                id: 'impressionPrelevementvalider',
-                                title: 'Impression Prelevement valider',
-                                type: 'basic',
-                                icon: 'heroicons_solid:printer',
-                                link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
+                            // {
+                            //     id: 'impressionPrelevementvalider',
+                            //     title: 'Impression Prelevement valider',
+                            //     type: 'basic',
+                            //     icon: 'heroicons_solid:printer',
+                            //     link: '/impressionRemiseExporter',
+                            //     permission: SecService.permissions.ROLE_SCAN
+                            // },
 
                         ]
                 },
@@ -338,23 +338,23 @@ export class NavigationService {
                                 permission: SecService.permissions.ROLE_SCAN
                             },
 
-                            {
-                                id: 'chargerprelevement',
-                                title: 'Cloturer Prélèvement',
-                                type: 'basic',
-                                icon: 'heroicons_outline:template',
-                                link: '/remiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
+                            // {
+                            //     id: 'chargerprelevement',
+                            //     title: 'Cloturer Prélèvement',
+                            //     type: 'basic',
+                            //     icon: 'heroicons_outline:template',
+                            //     link: '/remiseExporter',
+                            //     permission: SecService.permissions.ROLE_SCAN
+                            // },
 
-                            {
-                                id: 'impressionPrelevementvalider',
-                                title: 'Impression Prelevement exporter',
-                                type: 'basic',
-                                icon: 'heroicons_solid:printer',
-                                link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
+                            // {
+                            //     id: 'impressionPrelevementvalider',
+                            //     title: 'Impression Prelevement exporter',
+                            //     type: 'basic',
+                            //     icon: 'heroicons_solid:printer',
+                            //     link: '/impressionRemiseExporter',
+                            //     permission: SecService.permissions.ROLE_SCAN
+                            // },
 
                             {
                                 id: 'retourPrelevement',
@@ -365,15 +365,7 @@ export class NavigationService {
                                 permission: SecService.permissions.ROLE_SCAN
                             },
 
-                            {
-                                id: 'rattrappagePrelevement',
-                                title: 'Rattrappage prélèvement',
-                                type: 'basic',
-                                icon: 'heroicons_outline:clipboard-check',
-                                link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
-                            },
-
+                          
                             {
                                 id: 'relancePrelevement',
                                 title: 'Relance prélèvement',

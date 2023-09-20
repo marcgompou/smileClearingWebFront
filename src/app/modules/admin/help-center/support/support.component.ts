@@ -63,13 +63,13 @@ export class HelpCenterSupportComponent implements OnInit
     sendForm(): void
     {
         // Send your form here using an http request
-        console.log('Your message has been sent!');
+        console.log('Votre demande a été envoyé!');
 
         // Show a success message (it can also be an error message)
         // and remove it after 5 seconds
         this.alert = {
-            type   : 'success',
-            message: 'Your request has been delivered! A member of our support staff will respond as soon as possible.'
+            type   : 'succesS',
+            message: 'Votre demande a été envoyé ! un membre de l\'équipe vous contactera dans les plus brefs délais.'
         };
 
         setTimeout(() => {

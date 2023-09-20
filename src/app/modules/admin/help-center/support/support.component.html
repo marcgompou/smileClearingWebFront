@@ -9,7 +9,7 @@
                     [routerLink]="['../']"
                     [color]="'primary'">
                     <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
-                    <span class="ml-2">Back to Help Center</span>
+                    <span class="ml-2">Retour au centre d'aide</span>
                 </a>
             </div>
             <div class="mt-2 text-4xl sm:text-7xl font-extrabold tracking-tight leading-tight">
@@ -30,8 +30,8 @@
                     [formGroup]="supportForm"
                     #supportNgForm="ngForm">
                     <div class="mb-6">
-                        <div class="text-2xl font-bold tracking-tight">Submit your request</div>
-                        <div class="text-secondary">Your request will be processed and our support staff will get back to you in 24 hours.</div>
+                        <div class="text-2xl font-bold tracking-tight">Soumettez votre demande</div>
+                        <div class="text-secondary">Votre demande sera traitée et notre équipe d'assistance vous répondra dans les plus brefs délais.</div>
                     </div>
                     <!-- Name -->
                     <mat-form-field class="w-full">
@@ -39,7 +39,7 @@
                             matInput
                             [formControlName]="'name'"
                             [required]="true">
-                        <mat-label>Name</mat-label>
+                        <mat-label>Nom</mat-label>
                         <mat-error *ngIf="supportForm.get('name').hasError('required')">
                             Required
                         </mat-error>
@@ -53,10 +53,10 @@
                             [required]="true">
                         <mat-label>Email</mat-label>
                         <mat-error *ngIf="supportForm.get('email').hasError('required')">
-                            Required
+                            Requis
                         </mat-error>
                         <mat-error *ngIf="supportForm.get('email').hasError('email')">
-                            Enter a valid email address
+                            Entrer une adresse email valide
                         </mat-error>
                     </mat-form-field>
                     <!-- Subject -->
@@ -65,9 +65,9 @@
                             matInput
                             [formControlName]="'subject'"
                             [required]="true">
-                        <mat-label>Subject</mat-label>
+                        <mat-label>objet</mat-label>
                         <mat-error *ngIf="supportForm.get('subject').hasError('required')">
-                            Required
+                            Requis
                         </mat-error>
                     </mat-form-field>
                     <!-- Message -->
@@ -80,7 +80,7 @@
                             matTextareaAutosize></textarea>
                         <mat-label>Message</mat-label>
                         <mat-error *ngIf="supportForm.get('message').hasError('required')">
-                            Required
+                            Requis
                         </mat-error>
                     </mat-form-field>
                     <!-- Actions -->
@@ -90,7 +90,7 @@
                             [color]="'accent'"
                             [disabled]="supportForm.pristine || supportForm.untouched"
                             (click)="clearForm()">
-                            Clear
+                            Annuler
                         </button>
                         <button
                             class="ml-2"
@@ -98,7 +98,7 @@
                             [color]="'primary'"
                             [disabled]="supportForm.pristine || supportForm.invalid"
                             (click)="sendForm()">
-                            Submit
+                            Valider
                         </button>
                     </div>
                 </form>

@@ -31,8 +31,8 @@ export const faqs = [
     {
         id        : 'f65d517a-6f69-4c88-81f5-416f47405ce1',
         categoryId: '28924eab-97cc-465a-ba21-f232bb95843f',
-        question  : 'Is there a 14-days trial?',
-        answer    : 'Magna consectetur culpa duis ad est tempor pariatur velit ullamco aute exercitation magna sunt commodo minim enim aliquip eiusmod ipsum adipisicing magna ipsum reprehenderit lorem magna voluptate magna aliqua culpa.\n\nSit nisi adipisicing pariatur enim enim sunt officia ad labore voluptate magna proident velit excepteur pariatur cillum sit excepteur elit veniam excepteur minim nisi cupidatat proident dolore irure veniam mollit.'
+        question  : 'Problèmes d\'installation et de configuration?',
+        answer    : 'Pour installer et configurer le scanner de chèques, vérifiez que le scanner est correctement branché à l\'alimentation électrique et à l\'ordinateur.\n\n Assurez-vous d\'avoir installé les pilotes et le logiciel appropriés fournis par le fabricant.'
     },
     {
         id        : '0fcece82-1691-4b98-a9b9-b63218f9deef',
