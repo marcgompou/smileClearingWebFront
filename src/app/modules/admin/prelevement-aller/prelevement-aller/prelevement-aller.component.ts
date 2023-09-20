@@ -160,10 +160,11 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
       this.dataSource = new MatTableDataSource<any>([]);
       this.headerData.nom = "";
       this.totalData.montant = "0";
-      this._changeDetectorRef.detectChanges();
-      this.clearFile();
       this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
       this.showAlert = true;
+      this._changeDetectorRef.detectChanges();
+      this.clearFile();
+      
       //this.closeAlert();
       // Affichage d'un message de succès
       // Vous pouvez ajouter ici un message de succès si nécessaire
@@ -203,9 +204,10 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     
     if (this.fileInput) {
       this.fileInput.nativeElement.value = null; // Clear the input value
+    //  closeAlert();
     }
     
-
+    
     this._changeDetectorRef.detectChanges();
   }
 
