@@ -116,6 +116,15 @@ export class AuthSignInComponent implements OnInit {
             );
     }
 
+    reload() {
+        // Remove token and any other authentication-related data (replace with your actual code)
+        localStorage.clear();
+      
+        // Redirect to the login page
+        window.location.href = '/sign-in'; // Replace with the actual URL of your login page
+    }
+
+
 
     /**
      *  Definir un nouveau mot de passe
