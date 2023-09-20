@@ -479,10 +479,11 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
             type: 'success',
             message: response.message
           };
-          this.showAlert = true;
+        
           //Vide le tableau
           this._chequeService.updateDataTable([]);
-          
+  
+      this.showAlert = true;
         },
         error: (error) => {
           console.error('Error : ', JSON.stringify(error));

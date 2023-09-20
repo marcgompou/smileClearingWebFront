@@ -173,6 +173,8 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       this.headerData.nom = "";
       this.totalData.montant = "0";
       this._changeDetectorRef.detectChanges();
+      this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
+      this.showAlert = true;
       // Affichage d'un message de succès
       // Vous pouvez ajouter ici un message de succès si nécessaire
     },
