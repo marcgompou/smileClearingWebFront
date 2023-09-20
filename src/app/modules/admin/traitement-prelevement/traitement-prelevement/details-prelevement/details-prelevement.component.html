@@ -93,7 +93,8 @@
                             [displayedColumns]="displayedColumns" 
                             [dataStructure]="dataStructure" 
                             [idRow]="'id'"
-                            [canClick]="true">
+                         [canClick]="prelevementData?.statut == 13"
+                           >
                         </app-table-data>
 
                     </div>

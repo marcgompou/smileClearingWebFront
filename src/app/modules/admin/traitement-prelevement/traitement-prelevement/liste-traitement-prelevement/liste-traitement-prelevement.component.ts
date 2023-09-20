@@ -160,7 +160,10 @@ this._tableDataService.datas$.subscribe((res:any) => {
       )
       .subscribe();
 
-    
+      this.compteClientForm = this._formBuilder.group({
+        statut: ['3']
+        //mySelect: ['option2'] // Set the default value here
+      });
 
   }
   constructor(

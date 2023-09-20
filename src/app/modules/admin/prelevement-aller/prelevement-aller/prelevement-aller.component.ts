@@ -99,7 +99,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
   //CYCLE DE VIE
   ngOnInit() {
-
+    
   
 
   }
