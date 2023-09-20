@@ -167,12 +167,21 @@ export class DetailsRemiseComponent implements OnInit {
   }
 
   validerRemise(){
-    console.log("valider remise id", this.chequeData);
+    
     this._validerRemiseService.validerRemise(this.chequeData.id).pipe().subscribe({
       next:(response)=>{
           console.log(response);
           this.goBackToList();
-      }
+          this.alert = { type: 'success', message: response.message };
+          this.showAlert = true;
+
+      },
+     error: (error) => {
+       console.error('Error : ', JSON.stringify(error));
+       this.alert = { type: 'error', message: error.error.message??error.message };
+       this.showAlert = true;
+       this._changeDetectorRef.detectChanges();
+     }
     });
   }
 

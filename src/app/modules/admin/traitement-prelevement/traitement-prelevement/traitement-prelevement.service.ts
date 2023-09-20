@@ -50,9 +50,6 @@ export class TraitementPrelevementService {
           })
       );
   }
-
-
-
    //Table data service
 
   updateDataTable(value: any) {
@@ -64,9 +61,7 @@ export class TraitementPrelevementService {
 
     return this._httpClient.put<any>(`${environment.apiUrl}/prelevement/admin/cloture/${idprelevement}`,null).pipe(
       tap((response) => {
-        console.log('testidprelevement======================================');
         console.log(response);
-        //this._remiseAvalides.next(response);
       })
     );
 

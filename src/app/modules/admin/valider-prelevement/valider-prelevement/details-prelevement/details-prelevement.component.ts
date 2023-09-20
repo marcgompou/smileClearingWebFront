@@ -192,7 +192,9 @@ export class DetailsPrelevementComponent implements OnInit {
       next:(response)=>{
           console.log(response);
           this.goBackToList();
+          this.showAlert = true;
       }
+      
     });
   }
 

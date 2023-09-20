@@ -384,43 +384,18 @@ this._tableDataService.datas$.subscribe((res:any) => {
       this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
       this._tableDataService.getDatasByPath().subscribe();
       this._changeDetectorRef.markForCheck();
-
-  } 
+      this.alert = { type: 'success', message: response.message };
+      this.showAlert = true;
+  } ,
+  error: (error) => {
+    console.error('Error : ', JSON.stringify(error));
+    this.alert = { type: 'error', message: error.error.message??error.message };
+    this.showAlert = true;
+    this._changeDetectorRef.detectChanges();
+  }
+  
 }
     )
-
-
-//     {
-//       next: (response:any) => {
-//         console.log("Response===> :", response);
-        
-//         let data:any[]=[];
-//         if(response==null){response=[];}
-//         data=this.getValueByPath(response, this.dataKey);
-     
-
-        
-   
-//         this.dataSource = new MatTableDataSource(data);
-        
-//         this.totalRows=response?.totalCount||data.length;
-//         this.currentPage=response?.page ||0;
-//         this.pageSize=response?.pageSize || 0;
-//         this._changeDetectorRef.markForCheck();
-//       }, 
-//       error: (error) => {
-//         //not show historique
-//         this.showData = false;
-//         console.error('Error : ',JSON.stringify(error));
-//         // Set the alert
-//         this.alert = { type: 'error', message: error.error.message??error.error };
-//         // Show the alert
-//         this.showAlert = true;
-        
-//         this._changeDetectorRef.markForCheck();
-//       }
-//   });
-// }
 
 
   }

@@ -391,22 +391,6 @@ this._tableDataService.datas$.subscribe((res:any) => {
 
   onSubmit() {
 
-    //let listRemises: any[] = [];
-    
-//   this._validerPrelevementService.exporterRemise().pipe(takeUntil(this._unsubscribeAll)).subscribe({
-
-//     next:(response)=>{
-//       console.log(response);
-//       this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
-//       this._tableDataService.getDatasByPath().subscribe();
-//       this._changeDetectorRef.markForCheck();
-
-//   } 
-// }
-//     )
-
-
-
   }
 
 

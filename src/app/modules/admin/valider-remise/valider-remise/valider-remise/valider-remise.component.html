@@ -53,6 +53,7 @@
                                 <mat-option value="3">A Exporter</mat-option>
                             </mat-select> 
                         </mat-form-field>
+                        
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
                         [disabled]="(!compteClientForm.valid )|| compteClientForm.get('statut').value === '1' || dataSource.data.length === 0">
                           
@@ -130,12 +131,10 @@
                                 </div>
                             </div>
                         </ng-template>
+
                         <app-table-data [endpoint]="'remise/entreprise'" [title]="'Liste des Remise'"
                         [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'reference'"
-                        [canClick]="true">
-
-
-
+                        [canClick]="compteClientForm.get('statut').value !== '3'" >
                     </app-table-data>
 
                     </div>
