@@ -30,6 +30,7 @@ import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsRemiseComponent } from '../valider-remise/details-remise/details-remise.component';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 
 
@@ -67,6 +68,7 @@ import { DetailsRemiseComponent } from '../valider-remise/details-remise/details
         TableDataModule,
         DetailsModule,
         MatAutocompleteModule,
+        FuseAlertModule,
         
         RouterModule.forChild(imprimerRemiseRoutes)
 

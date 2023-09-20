@@ -14,6 +14,7 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -42,6 +43,7 @@ registerLocaleData(localeFr, 'fr');
 
         // Layout module of your application
         LayoutModule,
+        FuseAlertModule,
 
         // 3rd party modules that require global configuration via forRoot
         MarkdownModule.forRoot({})

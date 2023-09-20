@@ -20,13 +20,15 @@
                 <ng-container *ngIf="showAlert">
                     <div class="pl-6  pr-0 pt-0 py-0 sm:p-12 sm:pt-0">
                         <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+                        [dismissible]="true"
+                        [dismissed]="false"
+                        [showIcon]="true"
                             [@shake]="alert.type === 'error'">
                             {{ alert.message }}
+                    
+                            
 
-                            <a mat-icon-button [matTooltip]="'Close'" (click)="closeAlert()">
-                                <mat-icon class="flex flex-col" [color]="'primary'"
-                                    [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                            </a>
+                        
                         </fuse-alert>
                     </div>
                 </ng-container>

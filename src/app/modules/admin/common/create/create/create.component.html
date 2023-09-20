@@ -35,18 +35,21 @@
 [appearance]="'outline'"
 [showIcon]="false"
 [type]="alert.type"
-[@shake]="alert.type === 'error'"
->
-{{ alert.message }}
+[dismissible]="true"
+    [dismissed]="false"
+    [showIcon]="true"
+        [@shake]="alert.type === 'error'">
+        {{ alert.message }}
 
-<a 
+        
+<!-- <a 
 mat-icon-button
 [matTooltip]="'Close'"
 (click)="closeAlert()">
 <mat-icon class="flex flex-col"
     [color]="'primary'"
     [svgIcon]="'heroicons_outline:x'"></mat-icon>
-</a>
+</a> -->
 </fuse-alert>
 
           

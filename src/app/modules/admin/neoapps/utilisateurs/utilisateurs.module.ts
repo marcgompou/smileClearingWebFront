@@ -25,6 +25,7 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { utilisateursRoutes } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs.routing';
 import { UtilisateursCreateComponent } from './utilisateurs/create/create.component';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { UtilisateursCreateComponent } from './utilisateurs/create/create.compon
     MatTableModule,
     MatTooltipModule,
     FuseFindByKeyPipeModule,
-    SharedModule
+    SharedModule,
+    FuseAlertModule,
   ]
 })
 export class UtilisateursModule { }

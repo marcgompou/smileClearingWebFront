@@ -15,11 +15,11 @@
                 <!-- alert Fields  class="mt-8 -mb-4"-->
                 <div class="pl-6  pr-6 pt-0 py-0 sm:p-12 sm:pt-0" *ngIf="showAlert">
                     <fuse-alert  [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+                    [dismissible]="true"
+                    [dismissed]="false"
+                    [showIcon]="true"
                         [@shake]="alert.type === 'error'">
                         {{ alert.message }}
-                        <a mat-icon-button [matTooltip]="'Close'" (click)="closeAlert()">
-                            <mat-icon class="flex flex-col" [color]="'primary'" [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                        </a>
                     </fuse-alert>
                 </div>
                 <div *ngFor="let item of staticDatas">

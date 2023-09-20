@@ -30,6 +30,7 @@ import { DetailsModule } from '../common/details/details.module';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DeleteChequeConfirmationComponent } from './remise-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 
 
@@ -70,6 +71,7 @@ import { DeleteChequeConfirmationComponent } from './remise-aller/details-cheque
         CreateModule,
         DetailsModule,
         MatAutocompleteModule,
+        FuseAlertModule,
     
     RouterModule.forChild(remiseRoutes)
 

@@ -31,6 +31,7 @@ import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsRemiseComponent } from '../valider-remise/details-remise/details-remise.component';
 import { DetailsChequeImporterComponent } from './details-cheque-importer/details-cheque-importer.component';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 
 
@@ -67,6 +68,7 @@ import { DetailsChequeImporterComponent } from './details-cheque-importer/detail
         TableDataModule,
         DetailsModule,
         MatAutocompleteModule,
+        FuseAlertModule,
         
         RouterModule.forChild(importerRemiseRoutes)
 

@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsImprimerComponent } from '../imprimer-remise/details-importation/details-imprimer.component';
 import { ListeTraitementPrelevementComponent } from './traitement-prelevement/liste-traitement-prelevement/liste-traitement-prelevement.component';
 import { TraitementPrelevementComponent } from './traitement-prelevement/traitement-prelevement.component';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 
 
@@ -64,6 +65,7 @@ import { TraitementPrelevementComponent } from './traitement-prelevement/traitem
         TableDataModule,
         DetailsModule,
         MatAutocompleteModule,
+        FuseAlertModule,
         RouterModule.forChild(traitementPrelevementRoutes)
   ]
 })

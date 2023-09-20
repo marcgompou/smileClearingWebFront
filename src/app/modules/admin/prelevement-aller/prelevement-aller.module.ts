@@ -21,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 
 
@@ -48,6 +49,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     FuseFindByKeyPipeModule,
     SharedModule,
     MatAutocompleteModule,
+    FuseAlertModule,
     RouterModule.forChild(prelevementAller)
 
   ]

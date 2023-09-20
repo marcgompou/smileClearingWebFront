@@ -206,6 +206,8 @@ export class DetailsChequeImporterComponent implements OnInit {
           if(response?.isDeleted){
               this.goBackToList();
               console.log("delete remise response===>",response)
+              this.alert = { type: 'success', message: response.message };
+              this.showAlert = true;
           }
         },
         error: (error) => {

@@ -1,12 +1,12 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
     <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+    [dismissible]="true"
+    [dismissed]="false"
+    [showIcon]="true"
         [@shake]="alert.type === 'error'">
         {{ alert.message }}
 
-        <a mat-icon-button [matTooltip]="'fermer'" (click)="closeAlert()">
-            <mat-icon class="flex flex-col" [color]="'primary'"
-                [svgIcon]="'heroicons_outline:x'"></mat-icon>
-        </a>
+   
     </fuse-alert>
     <!-- <router-outlet></router-outlet> -->
 
