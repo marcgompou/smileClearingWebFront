@@ -1,12 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl,  FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { WebsocketService } from 'app/core/websocket/websocket.service';
-import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable, startWith } from 'rxjs';
+import { Subject} from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { PrelevementAllerService } from '../prelevement-aller.service';
@@ -27,18 +24,12 @@ import { Prelevement } from '../prelevement-aller.type';
 
 
 export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestroy {
-  // @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
-  drawerMode: 'side' | 'over';
-  pageSizeOptions=[10,25];
   // montantTotal:number=0;
   // nombreCheque:number=0;
   // remiseIsInCorrect:boolean=true;
   nomFichierChargerNormal: string | undefined;
 
-  received: Prelevement[] = [];
-  totalRows = 0;
-  pageSize = 10;
-  currentPage = 0;
+  
   
   /**Prelevement data */
   headerData:any= {};
@@ -46,11 +37,12 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   detailsData:any[]=[]
   /**Prelevement data */
 
+  //Form
+  @ViewChild('fileInput', { static: false }) fileInput: any;
+
+
   /**MatTable */
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  @ViewChild('paginator') paginator: MatPaginator;
-
-  @ViewChild(MatSort) sort: MatSort;
   /**MatTable */
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
@@ -81,6 +73,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
   
   displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant'];
+  totalRows: number;
   
   
 
@@ -139,7 +132,6 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   ngAfterViewInit(): void {
 
     this.dataSource= new MatTableDataSource<any>([]);
-    this.dataSource.paginator = this.paginator;
     this._changeDetectorRef.detectChanges();
   }
 
@@ -202,12 +194,17 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   clearFile(){
-    this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.dataSource.data=[];
-    this._changeDetectorRef.detectChanges();
+    this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.headerData={}
     this.totalData={}
+    
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = null; // Clear the input value
+    }
+    
 
+    this._changeDetectorRef.detectChanges();
   }
 
   onFileSelected(event: any) {

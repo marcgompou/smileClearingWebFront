@@ -33,15 +33,15 @@ export const validerPrelevementRoutes: Route[] =
                 resolve: {
                     data: LoadDataResolver,
                 },
-                data: { breadcrumb: 'Details remise', endpoint: endpointDetails },
-                children: [
-                    {
-                        path: 'details/:id',
-                        component: DetailsChequeComponent,
-                        //canDeactivate: [CanDeactivateDetailsSuivi]
+                data: { breadcrumb: 'Details prélèvement', endpoint: endpointDetails },
+                // children: [
+                //     {
+                //         path: 'details/:id',
+                //         component: DetailsChequeComponent,
+                //         //canDeactivate: [CanDeactivateDetailsSuivi]
 
-                    }
-                ]
+                //     }
+                // ]
             }
         ]
     }

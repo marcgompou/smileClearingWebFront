@@ -47,7 +47,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
   /**MatTable */
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild('paginator') paginator: MatPaginator;
-
+  @ViewChild('fileInput', { static: false }) fileInput: any;
   @ViewChild(MatSort) sort: MatSort;
   /**MatTable */
   alert: { type: FuseAlertType; message: string } = {
@@ -64,9 +64,9 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
 
   prelevementForm : FormGroup;
 
-   dataStructure = [
-    { key: 'codeOperation', label: 'Code Operation' },
-    { key: 'codeEnreg', label: 'Code Enreg' },
+  dataStructure = [
+    // { key: 'codeOperation', label: 'Code Operation' },
+    // { key: 'codeEnreg', label: 'Code Enreg' },
     { key: 'numLigne', label: 'Num. Ligne' },
     { key: 'dateEcheance', label: 'Date Echeance' },
     { key: 'banque', label: 'Banque' },
@@ -74,15 +74,19 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
     { key: 'compteDebite', label: 'Compte Débité' },
     { key: 'nomDebit', label: 'Nom Débit' },
     { key: 'nomBanque', label: 'Nom Banque' },
-    { key: 'libelleOperat', label: 'Libellé Opérat' },
-    { key: 'statut', label: 'Etat prelev.' },
+    { key: 'libelleOperat', label: 'Libellé Opération' },
+    { 
+      key: 'statut', 
+      label: 'Etat prelev.', 
+    },
 
     { key: 'montant', label: 'Montant' }
   ];
 
   
-  displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant','statut'];
+//  displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant','statut'];
   
+  displayedColumns: string[] = ['numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant','statut'];
   
 
   constructor(
@@ -203,11 +207,17 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
   }
 
   clearFile(){
-    this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.dataSource.data=[];
-    this._changeDetectorRef.detectChanges();
+    this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.headerData={}
     this.totalData={}
+    
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = null; // Clear the input value
+    }
+    
+
+    this._changeDetectorRef.detectChanges();
   }
 
   onFileSelected(event: any) {
@@ -409,6 +419,25 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
 
   }
 
+  statusCodeToText(code:number):string{
+
+      switch(code){
+          case 0:
+            return "Payé";
+          case 1:
+            return "Debit interdit";
+          case 4:
+            return "Compte fermé";
+          case 5:
+            return "Debit interdit";
+          case 6:
+            return " Rejeté";
+          default:
+            return "-";
+      }
+    
+  }
+
   extractDetails(data: string) :{codeOperation,
       codeEnreg,numLigne,dateEcheance,
       banque,guichet,compteDebite,
@@ -427,6 +456,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
         const nomBanque = data.substring(57, 74).trim() || null;
         const libelleOperat = data.substring(74, 104).trim();
         const montant = (parseInt(data.substring(104, 116).trim())) || null;
+//        const statut=this.statusCodeToText(parseInt(data.substring(117, 119).trim()) ?? 8);
         const statut=parseInt(data.substring(117, 119).trim()) ?? 8;
         console.log("statut=============>",statut)
         const zoneVide = "zoneVide";

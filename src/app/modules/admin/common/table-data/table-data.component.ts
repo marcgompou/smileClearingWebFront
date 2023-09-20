@@ -94,12 +94,13 @@ export class TableDataComponent  implements OnInit, AfterViewInit  {
   selectedRow(row){
     if(this.canClick){
       this._router.navigate(['./details', row[this.idRow]], { relativeTo: this._activatedRoute });
-     
       this._tableDateService.setData$(row);
       this._changeDetectorRef.markForCheck();
     }
     
   }
+
+  
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -111,8 +112,6 @@ export class TableDataComponent  implements OnInit, AfterViewInit  {
     console.log("evenement--------------------",{ event });
     console.log("paginationObject------------------------",this.paginationObject);
 
-
-    
     this.paginationObject={
 
       size:event.pageSize,
@@ -184,12 +183,7 @@ export class TableDataComponent  implements OnInit, AfterViewInit  {
           let data:any[]=[];
           if(response==null){response=[];}
           data=this.getValueByPath(response, this.dataKey);
-       
-
-          
-     
           this.dataSource = new MatTableDataSource(data);
-          
           this.totalRows=response?.totalCount||data.length;
           this.currentPage=response?.page ||0;
           this.pageSize=response?.pageSize || 0;
@@ -209,40 +203,3 @@ export class TableDataComponent  implements OnInit, AfterViewInit  {
     });
   }
 }
-  /**
-   * Récuperer les données du tableau  de l'objet
-   */
-
-
-  
-//   loadData():void{
-//     // Hide the alert
-//     this.showAlert = false;
-//     this._tableDateService.getDatas(
-//       this.endpoint,this.filterObject,this.paginationObject
-//     ).subscribe({
-//         next: (response:any) => {
-//           console.log("Response :", response);
-//           this.dataSource = new MatTableDataSource(response.data);
-//           this.totalRows=response.totalCount;
-          
-          
-//           this.currentPage=response.page;
-//           this.pageSize=response.pageSize;
-
-//           this._changeDetectorRef.markForCheck();
-//         }, 
-//         error: (error) => {
-//           //not show historique
-//           this.showData = false;
-//           console.error('Error : ',JSON.stringify(error));
-//           // Set the alert
-//           this.alert = { type: 'error', message: error.error.message??error.error };
-//           // Show the alert
-//           this.showAlert = true;
-          
-//           this._changeDetectorRef.markForCheck();
-//         }
-//     });
-//   }
-

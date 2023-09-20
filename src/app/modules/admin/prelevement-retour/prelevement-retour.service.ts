@@ -13,8 +13,7 @@ export class PrelevementRetourService {
   }
 
   chargerRetourPrelevement(data: any):  Observable<any>{
-    return this._httpClient.post<any>(`${environment.apiUrl}/prelevement/`,data)
+    return this._httpClient.put<any>(`${environment.apiUrl}/prelevement/admin/chargementRetour/${data?.prelevementEntete?.nomFichier}`,data)
   }
-
 
 }
