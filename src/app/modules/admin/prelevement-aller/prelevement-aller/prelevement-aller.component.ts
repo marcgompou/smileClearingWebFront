@@ -148,14 +148,10 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
       prelevementTotal: this.totalData
   }
 
-  console.log("---------------data--------test-----",data);
-
-
-
-
+  
    this._prelevementAllerService.createPrelevement(data).subscribe({
     next: (data) => {
-      console.log("---------------data--------test-----", data);
+     
       // Réinitialisation des données du formulaire et de la table
       this.dataSource = new MatTableDataSource<any>([]);
       this.headerData.nom = "";

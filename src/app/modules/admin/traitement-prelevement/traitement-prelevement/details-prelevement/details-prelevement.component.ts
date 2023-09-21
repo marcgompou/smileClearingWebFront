@@ -283,7 +283,7 @@ export class DetailsPrelevementComponent implements OnInit {
             libelle: "Rejeté",
           },
           {
-            value: 0,
+            value: 13,
             libelle: "Reglé",
           }
 

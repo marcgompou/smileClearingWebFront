@@ -160,14 +160,9 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       prelevementTotal: this.totalData
   }
 
-  console.log("---------------data--------test-----",data);
-
-
-  
-
    this._prelevementRetourService.chargerRetourPrelevement(data).subscribe({
     next: (data) => {
-      console.log("---------------data--------test-----", data);
+      this.isLoading = true;
       // Réinitialisation des données du formulaire et de la table
       this.dataSource = new MatTableDataSource<any>([]);
       this.headerData.nom = "";
@@ -175,6 +170,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       this._changeDetectorRef.detectChanges();
       this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
       this.showAlert = true;
+      
       // Affichage d'un message de succès
       // Vous pouvez ajouter ici un message de succès si nécessaire
     },
@@ -189,6 +185,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
     complete: () => {
       this.nomFichierCharger="";
       this._changeDetectorRef.detectChanges();
+      this.isLoading = false;
     }
   });
    
@@ -224,7 +221,8 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
 
   onFileSelected(event: any) {
     try{
-          this.detailsData=[];
+      this.isLoading = true;
+      this.detailsData=[];
           const selectedFile = event.target.files[0];
           console.log('Nom du fichier sélectionné :', this.nomFichierCharger);
 
@@ -277,6 +275,8 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
           } else {
             console.error("No file selected.");
           }
+          this._changeDetectorRef.detectChanges();
+          this.isLoading = false;
       }catch(e){
         console.log(e)
         this.dataSource.data=[];
