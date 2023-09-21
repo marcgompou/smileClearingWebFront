@@ -141,6 +141,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
 
   onSubmit() { 
+    this.showAlert = false;
 
     let data={
       prelevementEntete: this.headerData,
