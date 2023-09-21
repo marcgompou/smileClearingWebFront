@@ -357,7 +357,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       };
     }
      catch(e){
-      console.log(e);
+      console.log("extractHeaderValues=eeee==>",e.message);
         this.headerData= {
           nomFichier : "-" ,
           nomFichierGenerer : "-",
@@ -404,7 +404,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       };
     }
     catch(e){
-      console.log(e);
+      console.log("extractTotalData=eeee==>",e.message);
       this.totalData= {
         codeOperation:"",
         codeEnreg:"",
@@ -440,49 +440,60 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
     
   }
 
-  extractDetails(data: string) :{codeOperation,
-      codeEnreg,numLigne,dateEcheance,
-      banque,guichet,compteDebite,
-      nomDebit,nomBanque,libelleOperat,
-      montant,zoneVide,
-      statut
-  }{
-        const codeOperation = data.substring(0, 2).trim();
-        const codeEnreg = data.substring(2, 3).trim();
-        const numLigne = parseInt(data.substring(3, 8).trim()) || null;
-        const dateEcheance = this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
-        const banque = data.substring(14, 17).trim();
-        const guichet = data.substring(17, 22).trim();
-        const compteDebite = data.substring(22, 33).trim();
-        const nomDebit = data.substring(33, 57).trim();
-        const nomBanque = data.substring(57, 74).trim() || null;
-        const libelleOperat = data.substring(74, 104).trim();
-        const montant = (parseInt(data.substring(104, 116).trim())) || null;
-//        const statut=this.statusCodeToText(parseInt(data.substring(117, 119).trim()) ?? 8);
-        const statut=parseInt(data.substring(117, 119).trim()) ?? 8;
-        console.log("statut=============>",statut)
-        const zoneVide = "zoneVide";
-        return  {
-            codeOperation,
-            codeEnreg,
-            numLigne,
-            dateEcheance,
-            banque,
-            guichet,
-            compteDebite,
-            nomDebit,
-            nomBanque,
-            libelleOperat,
-            montant,
-            zoneVide,
-            statut
-        };
+  extractDetails(data: string) {
+    try {
+      // Extraction des données
+      const codeOperation = data.substring(0, 2).trim();
+      const codeEnreg = data.substring(2, 3).trim();
+      const numLigne = parseInt(data.substring(3, 8).trim()) || null;
+      const dateEcheance = this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
+      const banque = data.substring(14, 17).trim();
+      const guichet = data.substring(17, 22).trim();
+      const compteDebite = data.substring(22, 33).trim();
+      const nomDebit = data.substring(33, 57).trim();
+      const nomBanque = data.substring(57, 74).trim() || null;
+      const libelleOperat = data.substring(74, 104).trim();
+      const montant = parseInt(data.substring(104, 116).trim()) || null;
+      const statut = parseInt(data.substring(117, 119).trim()) || 8;
+  
+      console.log("statut=============>", statut);
+  
+      // Création de l'objet résultant
+      const result = {
+        codeOperation,
+        codeEnreg,
+        numLigne,
+        dateEcheance,
+        banque,
+        guichet,
+        compteDebite,
+        nomDebit,
+        nomBanque,
+        libelleOperat,
+        montant,
+        zoneVide: "zoneVide",
+        statut,
+      };
+  
+      return result;
+    } catch (e) {
+      // En cas d'erreur, renvoyer un objet vide avec des valeurs par défaut
+      console.log("extractDetails=eeee==>", e.message);
+      return {
+        codeOperation: "",
+        codeEnreg: "",
+        numLigne: "",
+        dateEcheance: "",
+        banque: "",
+        guichet: "",
+        compteDebite: "",
+        nomDebit: "",
+        nomBanque: "",
+        libelleOperat: "",
+        montant: "",
+        zoneVide: "",
+        statut: "",
+      };
+    }
   }
-
-
-
-
-
-
-
 }
