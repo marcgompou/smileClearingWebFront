@@ -81,9 +81,16 @@
                                             *matRowDef="let row; columns: displayedColumns;">
                                         </tr>
                                     </table>
-                                    <mat-paginator (page)="onPageChange($event)" #paginator [pageSize]="15"
-                                        [length]="totalRows" showFirstLastButtons>
+                                    <mat-paginator (page)="onPageChange($event)" #paginator [pageSize]="15" [pageIndex]="currentPage"
+                                    [pageSizeOptions]="pageSizeOptions"  [length]="totalRows" showFirstLastButtons  aria-label="Select page">
                                     </mat-paginator>
+
+
+                                    <!-- <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" (pageSize)="pageSize"
+                                    [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+                                </mat-paginator> -->
+
+
                                 </div>
                             </div>
                         </ng-container>
