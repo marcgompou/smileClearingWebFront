@@ -75,6 +75,11 @@
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
+                                    Nombre de prélèvement: {{ (totalRows ? totalRows:0) }}
+                                </span>
+                            </ng-container>
+                            <ng-container>
+                                <span class="inline-block align-middle">
                                     Montant total prélèvement : {{ (totalData?.montant ? totalData?.montant:0) | currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>

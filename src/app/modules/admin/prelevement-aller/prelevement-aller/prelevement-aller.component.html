@@ -58,13 +58,18 @@
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
+                                    Nombre de prélèvement: {{ (totalRows ? totalRows:0) }}
+                                </span>
+                            </ng-container>
+                            <ng-container>
+                                <span class="inline-block align-middle">
                                     Montant total prélèvement : {{ (totalData?.montant ? totalData?.montant:0) |
                                     currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>
                         </div>
                         <!-- DETAILS PRELEVEMENT-->
-                        <ng-container *ngIf="dataSource.filteredData.length >0 else noData">
+                        <ng-container *ngIf=" dataSource != null && dataSource.filteredData.length >0 else noData">
                             <div class="grid overflow-x-auto overflow-y-auto">
                                 <div class="flex flex-col flex-auto mt-2 h-150">
                                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -76,7 +81,8 @@
                                                 element[column] }} </td>
                                         </ng-container>
                                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                                            class="cursor-pointer border-b"></tr>
+                                           
+                                            ></tr>
                                         <tr (click)="selectedRow(row)" mat-row
                                             *matRowDef="let row; columns: displayedColumns;">
                                         </tr>

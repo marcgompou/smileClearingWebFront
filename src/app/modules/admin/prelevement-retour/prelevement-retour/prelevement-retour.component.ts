@@ -210,6 +210,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
     this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.headerData={}
     this.totalData={}
+    this.totalRows = 0;
     
     if (this.fileInput) {
       this.fileInput.nativeElement.value = null; // Clear the input value

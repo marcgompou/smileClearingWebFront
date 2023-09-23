@@ -74,6 +74,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   
   displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant'];
   totalRows: number;
+  nombreprelevement: number;
   
   
 
@@ -198,6 +199,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.headerData={}
     this.totalData={}
+    this.totalRows = 0;
     
     if (this.fileInput) {
       this.fileInput.nativeElement.value = null; // Clear the input value
@@ -350,7 +352,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     const zoneVide2 = data.substring(33, 108).trim();
     const montant =data.substring(104, 116).trim() || null;
     const zoneVide3 = data.substring(116, 128).trim();
-
+    //this.nombreprelevement=data.length;
     this.totalData= {
         codeOperation,
         codeEnreg,

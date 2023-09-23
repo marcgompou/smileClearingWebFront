@@ -1,11 +1,19 @@
-.mat-column-style {
-  /* Use 'min-width' instead of 'width' to allow the cell to expand based on content */
-  min-width: 150px; /* You can adjust the minimum width as needed */
+.table-container ::ng-deep .mat-paginator {
+  justify-content: flex-end;
+  display: flex;
 }
-.mat-header-style {
-  /* Use 'min-width' instead of 'width' to allow the cell to expand based on content */
-  min-width: 200px; /* You can adjust the minimum width as needed */
-}
+
+
+
+
+// .mat-column-style {
+//   /* Use 'min-width' instead of 'width' to allow the cell to expand based on content */
+//   min-width: 50px; /* You can adjust the minimum width as needed */
+// }
+// .mat-header-style {
+//   /* Use 'min-width' instead of 'width' to allow the cell to expand based on content */
+//   min-width: 200px; /* You can adjust the minimum width as needed */
+// }
 
 
 /* Custom CSS for Material Table */
@@ -26,6 +34,22 @@
   background-color: #f9fafb;
 }
 
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////
+
+
+
+
+
 .mat-row:nth-child(odd) {
   background-color: #f7fafc;
 }
@@ -40,6 +64,14 @@
   border-top-color: #e2e8f0;
   background-color: #f9fafb;
 }
+
+
+
+//////////////////////////////////////////
+
+
+
+
 
 /* Custom styles for pagination */
 .mat-paginator {
