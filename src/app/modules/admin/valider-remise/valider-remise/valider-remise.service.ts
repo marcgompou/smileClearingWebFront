@@ -10,9 +10,12 @@ import { Remise } from '../remise.type';
 export class ValiderRemiseService {
   // private _remise: BehaviorSubject<Remise | null> = new BehaviorSubject(null);
   private _remises: BehaviorSubject<Remise[] | null> = new BehaviorSubject(null);
+  private _remise: BehaviorSubject<Remise | null> = new BehaviorSubject(null);
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _remiseAvalides: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
-  
+  private _remiseByReference: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
+  private _remiseChequesByReference: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
+ 
 
   /**
    * Constructor
@@ -22,8 +25,8 @@ export class ValiderRemiseService {
 
  
   // Getter for the observable
-  get remise$(): Observable<any[]> {
-    return this._remises.asObservable();
+  get remise$(): Observable<any> {
+    return this._remise.asObservable();
   }
 
   get titulaire$(): Observable<any[]> {
@@ -33,6 +36,10 @@ export class ValiderRemiseService {
   get remiseAvalides$(): Observable<any[]> {
     return this._remiseAvalides.asObservable();
   }
+
+  // get $(): Observable<any> {
+  //   return this._remise.asObservable();
+  // }
   // Setter to update the array
   public setRemise$(newArray: Remise[]): void {
     this._remises.next(newArray);
@@ -47,26 +54,6 @@ export class ValiderRemiseService {
   /**
    * Getter for utilisateurs
    */
-  // getRemiseById(numChq: string): Observable<Remise> {
-  //   console.log('-------------------numchq--------------------', numChq);
-  //   return this._remises.pipe(
-  //     take(1),
-  //     map((remise) => {
-  //       // Trouver le chèque par son numéro
-  //       console.log('----------------------------remise-----------', remise);
-  //       const cheque = remise.find(item => item.numChq === numChq) || null;
-
-  //       // Mettre à jour la remise si nécessaire (optionnel)
-  //       this._remise.next(cheque);
-
-  //       if (!cheque) {
-  //         throw new Error('Impossible de trouver le chèque avec le numéro ' + numChq + ' !');
-  //       }
-  //       console.log('---------------------------------------', cheque);
-  //       return cheque;
-  //     })
-  //   );
-  // }
 
 
   getRemiseAvalider(): Observable<any>
@@ -79,6 +66,33 @@ export class ValiderRemiseService {
           })
       );
   }
+
+
+  getRemisesChequeByReference(idRemise:string): Observable<any>
+  {
+      return this._httpClient.get<any>(`${environment.apiUrl}/remise/cheques/${idRemise}`).pipe(
+          tap((response) => {
+            console.log('test============idRemisetring==========================');
+            console.log(response);
+              this._remiseChequesByReference.next(response);
+          })
+      );
+  }
+
+  getRemisesByReference(idRemise:string): Observable<any>
+  {
+      return this._httpClient.get<any>(`${environment.apiUrl}/remise/${idRemise}`).pipe(
+          tap((response) => {
+            console.log('test============getRemisesByReference==========================', response);
+            console.log(response);
+              this._remise.next(response);
+          })
+      );
+  }
+
+  
+
+  
 
 
 

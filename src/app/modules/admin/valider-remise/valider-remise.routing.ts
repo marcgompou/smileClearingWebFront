@@ -6,9 +6,10 @@ import { DetailsRemiseComponent } from './details-remise/details-remise.componen
 import { LoadDetailsResolver } from '../common/details/details.resolvers';
 import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsChequeComponent } from '../remise-aller/remise-aller/details-cheque/details-cheque.component';
+import { LoadDataRemiseByReferenceResolver } from './valider-remise/valider-remise.resolver';
 
 const endpoint = "remise/entreprise";
-const endpointDetails = "remise";
+const endpointDetails = "remise/cheques";
 
 export const validerRemiseRoutes: Route[] =
 [
@@ -29,6 +30,7 @@ export const validerRemiseRoutes: Route[] =
                 component: DetailsRemiseComponent,
                 resolve: {
                     data: LoadDataResolver,
+                    remiseData: LoadDataRemiseByReferenceResolver,
                 },
                 data: { breadcrumb: 'Details remise', endpoint: endpointDetails },
                 children: [

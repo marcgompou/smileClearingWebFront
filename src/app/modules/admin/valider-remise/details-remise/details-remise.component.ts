@@ -53,6 +53,7 @@ export class DetailsRemiseComponent implements OnInit {
     message: ''
   };
   chequeData: any;
+
   showAlert: boolean = false;
 
 
@@ -133,6 +134,14 @@ export class DetailsRemiseComponent implements OnInit {
       this.chequeData=response;
     })
 
+this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+  console.log("details remise remise response=======>",response)
+  this.remiseData=response;
+
+  console.log("details remise remise r88888esponse=======>",this.remiseData)
+})
+
+
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];
       console.log("id in details", this.id);
@@ -168,13 +177,12 @@ export class DetailsRemiseComponent implements OnInit {
 
   validerRemise(){
     
-    this._validerRemiseService.validerRemise(this.chequeData.id).pipe().subscribe({
+    this._validerRemiseService.validerRemise(this.remiseData.data.remise.id).pipe().subscribe({
       next:(response)=>{
           console.log(response);
           this.goBackToList();
           this.alert = { type: 'success', message: response.message };
           this.showAlert = true;
-
       },
      error: (error) => {
        console.error('Error : ', JSON.stringify(error));
@@ -227,6 +235,7 @@ export class DetailsRemiseComponent implements OnInit {
 
   openDetailComponent(component: DetailsChequeComponent) {
 
+   console.log("chequeData----------------exp",this.chequeData);
     component.matDrawer = this.matDrawer;
     component.formTitle = "DETAILS CHEQUE";
     component.chequeData = this.chequeData;

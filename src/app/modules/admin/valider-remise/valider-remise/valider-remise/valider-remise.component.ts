@@ -63,9 +63,6 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
   showAlert: boolean = false;
 
   public dataStructure = [
-
-
-   
     {
       "key": "reference",
       "label": "Reference"
@@ -73,7 +70,8 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
 
     {
       "key": "dateCreation",
-      "label": "Date de creation"
+      "label": "Date de creation",
+      "type":"date"
     },
     {
       "key": "numCompte",
@@ -86,10 +84,7 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
     {
       "key": "mtTotal",
       "label": "Montant Total"
-
     },
-   
-
   ];
 
   public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal'];
@@ -148,7 +143,6 @@ this._tableDataService.datas$.subscribe((res:any) => {
         statut: ['1']
         //mySelect: ['option2'] // Set the default value here
       });
-
   }
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
@@ -158,27 +152,16 @@ this._tableDataService.datas$.subscribe((res:any) => {
     private _tableDataService:TableDataService,
     private _router: Router,
     private _validerRemiseService:ValiderRemiseService,
-
-
   ) {
-
-
-
   }
-
-
-
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   }
   selectedRow(row) {
-
     const index = this.dataSource.data.indexOf(row);
     this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
     this._changeDetectorRef.markForCheck();
     this.remiseData = row;
-
-
   }
 
   updateList(newMatTable: MatTableDataSource<any>) {
@@ -194,83 +177,6 @@ this._tableDataService.datas$.subscribe((res:any) => {
 
   }
 
-  // openDetailComponent(component: DetailsRemiseComponent) {
-
-  //   component.matDrawer = this.matDrawer;
-  //   component.formTitle = "CHEQUE";
-  //   //component.chequeData = this.remiseData;
-  //   //Initialisation formulaire details
-  //   component.formFields = [
-  //     {
-  //       key: "id",
-  //       libelle: "Identifiant de Remise",
-  //       validators: {
-  //         min: 7,
-  //         max: 7,
-  //         required: true
-  //       }
-  //     },
-  //     {
-  //       key: "codeBanque",
-  //       libelle: "Code Banque",
-  //       placeholder: "Ex: CI131",
-  //       validators: {
-  //         min: 5,
-  //         max: 5,
-  //         required: true,
-  //       }
-  //     },
-  //     {
-  //       key: "codeAgence",
-  //       libelle: "Code Agence",
-  //       placeholder: "Ex: 01001",
-  //       validators: {
-  //         min: 5,
-  //         max: 5,
-  //         required: true
-  //       }
-  //     },
-
-  //     {
-  //       key: "compte",
-  //       libelle: "Compte",
-  //       validators: {
-  //         min: 12,
-  //         max: 12,
-  //         required: true
-  //       }
-  //     },
-  //     {
-  //       key: "cleRib",
-  //       libelle: "Cle Rib",
-  //       validators: {
-  //         min: 2,
-  //         max: 50,
-  //         required: true
-  //       }
-
-  //     },
-  //     {
-  //       key: "montant",
-  //       libelle: "Montant",
-  //       type: "number",
-  //       validators: {
-  //         minValue: 1000,
-  //         min: 1,
-  //         max: 11,
-  //         required: true
-  //       }
-
-  //     },
-  //     {
-  //       key: "tire",
-  //       libelle: "Titulaire",
-  //       validators: {
-  //         max: 50
-  //       }
-  //     }
-  //   ]
-  // }
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['./'], { relativeTo: this._activatedRoute });
@@ -422,9 +328,6 @@ this._tableDataService.datas$.subscribe((res:any) => {
   closeDetails(): void {
     this.selectedRemise = null;
   }
-
-
-
   toggleDetails(numChq: string): void {
     // If the product is already selected...
     if (this.selectedRemise && this.selectedRemise.numChq === numChq) {
