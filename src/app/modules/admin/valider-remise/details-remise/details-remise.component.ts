@@ -130,15 +130,18 @@ export class DetailsRemiseComponent implements OnInit {
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des remise de tableData common
     this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details cheque remise response=======>",response)
+      console.log("details cheque 7777 remise response=======>",response)
       this.chequeData=response;
+     // this.openDetailComponent( this.chequeData );
+   //   this.openDetailComponent(new DetailsChequeComponent( this.chequeData, this._router, this._dialog, this._changeDetectorRef));
+      this._changeDetectorRef.markForCheck();
+
     })
 
 this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
   console.log("details remise remise response=======>",response)
   this.remiseData=response;
 
-  console.log("details remise remise r88888esponse=======>",this.remiseData)
 })
 
 
@@ -235,7 +238,7 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
 
   openDetailComponent(component: DetailsChequeComponent) {
 
-   console.log("chequeData----------------exp",this.chequeData);
+   console.log("openDetailComponent----------------",this.chequeData);
     component.matDrawer = this.matDrawer;
     component.formTitle = "DETAILS CHEQUE";
     component.chequeData = this.chequeData;
