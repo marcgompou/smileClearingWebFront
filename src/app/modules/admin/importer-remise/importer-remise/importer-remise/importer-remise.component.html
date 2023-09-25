@@ -49,7 +49,7 @@
 
 
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                              [disabled]="(!entrepriseForm.valid ) || dataSource.data.length==0 ">
+                              >
                          
                             <mat-icon [svgIcon]="'mat_solid:arrow_downward'"></mat-icon>
                             <span class="ml-2">Importer</span>
@@ -81,7 +81,7 @@
                         
                     <app-table-data [endpoint]="'exportation'" [title]="'Liste des exportations'"
                     [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
-                    [canClick]="false">
+                    [canClick]="true">
                     </app-table-data> 
 
                     </div>
