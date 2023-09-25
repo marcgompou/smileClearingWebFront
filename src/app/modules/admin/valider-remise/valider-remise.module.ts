@@ -31,6 +31,7 @@ import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsImprimerComponent } from '../imprimer-remise/details-importation/details-imprimer.component';
 import { FuseAlertModule } from '@fuse/components/alert';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 
@@ -45,6 +46,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
   exports:[DetailsRemiseComponent],
   imports: [
     CommonModule,
+    NgApexchartsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,

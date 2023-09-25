@@ -31,6 +31,8 @@ export class HomeComponent implements OnInit, OnDestroy
   chartWeeklyExpenses: ApexOptions = {};
   chartMonthlyExpenses: ApexOptions = {};
   chartYearlyExpenses: ApexOptions = {};
+  chartConversions: ApexOptions = {};
+  
   data: any;
   selectedProject: string = 'BRIDGE COLLECT';
   private _unsubscribeAll: Subject<any> = new Subject<any>();
