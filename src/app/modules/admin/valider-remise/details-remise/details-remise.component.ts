@@ -238,12 +238,14 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
 
   openDetailComponent(component: DetailsChequeComponent) {
 
-   console.log("openDetailComponent----------------",this.chequeData);
-    component.matDrawer = this.matDrawer;
+    console.log("openDetailComponent----------------",this.chequeData);
+    component.matDrawer = this?.matDrawer;
     component.formTitle = "DETAILS CHEQUE";
     component.chequeData = this.chequeData;
     //Endpoint pour supprimer un cheque
     component.endpoint="remise/suppression/cheque";
+    close();
+    
     //Initialisation formulaire details
     component.formFields = [
       {
@@ -276,15 +278,7 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
         }
       },
 
-      // {
-      //   key: "compte",
-      //   libelle: "Compte",
-      //   validators: {
-      //     min: 12,
-      //     max: 12,
-      //     required: true
-      //   }
-      // },
+     
       {
         key: "cleRib",
         libelle: "Cle Rib",
@@ -312,7 +306,16 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
           max: 50
         }
       }
-    ]
-  }
+    ];
+   
+   
+  };
+ 
+  //this._changeDetectorRef.markForCheck();
+  //this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+   //component.matDrawer = this.matDrawer;
+  //this._changeDetectorRef.markForCheck(); 
+
+  
 
 }

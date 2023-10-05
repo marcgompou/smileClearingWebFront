@@ -40,6 +40,7 @@ export class NavigationService {
             subtitle: '',
             type: 'group',
             icon: 'heroicons_outline:home',
+            //permission: SecService.permissions.ROLE_VALIDATION,
             children: [
 
                 {
@@ -48,7 +49,7 @@ export class NavigationService {
                     type: 'basic',
                     link: '/home',
                     icon: 'heroicons_outline:home',
-                    permission: SecService.permissions.ROLE_SCAN,
+                   permission: SecService.permissions.ROLE_VALIDATION,
 
                 },
 
@@ -71,7 +72,7 @@ export class NavigationService {
                     title: 'Création Remise',
                     type: 'collapsable',
                     icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_SCAN,
+                    permission: SecService.permissions.ROLE_CREATION,
                     children:
                         [
                             {
@@ -81,7 +82,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
                                 link: '/remise',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_CREATION
                             },
                             {
                                 id: 'creerRemiseEffet',
@@ -89,7 +90,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
                                 link: '/remiseeffet',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_CREATION
                             },
 
                         ]
@@ -101,7 +102,7 @@ export class NavigationService {
                     title: 'Valider Remise',
                     type: 'collapsable',
                     icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_SCAN,
+                    permission: SecService.permissions.ROLE_VALIDATION,
                     children:
                         [
                             {
@@ -110,7 +111,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
                                 link: '/validerRemise',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_VALIDATION
                             },
                             {
                                 id: 'imprimerRemise',
@@ -118,7 +119,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_solid:printer',
                                 link: '/imprimerRemise',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_VALIDATION
                             },
                         ]
                 },
@@ -149,7 +150,7 @@ export class NavigationService {
                     title: 'Prélèvement',
                     type: 'collapsable',
                     icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_SCAN,
+                    permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
                     children:
                         [
 
@@ -159,7 +160,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
                                 link: '/chargerPrelevement',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT
                             },
                             {
                                 id: 'impressionPrelevement',
@@ -167,7 +168,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_solid:printer',
                                 link: '/impressionPrelevement',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT
                             },
 
                         ]
@@ -178,7 +179,7 @@ export class NavigationService {
                     title: 'Valider Prélèvement',
                     type: 'collapsable',
                     icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_SCAN,
+                    permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
                     children:
                         [
 
@@ -188,7 +189,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
                                 link: '/validerPrelevement',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_VALID_PRELEVEMENT
                             },
                             // {
                             //     id: 'impressionPrelevementvalider',
@@ -218,6 +219,8 @@ export class NavigationService {
             subtitle: '',
             type: 'group',
             icon: 'heroicons_outline:home',
+            
+            permission: SecService.permissions.ROLE_VISUALISATION,
             children: [
 
 
@@ -229,6 +232,7 @@ export class NavigationService {
                     subtitle: '',
                     type: 'collapsable',
                     icon: 'heroicons_outline:support',
+                    permission: SecService.permissions.ROLE_VISUALISATION,
                     children: [
 
                         {
@@ -237,7 +241,7 @@ export class NavigationService {
                             type: 'basic',
                             //    icon : 'heroicons_outline:support',
                             link: '/help-center',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_VISUALISATION
                         },
 
                         {
@@ -246,7 +250,7 @@ export class NavigationService {
                             type: 'basic',
                             //icon : 'heroicons_outline:support',
                             link: '/help-center/faqs',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_VISUALISATION
                         },
 
                         {
@@ -255,7 +259,7 @@ export class NavigationService {
                             type: 'basic',
                             // icon : 'heroicons_outline:support',
                             link: '/help-center/guides',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_VISUALISATION
                         },
                         {
                             id: 'help-centersupport',
@@ -263,7 +267,7 @@ export class NavigationService {
                             type: 'basic',
                             //icon : 'heroicons_outline:clipboard-check',
                             link: '/help-center/support',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_VISUALISATION
                         },
 
 
@@ -290,7 +294,7 @@ export class NavigationService {
                     title: 'Importer Remise',
                     type: 'collapsable',
                     icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_EXPORT,
+                    permission: SecService.permissions.ROLE_ADMIN,
                     children:
                         [
 
@@ -300,7 +304,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
                                 link: '/importerRemise',
-                                permission: SecService.permissions.ROLE_EXPORT
+                                permission: SecService.permissions.ROLE_ADMIN
                             },
                             {
                                 id: 'imprimerRemiseImporter',
@@ -308,7 +312,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_solid:printer',
                                 link: '/imprimerRemiseImporter',
-                                permission: SecService.permissions.ROLE_EXPORT
+                                permission: SecService.permissions.ROLE_ADMIN
                             },
                             {
                                 id: 'impressionCheque',
@@ -316,7 +320,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_solid:printer',
                                 link: '/impressionCheque',
-                                permission: SecService.permissions.ROLE_EXPORT
+                                permission: SecService.permissions.ROLE_ADMIN
                             },
                         ]
                 },
@@ -325,7 +329,7 @@ export class NavigationService {
                     title: 'Manager Prélèvement',
                     type: 'collapsable',
                     icon: 'heroicons_outline:document',
-                    permission: SecService.permissions.ROLE_SCAN,
+                    permission: SecService.permissions.ROLE_ADMIN,
                     children:
                         [
 
@@ -335,26 +339,10 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:template',
                                 link: '/traitementPrelevement',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_ADMIN
                             },
 
-                            // {
-                            //     id: 'chargerprelevement',
-                            //     title: 'Cloturer Prélèvement',
-                            //     type: 'basic',
-                            //     icon: 'heroicons_outline:template',
-                            //     link: '/remiseExporter',
-                            //     permission: SecService.permissions.ROLE_SCAN
-                            // },
-
-                            // {
-                            //     id: 'impressionPrelevementvalider',
-                            //     title: 'Impression Prelevement exporter',
-                            //     type: 'basic',
-                            //     icon: 'heroicons_solid:printer',
-                            //     link: '/impressionRemiseExporter',
-                            //     permission: SecService.permissions.ROLE_SCAN
-                            // },
+                           
 
                             {
                                 id: 'retourPrelevement',
@@ -362,7 +350,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:clipboard-check',
                                 link: '/traitementRetourPrelevement',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_ADMIN
                             },
 
                           
@@ -372,7 +360,7 @@ export class NavigationService {
                                 type: 'basic',
                                 icon: 'heroicons_outline:clipboard-check',
                                 link: '/impressionRemiseExporter',
-                                permission: SecService.permissions.ROLE_SCAN
+                                permission: SecService.permissions.ROLE_ADMIN
                             },
 
                         ]
@@ -383,8 +371,6 @@ export class NavigationService {
 
 
         },
-
-
 
         {
             id: 'smilecheckweb-parametre',
@@ -407,7 +393,7 @@ export class NavigationService {
                             type: 'basic',
                             //    icon : 'heroicons_outline:support',
                             link: '/help-center',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 
                         {
@@ -416,7 +402,7 @@ export class NavigationService {
                             type: 'basic',
                             //icon : 'heroicons_outline:support',
                             link: '/help-center/faqs',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 
 
@@ -439,7 +425,7 @@ export class NavigationService {
                             type: 'basic',
                             //    icon : 'heroicons_outline:support',
                             link: '/parametre',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 
                         {
@@ -448,7 +434,7 @@ export class NavigationService {
                             type: 'basic',
                             //icon : 'heroicons_outline:support',
                             link: '/parametreUser',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 
                         {
@@ -457,7 +443,7 @@ export class NavigationService {
                             type: 'basic',
                             //icon : 'heroicons_outline:support',
                             link: '/parametreCompte',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 
                         {
@@ -466,7 +452,7 @@ export class NavigationService {
                             type: 'basic',
                             //icon : 'heroicons_outline:support',
                             link: '/parametreAgence',
-                            permission: SecService.permissions.ROLE_SCAN
+                            permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 
 

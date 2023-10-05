@@ -37,6 +37,7 @@ export const validerRemiseRoutes: Route[] =
                     {
                         path: 'details/:id',
                         component: DetailsChequeComponent,
+                        
                         //canDeactivate: [CanDeactivateDetailsSuivi]
 
                     }

@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDrawer, MatDrawerToggleResult } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +23,7 @@ import { DeleteChequeConfirmationComponent } from './delete-confirmation/delete-
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations
 })
-export class DetailsChequeComponent implements OnInit {
+export class DetailsChequeComponent implements OnInit,OnDestroy {
   @Input() chequeData: any;
   @Input() matDrawer!: MatDrawer;
   @Input() formFields!: any;
@@ -43,6 +43,7 @@ export class DetailsChequeComponent implements OnInit {
   //Tableau de cheque scanner dans le component de création de cheque
   tableData: any[];
   constructor(
+    
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -54,6 +55,12 @@ export class DetailsChequeComponent implements OnInit {
   ) { }
   ngOnChanges(changes: SimpleChanges): void {
     throw new Error('Method not implemented.');
+  }
+
+  ngOnDestroy(): void
+  {
+      // Unsubscribe from all subscriptions
+      this._unsubscribeAll.next(null);
   }
   form: FormGroup;
   _fieldClass = "flex flex-col ";
@@ -80,17 +87,29 @@ export class DetailsChequeComponent implements OnInit {
     })
     this.getTitulaire(this.chequeData)
     this.setupFieldListeners();
+
     
     
     //Details service ngOnInit
-    this._remiseService.remise$.pipe(takeUntil(this._unsubscribeAll)
+    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
       next: (table) => {
         this.tableData = table;
+        this.chequeData = table;
+        this.formFields.forEach(field => { 
+          console.log("fields in details=====>", field),
+          this.form.patchValue({
+            [field.key]: this.chequeData[field.key]
+          })
+        });
+        
 
-        console.log("table data in details=====>", this.tableData)
+        this._changeDetectorRef.markForCheck();
+
+        console.log("table data in details=====>", this.tableData)     
       }
     });
+this._changeDetectorRef.markForCheck();
 
   }
 
@@ -181,7 +200,7 @@ export class DetailsChequeComponent implements OnInit {
       });
     }
 
-
+    this._changeDetectorRef.markForCheck();
   }
 
  /**
