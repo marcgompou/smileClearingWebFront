@@ -61,6 +61,8 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
   {
       // Unsubscribe from all subscriptions
       this._unsubscribeAll.next(null);
+      this._unsubscribeAll.complete();
+      
   }
   form: FormGroup;
   _fieldClass = "flex flex-col ";
