@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -28,6 +28,7 @@ import {remise} from './example_remise';
 
 export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+  @Input() formFields!: any;
   drawerMode: 'side' | 'over';
   noData: any;
   chequeData: any;
@@ -43,6 +44,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
+  
 
   title = 'socketrv';
   command = 'StartScanner';
@@ -178,7 +180,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-
+form: FormGroup;
 
 
   
@@ -211,6 +213,15 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe();
 
+      
+
+      // this.formFields.forEach(field => { 
+      //            console.log("fields in details=====>", field),
+      //             this.form.patchValue({
+      //                [field.key]: this.chequeData[field.key]
+      //              })
+      //           });
+
     this._chequeService.remise$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
       next: (table) => {
@@ -226,6 +237,16 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.montantTotal=table.reduce((total, obj) => total + obj.montant, 0);
           this.nombreCheque=table.length;
+
+          // this.chequeData = table;
+          //          this.formFields.forEach(field => { 
+          //           console.log("fields in details=====>", field),
+          //           this.form.patchValue({
+          //             [field.key]: this.chequeData[field.key]
+          //           })
+          //         });
+          this._changeDetectorRef.markForCheck();
+
         }else{
 
           this.montantTotal=0;
@@ -473,7 +494,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log("chqObjectVERIF-------------",listCheques);
 
     
-      this._chequeService.create({idCompte:idCompteClient, cheques:listCheques}).subscribe({
+      this._chequeService.create({idCompte:idCompteClient, cheques:listCheques}).pipe(takeUntil(this._unsubscribeAll)).subscribe({
         next: (response) => {
           this.alert = {
             type: 'success',
@@ -564,6 +585,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     return item.id || index;
   }
 
+  
 
   toggleDetails(numChq: string): void {
     // If the product is already selected...
@@ -574,7 +596,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // // Get the product by id
-    this._chequeService.getChequeById(numChq)
+    this._chequeService.getChequeById(numChq).pipe(takeUntil(this._unsubscribeAll))
       .subscribe((cheque) => {
 
         // Set the selected product

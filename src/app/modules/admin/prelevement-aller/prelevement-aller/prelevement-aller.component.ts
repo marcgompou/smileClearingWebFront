@@ -173,6 +173,8 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
       console.error('Error : ', JSON.stringify(error));
       this.alert = { type: 'error', message: error.error.message ?? error.message };
       this.showAlert = true;
+      
+      
       this._changeDetectorRef.detectChanges();
     }
   });
@@ -323,6 +325,10 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   }
  // const dateEmission = convertDateToDateTime(dateStr);
   extractHeaderValues(headerLine: string) {
+
+    const compteCrediteRaw = headerLine.substring(22, 33).trim();
+    const compteCredite = compteCrediteRaw[0] === '0' ? compteCrediteRaw.substring(1) : compteCrediteRaw;
+    const dateOperStartIndex = compteCrediteRaw[0] === '0' ? 64 : 63;
      this.headerData = {
       nomFichier : this.nomFichierCharger ,
       nomFichierGenerer : "nomParDefaut",
@@ -332,10 +338,11 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
       dateEmission: this.convertDateToDateTime(headerLine.substring(8, 14).trim()),
       banque: headerLine.substring(14, 17).trim(),
       guichet: headerLine.substring(17, 22).trim(),
-      compteCredite: headerLine.substring(22, 33).trim(),
+      compteCredite: compteCredite,
       nom: headerLine.substring(33, 57).trim(),
       codeEmeteur: headerLine.substring(57, 62).trim(),
-      dateOper:  this.convertDateToDateTime(headerLine.substring(63, 69).trim()),
+      //dateOper:  this.convertDateToDateTime(headerLine.substring(63, 69).trim()),
+      dateOper: this.convertDateToDateTime(headerLine.substring(dateOperStartIndex, dateOperStartIndex + 6).trim()),
       zoneVide: "zoneVide",
       
     };

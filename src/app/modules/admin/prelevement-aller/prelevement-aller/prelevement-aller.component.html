@@ -35,7 +35,7 @@
                         <input matInput formControlName="fichierPrelevement"  readonly />
                         <mat-icon *ngIf="this.prelevementForm.get('fichierPrelevement').value==''" matSuffix (click)="fileInput.click()">folder</mat-icon>
                         <mat-icon matSuffix (click)="clearFile()" *ngIf="this.prelevementForm.get('fichierPrelevement').value!='' && this.prelevementForm.get('fichierPrelevement').value!=null && this.prelevementForm.get('fichierPrelevement').value!=undefined">clear</mat-icon>
-                        <input type="file" #fileInput (change)="onFileSelected($event)"  accept=".emi ,.rec,.txt"   style="display: none" />
+                        <input type="file" #fileInput (change)="onFileSelected($event)"  accept=".emi ,.rec,.txt,.prn"   style="display: none" />
                       </mat-form-field>
                       <button class="ml-4 mt-4" mat-flat-button [color]="'primary'" type="submit"
                       [disabled]="(!prelevementForm.valid) || dataSource.data.length==0 ">

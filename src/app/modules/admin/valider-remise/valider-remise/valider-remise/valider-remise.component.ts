@@ -112,7 +112,9 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit() {
 
     
-this._tableDataService.datas$.subscribe((res:any) => {
+this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
+  takeUntil(this._unsubscribeAll),
+
   console.log ("res-----------", res.data.length);
   this.dataSource = new MatTableDataSource(res.data);
  
@@ -259,7 +261,7 @@ this._tableDataService.datas$.subscribe((res:any) => {
     this.statut = event.value?event.value:"0";
       console.log('Valeur sélectionnée :', this.statut);
       this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
-      this._tableDataService.getDatasByPath().subscribe();
+      this._tableDataService.getDatasByPath().pipe(takeUntil(this._unsubscribeAll)).subscribe();
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence
     }
@@ -291,7 +293,7 @@ this._tableDataService.datas$.subscribe((res:any) => {
     next:(response)=>{
       console.log(response);
       this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
-      this._tableDataService.getDatasByPath().subscribe();
+      this._tableDataService.getDatasByPath() .pipe(takeUntil(this._unsubscribeAll)).subscribe();
       this._changeDetectorRef.markForCheck();
       this.alert = { type: 'success', message: response.message };
       this.showAlert = true;

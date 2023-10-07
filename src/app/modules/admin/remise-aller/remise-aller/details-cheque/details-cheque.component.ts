@@ -13,6 +13,7 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 import { BigNumber } from 'bignumber.js';
 import { img } from '../creer-remise/image';
 import { Cheque } from '../../cheque.type';
+import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { DeleteChequeConfirmationComponent } from './delete-confirmation/delete-cheque-confirmation.component';
 
 @Component({
@@ -49,6 +50,8 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
     private formBuilder: FormBuilder,
     private _changeDetectorRef: ChangeDetectorRef,
     private _tableDataService: TableDataService,
+    
+    private _fuseMediaWatcherService: FuseMediaWatcherService,
     private _remiseService: CreerRemiseService,
     public _dialog: MatDialog,
 
@@ -93,27 +96,37 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
     
     
     //Details service ngOnInit
-    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)
-    ).subscribe({
-      next: (table) => {
-        this.tableData = table;
-        this.chequeData = table;
-        this.formFields.forEach(field => { 
-          console.log("fields in details=====>", field),
-          this.form.patchValue({
-            [field.key]: this.chequeData[field.key]
-          })
-        });
-        
+//     this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)
+//     ).subscribe({
+//       next: (table) => {
+//         this.tableData = table;
+//         this.chequeData = table;
+//         this.formFields.forEach(field => { 
+//           console.log("fields in details=====>", field),
+//           this.form.patchValue({
+//             [field.key]: this.chequeData[field.key]
+//           })
+//         });
+//         this._changeDetectorRef.markForCheck();
+//         console.log("table data in details=====>", this.tableData)     
+//       }
+//     });
+// this._changeDetectorRef.markForCheck();
+//   }
 
-        this._changeDetectorRef.markForCheck();
+this._remiseService.remise$.pipe(takeUntil(this._unsubscribeAll)
+).subscribe({
+  next: (table) => {
+    this.tableData = table;
 
-        console.log("table data in details=====>", this.tableData)     
-      }
-    });
-this._changeDetectorRef.markForCheck();
-
+    console.log("table data in details=====>", this.tableData)
   }
+});
+
+}
+
+  
+
 
 
   getTitulaire(chequeData:any){
@@ -349,13 +362,8 @@ supprimer(): void {
               });
             }else{
 
-
-              
             }
-            // this.closeForm();
-            // if(this._noCheck){
-            //   this.goBackToListCheck();
-            // }
+          
         }
             
       },
