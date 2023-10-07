@@ -132,6 +132,7 @@ export class DetailsRemiseComponent implements OnInit {
     this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("details cheque 7777 remise response=======>",response)
       this.chequeData=response;
+      
      // this.openDetailComponent( this.chequeData );
    //   this.openDetailComponent(new DetailsChequeComponent( this.chequeData, this._router, this._dialog, this._changeDetectorRef));
       this._changeDetectorRef.markForCheck();

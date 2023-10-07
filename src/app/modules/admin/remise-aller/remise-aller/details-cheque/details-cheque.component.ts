@@ -87,7 +87,7 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
         this._changeDetectorRef.detectChanges();
 
       }
-      console.log("id in details", this.id);
+      console.log("id in details cheque*****", this.id);
 
     })
     this.getTitulaire(this.chequeData)
@@ -96,32 +96,35 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
     
     
     //Details service ngOnInit
-//     this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)
+//      this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)
 //     ).subscribe({
-//       next: (table) => {
-//         this.tableData = table;
-//         this.chequeData = table;
+//        next: (table) => {
+//          this.tableData = table;
+//          this.chequeData = table;
 //         this.formFields.forEach(field => { 
 //           console.log("fields in details=====>", field),
 //           this.form.patchValue({
 //             [field.key]: this.chequeData[field.key]
-//           })
-//         });
-//         this._changeDetectorRef.markForCheck();
+//            })
+//          });
+//          this._changeDetectorRef.markForCheck();
 //         console.log("table data in details=====>", this.tableData)     
-//       }
-//     });
-// this._changeDetectorRef.markForCheck();
-//   }
+//        }
+//      });
+//  this._changeDetectorRef.markForCheck();
+   
 
-this._remiseService.remise$.pipe(takeUntil(this._unsubscribeAll)
-).subscribe({
-  next: (table) => {
-    this.tableData = table;
+ this._remiseService.remise$.pipe(takeUntil(this._unsubscribeAll)
+ ).subscribe({
+   next: (table) => {
+     this.tableData = table;
 
-    console.log("table data in details=====>", this.tableData)
-  }
-});
+     console.log("table data in details=====>", this.tableData)
+   }
+ });
+
+ 
+
 
 }
 
