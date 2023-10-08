@@ -66,15 +66,15 @@ export class DetailsRemiseComponent implements OnInit {
       "key": "codeBanque",
       "label": "Code banque"
     },
-    {
-      "key": "titulaire",
-      "label": "Titulaire"
-
-    },
+   
     {
       "key": "agence",
       "label": "Code agence"
 
+    },
+    {
+      "key": "compte",
+      "label": "Compte"
     },
     {
       "key": "cleRib",
@@ -87,17 +87,23 @@ export class DetailsRemiseComponent implements OnInit {
 
     },
 
+    {
+      "key": "titulaire",
+      "label": "Titulaire"
+
+    },
+
 
   ];
 
 
 
-  public displayedColumns: string[] = ["numChq","codeBanque","titulaire","agence","cleRib","montant",];
+  public displayedColumns: string[] = ["numChq","codeBanque","agence","compte","cleRib","montant","titulaire",];
 
 
   onBackdropClicked(): void {
     // Go back to the list
-    this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+    this._router.navigate(['./'], { relativeTo: this._activatedRoute });
 
     // Mark for check
     this._changeDetectorRef.markForCheck();
@@ -105,6 +111,7 @@ export class DetailsRemiseComponent implements OnInit {
 
   goBackToList(): void {
     // Go back to the list
+    this.matDrawer.close();
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
 
     // Mark for check
@@ -132,7 +139,7 @@ export class DetailsRemiseComponent implements OnInit {
     this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("details cheque 7777 remise response=======>",response)
       this.chequeData=response;
-      
+
      // this.openDetailComponent( this.chequeData );
    //   this.openDetailComponent(new DetailsChequeComponent( this.chequeData, this._router, this._dialog, this._changeDetectorRef));
       this._changeDetectorRef.markForCheck();
@@ -161,22 +168,22 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
   });
 
   // Subscribe to media changes
-  this._fuseMediaWatcherService.onMediaChange$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(({matchingAliases}) => {
-          // Set the drawerMode if the given breakpoint is active
-          if ( matchingAliases.includes('lg') )
-          {
-              this.drawerMode = 'side';
-          }
-          else
-          {
-              this.drawerMode = 'over';
-          }
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
-      }
-  );
+  // this._fuseMediaWatcherService.onMediaChange$
+  //     .pipe(takeUntil(this._unsubscribeAll))
+  //     .subscribe(({matchingAliases}) => {
+  //         // Set the drawerMode if the given breakpoint is active
+  //         if ( matchingAliases.includes('lg') )
+  //         {
+  //             this.drawerMode = 'side';
+  //         }
+  //         else
+  //         {
+  //             this.drawerMode = 'over';
+  //         }
+  //         // Mark for check
+  //         this._changeDetectorRef.markForCheck();
+  //     }
+  // );
   }
 
   validerRemise(){
@@ -215,6 +222,9 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
             }
         }
     );
+
+    
+
     deleteObjectDialog.afterClosed().subscribe({
         next:(response)=>{
 
@@ -222,6 +232,7 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
           if(response?.isDeleted){
               this.goBackToList();
               console.log("delete remise response===>",response)
+              this._changeDetectorRef.detectChanges();
           }
         },
         error: (error) => {
@@ -236,7 +247,7 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
 
   }
 
-
+  
   openDetailComponent(component: DetailsChequeComponent) {
 
     console.log("openDetailComponent----------------",this.chequeData);
@@ -275,6 +286,16 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
         validators: {
           min: 5,
           max: 5,
+          required: true
+        }
+      },
+
+      {
+        key: "compte",
+        libelle: "Numero Compte",
+        validators: {
+          min: 12,
+          max: 12,
           required: true
         }
       },

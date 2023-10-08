@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,7 +22,7 @@ interface filterForm {
 //AJOUTER DANS  APPMODULE   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
 
 
-export class TableDataComponent  implements OnInit, AfterViewInit  {
+export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
 
  
 
@@ -100,6 +100,18 @@ export class TableDataComponent  implements OnInit, AfterViewInit  {
     
   }
 
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+   // 
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+    
+    //this._tableDateService.datas.next([]);  
+
+  }
   
 
   ngAfterViewInit() {

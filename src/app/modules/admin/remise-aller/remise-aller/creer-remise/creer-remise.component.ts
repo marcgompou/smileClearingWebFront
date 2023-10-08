@@ -14,6 +14,8 @@ import { DetailsChequeComponent } from '../details-cheque/details-cheque.compone
 import { FuseAlertType } from '@fuse/components/alert';
 import {img} from './image';
 import {remise} from './example_remise';
+import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
 @Component({
   selector: 'app-creer-remise',
@@ -131,7 +133,10 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     private _formBuilder: UntypedFormBuilder,
     private _chequeService: CreerRemiseService,
     private _activatedRoute: ActivatedRoute,
-    private _router: Router) 
+    private _router: Router,
+    public _tableDateService: TableDataService,
+    private _fuseMediaWatcherService: FuseMediaWatcherService,) 
+    
     {
       
       
@@ -259,6 +264,24 @@ form: FormGroup;
       }
     });
 
+    // this._fuseMediaWatcherService.onMediaChange$
+    //         .pipe(takeUntil(this._unsubscribeAll))
+    //         .subscribe(({matchingAliases}) => {
+
+    //             // Set the drawerMode if the given breakpoint is active
+    //             if ( matchingAliases.includes('lg') )
+    //             {
+    //                 this.drawerMode = 'side';
+    //             }
+    //             else
+    //             {
+    //                 this.drawerMode = 'over';
+    //             }
+
+    //             // Mark for check
+    //             this._changeDetectorRef.markForCheck();
+    //         });
+
   }
 
 
@@ -377,6 +400,7 @@ form: FormGroup;
     this._changeDetectorRef.markForCheck();
   }
 
+  
 
   loadCompte(){
     this._chequeService.compteEntreprises$.pipe(takeUntil(this._unsubscribeAll)
@@ -471,8 +495,6 @@ form: FormGroup;
    
     
     if(this.compteClientForm.valid && ! this.remiseIsInCorrect){
-
-    
     let idCompteClient=this.compteClientForm.value.idCompteClient;
     let listCheques:any[] = [];
 
@@ -503,8 +525,10 @@ form: FormGroup;
         
           //Vide le tableau
           this._chequeService.updateDataTable([]);
-  
+          console.log("enregistrer chq======>",this._chequeService);
+          this.received = [];// Réinitialise le tableau
       this.showAlert = true;
+   // this._tableDateService.datas.next([]);  
         },
         error: (error) => {
           console.error('Error : ', JSON.stringify(error));

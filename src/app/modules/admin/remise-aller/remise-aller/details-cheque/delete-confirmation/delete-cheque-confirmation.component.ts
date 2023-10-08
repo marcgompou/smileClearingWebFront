@@ -78,11 +78,12 @@ export class DeleteChequeConfirmationComponent {
 
     this.alert = {
       type: 'success',
-      message: "Supprimession effectuée."
+      message: "Suppression effectuée."
     };
     this.showAlert = true;
     this.isLoading = false;
     this._dialog.close({isDeleted:true});
+    
 
     //NotifyDialog
     this.openNotifyDialog();

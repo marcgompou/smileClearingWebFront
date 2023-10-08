@@ -16,7 +16,7 @@
 
         <mat-drawer class="w-full md:w-160 dark:bg-gray-900" 
         [mode]="drawerMode" [opened]="false" [position]="'end'"
-            [disableClose]="true" #matDrawer>
+            [disableClose]="false" #matDrawer>
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
         </mat-drawer>
 
@@ -88,7 +88,7 @@
 
                         <!-- TABLEAU DES CHEQUES-->
                         <app-table-data 
-                            [endpoint]="'remise/cheques'+id" 
+                            [endpoint]="'remise/cheques/'+id" 
                             [title]="'Liste des Remise'"
                             [dataKey]="'data.cheques'"
                             [displayedColumns]="displayedColumns" 

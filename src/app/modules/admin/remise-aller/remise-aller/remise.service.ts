@@ -8,7 +8,7 @@ import { Cheque, CompteEntreprises } from '../cheque.type';
   providedIn: 'root'
 })
 export class CreerRemiseService {
-  private _remise: BehaviorSubject<Cheque | null> = new BehaviorSubject(null);
+  public _remise: BehaviorSubject<Cheque | null> = new BehaviorSubject(null);
   private _remises: BehaviorSubject<Cheque[] | null> = new BehaviorSubject(null);
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _compteEntreprises: BehaviorSubject<CompteEntreprises[] | null> = new BehaviorSubject(null);

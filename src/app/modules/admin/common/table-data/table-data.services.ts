@@ -6,7 +6,7 @@ import { environment } from 'environments/environment';
 @Injectable({
     providedIn: 'root'
 })
-export class TableDataService {
+export class  TableDataService {
 
     /**
      * Constructor
@@ -14,7 +14,7 @@ export class TableDataService {
     constructor(private _httpClient: HttpClient) { }
 
 
-    private datas: BehaviorSubject<any[] | null> = new BehaviorSubject(null);
+    public datas: BehaviorSubject<any[] | null> = new BehaviorSubject(null);
     private data: BehaviorSubject<any | null> = new BehaviorSubject(null);
     public _endpoint: String; //endpoint
     public _paginationObject: any;

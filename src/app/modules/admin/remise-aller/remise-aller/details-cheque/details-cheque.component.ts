@@ -24,7 +24,7 @@ import { DeleteChequeConfirmationComponent } from './delete-confirmation/delete-
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations
 })
-export class DetailsChequeComponent implements OnInit,OnDestroy {
+export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
   @Input() chequeData: any;
   @Input() matDrawer!: MatDrawer;
   @Input() formFields!: any;
@@ -56,8 +56,15 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
     public _dialog: MatDialog,
 
   ) { }
+  
+
   ngOnChanges(changes: SimpleChanges): void {
-    throw new Error('Method not implemented.');
+    if (changes.chequeData && !changes.chequeData.firstChange) {
+      // Gérer le changement dans chequeData
+      this.getTitulaire(changes.chequeData.currentValue);
+      console.log("chequeData in details cheque*****", this.chequeData);
+      // Des logiques ou des actions supplémentaires en fonction des changements peuvent être ajoutées ici
+    }
   }
 
   ngOnDestroy(): void
@@ -80,12 +87,12 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
     this.setupFormFields();
 
   
-    this._activatedRoute.params.subscribe(params => {
+    this._activatedRoute.params.pipe(takeUntil(this._unsubscribeAll)).subscribe(params => {
       this.id = params['id'];
       if(this.id=="-1"){
         this.closeForm();
         this._changeDetectorRef.detectChanges();
-
+        
       }
       console.log("id in details cheque*****", this.id);
 
@@ -122,15 +129,7 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
      console.log("table data in details=====>", this.tableData)
    }
  });
-
- 
-
-
 }
-
-  
-
-
 
   getTitulaire(chequeData:any){
     this._remiseService.getTire(chequeData).subscribe({
@@ -321,6 +320,7 @@ export class DetailsChequeComponent implements OnInit,OnDestroy {
     // this.form.disable();
     // Reset the form
     // this.loadData();
+    this.closeForm();
 
     this._changeDetectorRef.detectChanges();
   }
@@ -353,18 +353,25 @@ supprimer(): void {
                   console.log("check size==>",rep.data.cheques.length)
                   if(rep.data.cheques.length==0){
                    // this._noCheck=true;
-                    this.closeForm();
+                    
                     this.goBackToListCheck();
+                    this.closeForm();
+                    this._changeDetectorRef.markForCheck();
+                  }
+                  else{
+                    this.closeForm();
+                    this._changeDetectorRef.markForCheck();
                   }
                 },
                 error:(error)=>{
                   console.log(error)
                   this.closeForm();
+                  this._changeDetectorRef.markForCheck();
                 }
 
               });
             }else{
-
+              this.closeForm();
             }
           
         }
@@ -471,7 +478,7 @@ supprimer(): void {
     try {
       console.log("******chequeDto*******", chequeDto);
       const Codebanque: string | null = chequeDto.codeBanque;
-      const Agence: string | null = chequeDto.codeAgence;
+      const Agence: string | null = chequeDto.codeAgence??chequeDto.agence;
       const NumCompte: string | null = chequeDto.compte;
       const cleRib: string | null = chequeDto.cleRib;
 
@@ -498,7 +505,7 @@ supprimer(): void {
       console.log("******bigCleRib*******", bigCleRib);
       console.log("******num97*******", num97);
       console.log("******mod*******", mod);
-      console.log("******calculCleRib*******", calculCleRib);
+      console.log("******calculCleRib *******", calculCleRib);
 
       // return true if calculated rib is not correct else false
       return !calculCleRib.isEqualTo(bigCleRib);
