@@ -370,6 +370,7 @@ supprimer(): void {
                 }
 
               });
+              
             }else{
               this.closeForm();
             }

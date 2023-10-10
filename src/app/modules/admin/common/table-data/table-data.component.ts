@@ -105,12 +105,9 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-   // 
+   // this._tableDateService.datas.next([]);  
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
-    
-    //this._tableDateService.datas.next([]);  
-
   }
   
 

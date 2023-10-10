@@ -120,7 +120,7 @@ export class CreerRemiseService {
 
   getTire(chequeData: any): Observable<any> {
     const {
-      codeBanque, codeAgence, compte
+      codeBanque, codeAgence, compte,agence
     } = chequeData
 
     console.log("codeBanque-------", codeBanque);
@@ -129,7 +129,7 @@ export class CreerRemiseService {
 
     let params = new HttpParams()
       .set('codeBanque', codeBanque ?? "_")
-      .set('agence', codeAgence ?? "_")
+      .set('agence', codeAgence ?? agence ?? "_")
       .set('numCompte', compte ?? "_");
 
     return this._httpClient.get<any>(`${environment.apiUrl}/titulaires?`, { params });

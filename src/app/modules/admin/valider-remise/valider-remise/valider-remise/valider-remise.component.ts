@@ -114,7 +114,7 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
     
 this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
   takeUntil(this._unsubscribeAll),
-
+          
   console.log ("res-----------", res.data.length);
   this.dataSource = new MatTableDataSource(res.data);
  

@@ -1,7 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
+import { ExtraOptions, PreloadAllModules, RouteReuseStrategy, RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { FuseModule } from '@fuse';
 import { FuseConfigModule } from '@fuse/services/config';
@@ -15,11 +15,15 @@ import { appRoutes } from 'app/app.routing';
 import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
 import { FuseAlertModule } from '@fuse/components/alert';
+import { CustomRouteReuseStrategy } from './custom-route-reuse-strategy'; // Importez votre stratégie personnalisée
+
 
 const routerConfig: ExtraOptions = {
-    preloadingStrategy       : PreloadAllModules,
+  //  preloadingStrategy       : PreloadAllModules,
     scrollPositionRestoration: 'enabled'
 };
+
+
 
 
 registerLocaleData(localeFr, 'fr');
@@ -31,7 +35,7 @@ registerLocaleData(localeFr, 'fr');
     imports     : [
         BrowserModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot(appRoutes, routerConfig),
+        RouterModule.forRoot(appRoutes),
 
         // Fuse, FuseConfig & FuseMockAPI
         FuseModule,
@@ -52,7 +56,8 @@ registerLocaleData(localeFr, 'fr');
         AppComponent
     ],
 
-    providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+    providers: [{ provide: LOCALE_ID, useValue: 'fr' } ,  { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }, // Utilisez votre stratégie personnalisée
+],
 })
 export class AppModule
 {

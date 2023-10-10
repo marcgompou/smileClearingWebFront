@@ -150,7 +150,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
       _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
 
       if (msg.action === "neoEtat") {
-        this.scannerIsConnected = msg.result === "demarré";
+        this.scannerIsConnected = msg.result != 'Deconnecté';
       }
       // CHargement du tableau des chèques dans la creation de remise
       else {
@@ -193,7 +193,12 @@ form: FormGroup;
   //CYCLE DE VIE
   ngOnInit() {
 
-  
+    this._activatedRoute.params.subscribe(params => {
+      // Effectuez le rechargement du composant en fonction des paramètres
+      this.reloadComponent(params);
+    });
+
+
   
     //getCompteByEntreprise();
     this.loadCompte();
@@ -284,7 +289,9 @@ form: FormGroup;
 
   }
 
-
+reloadComponent(params: any): void {
+    // Effectuez le rechargement en fonction des paramètres ici
+  }
   
 
   closeAlert() {
@@ -592,7 +599,7 @@ form: FormGroup;
     let message = {
       action: 'SCAN',
       command: '',
-      result: ''
+      result: 'demarré'
     }
 
     this.sent.push(message);

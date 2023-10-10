@@ -146,9 +146,13 @@ export class DetailsRemiseComponent implements OnInit {
 
     })
 
+
 this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
   console.log("details remise remise response=======>",response)
   this.remiseData=response;
+  //this.montantTotal=this.remiseData.data.remise.reduce((total, obj) => total + obj.montant, 0);
+ // remiseData.data.remise
+  this._changeDetectorRef.markForCheck();
 
 })
 
