@@ -12,11 +12,12 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { DetailsChequeComponent } from '../details-cheque/details-cheque.component';
 import { FuseAlertType } from '@fuse/components/alert';
+import { RouterModule, Routes, ExtraOptions } from '@angular/router';
 import {img} from './image';
 import {remise} from './example_remise';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
-
+//import {RemiseRoutingModule} from './remise-aller.routing';
 @Component({
   selector: 'app-creer-remise',
   templateUrl: './creer-remise.component.html',
@@ -269,23 +270,23 @@ form: FormGroup;
       }
     });
 
-    // this._fuseMediaWatcherService.onMediaChange$
-    //         .pipe(takeUntil(this._unsubscribeAll))
-    //         .subscribe(({matchingAliases}) => {
+    this._fuseMediaWatcherService.onMediaChange$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(({matchingAliases}) => {
 
-    //             // Set the drawerMode if the given breakpoint is active
-    //             if ( matchingAliases.includes('lg') )
-    //             {
-    //                 this.drawerMode = 'side';
-    //             }
-    //             else
-    //             {
-    //                 this.drawerMode = 'over';
-    //             }
+                // Set the drawerMode if the given breakpoint is active
+                if ( matchingAliases.includes('lg') )
+                {
+                    this.drawerMode = 'side';
+                }
+                else
+                {
+                    this.drawerMode = 'over';
+                }
 
-    //             // Mark for check
-    //             this._changeDetectorRef.markForCheck();
-    //         });
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
 
   }
 
@@ -559,6 +560,7 @@ reloadComponent(params: any): void {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
+    console.log("unsubscribe");
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

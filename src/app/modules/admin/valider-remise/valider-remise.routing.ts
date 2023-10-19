@@ -24,6 +24,7 @@ export const validerRemiseRoutes: Route[] =
                 resolve: {
                     data: LoadDataResolver,
                 },
+                data: { onSameUrlNavigation: 'reload' }, // Ajout de la stratégie "reload"
             },
             {
                 path: 'details/:id',
@@ -37,8 +38,9 @@ export const validerRemiseRoutes: Route[] =
                     {
                         path: 'details/:id',
                         component: DetailsChequeComponent,
-                        
+                        data: { onSameUrlNavigation: 'reload' }, // Ajout de la stratégie "reload"
                         //canDeactivate: [CanDeactivateDetailsSuivi]
+                        
 
                     }
                 ]
@@ -46,3 +48,5 @@ export const validerRemiseRoutes: Route[] =
         ]
     }
 ]
+      
+

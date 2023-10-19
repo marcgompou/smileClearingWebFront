@@ -3,7 +3,8 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { NoAuthGuard } from './core/auth/guards/noAuth.guard';
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 // @formatter:off
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */

@@ -4,36 +4,27 @@ import { DetailsChequeComponent } from './remise-aller/details-cheque/details-ch
 import { RemiseAllerComponent } from './remise-aller/remise-aller.component';
 import { LoadDataCompteEntrepriseResolver } from './remise-aller/remise-aller.resolver';
 
+
 export const remiseRoutes: Route[] = [
-    {
+  {
+    path: '',
+    component: RemiseAllerComponent,
+    children: [
+      {
         path: '',
-        component: RemiseAllerComponent,
-       
-
+        component: CreerRemiseComponent,
+        resolve: {
+          data: LoadDataCompteEntrepriseResolver,
+        },
+        data: { onSameUrlNavigation: 'reload' }, // Ajout de la stratégie "reload"
         children: [
-            {
-                path: '',
-                component: CreerRemiseComponent,
-                resolve: {
-                    data: LoadDataCompteEntrepriseResolver,
-                },
-
-                
-                children: [
-                    {
-                        path: 'details/:id',
-                        component: DetailsChequeComponent
-                    }
-                ]
-
-                
-
-            }
-
-
-
-        ]
-    }
-
-]
-//LoadDataCompteEntrepriseResolver
+          {
+            path: 'details/:id',
+            component: DetailsChequeComponent,
+            data: { onSameUrlNavigation: 'reload' }, // Ajout de la stratégie "reload"
+          },
+        ],
+      },
+    ],
+  },
+];

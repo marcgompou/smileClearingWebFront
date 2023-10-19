@@ -72,6 +72,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
         DetailsModule,
         MatAutocompleteModule,
         FuseAlertModule,
+        
     
     RouterModule.forChild(remiseRoutes)
 

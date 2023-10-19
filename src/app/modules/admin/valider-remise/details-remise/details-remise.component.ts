@@ -167,27 +167,29 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
       if ( !opened )
       {
           // Mark for check
+          
           this._changeDetectorRef.markForCheck();
       }
   });
 
-  // Subscribe to media changes
-  // this._fuseMediaWatcherService.onMediaChange$
-  //     .pipe(takeUntil(this._unsubscribeAll))
-  //     .subscribe(({matchingAliases}) => {
-  //         // Set the drawerMode if the given breakpoint is active
-  //         if ( matchingAliases.includes('lg') )
-  //         {
-  //             this.drawerMode = 'side';
-  //         }
-  //         else
-  //         {
-  //             this.drawerMode = 'over';
-  //         }
-  //         // Mark for check
-  //         this._changeDetectorRef.markForCheck();
-  //     }
-  // );
+  //Subscribe to media changes
+  this._fuseMediaWatcherService.onMediaChange$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(({matchingAliases}) => {
+          // Set the drawerMode if the given breakpoint is active
+          if ( matchingAliases.includes('lg') )
+          {
+              this.drawerMode = 'side';
+          }
+          else
+          {
+              this.drawerMode = 'over';
+          }
+          // Mark for check
+          
+          this._changeDetectorRef.markForCheck();
+      }
+  );
   }
 
   validerRemise(){
@@ -337,10 +339,11 @@ this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscri
    
   };
  
-  //this._changeDetectorRef.markForCheck();
-  //this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
-   //component.matDrawer = this.matDrawer;
-  //this._changeDetectorRef.markForCheck(); 
+  
+  // this._changeDetectorRef.markForCheck();
+  // this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+  //  component.matDrawer = this.matDrawer;
+  // this._changeDetectorRef.markForCheck(); 
 
   
 
