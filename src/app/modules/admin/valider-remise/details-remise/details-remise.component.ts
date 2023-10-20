@@ -118,6 +118,14 @@ export class DetailsRemiseComponent implements OnInit {
     this._changeDetectorRef.markForCheck();
   }
 
+
+  goBackToList2(): void {
+  
+    this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+
+    // Mark for check
+    this._changeDetectorRef.markForCheck();
+  }
   getColumnHeaderText(column: string): string {
     //  console.log("column===>",column)
     let found = this.dataStructure.find(e => e.key == column);
@@ -147,15 +155,31 @@ export class DetailsRemiseComponent implements OnInit {
     })
 
 
-this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+// this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+//   console.log("details remise remise response=======>",response)
+//   this.remiseData=response;
+//   //this.montantTotal=this.remiseData.data.remise.reduce((total, obj) => total + obj.montant, 0);
+//  // remiseData.data.remise
+//   this._changeDetectorRef.markForCheck(); data.remise.mtTotal
+// })
+
+
+this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
   console.log("details remise remise response=======>",response)
-  this.remiseData=response;
-  //this.montantTotal=this.remiseData.data.remise.reduce((total, obj) => total + obj.montant, 0);
- // remiseData.data.remise
+  
+ 
+ this.remiseData=response;
+ if (this.remiseData?.data?.remise== undefined ) {
+   
+  this.montantTotal=0;
+ // this.goBackToList2();
+ // this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+ }
+ else   {
+  this.montantTotal=this.remiseData.data.remise.mtTotal;
+  }
   this._changeDetectorRef.markForCheck();
-
 })
-
 
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];

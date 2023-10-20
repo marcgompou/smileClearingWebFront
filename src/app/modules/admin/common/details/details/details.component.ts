@@ -208,6 +208,7 @@ toggleEditMode(editMode: boolean | null = null): void
               endpoint:this.endpoint
             }
         }
+
     );
     deleteObjectDialog.afterClosed().subscribe({
 
@@ -217,10 +218,14 @@ toggleEditMode(editMode: boolean | null = null): void
           if(response?.isDeleted){
               this._tableDataService.getDatas().pipe().subscribe();
               this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
-              this.matDrawer.close();
-          }
               
+              this.matDrawer.close();
+             
+          }
+         // this._detaisService.refreshTable(this.endpoint);
+          this._changeDetectorRef.markForCheck();
         },
+        
         error: (error) => {
           console.error('Error : ', JSON.stringify(error));
           this.alert = { type: 'error', message: error.error.message??error.message };

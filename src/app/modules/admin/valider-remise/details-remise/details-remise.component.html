@@ -45,15 +45,18 @@
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <!-- <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()"> -->
                     <form>
-                        <button class="ml-4" type="'button'" (click)="goBackToList()" mat-stroked-button [color]="'accent'">
+                        <button class="ml-4" type="'button'" 
+                       
+                           
+                        (click)="goBackToList()" mat-stroked-button [color]="'accent'">
                             <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
                             <span class="ml-2">Retour</span>
                         </button>
-                        <button class="ml-4" mat-flat-button [color]="'warn'" (click)="supprimerRemise()">
+                        <button class="ml-4" mat-flat-button [color]="'warn'" (click)="supprimerRemise()"  [disabled]="montantTotal==0">
                             <mat-icon [svgIcon]="'mat_solid:delete'"></mat-icon>
                             <span class="ml-2">Supprimer</span>
                         </button>
-                        <button class="ml-4" mat-flat-button [color]="'primary'" (click)="validerRemise()">
+                        <button class="ml-4" mat-flat-button [color]="'primary'" (click)="validerRemise()"  [disabled]="montantTotal==0">
                             <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
                             <span class="ml-2">Valider</span>
                         </button>
@@ -78,7 +81,7 @@
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Montant total : {{ remiseData.data.remise.mtTotal | currency:'CFA':'symbol':'1.0-2' }}
+                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>
                         </div>

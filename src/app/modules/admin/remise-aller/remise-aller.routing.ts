@@ -9,12 +9,14 @@ export const remiseRoutes: Route[] = [
   {
     path: '',
     component: RemiseAllerComponent,
+    data: { onSameUrlNavigation: 'reload' }, 
     children: [
       {
         path: '',
         component: CreerRemiseComponent,
         resolve: {
           data: LoadDataCompteEntrepriseResolver,
+
         },
         data: { onSameUrlNavigation: 'reload' }, // Ajout de la stratégie "reload"
         children: [

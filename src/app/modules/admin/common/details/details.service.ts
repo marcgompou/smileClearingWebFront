@@ -49,6 +49,17 @@ export class DetailsService {
     );
   }
 
+
+  refreshTable(endpoint:string): Observable<any> {
+    
+    return this._httpClient.get<any>(`${environment.apiUrl}/${endpoint}`).pipe(
+      tap((response) => {
+        console.log(response)
+        this.data.next(response);
+      })
+    );
+  }
+
   delete(id: string,endpoint:any): Observable<any>
   {
       return this._httpClient.delete<any>(`${environment.apiUrl}/${endpoint}/${id}`).pipe(

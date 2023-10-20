@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -194,10 +194,10 @@ form: FormGroup;
   //CYCLE DE VIE
   ngOnInit() {
 
-    this._activatedRoute.params.subscribe(params => {
-      // Effectuez le rechargement du composant en fonction des paramètres
-      this.reloadComponent(params);
-    });
+    // this._activatedRoute.params.subscribe(params => {
+    //   // Effectuez le rechargement du composant en fonction des paramètres
+    // //  this.reloadComponent(params);
+    // });
 
 
   
@@ -263,11 +263,13 @@ form: FormGroup;
           this.montantTotal=0;
           this.nombreCheque=0;
           this.remiseIsInCorrect=true;
-          table=[]
+          table=[];
+          
         }
         this.dataSource = new MatTableDataSource(table);
         this._changeDetectorRef.markForCheck();
       }
+      
     });
 
     this._fuseMediaWatcherService.onMediaChange$
@@ -302,10 +304,8 @@ reloadComponent(params: any): void {
 
     const index= this.dataSource.data.indexOf(row);
     this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
-    this._changeDetectorRef.markForCheck();
     this.chequeData = row;
-
-
+    this._changeDetectorRef.markForCheck();
   }
 
   updateList(newMatTable: MatTableDataSource<any>) {
@@ -555,14 +555,13 @@ reloadComponent(params: any): void {
 
 
 
-  /**
-   * On destroy
-   */
   ngOnDestroy(): void {
+
     // Unsubscribe from all subscriptions
     console.log("unsubscribe");
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
+
   }
 
 

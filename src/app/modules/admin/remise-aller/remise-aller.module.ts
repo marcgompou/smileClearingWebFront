@@ -76,6 +76,9 @@ import { FuseAlertModule } from '@fuse/components/alert';
     
     RouterModule.forChild(remiseRoutes)
 
+
+
+    
   ]
 })
 export class RemiseAllerModule { }
