@@ -11,6 +11,7 @@ export interface Message {
     command: string;
     action: string;
     result?: string;
+    neostate?: string;
 }
 
 @Injectable()

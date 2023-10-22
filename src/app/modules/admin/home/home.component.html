@@ -12,6 +12,48 @@
     <!-- Main -->
     <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
         <div class="w-full max-w-screen-xl mx-auto">
+            <div
+                class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+               
+                
+                <div class="flex flex-auto items-center min-w-0">
+                    
+        
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div
+                                class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                                Creation remise</div>
+                        </ng-container>
+                     
+                    </div>
+                </div>
+                <div class="flex items-center sm:mt-0 sm:ml-4">
+                    <form  >
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8" appearance="outline">
+                            
+                            <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required
+                                placeholder="Selectionner un compte">
+                                <mat-option value=""></mat-option>
+                                <!-- <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.id"> 
+                                    {{compteEntreprise.designation }} - {{ compteEntreprise.compte.slice(-4)}}
+                                </mat-option> -->
+                            </mat-select> 
+                        </mat-form-field>
+
+
+                        <button class="ml-4 mt-4" mat-flat-button>
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span>Scanner chèque</span>
+                        </button>
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
+                        >
+                            <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
+                            <span>Enregistrer</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
             <!-- Tabs -->
             <mat-tab-group
                 class="sm:px-2"

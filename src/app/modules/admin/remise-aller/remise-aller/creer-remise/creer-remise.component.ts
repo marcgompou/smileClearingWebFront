@@ -52,6 +52,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   title = 'socketrv';
   command = 'StartScanner';
   action = 'CONNECT';
+  neostate='0';
   received: Cheque[] = [];
   totalRows = 0;
   pageSize = 10;
@@ -150,12 +151,17 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
       _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
 
-      if (msg.action === "neoEtat") {
-        this.scannerIsConnected = msg.result != 'Deconnecté';
+      if (msg.action === "neoEtat" ) {
+        this.scannerIsConnected = 
+        (msg.result != "Deconnecté") ||
+        (msg.result == "Deconnecté" && msg.neostate == "4") ;
+    
+     
       }
       // CHargement du tableau des chèques dans la creation de remise
       else {
         if (msg.action === "neoResult"){
+          this.scannerIsConnected = true;
           let chqScanned=JSON.parse(msg.result) as Cheque;
 
           //Si le cheque est déjà dans le tableau  ne pas l'ajouter 
@@ -182,6 +188,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       console.log("Response from websocket: ", msg);
+      
       this._changeDetectorRef.markForCheck();
     })
   }
@@ -203,7 +210,7 @@ form: FormGroup;
   
     //getCompteByEntreprise();
     this.loadCompte();
-    this._websocketService.messages.next({ command: this.command, action: this.action, result: "" });
+    this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" });
     
 
     // Subscribe to search input field value changes
@@ -585,7 +592,8 @@ reloadComponent(params: any): void {
     let message = {
       action: '',
       command: '',
-      result: ''
+      result: '',
+      
     }
     message.action = this.action;
     message.command = this.command;
