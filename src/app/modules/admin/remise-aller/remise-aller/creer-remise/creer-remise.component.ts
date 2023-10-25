@@ -200,6 +200,7 @@ form: FormGroup;
 
   //CYCLE DE VIE
   ngOnInit() {
+    this._chequeService.setRemise$([]);
 
     // this._activatedRoute.params.subscribe(params => {
     //   // Effectuez le rechargement du composant en fonction des paramètres
