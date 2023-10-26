@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
   
+  //private _homeService: HomeService,
   chartGithubIssues: ApexOptions = {};
   chartTaskDistribution: ApexOptions = {};
   chartBudgetDistribution: ApexOptions = {};
@@ -32,12 +33,15 @@ export class HomeComponent implements OnInit, OnDestroy
   chartMonthlyExpenses: ApexOptions = {};
   chartYearlyExpenses: ApexOptions = {};
   chartConversions: ApexOptions = {};
-  
+    montantTotal: number = 0;
   data: any;
+  dashboardData: any;
   selectedProject: string = 'BRIDGE COLLECT';
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+   
 
   constructor(
+    private _changeDetectorRef: ChangeDetectorRef,
     private _homeService: HomeService,
     private _router: Router
 )
@@ -46,31 +50,45 @@ export class HomeComponent implements OnInit, OnDestroy
 ngOnInit(): void
 {
     // Get the data
-    this._homeService.data$
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((data) => {
+    // this._homeService.data$
+    //     .pipe(takeUntil(this._unsubscribeAll))
+    //     .subscribe((data) => {
 
-            // Store the data
-            this.data = data;
+    //         // Store the data
+    //         this.data = data;
 
-            // Prepare the chart data
-            this._prepareChartData();
-        });
+    //         // Prepare the chart data
+    //         this._prepareChartData();
+    //     });
 
-    // Attach SVG fill fixer to all ApexCharts
-    window['Apex'] = {
-        chart: {
-            events: {
-                mounted: (chart: any, options?: any): void => {
-                    this._fixSvgFill(chart.el);
-                },
-                updated: (chart: any, options?: any): void => {
-                    this._fixSvgFill(chart.el);
-                }
-            }
-        }
-    };
+    // // Attach SVG fill fixer to all ApexCharts
+    // window['Apex'] = {
+    //     chart: {
+    //         events: {
+    //             mounted: (chart: any, options?: any): void => {
+    //                 this._fixSvgFill(chart.el);
+    //             },
+    //             updated: (chart: any, options?: any): void => {
+    //                 this._fixSvgFill(chart.el);
+    //             }
+    //         }
+    //     }
+    // };
+
+    //this._homeService.getDataDashboard();
+   
+
+
+    this._homeService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+        console.log("details cheque test response=======>",response)
+        this.dashboardData=response.data;
+        this._changeDetectorRef.markForCheck();
+      })
+
+
+
 }
+
 
 /**
  * On destroy

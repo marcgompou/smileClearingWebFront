@@ -66,7 +66,7 @@
                             <!-- Summary -->
                             <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Cheque Exporte</div>
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Chèques Exportés</div>
                                     <div class="ml-2 -mt-2 -mr-3">
                                         <button
                                             mat-icon-button
@@ -83,8 +83,8 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">21</div>
-                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Due Tasks</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{ dashboardData.chequeEmis?.nombreTotal }}</div>
+                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Montant : {{ dashboardData.chequeEmis?.montantTotal }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">Exporter:</div>
                                         <div class="ml-1.5 text-lg font-semibold">13</div>
@@ -94,9 +94,9 @@
                             <!-- Overdue -->
                             <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Monant Cheque Exporte</div>
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Chèques Encaissés</div>
                                     <div class="ml-2 -mt-2 -mr-3">
-                                        <button
+                                        <button  
                                             mat-icon-button
                                             [matMenuTriggerFor]="overdueMenu">
                                             <mat-icon
@@ -111,8 +111,8 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">17</div>
-                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">F cfa</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{ dashboardData.chequeEncaisse?.nombreTotal }}</div>
+                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Montant {{ dashboardData.chequeEncaisse?.montantTotal }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">From yesterday:</div>
                                         <div class="ml-1.5 text-lg font-semibold">9</div>
@@ -122,7 +122,7 @@
                             <!-- Issues -->
                             <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Cheques Rejetes</div>
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Cheques En Cours</div>
                                     <div class="ml-2 -mt-2 -mr-3">
                                         <button
                                             mat-icon-button
@@ -139,8 +139,8 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">24</div>
-                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Open</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{ dashboardData.chequeEncTrait?.nombreTotal }}</div>
+                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Montant : {{ dashboardData.chequeEncTrait?.nombreTotal }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">Closed today:</div>
                                         <div class="ml-1.5 text-lg font-semibold">19</div>
@@ -150,7 +150,7 @@
                             <!-- Features -->
                             <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                                 <div class="flex items-start justify-between">
-                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Montant Cheques Rejetes</div>
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Chèques Rejétés</div>
                                     <div class="ml-2 -mt-2 -mr-3">
                                         <button
                                             mat-icon-button
@@ -167,8 +167,9 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">38</div>
-                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Proposals</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{ dashboardData.chequeImpaye?.nombreTotal }}</div>
+                                    
+                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Montant : {{ dashboardData.chequeImpaye?.nombreTotal }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">Implemented:</div>
                                         <div class="ml-1.5 text-lg font-semibold">16</div>

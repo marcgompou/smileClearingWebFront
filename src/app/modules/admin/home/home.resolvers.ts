@@ -27,6 +27,8 @@ export class HomeResolver implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
     {
-        return this._homeService.getData();
+        return this._homeService.getDataDashboard();
     }
+
+    
 }
