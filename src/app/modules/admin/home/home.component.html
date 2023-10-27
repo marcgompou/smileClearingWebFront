@@ -83,8 +83,8 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{ dashboardData.chequeEmis?.nombreTotal }}</div>
-                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Montant : {{ dashboardData.chequeEmis?.montantTotal }}</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{ dashboardData.chequeEmis?.nombreTotal || 0}}</div>
+                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Montant : {{ dashboardData.chequeEmis?.montantTotal || 0 }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">Exporter:</div>
                                         <div class="ml-1.5 text-lg font-semibold">13</div>
@@ -111,8 +111,8 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{ dashboardData.chequeEncaisse?.nombreTotal }}</div>
-                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Montant {{ dashboardData.chequeEncaisse?.montantTotal }}</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{ dashboardData.chequeEncaisse?.nombreTotal || 0 }}</div>
+                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Montant {{ dashboardData.chequeEncaisse?.montantTotal || 0 }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">From yesterday:</div>
                                         <div class="ml-1.5 text-lg font-semibold">9</div>
@@ -139,8 +139,8 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{ dashboardData.chequeEncTrait?.nombreTotal }}</div>
-                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Montant : {{ dashboardData.chequeEncTrait?.nombreTotal }}</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{ dashboardData.chequeEncTrait?.nombreTotal || 0}}</div>
+                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Montant : {{ dashboardData.chequeEncTrait?.nombreTotal || 0 }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">Closed today:</div>
                                         <div class="ml-1.5 text-lg font-semibold">19</div>
@@ -167,9 +167,9 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center mt-2">
-                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{ dashboardData.chequeImpaye?.nombreTotal }}</div>
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">{{ dashboardData.chequeImpaye?.nombreTotal || 0 }}</div>
                                     
-                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Montant : {{ dashboardData.chequeImpaye?.nombreTotal }}</div>
+                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Montant : {{ dashboardData.chequeImpaye?.nombreTotal || 0 }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
                                         <div class="text-md font-medium truncate">Implemented:</div>
                                         <div class="ml-1.5 text-lg font-semibold">16</div>
