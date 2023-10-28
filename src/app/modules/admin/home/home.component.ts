@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { WebsocketService } from 'app/core/websocket/websocket.service';
@@ -24,7 +24,9 @@ export class HomeComponent implements OnInit, OnDestroy
 {
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
-  
+  @ViewChild('formNgForm') formNgForm: NgForm;
+  form: FormGroup;
+  listeEntreprise:any=[]
   //private _homeService: HomeService,
   chartGithubIssues: ApexOptions = {};
   chartTaskDistribution: ApexOptions = {};
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy
   chartMonthlyExpenses: ApexOptions = {};
   chartYearlyExpenses: ApexOptions = {};
   chartConversions: ApexOptions = {};
-    montantTotal: number = 0;
+  montantTotal: number = 0;
   data: any;
   dashboardData: any;
   selectedProject: string = 'BRIDGE COLLECT';
@@ -43,49 +45,34 @@ export class HomeComponent implements OnInit, OnDestroy
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _homeService: HomeService,
-    private _router: Router
+    private _router: Router,
+    private _formBuilder: FormBuilder, 
 )
 {
 }
 ngOnInit(): void
-{
-    // Get the data
-    // this._homeService.data$
-    //     .pipe(takeUntil(this._unsubscribeAll))
-    //     .subscribe((data) => {
+{   
+    this.form = this._formBuilder.group({
+        idEntreprise: [''], // Set the default value as an empty string
+      });
 
-    //         // Store the data
-    //         this.data = data;
-
-    //         // Prepare the chart data
-    //         this._prepareChartData();
-    //     });
-
-    // // Attach SVG fill fixer to all ApexCharts
-    // window['Apex'] = {
-    //     chart: {
-    //         events: {
-    //             mounted: (chart: any, options?: any): void => {
-    //                 this._fixSvgFill(chart.el);
-    //             },
-    //             updated: (chart: any, options?: any): void => {
-    //                 this._fixSvgFill(chart.el);
-    //             }
-    //         }
-    //     }
-    // };
-
-    //this._homeService.getDataDashboard();
-   
+  
 
 
     this._homeService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-        console.log("details cheque test response=======>",response)
+        console.log("stat data=======>",response)
         this.dashboardData=response.data;
         this._changeDetectorRef.markForCheck();
       })
 
-
+      this._homeService.entreprise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+        console.log("entrprs=======>",response)
+        this.listeEntreprise=response.data;
+        if (this.listeEntreprise.length > 0) {
+            this.form.get('idEntreprise').setValue(this.listeEntreprise[0].identreprise);
+        }        
+        this._changeDetectorRef.markForCheck();
+      })
 
 }
 

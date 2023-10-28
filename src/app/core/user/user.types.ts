@@ -9,6 +9,7 @@ export class User
     roles: string[];
     status?:string;
     avatar?:string;
+    idEntreprise?:string;
     changePassword:boolean;
     
     constructor(data?){
@@ -20,26 +21,6 @@ export class User
         this.fonction=data?.fonction;
         this.roles=data?.roles || [];
         this.changePassword=data?.changePassword;
+        this.idEntreprise=data?.idEntreprise;
     }
 }
-
-
-// export interface User
-// {
-
-//     id: number;
-//     email: string;
-//     nom: string;
-//     name: string;
-//     avatar?: string;
-//     prenom: string;
-//     numeroTel: string;
-//     fonction: string;
-//     identreprise: number;
-//     isConfirme: boolean;
-//     typeMfa: boolean;
-//     statut: true;
-//     roles: string[];
-//     statutMfa:boolean
-      
-// }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import * as moment from 'moment';
 import { environment } from 'environments/environment';
@@ -12,10 +12,11 @@ import { environment } from 'environments/environment';
 })
 export class HomeService
 {
-private _data: BehaviorSubject<any> = new BehaviorSubject(null);
-//private _getDataDashboard: BehaviorSubject<  []| null> = new BehaviorSubject(null);
+    private _data: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _entreprise: BehaviorSubject<any> = new BehaviorSubject(null);
+
   
-constructor(private _httpClient: HttpClient)
+    constructor(private _httpClient: HttpClient)
     {
     }
 
@@ -29,6 +30,11 @@ constructor(private _httpClient: HttpClient)
     get data$(): Observable<any>
     {
         return this._data.asObservable();
+    }
+
+    get entreprise$(): Observable<any>
+    {
+        return this._entreprise.asObservable();
     }
 
     
@@ -50,27 +56,37 @@ constructor(private _httpClient: HttpClient)
     }
 
 
-    getDataDashboard(): Observable<any>
+    getDataDashboard(dateDebut:string,dateFin:string,idEntreprise:any=null): Observable<any>
     {   
-        return this._httpClient.get<any>(`${environment.apiUrl}/remise/cheques/statistiques?DateDebut=2023-10-01&DateFin=2023-10-30&IdEntreprise=1000`).pipe(
+        let params:HttpParams = new HttpParams();
+        params = params.set('dateDebut', dateDebut);
+        params = params.set('dateFin', dateFin);
+        if(idEntreprise){
+            params = params.set('idEntreprise', idEntreprise);
+        }
+        return this._httpClient.get<any>(`${environment.apiUrl}/remise/cheques/statistiques`,
+        {
+            params:params   
+        }).pipe(
             tap((response) => {
-                //response.sort((a, b) => (a.creationDate < b.creationDate) ? 1 : -1);
                 console.log("=Service data getDataDashboard response========>", response)
                 this._data.next(response);
             })
         );
     }
 
-//     getPrelevementAvalider(): Observable<any>
-//   {
-//       return this._httpClient.get<any>(`${environment.apiUrl}/prelevement/prelevement?statut=1`).pipe(
-//           tap((response) => {
-//             console.log('test======================================');
-//             console.log(response);
-//               this._prelevementAvalides.next(response);
-//           })
-//       );
-//   }
+
+    getEntreprises(): Observable<any>
+    {   
+        
+        return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
+            tap((response) => {
+                console.log("get entreprises stat accessible ", response)
+                this._entreprise.next(response);
+            })
+        );
+    }
+
 
   
 };
