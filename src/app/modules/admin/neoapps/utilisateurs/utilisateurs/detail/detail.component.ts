@@ -118,7 +118,7 @@ export class DetailComponent implements OnInit, OnDestroy
      * 
      */
     getClientById():void{
-        this._utilisateursService.client$
+        this._utilisateursService.utilisateur$
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe((client:Utilisateurs) => {
 

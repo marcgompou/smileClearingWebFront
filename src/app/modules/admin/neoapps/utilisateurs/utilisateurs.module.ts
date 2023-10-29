@@ -20,19 +20,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import * as moment from 'moment';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { utilisateursRoutes } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs.routing';
 import { UtilisateursCreateComponent } from './utilisateurs/create/create.component';
 import { FuseAlertModule } from '@fuse/components/alert';
+import { DetailsModule } from '../../common/details/details.module';
+import { TableDataModule } from '../../common/table-data/table-data.module';
 
 
 @NgModule({
   declarations: [
     UtilisateursComponent,
     ListComponent,
-    DetailComponent,
     UtilisateursCreateComponent,
 
   ],
@@ -52,6 +52,10 @@ import { FuseAlertModule } from '@fuse/components/alert';
     MatRadioModule,
     MatRippleModule,
     MatSelectModule,
+
+    TableDataModule,
+    DetailsModule,
+
     MatSidenavModule,
     MatTableModule,
     MatTooltipModule,

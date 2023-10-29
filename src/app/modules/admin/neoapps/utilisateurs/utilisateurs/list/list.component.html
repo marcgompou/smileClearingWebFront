@@ -12,7 +12,7 @@
             [position]="'end'"
             [disableClose]="true"
             #matDrawer>
-            <router-outlet></router-outlet>
+            <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
         </mat-drawer>
 
         <mat-drawer-content class="flex flex-col">
@@ -77,106 +77,15 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Users list -->
-                 <!-- <ng-container *ngIf="_dataSource ">
-                    <ng-container *ngIf="_dataSource.filteredData ">
-                        <span >
-                            {{_dataSource.filteredData.length | i18nPlural: {
-                                '=0'   : 'Aucun utilisateur',
-                                '=1'   : 'utilisateur',
-                                'other': 'utilisateurs'
-                            } }}
-                        </span>
-                    </ng-container>
-                </ng-container>-->
                 <div class="relative">
                     
-                    <ng-container *ngIf="_dataSource ">
-                        <ng-container *ngIf="_dataSource.filteredData">
-                        <div class="grid">
-                            <div class="flex flex-col flex-auto mt-2 overflow-x-auto overflow-y-auto h-160">
-                                <mat-table [dataSource]="_dataSource" matSort class="mat-elevation-z8 overflow-y-visible">
-
-                                    <!-- ID -->
-                                    <ng-container matColumnDef="dateCreation">
-                                        <mat-header-cell *matHeaderCellDef> #DATE CRÉATION </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" class="px-4">
-                                            <a class="text-md font-medium text-primary-500 hover:underline cursor-pointer">
-                                                {{ element.dateCreation | date: 'dd/MM/yyyy HH:mm:ss.SSS' }}
-                                            </a>
-                                        </mat-cell>
-                                    </ng-container>
-                                
-                                    <!-- EMAIL -->
-                                    <ng-container matColumnDef="email">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" class="px-4">
-                                            <span class="pr-6 whitespace-nowrap text-md font-medium">
-                                                {{ element.email }}
-                                            </span>
-                                        </mat-cell>
-                                    </ng-container>
-                                
-                                     <!-- NOM COMPLET -->
-                                    <ng-container matColumnDef="nomComplet">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> NOM COMPLET </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" class="px-4">
-                                            <span class="pr-6 whitespace-nowrap text-md font-medium">
-                                                {{ element.nom! }} {{ element.prenom! }}
-                                            </span>
-                                        </mat-cell>
-                                    </ng-container>
-                                
-                                    <!-- NUMERO DE TELEPHONE -->
-
-                                    <ng-container matColumnDef="numeroTel">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>  NUMERO DE TELEPHONE </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" class="px-4">
-                                            <span class="pr-6 whitespace-nowrap text-md font-medium">
-                                                {{element.numeroTel!}}
-                                            </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    
-
-                                  
-                                    <!-- FONCTION -->
-
-                                    <ng-container matColumnDef="fonction">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> FONCTION </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" class="px-4">
-                                            <span class="pr-6 whitespace-nowrap text-md font-medium">
-                                                {{element.fonction!}}
-                                            </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="identreprise">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header> ENTREPRISE </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" class="px-4">
-                                            <span class="pr-6 whitespace-nowrap text-md font-medium">
-                                                {{element.idEntreprise!}}
-                                            </span>
-                                        </mat-cell>
-                                    </ng-container>
-                                
-                                    <mat-header-row *matHeaderRowDef="_displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: _displayedColumns;" class="z-20 flex items-center py-2 cursor-pointer border-b"
-                                            (click)="selctedRow(row)" 
-                                            [ngClass]="{'bg-primary-50 dark:bg-hover': selectedRowIndex && selectedRowIndex == row.id,
-                                            'hover:bg-gray-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !== row.id}"></mat-row>
-
-                                </mat-table>
-                            </div>
-                            <mat-paginator [pageSizeOptions]="[25, 50]" aria-label="Select page of elements"></mat-paginator>
-                        </div>
-                        </ng-container>
-                    </ng-container>
-                    <ng-template #noUtilisateurs>
-                        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">Aucun utilisateur trouvé!</div>
-                    </ng-template>
+                    <app-table-data [endpoint]="'users'" 
+                    [title]="'Liste utilisateur'"
+                    [displayedColumns]="_displayedColumns" 
+                    [dataStructure]="dataStructure" 
+                    [idRow]="'id'"
+                    [canClick]="true">
+                    </app-table-data>
 
                 </div>
 

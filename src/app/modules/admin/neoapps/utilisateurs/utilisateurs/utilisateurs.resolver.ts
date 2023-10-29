@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { UtilisateursService } from './utilisateurs.service';
-import { Utilisateurs } from './utilisateurs.types';
+// import { Utilisateurs } from './utilisateurs.types';
 import { ResponseContrat } from 'app/modules/admin/common/contrat/response.type';
 
 
@@ -20,8 +20,7 @@ export class UtilisateursResolver implements Resolve<any>
   /**
    * Constructor
    */
-  constructor(private _utilisateursService: UtilisateursService)
-  {
+  constructor(private _utilisateursService: UtilisateursService) {
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -34,9 +33,61 @@ export class UtilisateursResolver implements Resolve<any>
    * @param route
    * @param state
    */
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResponseContrat>
-  {
-      return this._utilisateursService.getUtilisateurs();
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResponseContrat> {
+    return this._utilisateursService.getUtilisateurs();
   }
 }
 
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UtilisateursByIdResolver implements Resolve<any>
+{
+  /**
+   * Constructor
+   */
+  constructor(private _utilisateursService: UtilisateursService) {
+  }
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Resolver
+   *
+   * @param route
+   * @param state
+   */
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResponseContrat> {
+    let id: string = route.params['id'];
+    return this._utilisateursService.getUtilisateurById(id);
+  }
+}
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RolesResolver implements Resolve<any>
+{
+  /**
+   * Constructor
+   */
+  constructor(private _utilisateursService: UtilisateursService) {
+  }
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Resolver
+   *
+   * @param route
+   * @param state
+   */
+  resolve(): Observable<ResponseContrat> {
+    return this._utilisateursService.getRoles();
+  }
+}

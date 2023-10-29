@@ -12,7 +12,7 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr (click)="selectedRow(row)" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
-            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" (pageSize)="pageSize"
+            <mat-paginator #paginator [length]="100" [pageIndex]="currentPage" (pageSize)="pageSize"
                 [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
             </mat-paginator>
         </div>

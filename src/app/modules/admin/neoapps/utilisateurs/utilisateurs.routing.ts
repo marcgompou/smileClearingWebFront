@@ -2,10 +2,12 @@ import { Route } from '@angular/router';
 import { CanDeactivateUtilisateursDetails } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs.guards';
 import { UtilisateursComponent } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.component';
 import { ListComponent } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/list/list.component';
-import { DetailComponent } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/detail/detail.component';
-import { UtilisateursResolver } from './utilisateurs/utilisateurs.resolver';
+import { RolesResolver, UtilisateursByIdResolver, UtilisateursResolver } from './utilisateurs/utilisateurs.resolver';
 import { UtilisateursCreateComponent } from './utilisateurs/create/create.component';
-
+import { LoadDataResolver } from '../../common/table-data/table-data.resolver';
+import { DetailsComponent } from '../../common/details/details/details.component';
+import { LoadDetailsResolver } from '../../common/details/details.resolvers';
+const endpoint="users";
 export const utilisateursRoutes: Route[] = [
     {
         path     : '',
@@ -14,25 +16,29 @@ export const utilisateursRoutes: Route[] = [
         children : [
             {
                 path     : '',
-                data : {breadcrumb:'Liste'},
+                data : {breadcrumb:'Liste', endpoint: endpoint  },
                 component: ListComponent,
                 resolve  : {
-                    utilisateurs : UtilisateursResolver
-                    
+                    utilisateurs : LoadDataResolver,
+                    role  : RolesResolver
                 },
                 children : [
                     {
-                        path         : ':id',
-                        component    : DetailComponent,
+                        path         : 'details/:id',
+                        data : { endpoint: endpoint  },
+
+                        component    : DetailsComponent,
                         resolve      : {
-                            client  : UtilisateursResolver
+                            data  : UtilisateursByIdResolver,
+                            detail: LoadDetailsResolver
                         },
                         canDeactivate: [CanDeactivateUtilisateursDetails]
                     }
                     ,{
                         path         : 'creation/add',
                         data: { breadcrumb: 'Création' },
-                        component    : UtilisateursCreateComponent
+                        component    : UtilisateursCreateComponent,
+
                     }
                 ]
             }

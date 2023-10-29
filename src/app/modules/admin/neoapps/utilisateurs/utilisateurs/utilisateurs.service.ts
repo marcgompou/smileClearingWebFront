@@ -10,8 +10,10 @@ import { environment } from 'environments/environment';
 export class UtilisateursService
 {   
     private _utilisateurs: BehaviorSubject<Utilisateurs[] | null> = new BehaviorSubject(null);
-    private _client: BehaviorSubject<Utilisateurs | null> = new BehaviorSubject(null);
-    
+    // private _client: BehaviorSubject<Utilisateurs | null> = new BehaviorSubject(null);
+    private _utilisateur: BehaviorSubject<Utilisateurs | null> = new BehaviorSubject(null);
+    private _roles: BehaviorSubject<any | null> = new BehaviorSubject(null);
+
     /**
      * Constructor
      */
@@ -26,17 +28,28 @@ export class UtilisateursService
     /**
      * Getter for utilisateurs
      */
-     get utilisateurs$(): Observable<any> {
+    get utilisateurs$(): Observable<any> {
         return this._utilisateurs.asObservable();
     }
 
+    get utilisateur$(): Observable<any> {
+        return this._utilisateur.asObservable();
+    }
+    
+    // get client$(): Observable<Utilisateurs> {
+    //     return this._client.asObservable();
+    // }
+    
     /**
      * Getter for client
      */
-    get client$(): Observable<Utilisateurs> {
-        return this._client.asObservable();
+    get roles$(): Observable<Utilisateurs> {
+        return this._roles.asObservable();
     }
 
+     /**
+     * Getter for client
+     */
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods CRUD
@@ -49,7 +62,7 @@ export class UtilisateursService
      */
     createUtilisateur(utilisateur: Utilisateurs): Observable<any> {
         return this._httpClient.post(
-            `${environment.apiUrl}/user`,
+            `${environment.apiUrl}/users`,
             utilisateur
         ).pipe(
             catchError((error) => {
@@ -69,7 +82,7 @@ export class UtilisateursService
      */
     updateUtilisateur(id: string, client: Utilisateurs): Observable<any> {
         return this._httpClient.put(
-            `${environment.apiUrl}/user/${id}`,
+            `${environment.apiUrl}/users/${id}`,
             client
         ).pipe(
             catchError((error) => {
@@ -87,7 +100,7 @@ export class UtilisateursService
     getUtilisateurs():Observable<any>
     {
 
-        return this._httpClient.get<any>(`${environment.apiUrl}/user`).pipe(
+        return this._httpClient.get<any>(`${environment.apiUrl}/users`).pipe(
             tap((response) => {
                 console.log('test======================================');
                 console.log(response);
@@ -100,16 +113,17 @@ export class UtilisateursService
         //console.log(HttpClient);
     }
 
+
     /**
      * Get client by id
      * @param id 
      * @returns 
      */
-    getClientById(id: string): Observable<any>
+    getUtilisateurById(id: string): Observable<any>
     {
-        return this._httpClient.get<any>(`${environment.apiUrl}/user/${id}`).pipe(
+        return this._httpClient.get<any>(`${environment.apiUrl}/users/${id}`).pipe(
             tap((response) => {
-                this._client.next(response);
+                this._utilisateur.next(response);
             })
         );
     }
@@ -130,5 +144,19 @@ export class UtilisateursService
             })
         );
     }
+
+
+    //User Roles
+    getRoles():Observable<any>
+    {
+        return this._httpClient.get<any>(`${environment.apiUrl}/roles`).pipe(
+            tap((response) => {
+                console.log(response);               
+                this._roles.next(response);
+                
+            })
+        );
+    }
+
 
 }

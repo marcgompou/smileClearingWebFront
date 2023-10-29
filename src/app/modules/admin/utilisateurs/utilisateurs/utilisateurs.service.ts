@@ -49,7 +49,7 @@ export class UtilisateursService
      */
     createUtilisateur(utilisateur: Utilisateurs): Observable<any> {
         return this._httpClient.post(
-            `${environment.apiUrl}/user`,
+            `${environment.apiUrl}/users`,
             utilisateur
         ).pipe(
             catchError((error) => {
@@ -69,7 +69,7 @@ export class UtilisateursService
      */
     updateUtilisateur(id: string, client: Utilisateurs): Observable<any> {
         return this._httpClient.put(
-            `${environment.apiUrl}/user/${id}`,
+            `${environment.apiUrl}/users/${id}`,
             client
         ).pipe(
             catchError((error) => {
@@ -87,7 +87,7 @@ export class UtilisateursService
     getUtilisateurs():Observable<any>
     {
 
-        return this._httpClient.get<any>(`${environment.apiUrl}/user`).pipe(
+        return this._httpClient.get<any>(`${environment.apiUrl}/users`).pipe(
             tap((response) => {
                 console.log('test======================================');
                 console.log(response);
@@ -107,7 +107,7 @@ export class UtilisateursService
      */
     getClientById(id: string): Observable<any>
     {
-        return this._httpClient.get<any>(`${environment.apiUrl}/user/${id}`).pipe(
+        return this._httpClient.get<any>(`${environment.apiUrl}/users/${id}`).pipe(
             tap((response) => {
                 this._client.next(response);
             })
@@ -121,7 +121,7 @@ export class UtilisateursService
      */
     deleteUtilisateur(id: string): Observable<any>
     {
-        return this._httpClient.delete<any>(`${environment.apiUrl}/user/${id}`).pipe(
+        return this._httpClient.delete<any>(`${environment.apiUrl}/users/${id}`).pipe(
             catchError((error) =>{
                 throw error;
             }),
