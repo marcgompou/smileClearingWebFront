@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { Subject} from 'rxjs';
@@ -193,4 +193,11 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     {
         return item.id || index;
     }
+
+
+   
+        toppings = new FormControl('');
+      
+        toppingList: string[] =  ['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'];
+
 }

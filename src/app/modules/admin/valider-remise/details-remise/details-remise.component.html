@@ -16,7 +16,7 @@
 
         <mat-drawer class="w-full md:w-160 dark:bg-gray-900" 
         [mode]="drawerMode" [opened]="false" [position]="'end'"
-            [disableClose]="false" #matDrawer>
+            [disableClose]="true" #matDrawer>
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
         </mat-drawer>
 

@@ -216,6 +216,7 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
   );
   }
 
+  
   validerRemise(){
     
     this._validerRemiseService.validerRemise(this.remiseData.data.remise.id).pipe().subscribe({

@@ -191,12 +191,98 @@
 
                     
 
-                   
+                    <div class="flex flex-col w-full lg:w-1/4 sm:pl-8">
+                        <mat-form-field class="w-full">
+                            <mat-label>Weight</mat-label>
+                            <span matSuffix>lbs.</span>
+                            <input
+                                matInput
+                                [formControlName]="'weight'">
+                        </mat-form-field>
+
+                        <!-- Tags -->
+                        <span class="mb-px font-medium leading-tight">Tags</span>
+                        <div class="mt-1.5 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm overflow-hidden">
+                            <!-- Header -->
+                            <div class="flex items-center -my-px py-2 px-3">
+                                <div class="flex items-center flex-auto min-w-0">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                    <input
+                                        class="min-w-0 ml-2 py-1 border-0"
+                                        type="text"
+                                        placeholder="Enter tag name"
+                                       
+                                        [maxLength]="50"
+                                        #newTagInput>
+                                </div>
+                                <button
+                                    class="ml-3 w-8 h-8 min-h-8"
+                                    mat-icon-button
+                                    >
+                                    <mat-icon
+                                       
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+                                    <mat-icon
+                                        
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                                </button>
+                            </div>
+                            <!-- Available tags -->
+                            <div class="h-44 leading-none overflow-y-auto border-t border-gray-300 dark:border-gray-500">
+                                <!-- Tags -->
+                                <ng-container >
+                                    <ng-container >
+                                        <mat-checkbox
+                                            class="flex items-center h-10 min-h-10 px-4"
+                                            [color]="'primary'"
+                                            
+                                           >
+                                            <span class="ml-2">Tag 1</span>
+                                            <span class="ml-2">Tag 2</span>
+                                        </mat-checkbox>
+                                    </ng-container>
+                                </ng-container>
+                                <!-- Tags editing -->
+                                <ng-container >
+                                    <div class="p-4 space-y-2">
+                                        <ng-container >
+                                            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript w-full">
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'tag'"
+                                                    >
+                                                <button
+                                                    mat-icon-button
+                                                   
+                                                    matSuffix>
+                                                    <mat-icon
+                                                        class="icon-size-5"
+                                                        [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                                <div
+                                    class="flex items-center h-10 min-h-10 -ml-0.5 pl-4 pr-3 leading-none cursor-pointer border-t hover:bg-gray-50 dark:hover:bg-hover-dark">
+                                    <mat-icon
+                                        class="mr-2 icon-size-5"
+                                        [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
+                                    <div class="break-all">Create "<b>{{newTagInput.value}}</b>"</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
 
 
                       
-                        <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <!-- <mat-form-field class="flex-auto gt-xs:pl-3">
                             
                             <mat-select [placeholder]="'Entreprise'" [formControlName]="'identreprise'">
                                 <mat-option value="1000">Bridge BANK 1</mat-option>
@@ -207,7 +293,7 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:translate'"></mat-icon>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         
                   

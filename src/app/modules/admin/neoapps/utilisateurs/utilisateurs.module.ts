@@ -27,6 +27,7 @@ import { UtilisateursCreateComponent } from './utilisateurs/create/create.compon
 import { FuseAlertModule } from '@fuse/components/alert';
 import { DetailsModule } from '../../common/details/details.module';
 import { TableDataModule } from '../../common/table-data/table-data.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -52,7 +53,7 @@ import { TableDataModule } from '../../common/table-data/table-data.module';
     MatRadioModule,
     MatRippleModule,
     MatSelectModule,
-
+    FormsModule,
     TableDataModule,
     DetailsModule,
 
