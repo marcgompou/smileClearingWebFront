@@ -13,6 +13,7 @@ export class UtilisateursService
     // private _client: BehaviorSubject<Utilisateurs | null> = new BehaviorSubject(null);
     private _utilisateur: BehaviorSubject<Utilisateurs | null> = new BehaviorSubject(null);
     private _roles: BehaviorSubject<any | null> = new BehaviorSubject(null);
+    private _entreprises: BehaviorSubject<any | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -35,6 +36,12 @@ export class UtilisateursService
     get utilisateur$(): Observable<any> {
         return this._utilisateur.asObservable();
     }
+
+    get entreprises$(): Observable<any>
+    {
+        return this._entreprises.asObservable();
+    }
+
     
     // get client$(): Observable<Utilisateurs> {
     //     return this._client.asObservable();
@@ -60,9 +67,9 @@ export class UtilisateursService
      * @param utilisateur 
      * @returns 
      */
-    createUtilisateur(utilisateur: Utilisateurs): Observable<any> {
+    createUtilisateur(utilisateur: any): Observable<any> {
         return this._httpClient.post(
-            `${environment.apiUrl}/users`,
+            `${environment.apiUrl}/Authentication`,
             utilisateur
         ).pipe(
             catchError((error) => {
@@ -158,5 +165,14 @@ export class UtilisateursService
         );
     }
 
+    getEntreprises():Observable<any>{
+        return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
+            tap((response) => {
+                console.log(response);               
+                this._entreprises.next(response);
+                
+            })
+        );
 
+    }
 }

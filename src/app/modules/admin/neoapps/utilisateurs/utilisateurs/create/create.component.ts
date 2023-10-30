@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { Subject} from 'rxjs';
+import { Subject, takeUntil} from 'rxjs';
 import { ListComponent } from '../list/list.component';
 import { FuseAlertType } from '@fuse/components/alert';
 import { Utilisateurs } from '../utilisateurs.types';
@@ -33,7 +33,9 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     };
     createUserForm: UntypedFormGroup;
     showAlert: boolean = false;
-
+    
+    rolesList: string[] =  ['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'];
+    entreprises: any[];
 
     
     /**
@@ -68,15 +70,11 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
             prenom  : [null, [Validators.required,Validators.maxLength(150),Validators.minLength(2)]],
             numeroTel  : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
             fonction : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
-            idEntreprise  : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
-          //  isConfirme  : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
-          //  typeMfa  : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
-          //  token  : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
-           // statut  : [null],
-           // userRoles  : [null],
-           // statutMfa  : [null],
+            identreprise  : [null, [Validators.required]],
+            roles:[null,[Validators.required]]
 
         });
+        this.loadEntreprises();
     }
 
     /**
@@ -111,7 +109,7 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
         // Hide the alert
         this.showAlert = false;
 
-        const Utilisateur = {
+        const utilisateur = {
           email: this.createUserForm.value.email,
           nom: this.createUserForm.value.nom,
           prenom: this.createUserForm.value.prenom,
@@ -121,14 +119,14 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
           typeMfa: 1 ,
           token  : "",
           statut  : true,
-          userRoles  : [1],
+          roles  :this.createUserForm.value.roles,
           statutMfa  : false,
           isConfirme : false,
           password:"",
-        } as unknown as Utilisateurs;
-
+        } ;
+        console.log(utilisateur)
        this._utilisateursService.createUtilisateur(
-        Utilisateur
+        utilisateur
         ).subscribe({
             next: (response) => {
                 this.alert = {
@@ -195,9 +193,30 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     }
 
 
-   
-        toppings = new FormControl('');
-      
-        toppingList: string[] =  ['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'];
+    loadEntreprises(){
+
+        this._utilisateursService.entreprises$.pipe(takeUntil(this._unsubscribeAll)
+            ).subscribe({
+                next: (response:any) => {
+                console.log("Response===> :", response);
+                
+                    this.entreprises=response.data;
+                    this._changeDetectorRef.markForCheck();
+                }, 
+                error: (error) => {
+                // //not show historique
+                // this.showData = false;
+                // console.error('Error : ',JSON.stringify(error));
+                // // Set the alert
+                // this.alert = { type: 'error', message: error.error.message??error.error };
+                // // Show the alert
+                // this.showAlert = true;
+                
+                this._changeDetectorRef.markForCheck();
+                }
+            });
+    
+        }
+    
 
 }

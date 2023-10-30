@@ -62,13 +62,13 @@ export class ListComponent implements OnInit,OnDestroy {
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
     /**
      * Constructor
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _userService: UserService,
+        private _utilisateursService: UtilisateursService,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -242,13 +242,13 @@ export class ListComponent implements OnInit,OnDestroy {
     /**
      * On backdrop clicked
      */
-    onBackdropClicked(): void {
-        // Go back to the list
-        this._router.navigate(['./'], { relativeTo: this._activatedRoute });
+    // onBackdropClicked(): void {
+    //     // Go back to the list
+    //     this._router.navigate(['./'], { relativeTo: this._activatedRoute });
 
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
-    }
+    //     // Mark for check
+    //     this._changeDetectorRef.markForCheck();
+    // }
 
     /**
      * Track by function for ngFor loops
@@ -260,6 +260,9 @@ export class ListComponent implements OnInit,OnDestroy {
         return item.id || index;
     }
 
+
+
+    
 }
 
 

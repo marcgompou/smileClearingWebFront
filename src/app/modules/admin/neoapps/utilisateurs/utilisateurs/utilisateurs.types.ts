@@ -13,6 +13,6 @@ export interface Utilisateurs
     "typeMfa": boolean,
     "token": string,
     "statut": true,
-    "userRoles": number[],
+    "roles": string[],
     "statutMfa":boolean
   }

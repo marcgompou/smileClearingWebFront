@@ -47,10 +47,6 @@
                                 matInput
                                 [formControlName]="'email'"
                                 placeholder="Ex: abc@bridge.com" >
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:mail'"></mat-icon>
                             <mat-error *ngIf="createUserForm.get('email').errors?.required">
                                 L'adresse Email est obligatoire
                             </mat-error>
@@ -70,10 +66,6 @@
                                 [formControlName]="'nom'"
                                 placeholder="Ex: ZIBIKOU" 
                                 minlength = "2" maxlength = "50">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
                             <mat-error *ngIf="createUserForm.get('nom').errors?.required">
                                 Le nom est obligatoire
                             </mat-error>
@@ -96,10 +88,6 @@
                                 [formControlName]="'prenom'"
                                 placeholder="Ex:  Bi Francis" 
                                 minlength = "2" maxlength = "150">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
                             <mat-error *ngIf="createUserForm.get('prenom').errors?.required">
                                 Le prénom est obligatoire
                             </mat-error>
@@ -122,10 +110,6 @@
                                 [formControlName]="'numeroTel'"
                                 [placeholder]="'Ex:  0700000000'"
                                 minlength = "10" maxlength = "10">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'mat_solid:home_work'"></mat-icon>
                             <mat-error *ngIf="createUserForm.get('numeroTel').errors?.required">
                                 Le numero de telephone est obligatoire
                             </mat-error>
@@ -138,32 +122,18 @@
                         </mat-form-field>
                     </div>
 
-                     <!-- email field -->
-                     <!-- <div class="flex flex-col" >
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Email</mat-label>
-                            <input
-                                id="email"
-                                matInput
-                                [formControlName]="'email'"
-                                [placeholder]="'Ex:  leo.koua@neo.com'"
-                                minlength = "2" maxlength = "50">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'mat_solid:work_outline'"></mat-icon>
-                            <mat-error *ngIf="createUserForm.get('email').errors?.required">
-                                La fonction est obligatoire
-                            </mat-error>
-                            <mat-error *ngIf="createUserForm.get('email').hasError('required')">
-                                Adresse e-mail est requis
-                            </mat-error>
-                            <mat-error *ngIf="createUserForm.get('email').hasError('email')">
-                                S'il vous plaît, mettez une adresse email valide
-                            </mat-error>
-                        </mat-form-field>
-                    </div> -->
-                    <!-- fonction field -->
+                    <!-- role field -->
+                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <mat-label>Entreprise (client)</mat-label>
+                        <mat-select [placeholder]="'Entreprise'" [formControlName]="'identreprise'">
+                            <mat-option *ngFor="let entreprise of entreprises" [value]="entreprise.identreprise">{{entreprise.nomEntreprise}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="createUserForm.get('fonction').errors?.required">
+                            La structure est obligatoire
+                        </mat-error>
+                    </mat-form-field>
+
+
                     <div class="flex flex-col" >
                         <mat-form-field class="flex-auto">
                             <mat-label>Fonction</mat-label>
@@ -171,60 +141,37 @@
                                 id="fonction"
                                 matInput
                                 [formControlName]="'fonction'"
-                                [placeholder]="'Ex:  DSI'"
+                                [placeholder]="'Ex: DEV'"
                                 minlength = "2" maxlength = "30">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'mat_solid:workspaces'"></mat-icon>
                             <mat-error *ngIf="createUserForm.get('fonction').errors?.required">
-                                La structure est obligatoire
+                                La fonction est obligatoire
                             </mat-error>
                             <mat-error *ngIf="createUserForm.get('fonction').errors?.minlength">
-                                    La structure doit être au moins deux caractères
+                                    La fonction doit être au moins deux caractères
                             </mat-error>
                             <mat-error *ngIf="createUserForm.get('fonction').errors?.maxlength">
-                                    La structure doit être au plus 100 caractères
+                                    La fonction doit être au plus 100 caractères
                             </mat-error>
                         </mat-form-field>
                     </div>
 
                     
-
-                    <mat-form-field>
-                        <mat-label>Roles</mat-label>
-                        <mat-select [formControl]="toppings" multiple>
-                          <mat-select-trigger>
-                            {{toppings.value?.[0] || ''}}
-                            <span *ngIf="(toppings.value?.length || 0) > 1" class="example-additional-selection">
-                              (+{{(toppings.value?.length || 0) - 1}} {{toppings.value?.length === 2 ? 'autre' : 'autres'}})
-                            </span>
-                          </mat-select-trigger>
-                          <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    
-                    
-
-                   
-
-
-<!--                       
-                        <mat-form-field class="flex-auto gt-xs:pl-3">
-                            
-                            <mat-select [placeholder]="'Entreprise'" [formControlName]="'identreprise'">
-                                <mat-option value="1000">Bridge BANK 1</mat-option>
-                                <mat-option value="1001">SODECI 2</mat-option>
-                                <mat-option value="1002">MTN 3</mat-option>
+                    <div class="flex flex-col" >
+                        <mat-form-field>
+                            <mat-label>Roles</mat-label>
+                            <mat-select [formControlName]="'roles'"  multiple="true">
+                            <mat-select-trigger>
+                                {{createUserForm.get('roles').value?.[0] || ''}}
+                                <span *ngIf="(createUserForm.get('roles').value?.length || 0) > 1" class="example-additional-selection">
+                                (+{{(createUserForm.get('roles').value?.length || 0) - 1}} {{createUserForm.get('roles').value?.length === 2 ? 'autre' : 'autres'}})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let role of rolesList" [value]="role">{{role}}</mat-option>
                             </mat-select>
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:translate'"></mat-icon>
-                        </mat-form-field> -->
-
-                        
-                  
+                        </mat-form-field>
+                    </div>
+                    
+                    
 
                     <!-- Actions -->
                     <div class="flex items-center justify-end border-t -mx-8 mt-4 px-8 py-2">
@@ -235,7 +182,6 @@
                             class="px-6 ml-3"
                             mat-flat-button
                             [color]="'primary'"
-                            [disabled]="createUserForm.disabled || createUserForm.invalid"
                             (click)="creer()">
                             <span *ngIf="!createUserForm.disabled">
                                 Enregistrer
