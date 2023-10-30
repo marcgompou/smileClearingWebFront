@@ -131,7 +131,7 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
             next: (response) => {
                 this.alert = {
                     type: 'success',
-                    message: "Client Email: "+ response.email +" enregistré."
+                    message:  response.message 
                 };
                 this.showAlert = true;
                 // Re-enable the form
