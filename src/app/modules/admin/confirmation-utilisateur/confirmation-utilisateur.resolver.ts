@@ -25,8 +25,10 @@ import { Observable } from "rxjs";
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
 
-     const token:string=route.queryParams['token'];
+     let token:string=route.queryParams['token'];
      const email:string=route.queryParams['email'];
+     token=encodeURIComponent(token)
+     console.log("=====token========>",token)
       return this._confirmationUtilisateurService.getConfirmation(token,email);
     }
   

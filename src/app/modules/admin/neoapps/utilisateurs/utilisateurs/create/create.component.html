@@ -179,18 +179,12 @@
                             Annuler
                         </button>
                         <button
+                            [disabled]="createUserForm.invalid || createUserForm.pending"
                             class="px-6 ml-3"
                             mat-flat-button
                             [color]="'primary'"
                             (click)="creer()">
-                            <span *ngIf="!createUserForm.disabled">
                                 Enregistrer
-                            </span>
-                            <mat-progress-spinner
-                                *ngIf="createUserForm.disabled"
-                                [diameter]="24"
-                                [mode]="'indeterminate'">
-                            </mat-progress-spinner>
                         </button>
                     </div>
 

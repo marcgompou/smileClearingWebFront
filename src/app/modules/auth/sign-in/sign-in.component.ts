@@ -56,9 +56,9 @@ export class AuthSignInComponent implements OnInit {
         this.title = "Connexion"
         // Create the form
         this.signInForm = this._formBuilder.group({
-            username: ['marcgompou@gmail.com', [Validators.required, Validators.email]],
-            password: ['Azerty@78', Validators.required],
-            rememberMe: ['']
+            username: ['', [Validators.required, Validators.email]],
+            password: ['', Validators.required],
+            
         });
     }
 

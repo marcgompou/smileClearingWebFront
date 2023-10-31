@@ -306,17 +306,11 @@
                         <button
                             class="px-6 ml-3"
                             mat-flat-button
+                            type="submit"
                             [color]="'primary'"
                             [disabled]="createUserForm.disabled || createUserForm.invalid"
                             (click)="creer()">
-                            <span *ngIf="!createUserForm.disabled">
                                 Enregistrer
-                            </span>
-                            <mat-progress-spinner
-                                *ngIf="createUserForm.disabled"
-                                [diameter]="24"
-                                [mode]="'indeterminate'">
-                            </mat-progress-spinner>
                         </button>
                     </div>
 
