@@ -84,14 +84,7 @@ export class NavigationService {
                                 link: '/remise',
                                 permission: SecService.permissions.ROLE_CREATION
                             },
-                            {
-                                id: 'creerRemiseEffet',
-                                title: 'Creer remise effet',
-                                type: 'basic',
-                                icon: 'heroicons_outline:template',
-                                link: '/remiseeffet',
-                                permission: SecService.permissions.ROLE_CREATION
-                            },
+                     
 
                         ]
                 },
@@ -191,14 +184,7 @@ export class NavigationService {
                                 link: '/validerPrelevement',
                                 permission: SecService.permissions.ROLE_VALID_PRELEVEMENT
                             },
-                            // {
-                            //     id: 'impressionPrelevementvalider',
-                            //     title: 'Impression Prelevement valider',
-                            //     type: 'basic',
-                            //     icon: 'heroicons_solid:printer',
-                            //     link: '/impressionRemiseExporter',
-                            //     permission: SecService.permissions.ROLE_SCAN
-                            // },
+                        
 
                         ]
                 },
@@ -239,7 +225,7 @@ export class NavigationService {
                             id: 'help-center',
                             title: 'Accueil',
                             type: 'basic',
-                            //    icon : 'heroicons_outline:support',
+                                icon : 'heroicons_outline:support',
                             link: '/help-center',
                             permission: SecService.permissions.ROLE_VISUALISATION
                         },
@@ -248,7 +234,7 @@ export class NavigationService {
                             id: 'help-centerfaqs',
                             title: 'FAQs',
                             type: 'basic',
-                            //icon : 'heroicons_outline:support',
+                            icon : 'heroicons_outline:support',
                             link: '/help-center/faqs',
                             permission: SecService.permissions.ROLE_VISUALISATION
                         },
@@ -257,7 +243,7 @@ export class NavigationService {
                             id: 'help-centerguides',
                             title: 'Guide',
                             type: 'basic',
-                            // icon : 'heroicons_outline:support',
+                             icon : 'heroicons_outline:support',
                             link: '/help-center/guides',
                             permission: SecService.permissions.ROLE_VISUALISATION
                         },
@@ -265,17 +251,12 @@ export class NavigationService {
                             id: 'help-centersupport',
                             title: 'Ouvrir un Ticket',
                             type: 'basic',
-                            //icon : 'heroicons_outline:clipboard-check',
+                            icon : 'heroicons_outline:clipboard-check',
                             link: '/help-center/support',
                             permission: SecService.permissions.ROLE_VISUALISATION
                         },
 
-
-
-
-
                     ]
-
 
                 },
             ]
