@@ -27,7 +27,7 @@ export class ListComponent implements OnInit,OnDestroy {
     selectedRowIndex: any;
     _dataSource: MatTableDataSource<Utilisateurs>;
     
-    _displayedColumns: string[] = ['dateCreation', 'email', 'nomComplet', 'fonction', 'identreprise'];
+    _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'identreprise'];
     dataStructure = [
        
         {
@@ -40,7 +40,11 @@ export class ListComponent implements OnInit,OnDestroy {
             "label": "Email"
         },
         {
-            "key": "nomComplet",
+            "key": "prenom",
+            "label": "Prenom"
+        },
+        {
+            "key": "nom",
             "label": "Nom"
         },
         {
@@ -148,16 +152,16 @@ export class ListComponent implements OnInit,OnDestroy {
         //  return this._connectedUser.roles.includes(WorkflowDefinition.ROLES.DemandeurCreationUtilisateur);
     }
 
-
+    //Affichage des details
     openDetailComponent(component: DetailsComponent) {
 
 
         component.matDrawer = this?.matDrawer;
-        component.formTitle = "DETAILS UTILISATEUR";
+        component.formTitle = "INFORMATIONS UTILISATEUR";
         component.loadDataOnInit=true;
         //Endpoint pour supprimer un cheque
         component.endpoint="users";
-        
+        component.constructorPayload=Utilisateurs.constructorUtilisateur
         //Initialisation formulaire details
         component.formFields = [
           {
@@ -180,7 +184,7 @@ export class ListComponent implements OnInit,OnDestroy {
           },
           {
             key: "prenom",
-            libelle: "Nom",
+            libelle: "Prenom",
             validators: {
               max: 130,
               required: true,
@@ -196,19 +200,30 @@ export class ListComponent implements OnInit,OnDestroy {
             }
           },
           {
-            key: "userRoles",
+            key: "UserRoles",
             libelle: "Roles",
             type:"select",
+            multiple:true,
+            options:['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'],
             validators: {
               max: 130,
               required: true,
             }
           },
-
+          // {
+          //   key: "UserRoles",
+          //   libelle: "Roles",
+          //   type:"select",
+          //   options:['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'],
+          //   validators: {
+          //     max: 130,
+          //     required: true,
+          //   }
+          // },
         ];
        
        
-      };
+    };
 
 
 
@@ -230,14 +245,6 @@ export class ListComponent implements OnInit,OnDestroy {
      */
 
 
-    /**
-     * 
-     * @param etat 
-     * @returns 
-     */
-    /* getEtatColor(etat:string):string|undefined{
-         return WorkflowDefinition.getEtatColor(etat);
-     }*/
 
     /**
      * On backdrop clicked

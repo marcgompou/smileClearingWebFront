@@ -97,7 +97,6 @@ export class DetailsComponent implements OnInit,OnChanges {
           const validators = [];
           if (field.validators.required) {
             validators.push(Validators.required);
-            //validators.push(Validators.pattern("\\S"))
           }
           if (field.validators.min) {
             validators.push(Validators.minLength(field.validators.min));
@@ -114,10 +113,13 @@ export class DetailsComponent implements OnInit,OnChanges {
           if(field.validators.regex){
             validators.push(Validators.pattern(field.validators.regex));
           }
-          let fieldValue="";
+          //POUR POUVOIR PRENDRE DES TABLEAUX 
+          //DANS LE FORMULAIRE CAS MULTIPLE SELECT
+          let fieldValue:any="";
 
           
-          if(this.data){          
+          if(this.data){   
+            console.log("====details-data===>",this.data);       
               if(this.data[field.key]!==null && this.data[field.key]!==undefined ){
                 fieldValue=this.data[field.key];
               }

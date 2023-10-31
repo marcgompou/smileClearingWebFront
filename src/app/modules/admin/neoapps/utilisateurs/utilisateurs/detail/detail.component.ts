@@ -172,16 +172,6 @@ export class DetailComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Récuperer la couleur de l'état
-     * @param etat 
-     * @returns 
-     */
-   // getEtatColor(etat:string):string|undefined{
-      return 
-      //  return WorkflowDefinition.getEtatColor(etat);
-   // }
-
-    /**
      * Récuperer la liste des transitions
      * @param etat 
      */
