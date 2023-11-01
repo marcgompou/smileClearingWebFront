@@ -104,9 +104,11 @@ export class ImprimerRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   scannerIsConnected = false;
 
 
-  entrepriseForm = new FormGroup({
+  imprimerForm = new FormGroup({
     
     identreprise: new FormControl('', Validators.required),
+    dateExport: new FormControl('', Validators.required),
+
 
   })
 
@@ -115,7 +117,24 @@ export class ImprimerRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   //CYCLE DE VIE
   ngOnInit() {
 
-    
+    // Get the current date
+ const today = new Date();
+
+ // Set the time to the beginning of the day (0:00:00)
+ today.setHours(0, 0, 0, 0);
+
+ // Calculate the end of the day (23:59:59)
+ const endOfDay = new Date(today);
+ endOfDay.setHours(23, 59, 59, 999);
+
+ // Format the dates as strings (assuming you want them in a specific format)
+ const dateDebut = today.toISOString();
+ const dateFin = endOfDay.toISOString();
+
+    this.imprimerForm = this._formBuilder.group({
+        dateDebut: [dateDebut,[Validators.required]],
+        dateFin: [dateFin,[Validators.required]],
+      });
 
     //getCompteByEntreprise();
     this.loadCompte();
