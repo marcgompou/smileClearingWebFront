@@ -12,31 +12,31 @@ import { ResponseContrat } from 'app/modules/admin/common/contrat/response.type'
 
 
 
-@Injectable({
-  providedIn: 'root'
-})
-export class UtilisateursResolver implements Resolve<any>
-{
-  /**
-   * Constructor
-   */
-  constructor(private _utilisateursService: UtilisateursService) {
-  }
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class UtilisateursResolver implements Resolve<any>
+// {
+//   /**
+//    * Constructor
+//    */
+//   constructor(private _utilisateursService: UtilisateursService) {
+//   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
+//   // -----------------------------------------------------------------------------------------------------
+//   // @ Public methods
+//   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Resolver
-   *
-   * @param route
-   * @param state
-   */
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResponseContrat> {
-    return this._utilisateursService.getUtilisateurs();
-  }
-}
+//   /**
+//    * Resolver
+//    *
+//    * @param route
+//    * @param state
+//    */
+//   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResponseContrat> {
+//     return this._utilisateursService.getUtilisateurs();
+//   }
+// }
 
 
 

@@ -145,7 +145,7 @@ export class DetailComponent implements OnInit, OnDestroy
         this.getTransitions(this._utilisateurs.etat);
 
         //update client liste
-        this._utilisateursService.getUtilisateurs().pipe().subscribe();
+        // this._utilisateursService.getUtilisateurs().pipe().subscribe();
 
         this._changeDetectorRef.detectChanges();
     }

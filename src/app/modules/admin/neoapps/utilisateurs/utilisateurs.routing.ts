@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import { CanDeactivateUtilisateursDetails } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs.guards';
 import { UtilisateursComponent } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.component';
 import { ListComponent } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/list/list.component';
-import { EntreprisesResolver, RolesResolver, UtilisateursByIdResolver, UtilisateursResolver } from './utilisateurs/utilisateurs.resolver';
+import { EntreprisesResolver, RolesResolver, UtilisateursByIdResolver } from './utilisateurs/utilisateurs.resolver';
 import { UtilisateursCreateComponent } from './utilisateurs/create/create.component';
 import { LoadDataResolver } from '../../common/table-data/table-data.resolver';
 import { DetailsComponent } from '../../common/details/details/details.component';

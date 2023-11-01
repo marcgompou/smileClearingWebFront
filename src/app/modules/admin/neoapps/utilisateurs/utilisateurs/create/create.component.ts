@@ -9,6 +9,7 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { Utilisateurs } from '../utilisateurs.types';
 import { UtilisateursService } from '../utilisateurs.service';
 import { fuseAnimations } from '@fuse/animations';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
 @Component({
     selector       : 'app-create',
@@ -44,6 +45,7 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilisateursService: UtilisateursService,
+        private _tableDataService: TableDataService,
         private _utilisateursListComponent: ListComponent,
         private _formBuilder: UntypedFormBuilder,
         private _activatedRoute: ActivatedRoute,
@@ -139,8 +141,8 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
                 // Reset the form
                 this.createUserNgForm.resetForm();
                 //update Client list
-                this._utilisateursService.getUtilisateurs().pipe().subscribe();
-
+                // this._utilisateursService.getUtilisateurs().pipe().subscribe();
+                this._tableDataService.getDatas().pipe().subscribe();
                 //details 
                 this._router.navigate(['../../',response.id], {relativeTo: this._activatedRoute});
                 

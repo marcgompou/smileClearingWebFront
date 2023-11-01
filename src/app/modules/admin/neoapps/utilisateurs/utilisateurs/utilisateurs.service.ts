@@ -101,24 +101,24 @@ export class UtilisateursService
         );
     }
 
-    /**
-     * Get utilisateurs
-     */
-    getUtilisateurs():Observable<any>
-    {
+    // /**
+    //  * Get utilisateurs
+    //  */
+    // getUtilisateurs():Observable<any>
+    // {
 
-        return this._httpClient.get<any>(`${environment.apiUrl}/users`).pipe(
-            tap((response) => {
-                console.log('test======================================');
-                console.log(response);
-              //  response.sort((a,b)=>(a.creationDate<b.creationDate)? 1:-1);
+    //     return this._httpClient.get<any>(`${environment.apiUrl}/users`).pipe(
+    //         tap((response) => {
+    //             console.log('test======================================');
+    //             console.log(response);
+    //           //  response.sort((a,b)=>(a.creationDate<b.creationDate)? 1:-1);
                
-                this._utilisateurs.next(response);
+    //             this._utilisateurs.next(response);
                 
-            })
-        );
-        //console.log(HttpClient);
-    }
+    //         })
+    //     );
+    //     //console.log(HttpClient);
+    // }
 
 
     /**

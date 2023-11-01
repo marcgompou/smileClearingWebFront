@@ -1,9 +1,6 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
 
-    <mat-drawer-container
-        class="flex-auto h-full bg-card dark:bg-transparent"
-       >
-
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
         <!-- Drawer -->
         <mat-drawer
             class="w-full md:w-160 dark:bg-gray-900"
@@ -14,40 +11,15 @@
             #matDrawer>
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
         </mat-drawer>
-
         <mat-drawer-content class="flex flex-col">
-
             <!-- Main -->
             <div class="flex-auto">
-
                 <!-- Header -->
                 <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
-
                     <!-- Title -->
                     <div>
                         <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des Utilisateurs</div>
-                        <!-- <div class="ml-0.5 font-medium text-secondary">
-                            <ng-container *ngIf="_dataSource ">
-                                <ng-container *ngIf="_nombreUser">
-                                    <span >
-                                       
-                                        {{_nombreUser }}
-                                         {{_nombreUser | i18nPlural: {
-                                            '=0'   : 'Aucun utilisateur',
-                                            '=1'   : 'utilisateur',
-                                            'other': 'utilisateurs'
-                                        } }}
-                                        
-                                    </span>
-                                    
-                                </ng-container>
-                            </ng-container>
-                            
-                             
-                         
-                        </div> -->
                     </div>
-
                     <!-- Main actions -->
                     <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
                         <!-- Search -->
@@ -86,13 +58,8 @@
                     [idRow]="'id'"
                     [canClick]="true">
                     </app-table-data>
-
                 </div>
-
             </div>
-
         </mat-drawer-content>
-
     </mat-drawer-container>
-
 </div>
