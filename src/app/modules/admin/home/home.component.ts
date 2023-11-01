@@ -25,7 +25,11 @@ export class HomeComponent implements OnInit, OnDestroy
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
   @ViewChild('formNgForm') formNgForm: NgForm;
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    idEntreprise: new FormControl(''),
+    dateDebut: new FormControl('',Validators.required),
+    dateFin: new FormControl('',Validators.required),
+  });
   listeEntreprise:any=[]
   //private _homeService: HomeService,
   chartGithubIssues: ApexOptions = {};
@@ -40,6 +44,8 @@ export class HomeComponent implements OnInit, OnDestroy
   dashboardData: any;
   selectedProject: string = 'BRIDGE COLLECT';
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+    dateDebut: string;
+    dateFin: string;
    
 
   constructor(
@@ -54,7 +60,11 @@ ngOnInit(): void
 {   
     this.form = this._formBuilder.group({
         idEntreprise: [''], // Set the default value as an empty string
+        dateDebut: [''],
+        dateFin: [''],
       });
+
+
 
   
 
@@ -102,6 +112,26 @@ trackByFn(index: number, item: any): any
     return item.id || index;
 }
 
+recherchestatisque(){
+    let idCompteClient=this.form.value.idEntreprise;
+    this.dateDebut = this.form.value.dateDebut.toISOString();
+    this.dateFin = this.form.value.dateFin.toISOString();
+   // this.dateFin = '31/12/2023';
+    console.log("idCompteClientidCompteClient",idCompteClient);
+    console.log("dateDebutdateDebut",this.dateDebut);
+    console.log("dateFindateFin",this.dateFin);
+    
+    //this.dateDebut = currentDate.toLocaleDateString('en-US'); 
+    //console.log("this.form.value.dateFin", currentDate.toLocaleDateString('en-US'); );
+
+    //this._homeService.getDataDashboard(this.dateDebut,this.dateFin,idCompteClient);
+this._homeService.getDataDashboard(this.dateDebut,this.dateFin,idCompteClient).pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+    console.log("stat data=======>",response)
+    this.dashboardData=response.data;
+    this._changeDetectorRef.markForCheck();
+})
+}
+  
 // -----------------------------------------------------------------------------------------------------
 // @ Private methods
 // -----------------------------------------------------------------------------------------------------

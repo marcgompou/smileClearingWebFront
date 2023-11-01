@@ -24,6 +24,7 @@ import { HomeComponent } from 'app/modules/admin/home/home.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { Subject } from 'rxjs';
 import { DashBoardRoutes } from './home.routing';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const exampleRoutes: Route[] = [
     {
@@ -60,6 +61,9 @@ const exampleRoutes: Route[] = [
         SharedModule,
         MatAutocompleteModule,
         FuseAlertModule,
+        MatFormFieldModule,
+        MatDatepickerModule, 
+        MatNativeDateModule,
         RouterModule.forChild(DashBoardRoutes),
     ]
 })
