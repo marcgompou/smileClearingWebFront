@@ -70,7 +70,9 @@ export class UserService
                 email:  decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']!,
                 roles: rolesString.split(",") ,
                 fonction: decodedToken['fonction']!,
-                changePassword:decodedToken["decodedToken"]=="True"
+                changePassword:decodedToken["decodedToken"]=="True",
+                idEntreprise : decodedToken['idEntreprise'],
+                nomEntreprise : decodedToken['nomEntreprise']
             } as User;
             this._user.next(user);
             subscriber.next(user);

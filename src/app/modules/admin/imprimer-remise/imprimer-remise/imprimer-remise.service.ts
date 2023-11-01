@@ -13,7 +13,7 @@ export class ImprimerRemiseService {
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _remiseAvalides: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
   private _entreprises: BehaviorSubject<Entreprises[] | null> = new BehaviorSubject(null);
-
+  private _entreprise: BehaviorSubject<any> = new BehaviorSubject(null);
 
 
   /**
@@ -42,6 +42,10 @@ export class ImprimerRemiseService {
 
   get entreprises$(): Observable<any[]> {
     return this._entreprises.asObservable();
+  }
+
+  get entreprise$(): Observable<any[]> {
+    return this._entreprise.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -92,6 +96,16 @@ export class ImprimerRemiseService {
       })
     );
   }
+getEntrepriseById(identreprise :string): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/?id=${identreprise}`).pipe(
+      tap((response) => {
+        console.log('test======================================');
+        console.log(response);
+        this._entreprise.next(response);
+
+      })
+    );
+}
 
 
   

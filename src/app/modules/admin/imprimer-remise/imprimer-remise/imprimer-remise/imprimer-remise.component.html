@@ -36,31 +36,18 @@
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form [formGroup]="entrepriseForm" (ngSubmit)="onSubmit()">
 
-                        <mat-form-field
                         
-                        class="flex-auto">
-                        <mat-label>Date de début</mat-label>
-                        <input
-                            matInput
-                            [matDatepicker]="picker1">
-                        <mat-datepicker-toggle
-                            matSuffix
-                            [for]="picker1"></mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
 
-                    <mat-form-field
-                        
-                    class="flex-auto">
-                    <mat-label>Date de fin</mat-label>
-                    <input
-                        matInput
-                        [matDatepicker]="picker2">
-                    <mat-datepicker-toggle
-                        matSuffix
-                        [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
-                </mat-form-field>
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-72"
+                        appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate placeholder="Date de début" formControlName="dateDebut" matInput  >
+                            <input matEndDate placeholder="Date de fin" formControlName="dateFin" matInput >
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle class="max-w-xs fuse-mat-dense " matSuffix
+                            matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker touchUi #picker></mat-date-range-picker>
+                    </mat-form-field>
 
 
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"

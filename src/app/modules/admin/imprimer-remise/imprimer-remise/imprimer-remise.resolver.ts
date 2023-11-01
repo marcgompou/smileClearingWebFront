@@ -23,7 +23,10 @@ export class LoadDataEntrepriseResolver implements Resolve<boolean> {
      * Constructor
      */
     constructor( private _entreprises: ImprimerRemiseService) {}
+    
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         return this._entreprises.getEntreprise();
     }
+
+    
 }

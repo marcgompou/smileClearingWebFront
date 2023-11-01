@@ -104,12 +104,6 @@ export class DetailsImprimerComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router) {
 
-
-    this._userService.user$
-      .subscribe((user: User) => {
-        this.user = user;
-      });
-
   }
 
   ngOnInit(): void {
@@ -124,18 +118,14 @@ export class DetailsImprimerComponent implements OnInit {
       console.log("id in details", this.id);
     })
 
-    // Subscribe to MatDrawer opened change
-    //   this.matDrawer.openedChange.subscribe((opened) => {
-    //     if ( !opened )
-    //     {
-    //         // Mark for check
-    //         this._changeDetectorRef.markForCheck();
-    //     }
-    // }
+    
+    this._userService.user$
+    .subscribe((user: User) => {
+      console.log("user in details ===", user);
+      this.user = user;
 
-    //  );
+    });
 
-    // Subscribe to media changes
     this._fuseMediaWatcherService.onMediaChange$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(({ matchingAliases }) => {
@@ -150,32 +140,25 @@ export class DetailsImprimerComponent implements OnInit {
         this._changeDetectorRef.markForCheck();
       }
       );
+
+      
+      
   }
 
 
-  imprimerPDF() {
+  imprimerPDF( nomEntreprise : string) {
     //Affichage de la barre de chargement
     this.isLoading = true;
 
     this._imprimerRemiseService.getRemiseImprimer(this.id).pipe(
       takeUntil(this._unsubscribeAll),
-      // map((response) => {
-      //   console.log("map response====>", response);
-      //   return {
-      //     ...response,
-      //     data: response.data.map((item) => ({
-      //       ...item,
-      //       //montant: item.montant.toString(),
-      //       //mtTotal: item.mtTotal.toString(),
-      //     }))
-      //   };
-      // })
+      
     ).subscribe({
       next: (response) => {
-        console.log(this._userService.user);
-
+        console.log ("responsetest", response)
         //Permet d'initialiser les polices à utiliser
         pdfMake.vfs = pdfFonts.pdfMake.vfs;  
+        
         var headers = ["N° Chèque","Agence","Compte","Clé RIB","Montant" ];
         //Code BANQUE, N cheque, Agence, Compte (titulaire) , clerib , mongant
         
@@ -192,7 +175,7 @@ export class DetailsImprimerComponent implements OnInit {
                     columns: [
                       {
                         width: '*',
-                        text: 'Entreprise NAME',
+                        text: nomEntreprise,
                         alignment: 'left',
                         fontSize: 14,
                         bold: true,
@@ -231,6 +214,7 @@ export class DetailsImprimerComponent implements OnInit {
                 headerRows: 1,
                 body: [
                   headers,
+                  
                   ...response.data.map(item => [item.numChqTitu, item.codeBanqueTitu, item.numCompteTitu, item.cleRibTitu, item.montant]),
                   [{ text: 'Montant Total ', colSpan: 4 }, {}, {},{}, response.data.reduce((sum, d) => sum + d.montant, 0)]  
 

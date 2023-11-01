@@ -11,6 +11,7 @@ export class User
     avatar?:string;
     idEntreprise?:string;
     changePassword:boolean;
+    nomEntreprise?:string;
     
     constructor(data?){
 
@@ -22,5 +23,6 @@ export class User
         this.roles=data?.roles || [];
         this.changePassword=data?.changePassword;
         this.idEntreprise=data?.idEntreprise;
+        this.nomEntreprise=data?.nomEntreprise;
     }
 }
