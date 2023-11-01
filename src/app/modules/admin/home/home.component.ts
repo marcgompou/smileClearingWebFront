@@ -25,11 +25,12 @@ export class HomeComponent implements OnInit, OnDestroy
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
   @ViewChild('formNgForm') formNgForm: NgForm;
-  form: FormGroup = new FormGroup({
-    idEntreprise: new FormControl(''),
-    dateDebut: new FormControl('',Validators.required),
-    dateFin: new FormControl('',Validators.required),
-  });
+  form : FormGroup = new FormGroup({})    
+//   form: FormGroup = new FormGroup({
+//     idEntreprise: new FormControl(''),
+//    // dateDebut: new FormControl('',Validators.required),
+//     dateFin: new FormControl('',Validators.required),
+//   });
   listeEntreprise:any=[]
   //private _homeService: HomeService,
   chartGithubIssues: ApexOptions = {};
@@ -58,10 +59,24 @@ export class HomeComponent implements OnInit, OnDestroy
 }
 ngOnInit(): void
 {   
+ // Get the current date
+ const today = new Date();
+
+ // Set the time to the beginning of the day (0:00:00)
+ today.setHours(0, 0, 0, 0);
+
+ // Calculate the end of the day (23:59:59)
+ const endOfDay = new Date(today);
+ endOfDay.setHours(23, 59, 59, 999);
+
+ // Format the dates as strings (assuming you want them in a specific format)
+ const dateDebut = today.toISOString();
+ const dateFin = endOfDay.toISOString();
+
     this.form = this._formBuilder.group({
         idEntreprise: [''], // Set the default value as an empty string
-        dateDebut: [''],
-        dateFin: [''],
+        dateDebut: [dateDebut,[Validators.required]],
+        dateFin: [dateFin,[Validators.required]],
       });
 
 

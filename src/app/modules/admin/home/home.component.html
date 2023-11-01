@@ -31,12 +31,11 @@
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form #formNgForm="ngForm" [formGroup]="form" (ngSubmit)="recherchestatisque()">
 
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-50 mr-2 mb-8 "
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mb-8 "
                             appearance="outline">
                             <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate placeholder="Date de début" formControlName="dateDebut" matInput
-                                    required>
-                                <input matEndDate placeholder="Date de fin" formControlName="dateFin" matInput required>
+                                <input matStartDate placeholder="Date de début" formControlName="dateDebut" matInput  >
+                                <input matEndDate placeholder="Date de fin" formControlName="dateFin" matInput >
                             </mat-date-range-input>
                             <mat-datepicker-toggle class="max-w-xs fuse-mat-dense fuse-mat-rounded mr-2 mb-8 " matSuffix
                                 matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -53,7 +52,7 @@
                             </mat-select>
                         </mat-form-field>
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="(!form.valid )|| (form.get('idEntreprise').value === null)">
+                            [disabled]="form.invalid">
                             <mat-icon [svgIcon]="'mat_solid:search'"></mat-icon>
                             <span>Rechercher</span>
                         </button>
@@ -77,11 +76,16 @@
                                 <div class="flex flex-col items-center mt-2">
                                     <div
                                         class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
-                                        {{ dashboardData.chequeEmis?.nombreTotal || 0}}</div>
+                                        {{ dashboardData.chequeEmis?.nombreTotal || 0 }}</div>
                                     <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Montant : {{
-                                        dashboardData.chequeEmis?.montantTotal || 0 }}</div>
-                                    <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                                    </div>
+                                        dashboardData.chequeEmis?.montantTotal || 0 | currency:'CFA':'symbol':'1.0-2'}}</div>
+                                   
+                                        <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                            <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                                <div class="text-md font-medium truncate">Taux Total : </div>
+                                                <div class="ml-1.5 text-lg font-semibold">100  %</div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                             <!-- Overdue -->
@@ -93,9 +97,15 @@
                                 <div class="flex flex-col items-center mt-2">
                                     <div
                                         class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
-                                        {{ dashboardData.chequeEncaisse?.nombreTotal || 0 }}</div>
+                                        {{ dashboardData?.chequeEncaisse?.nombreTotal || 0 }}</div>
                                     <div class="text-lg font-medium text-green-600 dark:text-green-500">Montant {{
-                                        dashboardData.chequeEncaisse?.montantTotal || 0 }}</div>
+                                        dashboardData?.chequeEncaisse?.montantTotal || 0 | currency:'CFA':'symbol':'1.0-2' }}</div>
+                                        <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                            <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                                <div class="text-md font-medium truncate">Taux : </div>
+                                                <div class="ml-1.5 text-lg font-semibold">{{dashboardData?.tauxEncaisse || 0 }} % </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                             <!-- Issues -->
@@ -108,11 +118,14 @@
                                 <div class="flex flex-col items-center mt-2">
                                     <div
                                         class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
-                                        {{ dashboardData.chequeEncTrait?.nombreTotal || 0}}</div>
+                                        {{ dashboardData?.chequeEncTrait?.nombreTotal || 0}}</div>
                                     <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Montant : {{
-                                        dashboardData.chequeEncTrait?.nombreTotal || 0 }}</div>
+                                        dashboardData?.chequeEncTrait?.montantTotal || 0 | currency:'CFA':'symbol':'1.0-2' }}</div>
                                     <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-
+                                        <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                            <div class="text-md font-medium truncate">Taux : </div>
+                                            <div class="ml-1.5 text-lg font-semibold">{{dashboardData?.tauxEncTrait || 0 }} %</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -128,9 +141,14 @@
                                         class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
                                         {{ dashboardData.chequeImpaye?.nombreTotal || 0 }}</div>
                                     <div class="text-lg font-medium  text-red-600 dark:text-red-500">Montant : {{
-                                        dashboardData.chequeImpaye?.nombreTotal || 0 }}</div>
-                                    <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-                                    </div>
+                                        dashboardData.chequeImpaye?.nombreTotal || 0 | currency:'CFA':'symbol':'1.0-2' }}</div>
+                                   
+                                        <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                            <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
+                                                <div class="text-md font-medium truncate">Taux : </div>
+                                                <div class="ml-1.5 text-lg font-semibold">{{dashboardData?.tauxImpaye || 0 }} % </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
