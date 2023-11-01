@@ -20,7 +20,7 @@ export const utilisateursRoutes: Route[] = [
                 component: ListComponent,
                 resolve  : {
                     utilisateurs : LoadDataResolver,
-                    role  : RolesResolver
+                    entreprise  : EntreprisesResolver
                 },
                 children : [
                     {

@@ -4,7 +4,7 @@ export class Utilisateurs {
   email: string;
   password: string;
   nom: string;
-  Prenom: string;
+  prenom: string;
   numeroTel: string;
   fonction: string;
   identreprise: number;
@@ -25,7 +25,7 @@ export class Utilisateurs {
       email : data?.email,
       password : data?.password,
       nom : data?.nom,
-      Prenom : data?.Prenom,
+      prenom : data?.Prenom,
       numeroTel : data?.numeroTel,
       fonction : data?.fonction,
       identreprise : data?.identreprise,
@@ -33,7 +33,7 @@ export class Utilisateurs {
       typeMfa : data?.typeMfa,
       token : data?.token,
       statut : data?.statut,
-      roles : data?.roles || data?.UserRoles || [],
+      roles : data?.roles || data?.userRoles || [],
       statutMfa : data?.statutMfa,
     }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError,Observable, of, switchMap, tap} from 'rxjs';
+import { BehaviorSubject, catchError,Observable, of, shareReplay, switchMap, tap} from 'rxjs';
 import { Utilisateurs } from './utilisateurs.types';
 import { environment } from 'environments/environment';
 
@@ -167,6 +167,7 @@ export class UtilisateursService
 
     getEntreprises():Observable<any>{
         return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
+            shareReplay(1),
             tap((response) => {
                 console.log(response);               
                 this._entreprises.next(response);

@@ -199,20 +199,8 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
             ).subscribe({
                 next: (response:any) => {
                 console.log("Response===> :", response);
-                
                     this.entreprises=response.data;
                     this._changeDetectorRef.markForCheck();
-                }, 
-                error: (error) => {
-                // //not show historique
-                // this.showData = false;
-                // console.error('Error : ',JSON.stringify(error));
-                // // Set the alert
-                // this.alert = { type: 'error', message: error.error.message??error.error };
-                // // Show the alert
-                // this.showAlert = true;
-                
-                this._changeDetectorRef.markForCheck();
                 }
             });
     

@@ -119,9 +119,11 @@ export class DetailsComponent implements OnInit,OnChanges {
 
           
           if(this.data){   
-            console.log("====details-data===>",this.data);       
+            console.log("====details-data===>",this.data);     
+            console.log("====details-data-key===>",field.key);       
               if(this.data[field.key]!==null && this.data[field.key]!==undefined ){
                 fieldValue=this.data[field.key];
+                console.log("====details-data-key===>",fieldValue);
               }
           }
           if(!this.form){

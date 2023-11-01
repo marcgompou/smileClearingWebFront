@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, map, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { Utilisateurs, } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.types';
 import { UtilisateursService } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service';
@@ -27,7 +27,7 @@ export class ListComponent implements OnInit,OnDestroy {
     selectedRowIndex: any;
     _dataSource: MatTableDataSource<Utilisateurs>;
     
-    _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'identreprise'];
+    _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'nomEntreprise'];
     dataStructure = [
        
         {
@@ -52,7 +52,7 @@ export class ListComponent implements OnInit,OnDestroy {
             "label": "Fonction"
         },
         {
-            "key": "identreprise",
+            "key": "nomEntreprise",
             "label": "Entreprise"
         },
     ];
@@ -60,6 +60,7 @@ export class ListComponent implements OnInit,OnDestroy {
 
     /**utilisateurs */
     _utilisateurs: Utilisateurs[] = [];
+    _entreprises:any[];
     //utilisateur connecté
     _connectedUser: User;
     _nombreUser = 0;
@@ -112,9 +113,34 @@ export class ListComponent implements OnInit,OnDestroy {
             );
 
 
-
         // get user
         this.getConnectedUser();
+        
+        
+        this._utilisateursService.entreprises$.pipe(
+          takeUntil(this._unsubscribeAll)
+         
+        ).subscribe({
+            next: (response:any) => {
+            console.log("Response===> :", response);
+            
+                this._entreprises=response.data.map((element:any) => { return {"libelle":element.nomEntreprise,"value":element.identreprise}});
+                console.log("====entreprises=====>",this._entreprises)
+                this._changeDetectorRef.markForCheck();
+            }, 
+            error: (error) => {
+            // //not show historique
+            // this.showData = false;
+            // console.error('Error : ',JSON.stringify(error));
+            // // Set the alert
+            // this.alert = { type: 'error', message: error.error.message??error.error };
+            // // Show the alert
+            // this.showAlert = true;
+            
+            this._changeDetectorRef.markForCheck();
+            }
+        });
+
 
     }
 
@@ -199,8 +225,20 @@ export class ListComponent implements OnInit,OnDestroy {
               required: true,
             }
           },
+
+          
           {
-            key: "UserRoles",
+            key: "identreprise",
+            libelle: "Entreprise",
+            type:"select",
+            options: this._entreprises,
+            validators: {
+              max: 100,
+            }
+          },
+
+          {
+            key: "userRoles",
             libelle: "Roles",
             type:"select",
             multiple:true,
@@ -209,20 +247,8 @@ export class ListComponent implements OnInit,OnDestroy {
               max: 130,
               required: true,
             }
-          },
-          // {
-          //   key: "UserRoles",
-          //   libelle: "Roles",
-          //   type:"select",
-          //   options:['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'],
-          //   validators: {
-          //     max: 130,
-          //     required: true,
-          //   }
-          // },
+          }
         ];
-       
-       
     };
 
 
