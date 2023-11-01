@@ -12,11 +12,10 @@ export const utilisateursRoutes: Route[] = [
     {
         path     : '',
         component: UtilisateursComponent,
-       
         children : [
             {
                 path     : '',
-                data : {breadcrumb:'Liste', endpoint: endpoint  },
+                data : {breadcrumb:'Liste', endpoint: endpoint},
                 component: ListComponent,
                 resolve  : {
                     utilisateurs : LoadDataResolver,
@@ -26,22 +25,20 @@ export const utilisateursRoutes: Route[] = [
                     {
                         path         : 'details/:id',
                         data : { endpoint: endpoint  },
-
                         component    : DetailsComponent,
                         resolve      : {
                             data  : UtilisateursByIdResolver,
                             detail: LoadDetailsResolver
                         },
                         canDeactivate: [CanDeactivateUtilisateursDetails]
-                    }
-                    ,{
+                    },
+                    {
                         path         : 'creation/add',
                         data: { breadcrumb: 'Création' },
                         resolve:{
                             data:EntreprisesResolver
                         },
                         component    : UtilisateursCreateComponent,
-
                     }
                 ]
             }
