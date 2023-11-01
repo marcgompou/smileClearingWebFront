@@ -24,6 +24,7 @@ export class LoadDataResolver implements Resolve<boolean> {
 
         this._tableDataService._endpoint = route.data['endpoint'];
         this._tableDataService._id = route.params?.id;
+        this._tableDataService._hasPagination = true;
         return this._tableDataService.getDatas();
     }
 }

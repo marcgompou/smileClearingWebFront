@@ -9,12 +9,8 @@ export class DataTablePipe implements PipeTransform {
         if (!value) return "-";
 
         if (transformType === 'montant') {
-            // Implement the logic for the 'amount' transformation
-            // For example, you might want to format numbers as currency
             return this.formatAmount(value);
         } else if (transformType === 'date') {
-            // Implement the logic for the 'date' transformation
-            // For example, you might want to format dates using a specific pattern
             return this.formatDate(value);
         }
 

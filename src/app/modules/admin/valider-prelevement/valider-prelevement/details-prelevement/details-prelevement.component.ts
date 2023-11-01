@@ -24,26 +24,12 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 export class DetailsPrelevementComponent implements OnInit {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
-  noData: any;
   prelevementData: any;
   montantTotal: number = 0;
   nombreRemise: number = 0;
-  remiseIsInCorrect: boolean = true;
   id: string = "";
   isLoading = false;
-
-
-  @ViewChild(MatPaginator) private _paginator: MatPaginator;
-  @ViewChild(MatSort) private _sort: MatSort;
-
-
-  action = 'CONNECT';
-  received: Prelevement[] = [];
-  totalRows = 0;
-  pageSize = 10;
-  currentPage = 0;
   pageSizeOptions: number[] = [10, 25];
-
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -52,45 +38,23 @@ export class DetailsPrelevementComponent implements OnInit {
     type: 'success',
     message: ''
   };
-  chequeData: any;
   showAlert: boolean = false;
 
-
-  // "id": 752,
-  //           "identreprise": 1000,
-  //           "idremisePrelev": 20,
- 
-  //           "nomBanque": "ABJ-PLTEAU",
-  //           "montant": 500000,
-  //           "statut": 1,
-  //           "motif": "CI17C02360  059 08022633 CI131",
-  //           "nomClient": "BUREAUTIQUE PROFESSIONNE",
-  //           "dateEcheance": "2022-06-20T00:00:00"
-
   public dataStructure = [
+
     {
       "key": "codeBanque",
-      "label": "codeBanque"
+      "label": "Code Banque"
     },
+
     {
       "key": "codeagence",
-      "label": "codeagence"
+      "label": "Code agence"
 
     },
     {
       "key": "numCompte",
-      "label": "Numero de Compte"
-    },
-    {
-      "key": "nomfichier",
-      "label": "nomfichier"
-    },
-
-    
-    {
-      "key": "montant",
-      "label": "Montant"
-
+      "label": "Numero compte"
     },
     {
       "key": "motif",
@@ -99,18 +63,32 @@ export class DetailsPrelevementComponent implements OnInit {
     },
     {
       "key": "nomClient",
-      "label": "Nom du Client"
+      "label": "Nom Débit"
 
     },
+    {
+      "key": "nomBanque",
+      "label": "Nom banque"
+    },
 
-  
+    {
+      "key": "montant",
+      "label": "Montant",
+      "type": "montant"
+
+    },
+    {
+      "key": "dateEcheance",
+      "label": "Date echéance",
+      "type":"date"
+    },
 
 
   ];
 
 
 
-  public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient"];
+  public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient","nomBanque","dateEcheance"];
 
 
   onBackdropClicked(): void {
@@ -149,41 +127,34 @@ export class DetailsPrelevementComponent implements OnInit {
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des prelevement de tableData common
     this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details cheque prelevement response=======>",response)
-      this.prelevementData=response;
+        this.prelevementData=response;
+        console.log(response);
+
+        this.montantTotal=response?.mtTotal || 0;
     })
 
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];
-      console.log("id in details", this.id);
     })
 
-    // Subscribe to MatDrawer opened change
-  //   this.matDrawer.openedChange.subscribe((opened) => {
-  //     if ( !opened )
-  //     {
-  //         // Mark for check
-  //         this._changeDetectorRef.markForCheck();
-  //     }
-  // });
 
-  // Subscribe to media changes
-  this._fuseMediaWatcherService.onMediaChange$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(({matchingAliases}) => {
-          // Set the drawerMode if the given breakpoint is active
-          if ( matchingAliases.includes('lg') )
-          {
-              this.drawerMode = 'side';
-          }
-          else
-          {
-              this.drawerMode = 'over';
-          }
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
-      }
-  );
+    // Subscribe to media changes
+    this._fuseMediaWatcherService.onMediaChange$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(({matchingAliases}) => {
+            // Set the drawerMode if the given breakpoint is active
+            if ( matchingAliases.includes('lg') )
+            {
+                this.drawerMode = 'side';
+            }
+            else
+            {
+                this.drawerMode = 'over';
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    );
   }
 
   validerPrelevement(){

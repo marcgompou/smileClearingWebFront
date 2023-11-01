@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
-import { ValiderRemiseService } from './valider-remise.service';
+//import { ValiderRemiseService } from './valider-remise.service';
 
 //Pas necessaire pour l'instant
 // @Injectable({

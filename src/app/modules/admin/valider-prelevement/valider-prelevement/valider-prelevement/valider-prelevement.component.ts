@@ -31,26 +31,12 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
   remiseData: any;
   listeCompteEntreprise: any[] = [];
   montantTotal: number = 0;
-  nombreRemise: number = 0;
+  //nombreRemise: number = 0;
   statut: string = "0";
-  remiseIsInCorrect: boolean = true;
-  //listeCompteEntreprise: any;
-  enregistrerRemise() {
-    throw new Error('Method not implemented.');
-  }
-  selectedProject: string = 'ACME Corp. Backend App';
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
-  title = 'socketrv';
-  command = 'StartScanner';
-  action = 'CONNECT';
-  received: Prelevement[] = [];
-  totalRows = 0;
-  pageSize = 10;
-  currentPage = 0;
-  pageSizeOptions: number[] = [10, 25];
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -68,7 +54,7 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
    
     {
       "key": "codeEmetteur",
-      "label": "code Emetteur"
+      "label": "Code emetteur"
     },
     {
       "key": "nomfichier",
@@ -81,7 +67,7 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
     },
     {
       "key": "compteCredite",
-      "label": "compte Credite"
+      "label": "Compte crédité"
     },
     {
       "key": "nbPrelevement",
@@ -95,14 +81,14 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
     },
     {
       "key": "dateEdition",
-      "label": "dateEdition",
+      "label": "Date edition",
       "type": "date"
     },
 
     {
       "key": "dateEngistrement",
-      "label": "date Engistrement",
-"type": "date"
+      "label": "Date engistrement",
+      "type": "date"
     },
 
 
@@ -117,8 +103,7 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
   selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   // remises$: Observable<Remise[]>;
-  scannerIsConnected = false;
-
+  _prelevementList:any[]=[];
 
   compteClientForm = new FormGroup({
     statut: new FormControl('', Validators.required),
@@ -133,11 +118,13 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
   ngOnInit() {
 
     
-this._tableDataService.datas$.subscribe((res:any) => {
-  console.log ("res-----------", res.data.length);
-  this.dataSource = new MatTableDataSource(res.data);
- 
-})
+    this._tableDataService.datas$.subscribe((res:any) => {
+      this._prelevementList=res.data as any[];
+      this.dataSource = new MatTableDataSource(res.data);
+
+      this.montantTotal=this._prelevementList.reduce((a, b) => a + b.mtTotal, 0);
+
+    });
     //getCompteByEntreprise();
     this.loadCompte();
    
