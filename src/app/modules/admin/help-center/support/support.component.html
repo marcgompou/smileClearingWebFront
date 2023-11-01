@@ -34,31 +34,9 @@
                         <div class="text-secondary">Votre demande sera traitée et notre équipe d'assistance vous répondra dans les plus brefs délais.</div>
                     </div>
                     <!-- Name -->
-                    <mat-form-field class="w-full">
-                        <input
-                            matInput
-                            [formControlName]="'name'"
-                            [required]="true">
-                        <mat-label>Nom</mat-label>
-                        <mat-error *ngIf="supportForm.get('name').hasError('required')">
-                            Required
-                        </mat-error>
-                    </mat-form-field>
+                   
                     <!-- Email -->
-                    <mat-form-field class="w-full">
-                        <input
-                            type="email"
-                            matInput
-                            [formControlName]="'email'"
-                            [required]="true">
-                        <mat-label>Email</mat-label>
-                        <mat-error *ngIf="supportForm.get('email').hasError('required')">
-                            Requis
-                        </mat-error>
-                        <mat-error *ngIf="supportForm.get('email').hasError('email')">
-                            Entrer une adresse email valide
-                        </mat-error>
-                    </mat-form-field>
+                    
                     <!-- Subject -->
                     <mat-form-field class="w-full">
                         <input

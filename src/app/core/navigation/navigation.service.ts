@@ -287,22 +287,22 @@ export class NavigationService {
                                 link: '/importerRemise',
                                 permission: SecService.permissions.ROLE_ADMIN
                             },
-                            {
-                                id: 'imprimerRemiseImporter',
-                                title: 'Impression Remise Importer',
-                                type: 'basic',
-                                icon: 'heroicons_solid:printer',
-                                link: '/imprimerRemiseImporter',
-                                permission: SecService.permissions.ROLE_ADMIN
-                            },
-                            {
-                                id: 'impressionCheque',
-                                title: 'Impression Chèque',
-                                type: 'basic',
-                                icon: 'heroicons_solid:printer',
-                                link: '/impressionCheque',
-                                permission: SecService.permissions.ROLE_ADMIN
-                            },
+                            // {
+                            //     id: 'imprimerRemiseImporter',
+                            //     title: 'Impression Remise Importer',
+                            //     type: 'basic',
+                            //     icon: 'heroicons_solid:printer',
+                            //     link: '/imprimerRemiseImporter',
+                            //     permission: SecService.permissions.ROLE_ADMIN
+                            // },
+                            // {
+                            //     id: 'impressionCheque',
+                            //     title: 'Impression Chèque',
+                            //     type: 'basic',
+                            //     icon: 'heroicons_solid:printer',
+                            //     link: '/impressionCheque',
+                            //     permission: SecService.permissions.ROLE_ADMIN
+                            // },
                         ]
                 },
                 {
