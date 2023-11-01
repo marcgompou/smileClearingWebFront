@@ -29,7 +29,6 @@ export class ListComponent implements OnInit,OnDestroy {
     
     _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'nomEntreprise'];
     dataStructure = [
-       
         {
             "key": "dateCreation",
             "label": "Date de création",

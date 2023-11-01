@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy
   montantTotal: number = 0;
   data: any;
   dashboardData: any;
-  tauxExporte:any;
+  tauxExporte:any=0;
   selectedProject: string = 'BRIDGE COLLECT';
   private _unsubscribeAll: Subject<any> = new Subject<any>();
     dateDebut: string;
@@ -145,7 +145,6 @@ this._homeService.getDataDashboard(this.dateDebut,this.dateFin,idCompteClient).p
     console.log("stat data=======>",response)
     this.dashboardData=response.data;
     this.tauxExporte=response.tauxEncTrait +response.tauxEncaisse+response.tauxImpaye
- 
     
     this._changeDetectorRef.markForCheck();
 })
