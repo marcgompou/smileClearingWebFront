@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subject, map, takeUntil } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { Utilisateurs, } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.types';
 import { UtilisateursService } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service';
@@ -12,6 +12,7 @@ import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
 import { ResponseContrat } from 'app/modules/admin/common/contrat/response.type';
 import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
 @Component({
     selector: 'app-list',
@@ -26,7 +27,7 @@ export class ListComponent implements OnInit,OnDestroy {
     /**DataTable */
     selectedRowIndex: any;
     _dataSource: MatTableDataSource<Utilisateurs>;
-    
+    private _searchTerms = new Subject<string>();
     _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'nomEntreprise'];
     dataStructure = [
         {
@@ -66,6 +67,7 @@ export class ListComponent implements OnInit,OnDestroy {
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    _filterObject:any={criteria:""};
     /**
      * Constructor
      */
@@ -75,6 +77,8 @@ export class ListComponent implements OnInit,OnDestroy {
         private _utilisateursService: UtilisateursService,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
+        private _tableDataService: TableDataService,
+
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
     }
@@ -94,6 +98,28 @@ export class ListComponent implements OnInit,OnDestroy {
                 this._changeDetectorRef.markForCheck();
             }
         });
+
+
+        this._searchTerms
+      .pipe(
+        debounceTime(300), // Adjust the debounce time (in milliseconds) as needed
+        distinctUntilChanged(), // Ignore if the new term is the same as the previous term
+        switchMap((term: string) => {
+          this._filterObject={ criteria: term }
+          this._tableDataService._filterObject = { criteria: term };
+          this._tableDataService._hasPagination = true;
+          this._tableDataService._paginationObject = {
+            page: 0,
+            size: 10
+          };
+          return this._tableDataService.getDatas();
+        })
+      )
+      .subscribe(() => {
+        // Perform any additional actions after the data is retrieved.
+        this._changeDetectorRef.detectChanges();
+      });
+
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
@@ -164,9 +190,8 @@ export class ListComponent implements OnInit,OnDestroy {
      * @param event 
      */
     applyFilter(event: Event): void {
-        const query = (event.target as HTMLInputElement).value;
-        this._dataSource.filter = query.trim().toLowerCase();
-        this._changeDetectorRef.detectChanges();
+      const query = (event.target as HTMLInputElement).value;
+      this._searchTerms.next(query);;
     }
 
     /**
