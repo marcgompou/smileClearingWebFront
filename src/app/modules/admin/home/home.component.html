@@ -36,8 +36,8 @@
 
                         <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mb-8" appearance="outline">
                             <mat-date-range-input [rangePicker]="picker">
-                              <input matStartDate placeholder="Date de début">
-                              <input matEndDate placeholder="Date de fin">
+                              <input matStartDate placeholder="Date de début" formControlName="dateDebut">
+                              <input matEndDate placeholder="Date de fin" formControlName="dateFin">
                             </mat-date-range-input>
                             <mat-datepicker-toggle matIconSuffix matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-date-range-picker #picker></mat-date-range-picker>

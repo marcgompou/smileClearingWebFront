@@ -131,9 +131,9 @@ trackByFn(index: number, item: any): any
 
 rechercheStatisque(){
     let idCompteClient=this.form.value.idEntreprise;
-    this.dateDebut = this.form.value.dateDebut.toISOString();
-    this.dateFin = this.form.value.dateFin.toISOString();
-   // this.dateFin = '31/12/2023';
+    this.dateDebut =new Date(this.form.get('dateDebut').value).toISOString().split('T')[0];
+    this.dateFin = new Date(this.form.get('dateFin').value).toISOString().split('T')[0];
+    // this.dateFin = '31/12/2023';
     console.log("idCompteClientidCompteClient",idCompteClient);
     console.log("dateDebutdateDebut",this.dateDebut);
     console.log("dateFindateFin",this.dateFin);
@@ -142,15 +142,14 @@ rechercheStatisque(){
     //console.log("this.form.value.dateFin", currentDate.toLocaleDateString('en-US'); );
 
     //this._homeService.getDataDashboard(this.dateDebut,this.dateFin,idCompteClient);
-this._homeService.getDataDashboard(this.dateDebut,this.dateFin,idCompteClient).pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-    console.log("stat data=======>",response)
-    this.dashboardData=response.data;
-    this.tauxExporte=response.tauxEncTrait +response.tauxEncaisse+response.tauxImpaye
-    
-    this._changeDetectorRef.markForCheck();
-})
+    this._homeService.getDataDashboard(this.dateDebut,this.dateFin,idCompteClient).pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+        console.log("stat data=======>",response)
+        this.dashboardData=response.data;
+        this.tauxExporte=response.tauxEncTrait +response.tauxEncaisse+response.tauxImpaye
+        
+        this._changeDetectorRef.markForCheck();
+    })
 }
-  
 // -----------------------------------------------------------------------------------------------------
 // @ Private methods
 // -----------------------------------------------------------------------------------------------------
