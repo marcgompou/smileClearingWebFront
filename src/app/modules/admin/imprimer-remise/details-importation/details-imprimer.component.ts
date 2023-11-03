@@ -44,7 +44,7 @@ export class DetailsImprimerComponent implements OnInit {
   drawerMode: "side" | "over";
   noData: any;
   remiseData: any;
-
+  qrCodeData: string;
   montantTotal: number = 0;
   nombreRemise: number = 0;
 
@@ -160,23 +160,27 @@ export class DetailsImprimerComponent implements OnInit {
           //Permet d'initialiser les polices à utiliser
           pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+         
+    // .
           const currentDate: Date = new Date();
-
+          // this.qrcodeData = this.qrcodeService.generate(currentDate).subscribe((data) => {
+          //   this.qrCodeData = data;
+          // });
           const mois: string[] = [
-            "janvier",
-            "février",
-            "mars",
-            "avril",
-            "mai",
-            "juin",
-            "juillet",
-            "août",
-            "septembre",
-            "octobre",
-            "novembre",
-            "décembre",
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre",
           ];
-          const formattedDate: string = `${currentDate.getDate()} ${
+          const formattedDate: string = `${(currentDate.getDate() < 10 ? "0" : "") + currentDate.getDate() } ${
             mois[currentDate.getMonth()]
           } ${currentDate.getFullYear()}`;
           var headers = ["N° Chèque", "Agence", "Compte", "Clé RIB", "Montant"];
