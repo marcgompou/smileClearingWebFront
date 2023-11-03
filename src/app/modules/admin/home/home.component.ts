@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 @Component({
     selector     : 'home',
     templateUrl  : './home.component.html',
+    styleUrls    : ['./home.component.scss'],
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations     : fuseAnimations
@@ -128,7 +129,7 @@ trackByFn(index: number, item: any): any
     return item.id || index;
 }
 
-recherchestatisque(){
+rechercheStatisque(){
     let idCompteClient=this.form.value.idEntreprise;
     this.dateDebut = this.form.value.dateDebut.toISOString();
     this.dateFin = this.form.value.dateFin.toISOString();
