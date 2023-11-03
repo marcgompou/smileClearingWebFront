@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subject, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { Utilisateurs, } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.types';
 import { UtilisateursService } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service';
@@ -103,7 +103,9 @@ export class ListComponent implements OnInit,OnDestroy {
         this._searchTerms
       .pipe(
         debounceTime(300), // Adjust the debounce time (in milliseconds) as needed
-        distinctUntilChanged(), // Ignore if the new term is the same as the previous term
+        distinctUntilChanged(),
+        // Ignore if the new term is the same as the previous term
+        filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
         switchMap((term: string) => {
           this._filterObject={ criteria: term }
           this._tableDataService._filterObject = { criteria: term };
