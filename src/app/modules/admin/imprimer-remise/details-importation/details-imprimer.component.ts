@@ -44,6 +44,7 @@ export class DetailsImprimerComponent implements OnInit {
   drawerMode: "side" | "over";
   noData: any;
   remiseData: any;
+
   montantTotal: number = 0;
   nombreRemise: number = 0;
 
@@ -114,7 +115,6 @@ export class DetailsImprimerComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router
   ) {}
-
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des remise de tableData common
     this._tableDataService.data$
@@ -147,7 +147,6 @@ export class DetailsImprimerComponent implements OnInit {
         this._changeDetectorRef.markForCheck();
       });
   }
-
   imprimerPDF(nomEntreprise: string) {
     //Affichage de la barre de chargement
     this.isLoading = true;
@@ -160,16 +159,33 @@ export class DetailsImprimerComponent implements OnInit {
           console.log("responsetest", response);
           //Permet d'initialiser les polices à utiliser
           pdfMake.vfs = pdfFonts.pdfMake.vfs;
-          const currentDate = new Date().toISOString().split("T")[0].split("-").reverse().join("/");
+
+          const currentDate: Date = new Date();
+
+          const mois: string[] = [
+            "janvier",
+            "février",
+            "mars",
+            "avril",
+            "mai",
+            "juin",
+            "juillet",
+            "août",
+            "septembre",
+            "octobre",
+            "novembre",
+            "décembre",
+          ];
+          const formattedDate: string = `${currentDate.getDate()} ${
+            mois[currentDate.getMonth()]
+          } ${currentDate.getFullYear()}`;
           var headers = ["N° Chèque", "Agence", "Compte", "Clé RIB", "Montant"];
           //Code BANQUE, N cheque, Agence, Compte (titulaire) , clerib , mongant
-
           //Generation du pdf
           const documentDefinition = {
             pageSize: "A4",
             pageMargins: [20, 60, 40, 80],
             header: function (currentPage, pageCount, pageSize) {
-             
               // you can apply any logic and return any valid pdfmake element
               return [
                 {
@@ -192,26 +208,8 @@ export class DetailsImprimerComponent implements OnInit {
                         },
                       ],
                     },
-                  
                   ],
-
-                
-                //   //columnGap: 200,
-                //   margin: [25, 20, 25, 0],
-                // },
-                // {
-                //             width: "*",
-                //             text: nomEntreprise,
-                //             alignment: "left",
-                //             fontSize: 14,
-                //             bold: true,
-                //             margin: [20, 10, 0, 0],
-                //           },
-                //           {
-                //             image: LogoBGG,
-                }
-
-                
+                },
               ];
             },
             footer: function (currentPage, pageCount) {
@@ -221,15 +219,13 @@ export class DetailsImprimerComponent implements OnInit {
                 fontSize: 10,
               };
             },
-           // const currentDate = new Date().toISOString();
+            // const currentDate = new Date().toISOString();
             content: [
-              
               {
-                
                 alignment: "left",
                 bold: true,
-               
-                'text': "Date : "+ currentDate,
+
+                text: "Date : " + formattedDate,
                 margin: [0, 0, 0, 0],
               },
               {
