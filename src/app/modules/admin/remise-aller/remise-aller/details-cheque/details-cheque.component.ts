@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, NgForm, Validators } from '@an
 import { MatDrawer, MatDrawerToggleResult } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { Subject, catchError, debounceTime, distinctUntilChanged, finalize, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, catchError, debounceTime, distinctUntilChanged, finalize, switchMap, takeUntil } from 'rxjs';
 import { FuseAlertType } from '@fuse/components/alert';
 import { MatDialog } from '@angular/material/dialog';
 import { CreerRemiseService } from '../remise.service';
@@ -28,6 +28,8 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
   @Input() chequeData: any;
   @Input() matDrawer!: MatDrawer;
   @Input() formFields!: any;
+  
+  @Input() loadDataOnInit:boolean=true;
   @Input() constructorPayload!: (args: any) => any;
   @Input("formTitle") formTitle: string = "Formulaire Détails/Modification"
   @Input("endpoint") endpoint: string="";
@@ -41,6 +43,7 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
   };
   id: string = "0";
   _noCheck:boolean=false;
+  data$: Observable<any>  =  this._tableDataService.data$;
   //Tableau de cheque scanner dans le component de création de cheque
   tableData: any[];
   constructor(
@@ -83,6 +86,14 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.matDrawer.open();
+    if(this.loadDataOnInit){
+
+      this.loadData();
+
+    }else{
+      this.setupFormFields();
+
+    }
     this.form = this.formBuilder.group({});
     this.setupFormFields();
 
@@ -92,6 +103,7 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
       if(this.id=="-1"){
         this.closeForm();
         this._changeDetectorRef.detectChanges();
+
         
       }
       console.log("id in details cheque*****", this.id);
@@ -103,22 +115,22 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
     
     
     //Details service ngOnInit
-//      this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)
-//     ).subscribe({
-//        next: (table) => {
-//          this.tableData = table;
-//          this.chequeData = table;
-//         this.formFields.forEach(field => { 
-//           console.log("fields in details=====>", field),
-//           this.form.patchValue({
-//             [field.key]: this.chequeData[field.key]
-//            })
-//          });
-//          this._changeDetectorRef.markForCheck();
-//         console.log("table data in details=====>", this.tableData)     
-//        }
-//      });
-//  this._changeDetectorRef.markForCheck();
+    //  this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)
+    // ).subscribe({
+    //    next: (table) => {
+    //    //  this.tableData = table;
+    //      this.chequeData = table;
+    //     this.formFields.forEach(field => { 
+    //       console.log("fields in details=====>", field),
+    //       this.form.patchValue({
+    //         [field.key]: this.chequeData[field.key]
+    //        })
+    //      });
+    //      this._changeDetectorRef.markForCheck();
+    //     console.log("table data in details=====>", this.tableData)     
+    //    }
+    //  });
+ this._changeDetectorRef.markForCheck();
    
 
  this._remiseService.remise$.pipe(takeUntil(this._unsubscribeAll)
@@ -130,6 +142,44 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
    }
  });
 }
+
+
+loadData():void{
+    // Hide the alert
+    //      this.endpoint,this.filterObject,this.paginationObject
+    
+    this._remiseService.getChequeById(this.id).pipe(takeUntil(this._unsubscribeAll)
+    ).subscribe({
+        next: (response:any) => {
+          console.log("Response=>yyyyyyy :", response);
+          // this.dataSource = new MatTableDataSource(response.data);
+          
+          if(response==null){
+            
+            this.closeForm()
+
+          }else{
+            this.data=response.data;
+            this.form = this.formBuilder.group({});
+            this.setupFormFields();
+          }
+          //A supprimer apres integration
+
+          this._changeDetectorRef.markForCheck();
+        }, 
+        error: (error) => {
+          //not show historique
+          this.showData = false;
+          console.error('Error : ',JSON.stringify(error));
+          // Set the alert
+          this.alert = { type: 'error', message: error.error.message??error.error };
+          // Show the alert
+          this.showAlert = true;
+          
+          this._changeDetectorRef.markForCheck();
+        }
+    });
+  }
 
   getTitulaire(chequeData:any){
     this._remiseService.getTire(chequeData).subscribe({
@@ -185,7 +235,7 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
 
     let chequeData={
       codeBanque:this.form.value.codeBanque,
-      codeAgence:this.form.value.codeAgence,
+      codeAgence:this.form.value?.codeAgence??this.form.value?.agence,
       compte:this.form.value?.compte
     }
 

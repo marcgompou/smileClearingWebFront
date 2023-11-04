@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
@@ -33,6 +33,7 @@ export class DetailsRemiseComponent implements OnInit {
   isLoading = false;
 
 
+  @Input() loadDataOnInit:boolean=true;
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
@@ -147,12 +148,20 @@ export class DetailsRemiseComponent implements OnInit {
     this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("details cheque 7777 remise response=======>",response)
       this.chequeData=response;
+      
 
      // this.openDetailComponent( this.chequeData );
    //   this.openDetailComponent(new DetailsChequeComponent( this.chequeData, this._router, this._dialog, this._changeDetectorRef));
       this._changeDetectorRef.markForCheck();
 
     })
+
+    this.matDrawer.openedChange.subscribe((opened) => {
+      if (!opened) {
+          // Mark for check
+          this._changeDetectorRef.markForCheck();
+      }
+  });
 
 
 // this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
@@ -285,9 +294,10 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
     component.matDrawer = this?.matDrawer;
     component.formTitle = "DETAILS CHEQUE";
     component.chequeData = this.chequeData;
+    //component.loadDataOnInit=true;
     //Endpoint pour supprimer un cheque
     component.endpoint="remise/suppression/cheque";
-    close();
+    //close();
     
     //Initialisation formulaire details
     component.formFields = [
