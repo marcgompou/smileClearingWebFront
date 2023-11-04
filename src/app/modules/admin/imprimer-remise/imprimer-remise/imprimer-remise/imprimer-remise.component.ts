@@ -42,10 +42,7 @@ export class ImprimerRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
-  title = 'socketrv';
-  command = 'StartScanner';
-  action = 'CONNECT';
-  received: Remise[] = [];
+
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
@@ -117,19 +114,12 @@ export class ImprimerRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   //CYCLE DE VIE
   ngOnInit() {
 
-    // Get the current date
- const today = new Date();
-
- // Set the time to the beginning of the day (0:00:00)
- today.setHours(0, 0, 0, 0);
-
- // Calculate the end of the day (23:59:59)
- const endOfDay = new Date(today);
- endOfDay.setHours(23, 59, 59, 999);
-
- // Format the dates as strings (assuming you want them in a specific format)
- const dateDebut = today.toISOString();
- const dateFin = endOfDay.toISOString();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(today);
+    endOfDay.setHours(23, 59, 59, 999);
+    const dateDebut = today.toISOString();
+    const dateFin = endOfDay.toISOString();
 
     this.imprimerForm = this._formBuilder.group({
         dateDebut: [dateDebut,[Validators.required]],

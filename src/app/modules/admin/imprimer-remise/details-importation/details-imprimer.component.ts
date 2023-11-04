@@ -42,7 +42,6 @@ import { LogoBGG } from "../../common/imagesBase64/logoBBG";
 export class DetailsImprimerComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;
   drawerMode: "side" | "over";
-  noData: any;
   remiseData: any;
   qrCodeData: string;
   montantTotal: number = 0;
@@ -160,8 +159,6 @@ export class DetailsImprimerComponent implements OnInit {
           //Permet d'initialiser les polices à utiliser
           pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-         
-    // .
           const currentDate: Date = new Date();
           // this.qrcodeData = this.qrcodeService.generate(currentDate).subscribe((data) => {
           //   this.qrCodeData = data;
@@ -183,7 +180,7 @@ export class DetailsImprimerComponent implements OnInit {
           const formattedDate: string = `${(currentDate.getDate() < 10 ? "0" : "") + currentDate.getDate() } ${
             mois[currentDate.getMonth()]
           } ${currentDate.getFullYear()}`;
-          var headers = ["N° Chèque", "Agence", "Compte", "Clé RIB", "Montant"];
+          var headers = ["N° Chèque","Code banque","Agence", "Compte", "Clé RIB", "Montant"];
           //Code BANQUE, N cheque, Agence, Compte (titulaire) , clerib , mongant
           //Generation du pdf
           const documentDefinition = {
@@ -198,17 +195,17 @@ export class DetailsImprimerComponent implements OnInit {
                       columns: [
                         {
                           width: "*",
-                          text: nomEntreprise,
+                          text:"Entreprise : " + nomEntreprise,
                           alignment: "left",
                           fontSize: 14,
                           bold: true,
-                          margin: [20, 10, 0, 0],
+                          margin: [20, 20, 0, 0],
                         },
                         {
                           image: LogoBGG,
                           fit: [150, 40],
                           alignment: "right",
-                          margin: [0, 10, 20, 0],
+                          margin: [0, 20, 20, 0],
                         },
                       ],
                     },
@@ -218,12 +215,11 @@ export class DetailsImprimerComponent implements OnInit {
             },
             footer: function (currentPage, pageCount) {
               return {
-                text: currentPage.toString() + " sur " + pageCount,
+                text: "-"+currentPage.toString() + " sur " + pageCount+"-",
                 alignment: "center",
-                fontSize: 10,
+                fontSize: 12,
               };
             },
-            // const currentDate = new Date().toISOString();
             content: [
               {
                 alignment: "left",
@@ -233,22 +229,31 @@ export class DetailsImprimerComponent implements OnInit {
                 margin: [0, 0, 0, 0],
               },
               {
+                alignment: "center",
+                bold: true,
+                text: "Liste des cheques remise",
+                margin: [0, 35, 0, 30],
+              },
+              {
                 style: "tableExample",
-
-                margin: [50, 80, 50, 0],
+                alignement:'center',
+                margin: [30, 0, 20, 0],
                 table: {
                   headerRows: 1,
                   body: [
                     headers,
                     ...response.data.map((item) => [
+
                       item.numChqTitu,
                       item.codeBanqueTitu,
+                      item.agenceRem,
                       item.numCompteTitu,
                       item.cleRibTitu,
                       { text: item.montant, alignment: "right" },
                     ]),
                     [
-                      { text: "Montant Total", colSpan: 4 },
+                      { text: "Montant Total", colSpan: 5 },
+                      {},
                       {},
                       {},
                       {},
@@ -261,9 +266,7 @@ export class DetailsImprimerComponent implements OnInit {
                       },
                     ],
                   ],
-                  widths: [80, 80, 100, 50, 100], // Largeurs des colonnes, ajustez-les selon vos besoins
-
-                  alignment: "center",
+                  widths: [60,80,50,100,50,100], // Largeurs des colonnes, ajustez-les selon vos besoins
                 },
               },
             ],
@@ -271,7 +274,7 @@ export class DetailsImprimerComponent implements OnInit {
               header: {
                 fontSize: 18,
                 bold: true,
-                margin: [0, 25, 0, 0],
+                margin: [0, 0, 0, 0],
                 decoration: "underline",
               },
               subheader: {
@@ -280,7 +283,8 @@ export class DetailsImprimerComponent implements OnInit {
                 margin: [0, 10, 0, 5],
               },
               tableExample: {
-                margin: [0, 5, 0, 15],
+                //alignment: "center",
+                margin: [10, 5, 10, 10],
               },
               tableHeader: {
                 bold: true,

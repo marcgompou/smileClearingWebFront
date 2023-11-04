@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DetailsComponent } from '../../common/details/details/details.component';
-//import { DetailComponent } from 'app/modules/admin/compte/compte/compte/detail/detail.component';// importer le component afin de l'utiliser dans le code
+import { DetailsComponent } from '../common/details/details/details.component';
+//import { DetailComponent } from 'app/modules/admin/compte/compte/detail/detail.component';// importer le component afin de l'utiliser dans le code
 
 @Injectable({
     providedIn: 'root'

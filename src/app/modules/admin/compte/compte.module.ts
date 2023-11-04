@@ -22,11 +22,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 //import * as moment from 'moment';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
-import { compteRoutes } from 'app/modules/admin/compte/compte/compte.routing';
-import { TableDataModule } from "../../common/table-data/table-data.module";
-import { CreateModule } from "../../common/create/create.module";
-import { DetailsComponent } from '../../common/details/details/details.component';
-import { DetailsModule } from '../../common/details/details.module';
+import { compteRoutes } from 'app/modules/admin/compte/compte.routing';
+import { TableDataModule } from "../common/table-data/table-data.module";
+import { CreateModule } from "../common/create/create.module";
+import { DetailsComponent } from '../common/details/details/details.component';
+import { DetailsModule } from '../common/details/details.module';
 
 
 @NgModule({

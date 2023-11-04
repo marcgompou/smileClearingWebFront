@@ -148,7 +148,7 @@ export const appRoutes: Route[] = [
             {
                 path: 'parametreCompte',
                 data: { breadcrumb: 'Parametrage de compte bancaire' },
-                loadChildren: () => import('app/modules/admin/compte/compte/compte.module').then(m => m.CompteModule)
+                loadChildren: () => import('app/modules/admin/compte/compte.module').then(m => m.CompteModule)
             },
             {
                 path: 'parametreAgence',
