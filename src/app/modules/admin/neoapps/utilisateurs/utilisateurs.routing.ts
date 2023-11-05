@@ -33,7 +33,7 @@ export const utilisateursRoutes: Route[] = [
                         canDeactivate: [CanDeactivateUtilisateursDetails]
                     },
                     {
-                        path         : 'creation/add',
+                        path         : 'creation',
                         data: { breadcrumb: 'Création' },
                         resolve:{
                             data:EntreprisesResolver

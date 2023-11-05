@@ -1,5 +1,5 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -58,13 +58,8 @@ export class CreateComponent implements OnInit {
       
   }
   form: FormGroup;
-
-
-  //_fieldClass = "relative flex-auto flex flex-col p-6 fuse-mat-dense fuse-mat-no-subscript";
   _fieldClass = "flex flex-col ";
-  //_fieldClass = "relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0";
 
-  
   
 
   // -----------------------------------------------------------------------------------------------------
@@ -109,23 +104,28 @@ export class CreateComponent implements OnInit {
   setupFormFields(): void {
     this.formFields.forEach(field => {
       const validators = [];
-      if (field.validators.required) {
+      if (field?.validators?.required) {
         validators.push(Validators.required);
         //validators.push(Validators.pattern("\\S"))
       }
-      if (field.validators.min) {
+      if (field?.validators?.min) {
         validators.push(Validators.minLength(field.validators.min));
       }
-      if (field.validators.max) {
+      if (field?.validators?.max) {
         validators.push(Validators.maxLength(field.validators.max));
       }
-      if (field.validators.email) {
+      if (field?.validators?.email) {
         validators.push(Validators.email);
       }
-      if(field.validators.regex){
+      if(field?.validators?.regex){
         validators.push(Validators.pattern(field.validators.regex));
       }
-      this.form.addControl(field.key, this.formBuilder.control('', validators));
+      //If it's not provide field is write in create
+      if(field?.writeInCreate==undefined || field?.writeInCreate==true){
+        this.form.addControl(field.key, this.formBuilder.control('', validators));
+      }
+      
+
     });
 
     console.log("Form====>",this.form)
@@ -184,7 +184,7 @@ export class CreateComponent implements OnInit {
     // Reset the form
     this.formNgForm.resetForm();
     this._changeDetectorRef.detectChanges();
-}
+ }
   
 
 }

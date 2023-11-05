@@ -79,10 +79,28 @@
                                     incorrect</mat-error>
                             </mat-form-field>
 
-                            <!--Select Simple-->
-                            <mat-form-field [ngClass]="_fieldClass" *ngIf="fieldConfig?.type === 'select' && !fieldConfig?.multiple">
+
+                            <!--Date Time-->
+                            <mat-form-field [ngClass]="_fieldClass" *ngIf="fieldConfig?.type === 'datetime'">
                                 <mat-label>{{ fieldConfig.libelle }}</mat-label>
-                                <mat-select [formControlName]="fieldConfig.key">
+                                <input type="datetime-local" id="{{ fieldConfig.key }}" matInput
+                                    [formControlName]="fieldConfig.key" />
+                                <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('required')">Ce champ est
+                                    obligatoire</mat-error>
+                                <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('minlength')">La longueur minimun
+                                    "{{ fieldConfig.validators.min }}"</mat-error>
+                                <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('maxlength')">Longueur maximum "{{
+                                    fieldConfig.validators.max }}".</mat-error>
+                                <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('email')">Email
+                                    invalide</mat-error>
+                                <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('regex')">Format
+                                    incorrect</mat-error>
+                            </mat-form-field>
+
+                            <!--Select Simple-->
+                            <mat-form-field   [ngClass]="_fieldClass" *ngIf="fieldConfig?.type === 'select' && !fieldConfig?.multiple">
+                                <mat-label [for]="fieldConfig.key">{{ fieldConfig.libelle }}</mat-label>
+                                <mat-select [formControlName]="fieldConfig.key" [id]="fieldConfig.key">
                                     <mat-option *ngFor="let option of fieldConfig.options" [value]="option.value">{{
                                         option.libelle }}</mat-option>
                                 </mat-select>
@@ -95,7 +113,7 @@
                             <mat-form-field [ngClass]="_fieldClass" *ngIf="fieldConfig?.type === 'select'&&fieldConfig?.multiple">
                                 <mat-label>{{ fieldConfig.libelle }}</mat-label>
 
-                                <mat-select [formControlName]="fieldConfig.key" multiple="true">
+                                <mat-select [formControlName]="fieldConfig.key" id="{{ fieldConfig.key }}" multiple="true">
                                     <mat-select-trigger>
                                         {{form.get(fieldConfig.key).value?.[0] || ''}}
                                          <span *ngIf="(form.get(fieldConfig.key).value?.length || 0) > 1" >

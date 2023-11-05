@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DetailComponent } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/detail/detail.component';// importer le component afin de l'utiliser dans le code
+import { DetailsComponent } from '../common/details/details/details.component';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CanDeactivateUtilisateursDetails implements CanDeactivate<DetailComponent>
+export class CanDeactivateEntrepriseDetails implements CanDeactivate<DetailsComponent>
 {
     canDeactivate(
-        component: DetailComponent,
+        component: DetailsComponent,
         currentRoute: ActivatedRouteSnapshot,
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
@@ -25,7 +25,7 @@ export class CanDeactivateUtilisateursDetails implements CanDeactivate<DetailCom
         // If the next state doesn't contain '/contacts'
         // it means we are navigating away from the
         // contacts app
-        if ( !nextState.url.includes('/utilisateurs') )
+        if ( !nextState.url.includes('/entreprise') )
         {
             // Let it navigate
             return true;

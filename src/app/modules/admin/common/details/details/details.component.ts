@@ -95,22 +95,22 @@ export class DetailsComponent implements OnInit,OnChanges {
         console.log("======>details form fields",this.formFields);
         this.formFields.forEach(field => {
           const validators = [];
-          if (field.validators.required) {
+          if (field?.validators?.required) {
             validators.push(Validators.required);
           }
-          if (field.validators.min) {
+          if (field?.validators?.min) {
             validators.push(Validators.minLength(field.validators.min));
           }
-          if (field.validators.max) {
+          if (field?.validators?.max) {
             validators.push(Validators.maxLength(field.validators.max));
           }
-          if (field.validators.email) {
+          if (field?.validators?.email) {
             validators.push(Validators.email);
           }
-          if (field.validators.minValue) {
+          if (field?.validators?.minValue) {
             validators.push(Validators.min(field.validators.minValue));
           }
-          if(field.validators.regex){
+          if(field?.validators?.regex){
             validators.push(Validators.pattern(field.validators.regex));
           }
           //POUR POUVOIR PRENDRE DES TABLEAUX 
@@ -130,8 +130,11 @@ export class DetailsComponent implements OnInit,OnChanges {
             this.form = this.formBuilder.group({});
           }
           this.form.addControl(field.key, this.formBuilder.control(fieldValue, validators));
+          if(field?.disabled){
+            this.form.get(field.key).disable();
+          }
         });
-
+      
 
       console.log("Form====>",this.form)
       }

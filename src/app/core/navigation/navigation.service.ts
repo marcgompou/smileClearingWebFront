@@ -49,7 +49,7 @@ export class NavigationService {
                     type: 'basic',
                     link: '/home',
                     icon: 'heroicons_outline:home',
-                   permission: SecService.permissions.ROLE_VALIDATION,
+                    permission: SecService.permissions.ROLE_VISUALISATION,
 
                 },
 
@@ -436,6 +436,14 @@ export class NavigationService {
                             permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 
+                        {
+                            id: 'parametreEntreprise',
+                            title: 'Parametrages Entreprise',
+                            type: 'basic',
+                            //icon : 'heroicons_outline:building-office-2',
+                            link: '/parametreEntreprise',
+                            permission: SecService.permissions.ROLE_SUPERADMIN
+                        },
 
                     ]
 

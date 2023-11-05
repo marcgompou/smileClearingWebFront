@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ListComponent } from './utilisateurs/list/list.component';
-import { DetailComponent } from './utilisateurs/detail/detail.component';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DATE_FORMATS, MatRippleModule } from '@angular/material/core';
+import { MatRippleModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -56,7 +55,6 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     TableDataModule,
     DetailsModule,
-
     MatSidenavModule,
     MatTableModule,
     MatTooltipModule,

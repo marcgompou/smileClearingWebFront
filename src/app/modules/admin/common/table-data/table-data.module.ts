@@ -5,12 +5,16 @@ import {TableDataComponent} from './table-data.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { DataTablePipe } from './pipe/data-table-pipe';
+import { StatusFormatPipe } from './pipe/status-format-pipe';
+import { StatusPillDirective } from './directive/status-pill.directive';
 
 
 @NgModule({
   declarations: [
     TableDataComponent,
-    DataTablePipe
+    DataTablePipe,
+    StatusFormatPipe,
+   // StatusPillDirective //DIRECTIVE POUR AFFICHER LES STATUTS SOUS FORMS DE PILLS
   ],
   imports: [
     CommonModule,

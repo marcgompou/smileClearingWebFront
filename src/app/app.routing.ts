@@ -156,6 +156,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/agence/agence/agence.module').then(m => m.AgenceModule)
             },
             {
+                path: 'parametreEntreprise',
+                data: { breadcrumb: 'Parametrage des entreprises' },
+                loadChildren: () => import('app/modules/admin/entreprise/entreprise.module').then(m => m.EntrepriseModule)
+            },
+            {
                 path: 'template',
                 data: { breadcrumb: 'SMILECHECK-WEBAPP' },
                 children: [

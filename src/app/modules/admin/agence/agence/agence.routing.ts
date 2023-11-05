@@ -22,7 +22,7 @@ export const agenceRoutes: Route[] = [
                 },
                 children : [
                     {
-                        path         : ':id',
+                        path         : 'details/:id',
                         component    : DetailComponent,
                         resolve      : {
                             client  : AgenceResolver
@@ -30,7 +30,7 @@ export const agenceRoutes: Route[] = [
                         canDeactivate: [CanDeactivateAgenceDetails]
                     }
                     ,{
-                        path         : 'creation/add',
+                        path         : 'creation',
                         data: { breadcrumb: 'Création' },
                         component    : AgenceCreateComponent
                     }

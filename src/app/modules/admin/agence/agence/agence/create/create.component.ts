@@ -133,7 +133,7 @@ export class AgenceCreateComponent implements OnInit, OnDestroy
                 console.log('response========================');
                 console.log (response);
 
-                this._router.navigate(['../../',response.data.codeAgence], {relativeTo: this._activatedRoute});
+                this._router.navigate(['../',response.data.codeAgence], {relativeTo: this._activatedRoute});
                 
                 this._changeDetectorRef.detectChanges();
             }, error: (error) => {
@@ -161,7 +161,7 @@ export class AgenceCreateComponent implements OnInit, OnDestroy
     }
 
     closeForm():void{
-        this._router.navigate(['../../'], {relativeTo: this._activatedRoute});
+        this._router.navigate(['../'], {relativeTo: this._activatedRoute});
         this._agenceListComponent.matDrawer.close();
     }
     /**

@@ -17,7 +17,7 @@
                 <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
                     <!-- Title -->
                     <div>
-                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des Utilisateurs</div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des entreprises</div>
                     </div>
                     <!-- Main actions -->
                     <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
@@ -38,23 +38,22 @@
                         </div>
                         <!-- Add utilisateur button -->
                         <button
-                            *ngIf="canCreate()"
                             class="ml-4"
                             mat-flat-button
                             [color]="'primary'"
                             [routerLink]="['./creation']">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">Créer un utilisateur</span>
+                            <span class="ml-2 mr-1">Créer une entreprise</span>
                         </button>
                     </div>
                 </div>
                 <div class="relative">
                     
-                    <app-table-data [endpoint]="'users'" 
+                    <app-table-data [endpoint]="'entreprises'" 
                     [title]="'Liste utilisateur'"
                     [displayedColumns]="_displayedColumns" 
                     [dataStructure]="dataStructure" 
-                    [idRow]="'id'"
+                    [idRow]="'identreprise'"
                     [filterObject]="_filterObject"                    
                     [canClick]="true">
                     </app-table-data>

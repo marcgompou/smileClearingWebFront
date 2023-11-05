@@ -5,7 +5,7 @@
         (backdropClick)="onBackdropClicked()">
 
         <!-- Drawer -->
-        <!-- <mat-drawer
+        <mat-drawer
             class="w-full md:w-160 dark:bg-gray-900"
             [mode]="drawerMode"
             [opened]="false"
@@ -13,7 +13,7 @@
             [disableClose]="true"
             #matDrawer>
             <router-outlet></router-outlet>
-        </mat-drawer> -->
+        </mat-drawer>
         <mat-drawer-content class="flex flex-col">
             <!-- Main -->
             <div class="flex-auto">
@@ -45,7 +45,7 @@
                             class="ml-4"
                             mat-flat-button
                             [color]="'primary'"
-                            [routerLink]="['./creation/add']">
+                            [routerLink]="['./creation']">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             <span class="ml-2 mr-1">Créer une agence</span>
                         </button>

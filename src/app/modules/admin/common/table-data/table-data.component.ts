@@ -11,6 +11,7 @@ interface filterForm {
   label: string;
   key: string;
   type?:string;
+  statusValues?:any;
 };
 
 @Component({
@@ -19,7 +20,6 @@ interface filterForm {
   styleUrls: ['./table-data.component.scss']
 })
 
-//AJOUTER DANS  APPMODULE   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
 
 
 export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
@@ -73,16 +73,24 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
   pageSize = 10;
   currentPage = 0;
   pageSizeOptions: number[] = [10, 25];
-  _displayedColumns:string[]
-  
+  _displayedColumns:string[];
+
+  //Permet d'acceder plus facilement aux données sans utiliser les fonction 
+  //(les fonction causes des soucis de performances du aux appels multiples a chaque rendue)
+  restructuredData:any={};
   
   
   ngOnInit(): void {
 
-
-
     //Load initial data
     this.loadData();
+
+    this.dataStructure.forEach(element => {
+      this.restructuredData[element.key]=element;
+    })
+
+
+
     this._changeDetectorRef.markForCheck();
   }
   
@@ -133,22 +141,8 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
   }
 
 
-
-  getColumnHeaderText(column: string): string {
-    
-  //  console.log("column===>",column)
-    let found= this.dataStructure.find(e=>e.key==column) ;
-    return found ? found.label : "";
-
-  }
-
-  getColumnType(column:string){
-
-    let found= this.dataStructure.find(e=>e.key==column) ;
-    return found ? found.type : "";
-  }
-
   //Retrieve response data from dynamic json path;
+  //In case data is in nested json
   getValueByPath(obj, path) {
     const pathParts = path.split('.');
     let value = obj;

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DetailComponent } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/detail/detail.component';// importer le component afin de l'utiliser dans le code
+import { DetailsComponent } from '../../common/details/details/details.component';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CanDeactivateUtilisateursDetails implements CanDeactivate<DetailComponent>
+export class CanDeactivateUtilisateursDetails implements CanDeactivate<DetailsComponent>
 {
     canDeactivate(
-        component: DetailComponent,
+        component: DetailsComponent,
         currentRoute: ActivatedRouteSnapshot,
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot

@@ -67,8 +67,8 @@ mat-icon-button
 
                 </mat-form-field> -->
 
-
-
+ 
+            <ng-container *ngIf="fieldConfig?.writeInCreate==undefined || fieldConfig?.writeInCreate==true">
                 <mat-form-field [ngClass]="_fieldClass" *ngIf=" fieldConfig.type === 'textarea'" >
                     <mat-label>{{ fieldConfig.libelle }}</mat-label>
                     <textarea
@@ -142,7 +142,7 @@ mat-icon-button
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('regex')">Format incorrect</mat-error>
                     
                   </mat-form-field>
-            
+            </ng-container>
 
                 
                 

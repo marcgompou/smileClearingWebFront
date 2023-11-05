@@ -51,21 +51,12 @@
                                 [formControlName]="'codeAgence'"
                                 placeholder="Ex: 01001" 
                                 minlength = "5" maxlength = "5">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
-
-
                             <mat-error *ngIf="createAgenceForm.get('codeAgence').errors?.required">
                                 Le Code Agence est obligatoire
                             </mat-error>
-                          
                             <mat-error *ngIf="createAgenceForm.get('codeAgence').errors?.maxlength">
                                     Le code Agence doit être au plus 5 caractères
                             </mat-error>
-
-                            
                         </mat-form-field>
                     </div>
 
@@ -79,10 +70,6 @@
                                 [formControlName]="'libelle'"
                                 placeholder="Ex:  AGENCE COCODY" 
                                 minlength = "2" maxlength = "50">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:user'"></mat-icon>
                             <mat-error *ngIf="createAgenceForm.get('libelle').errors?.required">
                                 Le Libelle Agence est obligatoire
                             </mat-error>

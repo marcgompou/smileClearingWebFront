@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
-import { ListComponent } from './utilisateurs/list/list.component';
-import { DetailComponent } from './utilisateurs/detail/detail.component';
+import { EntrepriseComponent } from './entreprise/entreprise.component';
+import { ListComponent } from './entreprise/list/list.component';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,24 +19,22 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import * as moment from 'moment';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
-import { utilisateursRoutes } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs.routing';
-import { UtilisateursCreateComponent } from './utilisateurs/create/create.component';
 import { FuseAlertModule } from '@fuse/components/alert';
+import { entrepriseRoutes } from './entreprise.routing';
+import { TableDataModule } from '../common/table-data/table-data.module';
+import { CreateModule } from '../common/create/create.module';
 
 
 @NgModule({
   declarations: [
-    UtilisateursComponent,
+    EntrepriseComponent,
     ListComponent,
-    DetailComponent,
-    UtilisateursCreateComponent,
 
   ],
   imports: [
-    RouterModule.forChild(utilisateursRoutes),
+    RouterModule.forChild(entrepriseRoutes),
     CommonModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -58,9 +55,11 @@ import { FuseAlertModule } from '@fuse/components/alert';
     FuseFindByKeyPipeModule,
     SharedModule,
     FuseAlertModule,
+    TableDataModule,
+    CreateModule
   ]
 })
-export class UtilisateursModule { }
+export class EntrepriseModule { }
 
 
 
