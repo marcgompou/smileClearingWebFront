@@ -14,7 +14,7 @@ import { StatusPillDirective } from './directive/status-pill.directive';
     TableDataComponent,
     DataTablePipe,
     StatusFormatPipe,
-   // StatusPillDirective //DIRECTIVE POUR AFFICHER LES STATUTS SOUS FORMS DE PILLS
+    StatusPillDirective //DIRECTIVE POUR AFFICHER LES STATUTS SOUS FORMS DE PILLS
   ],
   imports: [
     CommonModule,
