@@ -5,6 +5,7 @@ import { ListComponent } from 'app/modules/admin/agence/agence/agence/list/list.
 import { DetailComponent } from 'app/modules/admin/agence/agence/agence/detail/detail.component';
 import { AgenceResolver } from './agence/agence.resolver';
 import { AgenceCreateComponent } from './agence/create/create.component';
+import { LoadDataResolver } from '../../common/table-data/table-data.resolver';
 
 export const agenceRoutes: Route[] = [
     {
@@ -14,11 +15,10 @@ export const agenceRoutes: Route[] = [
         children : [
             {
                 path     : '',
-                data : {breadcrumb:'Liste'},
+                data : {breadcrumb:'Liste',endpoint:'agence'},
                 component: ListComponent,
                 resolve  : {
-                    agence : AgenceResolver
-                    
+                    agence : LoadDataResolver
                 },
                 children : [
                     {

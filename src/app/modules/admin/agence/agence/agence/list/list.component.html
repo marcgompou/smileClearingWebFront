@@ -5,7 +5,7 @@
         (backdropClick)="onBackdropClicked()">
 
         <!-- Drawer -->
-        <mat-drawer
+        <!-- <mat-drawer
             class="w-full md:w-160 dark:bg-gray-900"
             [mode]="drawerMode"
             [opened]="false"
@@ -13,41 +13,16 @@
             [disableClose]="true"
             #matDrawer>
             <router-outlet></router-outlet>
-        </mat-drawer>
-
+        </mat-drawer> -->
         <mat-drawer-content class="flex flex-col">
-
             <!-- Main -->
             <div class="flex-auto">
-
                 <!-- Header -->
                 <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
-
                     <!-- Title -->
                     <div>
                         <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des Agences</div>
-                        <div class="ml-0.5 font-medium text-secondary">
-                            <ng-container *ngIf="_dataSource ">
-                                <ng-container *ngIf="_nombreAgence">
-                                    <span >
-                                       
-                                        {{_nombreAgence }}
-                                         {{_nombreAgence | i18nPlural: {
-                                            '=0'   : 'Aucune agence',
-                                            '=1'   : 'agence',
-                                            'other': 'agences'
-                                        } }}
-                                        
-                                    </span>
-                                    
-                                </ng-container>
-                            </ng-container>
-                            
-                             
-                         
-                        </div>
                     </div>
-
                     <!-- Main actions -->
                     <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
                         <!-- Search -->
@@ -67,7 +42,6 @@
                         </div>
                         <!-- Add agence button -->
                         <button
-                            *ngIf="canCreate()"
                             class="ml-4"
                             mat-flat-button
                             [color]="'primary'"
@@ -77,40 +51,17 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Agences list -->
-                 <!-- <ng-container *ngIf="_dataSource ">
-                    <ng-container *ngIf="_dataSource.filteredData ">
-                        <span >
-                            {{_dataSource.filteredData.length | i18nPlural: {
-                                '=0'   : 'Aucun agence',
-                                '=1'   : 'agence',
-                                'other': 'agences'
-                            } }}
-                        </span>
-                    </ng-container>
-                </ng-container>-->
                 <div class="relative">
-                    
-                  
                     <app-table-data 
-        [endpoint]="'agence'" 
-        [title]="'Liste des Agences'" 
-        [displayedColumns]="displayedColumns" 
-        [dataStructure]="dataStructure"
-        [idRow]="'codeAgence'"
-        [canClick]="true">
-
-
-
-        </app-table-data>
-
+                        [endpoint]="'agence'" 
+                        [title]="'Liste des Agences'" 
+                        [displayedColumns]="displayedColumns" 
+                        [dataStructure]="dataStructure"
+                        [idRow]="'codeAgence'"
+                        [canClick]="true">
+                    </app-table-data>
                 </div>
-
             </div>
-
         </mat-drawer-content>
-
     </mat-drawer-container>
-
 </div>

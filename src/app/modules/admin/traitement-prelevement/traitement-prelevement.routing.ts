@@ -28,7 +28,7 @@ export const traitementPrelevementRoutes: Route[] =
                 resolve: {
                     data: LoadDataResolver,
                 },
-                data: { breadcrumb: 'Details prelevement ', endpoint: endpointDetails },
+                data: { breadcrumb: 'Détails prelevement ', endpoint: endpointDetails },
                 children: [
                     {
                         path: 'details/:id',

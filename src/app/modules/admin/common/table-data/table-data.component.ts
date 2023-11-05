@@ -87,9 +87,6 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
   }
   
   
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   throw new Error('Method not implemented.');
-  // }
 
   selectedRow(row){
     if(this.canClick){

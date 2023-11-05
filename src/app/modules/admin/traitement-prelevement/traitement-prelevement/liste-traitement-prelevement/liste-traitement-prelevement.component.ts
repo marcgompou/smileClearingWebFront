@@ -27,26 +27,18 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 export class ListeTraitementPrelevementComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
-  // noData: any;
   remiseData: any;
   listeCompteEntreprise: any[] = [];
   montantTotal: number = 0;
   nombreRemise: number = 0;
   statut: string = "0";
   remiseIsInCorrect: boolean = true;
-  //listeCompteEntreprise: any;
-  enregistrerRemise() {
-    throw new Error('Method not implemented.');
-  }
-  selectedProject: string = 'ACME Corp. Backend App';
+
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
-  title = 'socketrv';
-  command = 'StartScanner';
-  action = 'CONNECT';
-  received: Prelevement[] = [];
+
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
@@ -65,10 +57,10 @@ export class ListeTraitementPrelevementComponent implements OnInit, AfterViewIni
   public dataStructure = [
 
 
-   
+
     {
       "key": "codeEmetteur",
-      "label": "code Emetteur"
+      "label": "Code emetteur"
     },
     {
       "key": "nomfichier",
@@ -77,32 +69,32 @@ export class ListeTraitementPrelevementComponent implements OnInit, AfterViewIni
 
     {
       "key": "codeagence",
-      "label": "Code Agence"
+      "label": "Code agence"
     },
     {
       "key": "compteCredite",
-      "label": "compte Credite"
+      "label": "Compte crédite"
     },
     {
       "key": "nbPrelevement",
-      "label": "Nombre Prelevement"
+      "label": "Nombre prelevement"
 
     },
     {
       "key": "mtTotal",
-      "label": "Montant Total"
+      "label": "Montant total"
 
     },
     {
       "key": "dateEdition",
-      "label": "dateEdition",
+      "label": "Date edition",
       "type": "date"
     },
 
     {
       "key": "dateEngistrement",
-      "label": "date Engistrement",
-"type": "date"
+      "label": "Date engistrement",
+      "type": "date"
     },
 
 
@@ -116,8 +108,6 @@ export class ListeTraitementPrelevementComponent implements OnInit, AfterViewIni
   selectedRemise: any | null = null;
   selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  // remises$: Observable<Remise[]>;
-  scannerIsConnected = false;
 
 
   compteClientForm = new FormGroup({
@@ -125,22 +115,22 @@ export class ListeTraitementPrelevementComponent implements OnInit, AfterViewIni
 
   })
 
- 
+
 
 
 
   //CYCLE DE VIE
   ngOnInit() {
 
-    
-this._tableDataService.datas$.subscribe((res:any) => {
-  console.log ("res-----------", res.data.length);
-  this.dataSource = new MatTableDataSource(res.data);
- 
-})
+
+    this._tableDataService.datas$.subscribe((res: any) => {
+      console.log("res-----------", res.data.length);
+      this.dataSource = new MatTableDataSource(res.data);
+
+    })
     //getCompteByEntreprise();
-    this.loadCompte();
-   
+    this.loadData();
+
 
     // Subscribe to search input field value changes
     this.searchInputControl.valueChanges
@@ -148,7 +138,7 @@ this._tableDataService.datas$.subscribe((res:any) => {
         takeUntil(this._unsubscribeAll),
         debounceTime(300),
         switchMap((query) => {
-          this.closeDetails();
+          // this.closeDetails();
           this.isLoading = true;
           //TODO RETURN CORRECT VALUE
           return null;
@@ -160,10 +150,9 @@ this._tableDataService.datas$.subscribe((res:any) => {
       )
       .subscribe();
 
-      this.compteClientForm = this._formBuilder.group({
-        statut: ['3']
-        //mySelect: ['option2'] // Set the default value here
-      });
+    this.compteClientForm = this._formBuilder.group({
+      statut: ['3']
+    });
 
   }
   constructor(
@@ -171,9 +160,9 @@ this._tableDataService.datas$.subscribe((res:any) => {
     private _formBuilder: UntypedFormBuilder,
     private _prelevementService: TraitementPrelevementService,
     private _activatedRoute: ActivatedRoute,
-    private _tableDataService:TableDataService,
+    private _tableDataService: TableDataService,
     private _router: Router,
-    private _traitementPrelevementService:TraitementPrelevementService,
+    private _traitementPrelevementService: TraitementPrelevementService,
 
 
   ) {
@@ -204,89 +193,12 @@ this._tableDataService.datas$.subscribe((res:any) => {
 
   getColumnHeaderText(column: string): string {
 
-    //  console.log("column===>",column)
     let found = this.dataStructure.find(e => e.key == column);
     return found ? found.label : "";
 
   }
 
-  // openDetailComponent(component: DetailsRemiseComponent) {
-
-  //   component.matDrawer = this.matDrawer;
-  //   component.formTitle = "CHEQUE";
-  //   //component.chequeData = this.remiseData;
-  //   //Initialisation formulaire details
-  //   component.formFields = [
-  //     {
-  //       key: "id",
-  //       libelle: "Identifiant de Remise",
-  //       validators: {
-  //         min: 7,
-  //         max: 7,
-  //         required: true
-  //       }
-  //     },
-  //     {
-  //       key: "codeBanque",
-  //       libelle: "Code Banque",
-  //       placeholder: "Ex: CI131",
-  //       validators: {
-  //         min: 5,
-  //         max: 5,
-  //         required: true,
-  //       }
-  //     },
-  //     {
-  //       key: "codeAgence",
-  //       libelle: "Code Agence",
-  //       placeholder: "Ex: 01001",
-  //       validators: {
-  //         min: 5,
-  //         max: 5,
-  //         required: true
-  //       }
-  //     },
-
-  //     {
-  //       key: "compte",
-  //       libelle: "Compte",
-  //       validators: {
-  //         min: 12,
-  //         max: 12,
-  //         required: true
-  //       }
-  //     },
-  //     {
-  //       key: "cleRib",
-  //       libelle: "Cle Rib",
-  //       validators: {
-  //         min: 2,
-  //         max: 50,
-  //         required: true
-  //       }
-
-  //     },
-  //     {
-  //       key: "montant",
-  //       libelle: "Montant",
-  //       type: "number",
-  //       validators: {
-  //         minValue: 1000,
-  //         min: 1,
-  //         max: 11,
-  //         required: true
-  //       }
-
-  //     },
-  //     {
-  //       key: "tire",
-  //       libelle: "Titulaire",
-  //       validators: {
-  //         max: 50
-  //       }
-  //     }
-  //   ]
-  // }
+  
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['./'], { relativeTo: this._activatedRoute });
@@ -296,7 +208,7 @@ this._tableDataService.datas$.subscribe((res:any) => {
   }
 
 
-  loadCompte() {
+  loadData() {
     this._prelevementService.PrelevementAvalides$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
       next: (response: any) => {
@@ -322,63 +234,53 @@ this._tableDataService.datas$.subscribe((res:any) => {
 
   }
 
- 
+
   /**
      * After view init
      */
   ngAfterViewInit(): void {
     if (this._sort && this._paginator) {
       // Set the initial sort
-      this._sort.sort({
-        id: 'name',
-        start: 'asc',
-        disableClear: true
-      });
+      // this._sort.sort({
+      //   id: 'name',
+      //   start: 'asc',
+      //   disableClear: true
+      // });
 
       // Mark for check
-      this._changeDetectorRef.markForCheck();
+      //this._changeDetectorRef.markForCheck();
 
-      // If the user changes the sort order...
-      this._sort.sortChange
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(() => {
-          // Reset back to the first page
-          this._paginator.pageIndex = 0;
+      // this._sort.sortChange
+      //   .pipe(takeUntil(this._unsubscribeAll))
+      //   .subscribe(() => {
+      //     this._paginator.pageIndex = 0;
 
-          // Close the details
-          this.closeDetails();
-        });
+      //     this.closeDetails();
+      //   });
 
-      // Get products if sort or page changes
-      merge(this._sort.sortChange, this._paginator.page).pipe(
-        switchMap(() => {
-          this.closeDetails();
-          this.isLoading = true;
-          // return this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-          //TODO RETURN CORRECT VALUE
-          return null;
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      ).subscribe();
+      // merge(this._sort.sortChange, this._paginator.page).pipe(
+      //   switchMap(() => {
+      //     this.closeDetails();
+      //     this.isLoading = true;
+      //     return null;
+      //   }),
+      //   map(() => {
+      //     this.isLoading = false;
+      //   })
+      // ).subscribe();
     }
   }
 
+  //recherche les prelevement selon le statut
   onSelectChange(event: MatSelectChange) {
-    this.statut = event.value?event.value:"0";
-      console.log('Valeur sélectionnée :', this.statut);
-      this._tableDataService._endpoint=`prelevement?statut=${this.statut}`;
-      this._tableDataService.getDatasByPath().subscribe();
-      this._changeDetectorRef.markForCheck();
-      // Utilisez selectedValue pour prendre des mesures en conséquence
-    }
-
-
-  onSubmit() {
-
-
+    this.statut = event.value ? event.value : "0";
+    console.log('Valeur sélectionnée :', this.statut);
+    this._tableDataService._endpoint = `prelevement?statut=${this.statut}`;
+    this._tableDataService.getDatasByPath().subscribe();
+    this._changeDetectorRef.markForCheck();
   }
+
+
 
 
   /**
@@ -391,24 +293,18 @@ this._tableDataService.datas$.subscribe((res:any) => {
   }
 
 
+  // closeDetails(): void {
+  //   this.selectedRemise = null;
+  // }
 
+  // toggleDetails(numChq: string): void {
+  //   // If the product is already selected...
+  //   if (this.selectedRemise && this.selectedRemise.numChq === numChq) {
+  //     // Close the details
+  //     this.closeDetails();
+  //     return;
+  //   }
 
-  closeDetails(): void {
-    this.selectedRemise = null;
-  }
+  // }
 
-
-
-  toggleDetails(numChq: string): void {
-    // If the product is already selected...
-    if (this.selectedRemise && this.selectedRemise.numChq === numChq) {
-      // Close the details
-      this.closeDetails();
-      return;
-    }
-
-
-
-
-  }
 }

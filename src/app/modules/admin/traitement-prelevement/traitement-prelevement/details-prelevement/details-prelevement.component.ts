@@ -37,9 +37,6 @@ export class DetailsPrelevementComponent implements OnInit {
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
-
-  action = 'CONNECT';
-  received: Prelevement[] = [];
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
@@ -57,25 +54,15 @@ export class DetailsPrelevementComponent implements OnInit {
   showAlert: boolean = false;
 
 
-  // "id": 752,
-  //           "identreprise": 1000,
-  //           "idremisePrelev": 20,
- 
-  //           "nomBanque": "ABJ-PLTEAU",
-  //           "montant": 500000,
-  //           "statut": 1,
-  //           "motif": "CI17C02360  059 08022633 CI131",
-  //           "nomClient": "BUREAUTIQUE PROFESSIONNE",
-  //           "dateEcheance": "2022-06-20T00:00:00"
 
   public dataStructure = [
     {
       "key": "codeBanque",
-      "label": "codeBanque"
+      "label": "Code banque"
     },
     {
       "key": "codeagence",
-      "label": "codeagence"
+      "label": "Code agence"
 
     },
     {
@@ -84,7 +71,7 @@ export class DetailsPrelevementComponent implements OnInit {
     },
     {
       "key": "nomfichier",
-      "label": "nomfichier"
+      "label": "Nom fichier"
     },
 
     
@@ -112,7 +99,7 @@ export class DetailsPrelevementComponent implements OnInit {
 
 
   public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient"];
-
+  public nomFichier: string = "";
 
   onBackdropClicked(): void {
     // Go back to the list
@@ -137,21 +124,25 @@ export class DetailsPrelevementComponent implements OnInit {
   }
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
-    private _formBuilder: UntypedFormBuilder,
    // private _chequeService: CreerPrelevementService,
     private _traitementPrelevementService:TraitementPrelevementService,
     //private _telechargerPrelevementService:ValiderPrelevementService,
     private _tableDataService: TableDataService,
     private _fuseMediaWatcherService: FuseMediaWatcherService,
-    private _dialog: MatDialog,
     private _activatedRoute: ActivatedRoute,
     private _router: Router) {}
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des prelevement de tableData common
-    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details cheque prelevement response=======>",response)
+    this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("details prelevement response=======>",response)
       this.prelevementData=response;
+      try{
+        this.montantTotal=this.prelevementData.data?.reduce((a, b) => a + b.montant, 0);
+        this.nomFichier=this.prelevementData.data[0]?.nomfichier || '';
+      }catch(error){
+        this.montantTotal=0;
+      }
     })
 
     this._activatedRoute.params.subscribe(params => {
@@ -159,16 +150,8 @@ export class DetailsPrelevementComponent implements OnInit {
       console.log("id in details", this.id);
     })
 
-    // Subscribe to MatDrawer opened change
-  //   this.matDrawer.openedChange.subscribe((opened) => {
-  //     if ( !opened )
-  //     {
-  //         // Mark for check
-  //         this._changeDetectorRef.markForCheck();
-  //     }
-  // });
 
-  // Subscribe to media changes
+
   this._fuseMediaWatcherService.onMediaChange$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(({matchingAliases}) => {

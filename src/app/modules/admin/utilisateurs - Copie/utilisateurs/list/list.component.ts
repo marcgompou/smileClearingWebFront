@@ -3,8 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subject,takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-import { Compte, } from 'app/modules/admin/compte/compte/compte.types';
-import { CompteService } from 'app/modules/admin/compte/compte/compte.service';
+import { Utilisateurs, } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.types';
+import { UtilisateursService } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
@@ -26,29 +26,13 @@ export class ListComponent implements OnInit {
 
     /**DataTable */
     selectedRowIndex:any;
-    _dataSource: MatTableDataSource<Compte>;
-   
-    
+    _dataSource: MatTableDataSource<Utilisateurs>;
+    _displayedColumns: string[] = ['dateCreation', 'email', 'nomComplet', 'numeroTel','fonction','identreprise'];
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-    public dataStructure=[
 
-        {
-            "key":"codeAgence",
-            "label":"Code Agence"
-        },
-    
-        {
-            "key":"libelle",
-            "label":"Libelle"
-        },
-      
-       ];
-    
-      public  displayedColumns: string[] = ['codeAgence','libelle'];
-        
-    /**compte */
-    _compte:Compte[] = [];
+    /**utilisateurs */
+    _utilisateurs:Utilisateurs[] = [];
     //utilisateur connecté
     _connectedUser: User;
     _nombreUser=0;
@@ -61,8 +45,8 @@ export class ListComponent implements OnInit {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _compteService: CompteService,
-    
+        private _utilisateursService: UtilisateursService,
+        private _userService: UserService,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -80,13 +64,13 @@ export class ListComponent implements OnInit {
     ngOnInit(): void
     {
         // Subscribe to MatDrawer opened change
-        // this.matDrawer.openedChange.subscribe((opened) => {
-        //     if ( !opened )
-        //     {
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     }
-        // });
+        this.matDrawer.openedChange.subscribe((opened) => {
+            if ( !opened )
+            {
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            }
+        });
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
@@ -106,25 +90,30 @@ export class ListComponent implements OnInit {
             }
         );
 
+        // Get the products
+        this.getUtilisateurs();
 
-   
+        // get user
+        this.getConnectedUser();
+
     }
 
     /**
      * After view init
      */
-    // ngAfterViewInit(): void
-    // {   
-    //     if(this._dataSource!=null && this._dataSource.filteredData!=null){
-    //         if(this._dataSource.filteredData.length){
-    //             this._dataSource.sort = this._sort;
-    //             this._dataSource.paginator = this._paginator;
-    //             this._changeDetectorRef.detectChanges();
-    //         }
+    ngAfterViewInit(): void
+    {   
+        if(this._dataSource!=null && this._dataSource.filteredData!=null){
+            if(this._dataSource.filteredData.length){
+                this._dataSource.sort = this._sort;
+                this._dataSource.paginator = this._paginator;
+                this._changeDetectorRef.detectChanges();
+            }
             
-    //     }
+        }
+
         
-    // }
+    }
 
     /**
      * On destroy
@@ -152,20 +141,41 @@ export class ListComponent implements OnInit {
      * 
      * @param row 
      */
-    selctedRow(row:Compte){
+    selctedRow(row:Utilisateurs){
         this.selectedRowIndex = row.id;
         this._router.navigate(['./', this.selectedRowIndex], { relativeTo: this._activatedRoute });
         this._changeDetectorRef.detectChanges();
     }
-    
-
-    getCompte():void{
-        this._compteService.compte$
+    /**
+     * Can create
+     */
+    canCreate(): boolean {
+        return true
+      //  return this._connectedUser.roles.includes(WorkflowDefinition.ROLES.DemandeurCreationUtilisateur);
+    }
+    /**
+     * Recupérer les informations de l'utilisateur connecté
+     */
+    getConnectedUser(): void {
+        // Subscribe to user changes
+        this._userService.user$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((user: User) => {
+                this._connectedUser = user;
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+        });
+    }
+    /**
+     * All users
+     */
+    getUtilisateurs():void{
+        this._utilisateursService.utilisateurs$
         .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((response: any) => {
+        .subscribe((response: ResponseContrat) => {
 
-            // Update the compte
-            this._compte = response.data;
+            // Update the utilisateurs
+            this._utilisateurs = response.data;
             console.log('response========================');
             console.log(response.data);
             this._dataSource = new MatTableDataSource(response.data);

@@ -44,10 +44,8 @@
                     </div>
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
+                    <form [formGroup]="compteClientForm">
                         <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8" appearance="outline">
-
-                            <!-- <mat-label>Statut</mat-label> -->
                             <mat-select formControlName="statut" matInput id="statut" required
                                 placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
                                 <mat-option value="3">Validé</mat-option>
@@ -66,20 +64,6 @@
                     <!-- remiseCheques list -->
                     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
                         <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
-                           
-                            <ng-container>
-                                <span class="inline-block align-middle">
-
-                                    <!-- Nombre de chèque : {{ nombreCheque }} -->
-                                </span>
-                            </ng-container>
-                            <ng-container>
-                                <span class="inline-block align-middle">
-
-                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
-
-                                </span>
-                            </ng-container>
                         </div>
 
 
