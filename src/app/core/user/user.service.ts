@@ -71,8 +71,8 @@ export class UserService
                 roles: rolesString.split(",") ,
                 fonction: decodedToken['fonction']!,
                 changePassword:decodedToken["decodedToken"]=="True",
-                idEntreprise : decodedToken['idEntreprise'],
-                nomEntreprise : decodedToken['nomEntreprise']
+                idEntreprise : decodedToken['idEntreprise'] ?? "" ,
+                nomEntreprise : decodedToken['nomEntreprise'] ?? "" ,
             } as User;
             this._user.next(user);
             subscriber.next(user);
