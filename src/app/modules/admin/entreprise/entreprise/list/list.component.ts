@@ -16,7 +16,10 @@ export class ListComponent implements OnInit {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
     _filterObject:any={criteria:""}
-
+    colorsMap={
+        1:"#68D391",
+        0:"#F56565"
+    }
     _displayedColumns: string[] = ['nomEntreprise', 'dateCreation', 'descriptionActivite','statut'];
     dataStructure = [
         {

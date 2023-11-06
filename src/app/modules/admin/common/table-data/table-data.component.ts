@@ -34,7 +34,7 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
   { 
 
   }
-
+  @Input("colorsMap") colorsMap:any;
   @Input("filterObject") filterObject:any=null;
   @Input("dataStructure") dataStructure: filterForm[];
   @Input("displayedColumns") displayedColumns: string[];
@@ -81,7 +81,7 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
   
   
   ngOnInit(): void {
-
+    console.log("=====colorsMap====>",this.colorsMap)
     //Load initial data
     this.loadData();
 
@@ -159,12 +159,6 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
     return value;
   }
   
-  // Usage
-  // const valueToRetrieve = getValueByPath(responseData, 'data.cheques[0].numChq');
-  // console.log(valueToRetrieve); // Output: "7111689"
-  
-
-
 
   /**
    * Récuperer les données du tableau  de l'objet
