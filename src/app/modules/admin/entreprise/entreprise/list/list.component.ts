@@ -1,10 +1,11 @@
 import {  ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 //import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
 import { Entreprise } from '../entreprise.types';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
 @Component({
     selector: 'app-list',
@@ -16,6 +17,8 @@ export class ListComponent implements OnInit {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
     _filterObject:any={criteria:""}
+    private _searchTerms = new Subject<string>();
+
     _displayedColumns: string[] = ['nomEntreprise', 'dateCreation', 'descriptionActivite','statut'];
     dataStructure = [
         {
@@ -53,6 +56,7 @@ export class ListComponent implements OnInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
+        private _tableDataService: TableDataService,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
     }
@@ -87,6 +91,28 @@ export class ListComponent implements OnInit {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+
+
+            this._searchTerms.pipe(
+                    debounceTime(300), // Adjust the debounce time (in milliseconds) as needed
+                    distinctUntilChanged(),
+                    // Ignore if the new term is the same as the previous term
+                    filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
+                    switchMap((term: string) => {
+                        this._filterObject={ criteria: term }
+                        this._tableDataService._filterObject = { criteria: term };
+                        this._tableDataService._hasPagination = true;
+                        this._tableDataService._paginationObject = {
+                            page: 0,
+                            size: 10
+                        };
+                        return this._tableDataService.getDatas();
+                    })
+                ).subscribe(() => {
+                    // Perform any additional actions after the data is retrieved.
+                    this._changeDetectorRef.detectChanges();
+                });
     }
 
 
@@ -109,6 +135,8 @@ export class ListComponent implements OnInit {
      */
     applyFilter(event: Event): void {
         const query = (event.target as HTMLInputElement).value;
+        this._searchTerms.next(query);
+
         this._changeDetectorRef.detectChanges();
     }
 

@@ -74,11 +74,8 @@ export class ListComponent implements OnInit,OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _userService: UserService,
-        private _utilisateursService: UtilisateursService,
-        private _activatedRoute: ActivatedRoute,
-        private _router: Router,
+        private _utilisateursService: UtilisateursService, //TODO A remplacer par entreprise service
         private _tableDataService: TableDataService,
-
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
     }
@@ -193,7 +190,7 @@ export class ListComponent implements OnInit,OnDestroy {
      */
     applyFilter(event: Event): void {
       const query = (event.target as HTMLInputElement).value;
-      this._searchTerms.next(query);;
+      this._searchTerms.next(query);
     }
 
     /**
