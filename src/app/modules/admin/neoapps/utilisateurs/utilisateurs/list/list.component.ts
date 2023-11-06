@@ -2,17 +2,15 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, O
 import { Subject, debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { Utilisateurs, } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.types';
-import { UtilisateursService } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { MatTableDataSource } from '@angular/material/table';
 //import { WorkflowDefinition } from '../../workflow.definition';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
-import { ResponseContrat } from 'app/modules/admin/common/contrat/response.type';
 import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
+import { EntrepriseService } from 'app/modules/admin/entreprise/entreprise/entreprise.service';
 
 @Component({
     selector: 'app-list',
@@ -28,7 +26,7 @@ export class ListComponent implements OnInit,OnDestroy {
     selectedRowIndex: any;
     _dataSource: MatTableDataSource<Utilisateurs>;
     private _searchTerms = new Subject<string>();
-    _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'nomEntreprise'];
+    _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'nomEntreprise','statut'];
     dataStructure = [
         {
             "key": "dateCreation",
@@ -55,6 +53,16 @@ export class ListComponent implements OnInit,OnDestroy {
             "key": "nomEntreprise",
             "label": "Entreprise"
         },
+        {
+            "key": "statut",
+            "type":"status",
+            "label": "Statut",
+            "statusValues":[
+              {value:true,libelle:"Désactivé",color:"#F56565"},
+              {value:false,libelle:"Activé",color:"#68D391"}
+          ]
+        },
+        
     ];
 
 
@@ -73,8 +81,7 @@ export class ListComponent implements OnInit,OnDestroy {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _userService: UserService,
-        private _utilisateursService: UtilisateursService, //TODO A remplacer par entreprise service
+        private _entrepriseService: EntrepriseService, //TODO A remplacer par entreprise service
         private _tableDataService: TableDataService,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
@@ -137,11 +144,9 @@ export class ListComponent implements OnInit,OnDestroy {
             );
 
 
-        // get user
-        this.getConnectedUser();
         
         
-        this._utilisateursService.entreprises$.pipe(
+        this._entrepriseService.entreprises$.pipe(
           takeUntil(this._unsubscribeAll)
          
         ).subscribe({
@@ -193,13 +198,6 @@ export class ListComponent implements OnInit,OnDestroy {
       this._searchTerms.next(query);
     }
 
-    /**
-     * Can create
-     */
-    canCreate(): boolean {
-        return true
-        //  return this._connectedUser.roles.includes(WorkflowDefinition.ROLES.DemandeurCreationUtilisateur);
-    }
 
     //Affichage des details
     openDetailComponent(component: DetailsComponent) {
@@ -259,7 +257,6 @@ export class ListComponent implements OnInit,OnDestroy {
               max: 100,
             }
           },
-
           {
             key: "userRoles",
             libelle: "Roles",
@@ -270,41 +267,17 @@ export class ListComponent implements OnInit,OnDestroy {
               max: 130,
               required: true,
             }
+          },
+          {
+            key: "statut",
+            libelle: "Statut",
+            type: "select",
+            disabled:true,
+            writeInCreate:false,
+            options: [{ value: true, libelle: "Désactivé" }, { value: false, libelle: "Actif" }],
           }
         ];
     };
-
-
-
-    /**
-     * Recupérer les informations de l'utilisateur connecté
-     */
-    getConnectedUser(): void {
-        // Subscribe to user changes
-        this._userService.user$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((user: User) => {
-                this._connectedUser = user;
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-    }
-    /**
-     * All users
-     */
-
-
-
-    /**
-     * On backdrop clicked
-     */
-    // onBackdropClicked(): void {
-    //     // Go back to the list
-    //     this._router.navigate(['./'], { relativeTo: this._activatedRoute });
-
-    //     // Mark for check
-    //     this._changeDetectorRef.markForCheck();
-    // }
 
     /**
      * Track by function for ngFor loops

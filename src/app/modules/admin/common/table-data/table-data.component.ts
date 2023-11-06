@@ -34,7 +34,6 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
   { 
 
   }
-  @Input("colorsMap") colorsMap:any;
   @Input("filterObject") filterObject:any=null;
   @Input("dataStructure") dataStructure: filterForm[];
   @Input("displayedColumns") displayedColumns: string[];
@@ -81,7 +80,6 @@ export class TableDataComponent  implements OnInit, AfterViewInit, OnDestroy  {
   
   
   ngOnInit(): void {
-    console.log("=====colorsMap====>",this.colorsMap)
     //Load initial data
     this.loadData();
 

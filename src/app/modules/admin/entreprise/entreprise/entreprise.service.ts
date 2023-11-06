@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError,Observable, of, switchMap, tap} from 'rxjs';
+import { BehaviorSubject,Observable, of, shareReplay, switchMap, tap} from 'rxjs';
 import { Entreprise } from './entreprise.types';
 import { environment } from 'environments/environment';
 
@@ -9,9 +9,9 @@ import { environment } from 'environments/environment';
 })
 export class EntrepriseService
 {   
-    private _entreprises: BehaviorSubject<Entreprise[] | null> = new BehaviorSubject(null);
     private _entreprise: BehaviorSubject<Entreprise | null> = new BehaviorSubject(null);
-    
+    private _entreprises: BehaviorSubject<any | null> = new BehaviorSubject(null);
+
     /**
      * Constructor
      */
@@ -26,7 +26,7 @@ export class EntrepriseService
     /**
      * Getter for entreprises
      */
-     get entreprises$(): Observable<any> {
+    get entreprises$(): Observable<any> {
         return this._entreprises.asObservable();
     }
 
@@ -38,22 +38,17 @@ export class EntrepriseService
     }
 
 
+    getEntreprises():Observable<any>{
+        return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
+            shareReplay(1),
+            tap((response) => {
+                console.log(response);               
+                this._entreprises.next(response);
+                
+            })
+        );
 
-    /**
-     * Delete client
-     * @param id 
-     * @returns 
-    //  */
-    // deleteUtilisateur(id: string): Observable<any>
-    // {
-    //     return this._httpClient.delete<any>(`${environment.apiUrl}/users/${id}`).pipe(
-    //         catchError((error) =>{
-    //             throw error;
-    //         }),
-    //         switchMap((response: any) => {
-    //             return of(response);
-    //         })
-    //     );
-    // }
+    }
+
 
 }

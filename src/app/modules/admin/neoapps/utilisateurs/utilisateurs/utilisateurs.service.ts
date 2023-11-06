@@ -165,15 +165,15 @@ export class UtilisateursService
         );
     }
 
-    getEntreprises():Observable<any>{
-        return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
-            shareReplay(1),
-            tap((response) => {
-                console.log(response);               
-                this._entreprises.next(response);
+    // getEntreprises():Observable<any>{
+    //     return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
+    //         shareReplay(1),
+    //         tap((response) => {
+    //             console.log(response);               
+    //             this._entreprises.next(response);
                 
-            })
-        );
+    //         })
+    //     );
 
-    }
+    // }
 }

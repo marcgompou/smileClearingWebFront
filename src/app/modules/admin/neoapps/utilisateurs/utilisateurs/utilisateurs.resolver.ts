@@ -68,57 +68,31 @@ export class UtilisateursByIdResolver implements Resolve<any>
 
 
 
-@Injectable({
-  providedIn: 'root'
-})
-export class RolesResolver implements Resolve<any>
-{
-  /**
-   * Constructor
-   */
-  constructor(private _utilisateursService: UtilisateursService) {
-  }
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class RolesResolver implements Resolve<any>
+// {
+//   /**
+//    * Constructor
+//    */
+//   constructor(private _utilisateursService: UtilisateursService) {
+//   }
+//   // -----------------------------------------------------------------------------------------------------
+//   // @ Public methods
+//   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Resolver
-   *
-   * @param route
-   * @param state
-   */
-  resolve(): Observable<ResponseContrat> {
-    return this._utilisateursService.getRoles();
-  }
-
-
-
-}
+//   /**
+//    * Resolver
+//    *
+//    * @param route
+//    * @param state
+//    */
+//   resolve(): Observable<ResponseContrat> {
+//     return this._utilisateursService.getRoles();
+//   }
 
 
-@Injectable({
-  providedIn: 'root'
-})
-export class EntreprisesResolver implements Resolve<any>
-{
-  /**
-   * Constructor
-   */
-  constructor(private _utilisateursService: UtilisateursService) {
-  }
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Resolver
-   *
-   * @param route
-   * @param state
-   */
-  resolve(): Observable<ResponseContrat> {
-    return this._utilisateursService.getEntreprises();
-  }
+// }
 
-}

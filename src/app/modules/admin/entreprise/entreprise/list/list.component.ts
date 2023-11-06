@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
     _filterObject:any={criteria:""}
     private _searchTerms = new Subject<string>();
 
-    _displayedColumns: string[] = ['nomEntreprise', 'dateCreation', 'descriptionActivite','statut'];
+    _displayedColumns: string[] = ['dateCreation','nomEntreprise', 'descriptionActivite','statut'];
     dataStructure = [
         {
             "key": "dateCreation",
