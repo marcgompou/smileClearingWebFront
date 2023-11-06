@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -12,8 +11,9 @@ export class StatusFormatPipe implements PipeTransform {
             value= "-";
         } 
         else{
-
+            console.log()           
             let index = transformType.findIndex(item => item.value == value);
+            console.log(index)    
             return index>-1 ? transformType[index]?.libelle : value;
         }
     }

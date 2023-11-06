@@ -16,10 +16,6 @@ export class ListComponent implements OnInit {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
     _filterObject:any={criteria:""}
-    colorsMap={
-        1:"#68D391",
-        0:"#F56565"
-    }
     _displayedColumns: string[] = ['nomEntreprise', 'dateCreation', 'descriptionActivite','statut'];
     dataStructure = [
         {
@@ -36,8 +32,8 @@ export class ListComponent implements OnInit {
             "label": "Statut",
             "type":"status",
             "statusValues":[
-                {value:1,libelle:"Actif"},
-                {value:0,labelle:"Désactivé"}
+                {value:1,libelle:"Actif",color:"#68D391"},
+                {value:0,libelle:"Désactivé",color:"#F56565"}
             ]
         },
         {
