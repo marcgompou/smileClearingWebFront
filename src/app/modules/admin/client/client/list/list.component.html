@@ -17,7 +17,7 @@
                 <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
                     <!-- Title -->
                     <div>
-                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des entreprises</div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des clients</div>
                     </div>
                     <!-- Main actions -->
                     <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
@@ -33,27 +33,27 @@
                                     matInput
                                     (keyup)="applyFilter($event)"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'Rechercher des utilisateurs'">
+                                    [placeholder]="'Rechercher des clients'">
                             </mat-form-field>
                         </div>
                         <!-- Add utilisateur button -->
-                        <button
+                        <!-- <button
                             class="ml-4"
                             mat-flat-button
                             [color]="'primary'"
                             [routerLink]="['./creation']">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">Créer une entreprise</span>
-                        </button>
+                            <span class="ml-2 mr-1">Créer un client</span>
+                        </button> -->
                     </div>
                 </div>
                 <div class="relative">
                     
-                    <app-table-data [endpoint]="'entreprises'" 
-                    [title]="'Liste utilisateur'"
+                    <app-table-data [endpoint]="'clients'" 
+                    [title]="'Liste Clients'"
                     [displayedColumns]="_displayedColumns" 
                     [dataStructure]="dataStructure" 
-                    [idRow]="'identreprise'"
+                    [idRow]="'id'"
                     [filterObject]="_filterObject"
                     [canClick]="true">
                     </app-table-data>

@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError,Observable, of, switchMap, tap} from 'rxjs';
-import { Entreprise } from './client.types';
+import { Client } from './client.types';
 import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
-export class EntrepriseService
+export class ClientService
 {   
-    private _entreprises: BehaviorSubject<Entreprise[] | null> = new BehaviorSubject(null);
-    private _entreprise: BehaviorSubject<Entreprise | null> = new BehaviorSubject(null);
+    private _clients: BehaviorSubject<Client[] | null> = new BehaviorSubject(null);
+    private _client: BehaviorSubject<Client | null> = new BehaviorSubject(null);
     
     /**
      * Constructor
@@ -24,17 +24,17 @@ export class EntrepriseService
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Getter for entreprises
+     * Getter for clients
      */
-     get entreprises$(): Observable<any> {
-        return this._entreprises.asObservable();
+     get clients$(): Observable<any> {
+        return this._clients.asObservable();
     }
 
     /**
      * Getter for client
      */
-    get entreprise$(): Observable<Entreprise> {
-        return this._entreprise.asObservable();
+    get client$(): Observable<Client> {
+        return this._client.asObservable();
     }
 
 

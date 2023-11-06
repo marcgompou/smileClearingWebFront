@@ -1,22 +1,24 @@
 
 
 
-export class Entreprise
+export class Client
 {
-    identreprise?:number;
-    statut?:number;
-    nomEntreprise?: string;
-    descriptionActivite?: string
+    id?:number;
+    codeBanque?:number;
+    agence?: string;
+    numCompte?: string
+    titulaire?: string
 
-    public static constructorEntreprise(data:any) {
+    public static constructorClient(data:any) {
 
       console.log("=====data====>",data); 
       
       let response ={
-        identreprise : data?.identreprise,
-        nomEntreprise: data?.nomEntreprise,
-        descriptionActivite: data?.descriptionActivite,
-        statut: data?.statut ?? 1 //Valeur par defaut à la creation
+        id : data?.id,
+        codeBanque: data?.codeBanque,
+        agence: data?.agence,
+        numCompte: data?.numCompte ,
+        titulaire: data?.titulaire ?? "",
       }
   
       console.log("=====response====>",response);

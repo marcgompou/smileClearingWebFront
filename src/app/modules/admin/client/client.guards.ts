@@ -6,7 +6,7 @@ import { DetailsComponent } from '../common/details/details/details.component';
 @Injectable({
     providedIn: 'root'
 })
-export class CanDeactivateEntrepriseDetails implements CanDeactivate<DetailsComponent>
+export class CanDeactivateClientDetails implements CanDeactivate<DetailsComponent>
 {
     canDeactivate(
         component: DetailsComponent,
@@ -25,7 +25,7 @@ export class CanDeactivateEntrepriseDetails implements CanDeactivate<DetailsComp
         // If the next state doesn't contain '/contacts'
         // it means we are navigating away from the
         // contacts app
-        if ( !nextState.url.includes('/entreprise') )
+        if ( !nextState.url.includes('/client') )
         {
             // Let it navigate
             return true;

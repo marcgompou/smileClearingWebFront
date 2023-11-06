@@ -3,22 +3,22 @@ import { CanDeactivateUtilisateursDetails } from 'app/modules/admin/neoapps/util
 import { LoadDataResolver } from '../common/table-data/table-data.resolver';
 import { CreateComponent } from '../common/create/create/create.component';
 import { DetailsComponent } from '../common/details/details/details.component';
-import { EntrepriseComponent } from './client/client.component';
+import { ClientComponent } from './client/client.component';
 import { ListComponent } from './client/list/list.component';
 import { LoadDetailsResolver } from '../common/details/details.resolvers';
 
-const endpoint = 'entreprises';
+const endpoint = 'clients';
 export const entrepriseRoutes: Route[] = [
     {
         path     : '',
-        component: EntrepriseComponent,
+        component: ClientComponent,
         children : [
             {
                 path     : '',
                 data : {breadcrumb:'Liste',endpoint:endpoint},
                 component: ListComponent,
                 resolve  : {
-                    entreprise : LoadDataResolver
+                    client : LoadDataResolver
                 },
                 children : [
                     {

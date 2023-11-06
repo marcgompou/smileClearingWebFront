@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EntrepriseComponent } from './client/client.component';
+import { ClientComponent } from './client/client.component';
 import { ListComponent } from './client/list/list.component';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +29,7 @@ import { CreateModule } from '../common/create/create.module';
 
 @NgModule({
   declarations: [
-    EntrepriseComponent,
+    ClientComponent,
     ListComponent,
 
   ],
@@ -59,7 +59,7 @@ import { CreateModule } from '../common/create/create.module';
     CreateModule
   ]
 })
-export class EntrepriseModule { }
+export class ClientModule { }
 
 
 

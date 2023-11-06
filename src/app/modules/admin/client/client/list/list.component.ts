@@ -1,10 +1,11 @@
 import {  ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 //import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
-import { Entreprise } from '../client.types';
+import { Client } from '../client.types';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
 @Component({
     selector: 'app-list',
@@ -13,32 +14,31 @@ import { Entreprise } from '../client.types';
 })
 export class ListComponent implements OnInit {
 
+   
+
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
     drawerMode: 'side' | 'over';
+    private _searchTerms = new Subject<string>();
     _filterObject:any={criteria:""}
-    _displayedColumns: string[] = ['nomEntreprise', 'dateCreation', 'descriptionActivite','statut'];
+    _displayedColumns: string[] = ['codeBanque', 'agence', 'numCompte','titulaire'];
     dataStructure = [
         {
-            "key": "dateCreation",
-            "label": "Date de création",
-            "type":"date"
+            "key": "codeBanque",
+            "label": "Code Banque",
+            
         },
         {
-            "key": "descriptionActivite",
-            "label": "Description activité"
+            "key": "agence",
+            "label": "Agence"
         },
         {
-            "key": "statut",
-            "label": "Statut",
-            "type":"status",
-            "statusValues":[
-                {value:1,libelle:"Actif",color:"#68D391"},
-                {value:0,libelle:"Désactivé",color:"#F56565"}
-            ]
+            "key": "numCompte",
+            "label": "Numero de Compte"
         },
+
         {
-            "key": "nomEntreprise",
-            "label": "Entreprise"
+            "key": "titulaire",
+            "label": "Titulaire"
         },
     ];
 
@@ -53,6 +53,7 @@ export class ListComponent implements OnInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
+        private _tableDataService: TableDataService,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
     }
@@ -73,6 +74,25 @@ export class ListComponent implements OnInit {
             }
         });
 
+        this._searchTerms.pipe(
+            debounceTime(300), // Adjust the debounce time (in milliseconds) as needed
+            distinctUntilChanged(),
+            // Ignore if the new term is the same as the previous term
+            filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
+            switchMap((term: string) => {
+                this._filterObject={ criteria: term }
+                this._tableDataService._filterObject = { criteria: term };
+                this._tableDataService._hasPagination = true;
+                this._tableDataService._paginationObject = {
+                    page: 0,
+                    size: 10
+                };
+                return this._tableDataService.getDatas();
+            })
+        ).subscribe(() => {
+            // Perform any additional actions after the data is retrieved.
+            this._changeDetectorRef.detectChanges();
+        });
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -109,11 +129,12 @@ export class ListComponent implements OnInit {
      */
     applyFilter(event: Event): void {
         const query = (event.target as HTMLInputElement).value;
+        this._searchTerms.next(query);
         this._changeDetectorRef.detectChanges();
     }
 
 
-
+   
 
     /**
      * On backdrop clicked
@@ -141,43 +162,52 @@ export class ListComponent implements OnInit {
 
         console.log("===component==>",component);
         component.matDrawer = this?.matDrawer;
-        component.formTitle = "Entreprise";
+        component.formTitle = "Client";
         component.loadDataOnInit = true;
-        component.endpoint = "entreprises";
-        component.constructorPayload = Entreprise.constructorEntreprise
+        component.endpoint = "clients";
+        component.constructorPayload = Client.constructorClient;
         component.formFields = [
+
+
             {
-                key: "nomEntreprise",
-                libelle: "Nom Entreprise",
-                placeholder: "neo corporation",
+                key: "codeBanque",
+                libelle: "Code Banque",
+                placeholder: "Code Banque",
+                disabled:true,
                 validators: {
-                    max: 100,
+                    max: 50,
                     required: true,
                 }
             },
             {
-                key: "descriptionActivite",
-                libelle: "Description activité",
+                key: "agence",
+                libelle: "Agence",
+                disabled:true,
                 validators: {
-                    max: 255,
+                    max: 50,
                     required: true,
                 }
             },
             {
-                key: "dateCreation",
-                libelle: "Date de création",
+                key: "numCompte",
+                libelle: "Numero de Compte",
                 disabled:true,
-                type: "datetime",
-                writeInCreate:false,
+                
+                validators: {
+                    max: 50,
+                    required: true,
+                }
             },
             {
-                key: "statut",
-                libelle: "Statut",
-                type: "select",
-                disabled:true,
-                writeInCreate:false,
-                options: [{ value: 1, libelle: "Actif" }, { value: 0, libelle: "Désactivé" }],
-            }
+                key: "titulaire",
+                libelle: "Titulaire",
+                validators: {
+                    max: 50,
+                    required: true,
+                }
+            },
+           
+           
         ];
     };
 

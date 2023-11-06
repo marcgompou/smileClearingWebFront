@@ -401,11 +401,11 @@ export class NavigationService {
                     children: [
 
                         {
-                            id: 'help-parametre',
+                            id: 'parametreClient',
                             title: 'Parametrages Clients',
                             type: 'basic',
                             //    icon : 'heroicons_outline:support',
-                            link: '/parametre',
+                            link: '/parametreClient',
                             permission: SecService.permissions.ROLE_SUPERADMIN
                         },
 

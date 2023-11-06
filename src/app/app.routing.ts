@@ -141,10 +141,17 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/help-center/help-center.module').then(m => m.HelpCenterModule)
             },
             {
+                path: 'parametreClient',
+                data: { breadcrumb: 'Parametrage de compte client' },
+                loadChildren: () => import('app/modules/admin/client/client.module').then(m => m.ClientModule)
+            },
+            {
                 path: 'parametreUser',
                 data: { breadcrumb: 'Parametrage de compte utilisateur' },
                 loadChildren: () => import('app/modules/admin/neoapps/utilisateurs/utilisateurs.module').then(m => m.UtilisateursModule)
             },
+
+            
             {
                 path: 'parametreCompte',
                 data: { breadcrumb: 'Parametrage de compte bancaire' },
