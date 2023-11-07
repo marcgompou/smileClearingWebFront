@@ -88,8 +88,8 @@ export class ListComponent implements OnInit {
       label: "Etat",
       type: "status",
       statusValues: [
-        { value: 1, libelle: "Actif", color: "#68D391" },
-        { value: 0, libelle: "Désactivé", color: "#F56565" },
+        { value: 1, libelle: "Activé", color: "#68D391" },
+        { value: 21, libelle: "Désactivé", color: "#F56565" },
       ],
     },
   ];
@@ -268,6 +268,33 @@ export class ListComponent implements OnInit {
         },
       });
 
+      this._agenceService.agences$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: (response: any) => {
+          console.log("Response===> :", response);
+
+          this._agences = response.data.map((element: any) => {
+            return {
+              libelle: element.libelle,
+              value: element.codeAgence,
+            };
+          });
+          console.log("====entreprises=====>", this._agences);
+          this._changeDetectorRef.markForCheck();
+        },
+        error: (error) => {
+          // //not show historique
+          // this.showData = false;
+          // console.error('Error : ',JSON.stringify(error));
+          // // Set the alert
+          // this.alert = { type: 'error', message: error.error.message??error.error };
+          // // Show the alert
+          // this.showAlert = true;
+
+          this._changeDetectorRef.markForCheck();
+        },
+      });
     // Get the Comptes
     //  this.getCompte();
 

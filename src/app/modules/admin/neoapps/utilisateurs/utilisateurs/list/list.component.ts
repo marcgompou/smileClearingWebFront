@@ -270,7 +270,7 @@ export class ListComponent implements OnInit,OnDestroy {
             type: "select",
             disabled:true,
             writeInCreate:false,
-            options: [{ value: true, libelle: "Désactivé" }, { value: false, libelle: "Actif" }],
+            options: [{ value: true, libelle: "Désactivé" }, { value: false, libelle: "Activé" }],
           }
         ];
     };

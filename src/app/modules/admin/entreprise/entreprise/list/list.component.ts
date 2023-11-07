@@ -204,7 +204,7 @@ export class ListComponent implements OnInit {
                 type: "select",
                 disabled:true,
                 writeInCreate:false,
-                options: [{ value: 1, libelle: "Actif" }, { value: 0, libelle: "Désactivé" }],
+                options: [{ value: 1, libelle: "Activé" }, { value: 0, libelle: "Désactivé" }],
             }
         ];
     };
