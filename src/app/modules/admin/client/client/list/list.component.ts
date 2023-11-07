@@ -165,7 +165,9 @@ export class ListComponent implements OnInit {
         component.formTitle = "Client";
         component.loadDataOnInit = true;
         component.endpoint = "clients";
+        component.canDelete=false;
         component.constructorPayload = Client.constructorClient;
+
         component.formFields = [
 
 
