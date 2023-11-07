@@ -35,7 +35,7 @@ export class ListComponent implements OnInit {
             "label": "Statut",
             "type":"status",
             "statusValues":[
-                {value:1,libelle:"Actif",color:"#68D391"},
+                {value:1,libelle:"Activé",color:"#68D391"},
                 {value:0,libelle:"Désactivé",color:"#F56565"}
             ]
         },

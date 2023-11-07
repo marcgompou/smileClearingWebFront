@@ -17,7 +17,7 @@ export class NavigationService {
             id: 'NoRoleNavigation',
             title: 'Général',
             type: 'group',
-            icon: 'heroicons_outline:home',
+            icon: 'heroicons_outline:chart-pie',
             children: [
                 {
                     id: '401',
@@ -39,7 +39,7 @@ export class NavigationService {
             title: 'DASHBOARD',
             subtitle: '',
             type: 'group',
-            icon: 'heroicons_outline:home',
+            icon: 'heroicons_outline:chart-pie',
             //permission: SecService.permissions.ROLE_VALIDATION,
             children: [
 
@@ -48,7 +48,7 @@ export class NavigationService {
                     title: 'dashboard',
                     type: 'basic',
                     link: '/home',
-                    icon: 'heroicons_outline:home',
+                    icon: 'heroicons_outline:chart-pie',
                     permission: SecService.permissions.ROLE_VISUALISATION,
 
                 },
@@ -204,7 +204,7 @@ export class NavigationService {
             title: 'CENTRE DE SUPPORT',
             subtitle: '',
             type: 'group',
-            icon: 'heroicons_outline:home',
+            icon: 'heroicons_outline:help',
             
             permission: SecService.permissions.ROLE_VISUALISATION,
             children: [
@@ -397,7 +397,7 @@ export class NavigationService {
                     title: 'ADMINISTRATEUR',
                     subtitle: '',
                     type: 'collapsable',
-                    icon: 'heroicons_outline:support',
+                    icon: 'heroicons_outline:cog',
                     children: [
 
                         {
