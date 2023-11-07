@@ -8,6 +8,7 @@ export class Utilisateurs {
   numeroTel: string;
   fonction: string;
   identreprise: number;
+  operateur?: string;
   isConfirme: boolean;
   typeMfa: boolean;
   token: string;
@@ -25,12 +26,13 @@ export class Utilisateurs {
       email : data?.email,
       password : data?.password,
       nom : data?.nom,
-      prenom : data?.Prenom,
+      prenom : data?.prenom,
       numeroTel : data?.numeroTel,
       fonction : data?.fonction,
-      identreprise : data?.identreprise,
+      identreprise : data?.identreprise??0,
       isConfirme : data?.isConfirme,
       typeMfa : data?.typeMfa,
+      operateur:data?.operateur || "----",
       token : data?.token,
       statut : data?.statut,
       roles : data?.roles || data?.userRoles || [],

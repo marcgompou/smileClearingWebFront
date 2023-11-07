@@ -127,6 +127,8 @@
                         <mat-label>Entreprise (client)</mat-label>
                         <mat-select [placeholder]="'Entreprise'" [formControlName]="'identreprise'">
                             <mat-option *ngFor="let entreprise of entreprises" [value]="entreprise.identreprise">{{entreprise.nomEntreprise}}</mat-option>
+                            <mat-option value="0" [disabled]="isNotUserAdmin">-INTERNE-</mat-option>
+
                         </mat-select>
                         <mat-error *ngIf="createUserForm.get('fonction').errors?.required">
                             La structure est obligatoire
@@ -166,11 +168,34 @@
                                 (+{{(createUserForm.get('roles').value?.length || 0) - 1}} {{createUserForm.get('roles').value?.length === 2 ? 'autre' : 'autres'}})
                                 </span>
                             </mat-select-trigger>
-                            <mat-option *ngFor="let role of rolesList" [value]="role">{{role}}</mat-option>
+                            <mat-hint> <strong>N.B: Les rôles cochés desactivés ne seront pas attribués</strong></mat-hint>
+                            <mat-option *ngFor="let role of rolesList" [disabled]="isOptionDisable(role)" [value]="role">{{role}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     
+                    <div class="flex flex-col" >
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Operateur</mat-label>
+                            <input
+                                id="fonction"
+                                matInput
+                                [formControlName]="'operateur'"
+                                [placeholder]="'Ex: 0674'"
+                                minlength = "4" maxlength = "4">
+                            <mat-error *ngIf="createUserForm.get('operateur').errors?.required">
+                                Le code opérateur est obligatoire
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('operateur').errors?.minlength">
+                                Le code opérateur doit être au moins 3 caractères
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('operateur').errors?.maxlength">
+                                Le code opérateur doit être  au plus 4 caractères
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    
+
                     
 
                     <!-- Actions -->

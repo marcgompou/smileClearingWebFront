@@ -10,6 +10,7 @@ import { Utilisateurs } from '../utilisateurs.types';
 import { UtilisateursService } from '../utilisateurs.service';
 import { fuseAnimations } from '@fuse/animations';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
+import { EntrepriseService } from 'app/modules/admin/entreprise/entreprise/entreprise.service';
 
 @Component({
     selector       : 'app-create',
@@ -34,8 +35,10 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     };
     createUserForm: UntypedFormGroup;
     showAlert: boolean = false;
-    
+    isNotUserAdmin=true;
     rolesList: string[] =  ['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'];
+    disabledOptions:string[]=[];
+    rolesForNonAdmin=['CHARG_PRELEVEMENT','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','CREATION'];;
     entreprises: any[];
 
     
@@ -45,6 +48,7 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _utilisateursService: UtilisateursService,
+        private _entrepriseService:EntrepriseService,
         private _tableDataService: TableDataService,
         private _utilisateursListComponent: ListComponent,
         private _formBuilder: UntypedFormBuilder,
@@ -73,10 +77,70 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
             numeroTel  : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
             fonction : [null, [Validators.required,Validators.maxLength(100),Validators.minLength(2)]],
             identreprise  : [null, [Validators.required]],
-            roles:[null,[Validators.required]]
+            roles:[null,[Validators.required]],
+            operateur:[null,[]],
+
 
         });
         this.loadEntreprises();
+        this.createUserForm.get('operateur').disable();
+        this.createUserForm.get('roles').valueChanges.subscribe((selectedValue) => {
+
+            let roles:string[] = selectedValue;
+            //Si admin ou superadmin coché tous les autres sont ROLES SONT DESELECTIONNE ET  désactivé sauf (visualisation)
+
+                    //Operateur devient required
+
+                    //entreprise est desactivé et a la valeur par defaut;
+            if(roles?.includes("SUPERADMIN") || roles?.includes("ADMIN"))
+            {
+                this.createUserForm.get('operateur').setValidators([Validators.required,Validators.maxLength(4),Validators.minLength(3)]);
+                this.createUserForm.get('operateur').enable();
+
+                this.createUserForm.get('identreprise').setValue("0");
+                this.createUserForm.get('identreprise').disable();
+
+                
+                //Deselectionner les roles selectionné
+
+                
+                const elementsToRemove = this.rolesForNonAdmin;
+
+                elementsToRemove.forEach((element) => {
+                const index = roles.indexOf(element);
+                if (index !== -1) {
+                    roles.splice(index, 1);
+                }
+                });
+                //this.createUserForm.get('roles').setValue(roles);
+                this.disabledOptions=this.rolesForNonAdmin;
+
+
+            }else{
+                this.createUserForm.get('operateur').clearValidators();
+                this.createUserForm.get('operateur').disable();
+                this.createUserForm.get('identreprise').enable();
+                this.createUserForm.get('identreprise').setValidators([Validators.required]);
+                this.disabledOptions=[];
+
+                this._changeDetectorRef.detectChanges();
+
+            }
+
+            
+            console.log("===roles===>",roles);
+
+        });
+
+      
+
+
+
+    }
+
+    isOptionDisable(optionValue):boolean{
+
+        return this.disabledOptions.includes(optionValue);
     }
 
     /**
@@ -106,27 +170,31 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
         }
 
         // Disable the form
-        this.createUserForm.disable();
+        //this.createUserForm.disable();
 
         // Hide the alert
         this.showAlert = false;
 
-        const utilisateur = {
-          email: this.createUserForm.value.email,
-          nom: this.createUserForm.value.nom,
-          prenom: this.createUserForm.value.prenom,
-          numeroTel: this.createUserForm.value.numeroTel,
-          identreprise: this.createUserForm.value.identreprise,
-          fonction: this.createUserForm.value.fonction,
-          typeMfa: 1 ,
-          token  : "",
-          statut  : true,
-          roles  :this.createUserForm.value.roles,
-          statutMfa  : false,
-          isConfirme : false,
-          password:"",
-        } ;
+        const utilisateur = Utilisateurs.constructorUtilisateur(this.createUserForm.value);
+        // const utilisateur = {
+        //   email: this.createUserForm.value.email,
+        //   nom: this.createUserForm.value.nom,
+        //   prenom: this.createUserForm.value.prenom,
+        //   numeroTel: this.createUserForm.value.numeroTel,
+        //   identreprise: this.createUserForm.value.identreprise,
+        //   fonction: this.createUserForm.value.fonction,
+        //   typeMfa: 1 ,
+        //   token  : "",
+        //   statut  : true,
+        //   roles  :this.createUserForm.value.roles,
+        //   statutMfa  : false,
+        //   isConfirme : false,
+        //   password:"",
+        //   operateur: this.createUserForm.value.operateur||"----"
+        // } ;
         console.log(utilisateur)
+
+        
        this._utilisateursService.createUtilisateur(
         utilisateur
         ).subscribe({
@@ -144,7 +212,7 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
                 // this._utilisateursService.getUtilisateurs().pipe().subscribe();
                 this._tableDataService.getDatas().pipe().subscribe();
                 //details 
-                this._router.navigate(['../../',response.id], {relativeTo: this._activatedRoute});
+                this._router.navigate(['../',response.id], {relativeTo: this._activatedRoute});
                 
                 this._changeDetectorRef.detectChanges();
             }, error: (error) => {
@@ -197,7 +265,7 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
 
     loadEntreprises(){
 
-        this._utilisateursService.entreprises$.pipe(takeUntil(this._unsubscribeAll)
+        this._entrepriseService.entreprises$.pipe(takeUntil(this._unsubscribeAll)
             ).subscribe({
                 next: (response:any) => {
                 console.log("Response===> :", response);
