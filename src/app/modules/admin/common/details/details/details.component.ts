@@ -159,7 +159,8 @@ export class DetailsComponent implements OnInit,OnChanges {
           };
           this.showAlert = true;
           this._tableDataService.getDatas().pipe().subscribe();
-          this.formNgForm.resetForm();
+          //this.formNgForm.resetForm();;
+          this._changeDetectorRef.detectChanges();
 
         }, 
         error: (error) => {

@@ -160,7 +160,7 @@ export const appRoutes: Route[] = [
             {
                 path: 'parametreAgence',
                 data: { breadcrumb: 'Parametrage de agence bancaire' },
-                loadChildren: () => import('app/modules/admin/agence/agence/agence.module').then(m => m.AgenceModule)
+                loadChildren: () => import('app/modules/admin/agence/agence.module').then(m => m.AgenceModule)
             },
             {
                 path: 'parametreEntreprise',

@@ -142,10 +142,6 @@ export class ListComponent implements OnInit,OnDestroy {
                 this._changeDetectorRef.markForCheck();
             }
             );
-
-
-        
-        
         this._entrepriseService.entreprises$.pipe(
           takeUntil(this._unsubscribeAll)
          

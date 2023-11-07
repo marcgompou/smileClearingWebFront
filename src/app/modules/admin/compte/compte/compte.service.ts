@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError,Observable, of, switchMap, tap} from 'rxjs';
 import { Compte } from './compte.types';
 import { environment } from 'environments/environment';
-import { Agence } from 'app/modules/admin/agence/agence/agence/agence.types';
+import { Agence } from 'app/modules/admin/agence/agence/agence.types';
 
 @Injectable({
     providedIn: 'root'
