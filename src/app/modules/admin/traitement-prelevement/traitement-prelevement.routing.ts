@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { LoadDataResolver } from '../common/table-data/table-data.resolver';
+import { LoadDataResolver, LoadSansPaginationDataResolver } from '../common/table-data/table-data.resolver';
 import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsPrelevementComponent } from './traitement-prelevement/details-prelevement/details-prelevement.component';
 import { ListeTraitementPrelevementComponent } from './traitement-prelevement/liste-traitement-prelevement/liste-traitement-prelevement.component';
@@ -26,7 +26,7 @@ export const traitementPrelevementRoutes: Route[] =
                 path: 'details/:id',
                 component: DetailsPrelevementComponent,
                 resolve: {
-                    data: LoadDataResolver,
+                    data: LoadSansPaginationDataResolver,
                 },
                 data: { breadcrumb: 'Détails prelevement ', endpoint: endpointDetails },
                 children: [

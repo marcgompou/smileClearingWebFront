@@ -170,7 +170,9 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       this._changeDetectorRef.detectChanges();
       this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
       this.showAlert = true;
-      
+      this.isLoading = false;
+      this._changeDetectorRef.detectChanges();
+
       // Affichage d'un message de succès
       // Vous pouvez ajouter ici un message de succès si nécessaire
     },
@@ -181,11 +183,8 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       this.alert = { type: 'error', message: error.error.message ?? error.message };
       this.showAlert = true;
       this._changeDetectorRef.detectChanges();
-    },
-    complete: () => {
-      this.nomFichierCharger="";
-      this._changeDetectorRef.detectChanges();
       this.isLoading = false;
+      this._changeDetectorRef.detectChanges();
     }
   });
    
