@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject, debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs';
-import { fuseAnimations } from '@fuse/animations';
+// import { fuseAnimations } from '@fuse/animations';
 import { Utilisateurs, } from 'app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.types';
 import { MatDrawer } from '@angular/material/sidenav';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
@@ -11,6 +11,7 @@ import { UserService } from 'app/core/user/user.service';
 import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 import { EntrepriseService } from 'app/modules/admin/entreprise/entreprise/entreprise.service';
+import { UtilisateursService } from '../utilisateurs.service';
 
 @Component({
     selector: 'app-list',
@@ -83,6 +84,7 @@ export class ListComponent implements OnInit,OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _entrepriseService: EntrepriseService, //TODO A remplacer par entreprise service
         private _tableDataService: TableDataService,
+        private _utilisateurService:UtilisateursService,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {
     }
@@ -153,16 +155,9 @@ export class ListComponent implements OnInit,OnDestroy {
                 console.log("====entreprises=====>",this._entreprises)
                 this._changeDetectorRef.markForCheck();
             }, 
-            error: (error) => {
-            // //not show historique
-            // this.showData = false;
-            // console.error('Error : ',JSON.stringify(error));
-            // // Set the alert
-            // this.alert = { type: 'error', message: error.error.message??error.error };
-            // // Show the alert
-            // this.showAlert = true;
-            
-            this._changeDetectorRef.markForCheck();
+            error: (error) => {   
+                console.error('Error : ', JSON.stringify(error));         
+                this._changeDetectorRef.markForCheck();
             }
         });
 
@@ -194,6 +189,13 @@ export class ListComponent implements OnInit,OnDestroy {
       this._searchTerms.next(query);
     }
 
+    reinitialiserUser(id:string){
+      
+      console.log("call custom function id===>",id);
+      this._utilisateurService.resetPasswordUtilisateur(id).subscribe({
+        
+      });
+    }
 
     //Affichage des details
     openDetailComponent(component: DetailsComponent) {
@@ -273,6 +275,18 @@ export class ListComponent implements OnInit,OnDestroy {
             options: [{ value: true, libelle: "Désactivé" }, { value: false, libelle: "Activé" }],
           }
         ];
+        component.actionsButtons = [
+          
+          {
+            label: 'Reinitialiser',
+            color:'primary',
+            icon:'heroicons_outline:refresh',
+            confirmationTitle:"Réinitialisation du compte utilisateur",
+            endpoint: 'Authentication/reset',
+            actionType:'update'
+          }
+        ]
+          
     };
 
     /**

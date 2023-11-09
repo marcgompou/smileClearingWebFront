@@ -272,6 +272,7 @@ export class AuthSignInComponent implements OnInit {
       },
       (error) => {
         // en cas d'erreurs, il entre ici
+        const errorMessage = error?.error?.message||error.error||"Impossible de vérifier le code OTP, veuillez verifier votre connexion internet";
         console.log("response===>", error);
         // Re-enable the form
         this.login2FACodeForm.enable();
@@ -280,7 +281,7 @@ export class AuthSignInComponent implements OnInit {
         this.login2FACodeForm.get("code").reset();
 
         // Set the alert
-        this.displayErrors("Impossible de vérifier le code MFA");
+        this.displayErrors(errorMessage);
       }
     );
   }

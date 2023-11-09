@@ -101,6 +101,24 @@ export class UtilisateursService
         );
     }
 
+    resetPasswordUtilisateur(id: string): Observable<any> {
+        return this._httpClient.put(
+            `${environment.apiUrl}/Authentication/reset/${id}`,'null'
+        ).pipe(
+            catchError((error) => {
+                throw error;
+            }),
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
+    // Transform resetPasswordUtilisateur into an observable function
+  resetPasswordUtilisateurObservable(id: string): Observable<any> {
+    return this.resetPasswordUtilisateur(id);
+  }
+
     // /**
     //  * Get utilisateurs
     //  */

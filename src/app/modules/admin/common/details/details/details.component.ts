@@ -9,6 +9,8 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { TableDataService } from '../../table-data/table-data.services';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ActionButtons } from '../types/actions-button.type';
+import { ActionConfirmationComponent } from '../action-confirmation/action-confirmation.component';
 
 @Component({
   selector: 'app-details',
@@ -31,6 +33,8 @@ export class DetailsComponent implements OnInit,OnChanges {
   @Input() constructorPayload!:(args: any) => any;
   @Input("formTitle") formTitle:string ="Formulaire Détails/Modification"
   @Input("endpoint") endpoint:string ;
+  @Input("actionsButtons") actionsButtons:ActionButtons[]=[] ;
+
   @ViewChild('formNgForm') formNgForm: NgForm;
   editMode: boolean = false;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -241,9 +245,59 @@ toggleEditMode(editMode: boolean | null = null): void
           this._changeDetectorRef.detectChanges();
       }
     });
-}
+  }
   
-  
+
+  handleButtonClick(actionButtons: ActionButtons) {
+
+
+    const confirmationObjectDialog = this._dialog.open(
+      ActionConfirmationComponent,
+      {
+        data:  { 
+            id:this.id,
+            endpoint:actionButtons.endpoint,
+            actionType:actionButtons.actionType,
+            payload:null,
+            title:actionButtons.confirmationTitle
+          }
+      }
+
+  );
+  confirmationObjectDialog.afterClosed().subscribe({
+
+      next:(response)=>{
+
+        console.log("delete response=====>",response)
+        if(response?.actionExecuted){
+            this._tableDataService.getDatas().pipe().subscribe();
+            this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
+            this.matDrawer.close();
+        }
+        this._changeDetectorRef.markForCheck();
+      },
+      
+      error: (error) => {
+        console.error('Error : ', JSON.stringify(error));
+        this.alert = { type: 'error', message: error.error.message??error.message };
+        this.showAlert = true;
+        this._changeDetectorRef.detectChanges();
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
 
 
 

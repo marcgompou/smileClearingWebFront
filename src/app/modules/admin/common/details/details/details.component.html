@@ -7,6 +7,31 @@
                     <!-- Close button -->
                     <div class="flex items-center justify-between w-full max-w-3xl mx-auto pt-6 ">
                         <div class="text-3xl font-extrabold tracking-tight leading-none">MODIFICATION - {{formTitle}}</div>
+                        <button
+                            mat-icon-button
+                            [matMenuTriggerFor]="moreMenu">
+                            <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
+                        </button>
+                        
+                        <mat-menu #moreMenu="matMenu">
+                            <button *ngFor="let actionButtons of actionsButtons"  
+                                [disabled]="data[actionButtons?.disabledKey]==actionButtons?.disableValue &&  actionButtons.disabledKey!=undefined" 
+                                mat-menu-item  
+                                type="button" [matTooltip]="actionButtons.label" 
+                                (click)="handleButtonClick(actionButtons)">
+                                <mat-icon [svgIcon]="actionButtons.icon"></mat-icon>
+                                <span>{{actionButtons.label}}</span>
+                            </button>
+                            <button [disabled]="!this.canDelete" 
+                                mat-menu-item 
+                                type="button" [matTooltip]="'Supprimer'" 
+                                
+                                (click)="supprimer()">
+                                <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                <span>Supprimer</span>
+                            </button>
+                        </mat-menu>
+
                         <a mat-icon-button [matTooltip]="'Close'" (click)="closeForm()">
                             <mat-icon [color]="'primary'" [svgIcon]="'heroicons_outline:x'"></mat-icon>
                         </a>
@@ -188,11 +213,10 @@
 
                         <div class="flex items-center mt-5 -mx-10 sm:-mx-12 py-2 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
                             
-                            <ng-container *ngIf="this.canDelete">
-                                <button mat-button [color]="'warn'" type="button" [matTooltip]="'Delete'" (click)="supprimer()">
-                                    Supprimer
-                                </button>
-                            </ng-container>
+                            
+
+                            
+
 
                             <!-- Cancel -->
                             <button class="ml-auto mr-1"  

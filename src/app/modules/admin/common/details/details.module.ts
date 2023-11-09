@@ -11,12 +11,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatMenuModule } from '@angular/material/menu';
+import { ActionConfirmationComponent } from './action-confirmation/action-confirmation.component';
 
 
 
 @NgModule({
   declarations: [
     DetailsComponent,
+    ActionConfirmationComponent,
+
     DeleteConfirmationComponent
   ],
   imports: [
@@ -29,17 +34,23 @@ import { DeleteConfirmationComponent } from './delete-confirmation/delete-confir
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    FuseAlertModule,
-    MatDialogModule
+    FuseAlertModule, //NON REUTILISABLE DANS UN AUTRE PROJET
+    MatDialogModule,
+    MatMenuModule,
+    MatMomentDateModule
 
   ],
  
   entryComponents: [
     DeleteConfirmationComponent,
+    ActionConfirmationComponent,
+
   ],
   exports:[
     DetailsComponent,
-    DeleteConfirmationComponent
+    DeleteConfirmationComponent,
+    ActionConfirmationComponent
+
   ]
   
 })

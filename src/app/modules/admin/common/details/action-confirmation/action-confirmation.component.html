@@ -1,0 +1,99 @@
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8 bg-primary text-on-primary">
+        <!-- Icon -->
+        <ng-container>
+            <div class="flex flex-0 items-center justify-center w-10 h-10 sm:mr-4 rounded-full"
+                [ngClass]="'text-warn-600 bg-warn-100 dark:text-warn-50 dark:bg-warn-600'">
+                <mat-icon class="text-current" svgIcon="heroicons_outline:exclamation"></mat-icon>
+            </div>
+        </ng-container>
+        <div class="text-lg font-medium">{{this.data.title??"Voulez-vous effectuer cette action ?"}}</div>
+        <button
+            mat-icon-button
+            (click)="closeModal()"
+            [tabIndex]="-1">
+        </button>
+    </div>
+
+    <!-- Compose form -->
+    <div
+        class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto" >
+
+        <!-- Alert -->
+        <fuse-alert
+            class="mt-4"
+            *ngIf="showAlert"
+            [appearance]="'outline'"
+            [showIcon]="false"
+            [type]="alert.type"
+            [@shake]="alert.type === 'error'">
+            {{alert.message}}
+        </fuse-alert>
+
+        <!-- Content-->
+        <div class="flex flex-auto overflow-hidden mt-4">
+
+            <div class="flex flex-col flex-auto sm:mb-3 overflow-hidden sm:overflow-y-auto">
+
+                <!-- Message -->
+                <ng-container>
+                    <div class="text-secondary sm:text-lg xs:text-sm">
+                        <ng-container *ngIf="isLoading == true; else elseTemplate">
+                            <span>Traitement en cours d'exécution...</span>
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                            <h1 class="mb-4 text-xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-3xl dark:text-white"> Êtes-vous sûr de vouloir exécuter cette opération ? </h1>
+                            <span> Entrez <strong>oui</strong> pour accepter</span>
+                        </ng-template>
+                    </div>
+                </ng-container>
+
+                <!-- input Confirmation -->
+                <ng-container>
+                    <div class="flex mt-4">
+                        <mat-form-field class="flex-auto">
+                            <input
+                                matInput
+                                placeholder="oui" #inputConfirmation>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+
+            </div>
+
+        </div>
+        
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mt-4 sm:mt-6">
+            
+            <div class="-ml-2"></div>
+
+            <div class="flex items-center mt-4 sm:mt-0">
+                <!-- Save as draft -->
+                <button
+                    class="sm:mx-3"
+                    mat-stroked-button
+                    (click)="closeModal()">
+                    <span>Annuler</span>
+                </button>
+                <!-- Accept -->
+                <button
+                    class="order-first sm:order-last"
+                    mat-flat-button
+                    [color]="'warn'"
+                    (click)="runAction()"
+                    [disabled]="inputConfirmation.value != 'oui' || isLoading">
+                    <span *ngIf="!isLoading">J'accepte</span>
+                    <mat-spinner strokeWidth="5" 
+                        diameter="30" 
+                        class="warn"
+                        *ngIf="isLoading">
+                    </mat-spinner>
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>

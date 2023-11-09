@@ -72,7 +72,7 @@ export class DetailsService {
       );
   }
 
-  update(id: string,endpoint:any, payload: any): Observable<any> {
+  update(id: string,endpoint:any, payload: any=null): Observable<any> {
     return this._httpClient.put(
         `${environment.apiUrl}/${endpoint}/${id}`,
         payload
@@ -86,6 +86,7 @@ export class DetailsService {
     );
   }
 
+ 
 
 
 
