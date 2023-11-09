@@ -258,14 +258,15 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
           this.dataSource.data = this.detailsData.slice(startIndex, endIndex);
 
           // Update the data source and total items
-          
+         
+         
           this.totalRows=this.detailsData.length;
           console.log(this.detailsData);
         }
         this._changeDetectorRef.markForCheck();
         //console.log('File Content:', fileContent);
       };
-      fileReader.readAsText(selectedFile);
+      fileReader.readAsText(selectedFile, 'ISO-8859-1');
     } else {
       console.error("No file selected.");
     }
@@ -325,7 +326,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   }
  // const dateEmission = convertDateToDateTime(dateStr);
   extractHeaderValues(headerLine: string) {
-
+console.log("headerLine",headerLine);
     const compteCrediteRaw = headerLine.substring(22, 33).trim();
     const compteCredite = compteCrediteRaw[0] === '0' ? compteCrediteRaw.substring(1) : compteCrediteRaw;
     const dateOperStartIndex = compteCrediteRaw[0] === '0' ? 64 : 63;

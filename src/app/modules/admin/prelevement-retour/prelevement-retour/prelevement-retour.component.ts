@@ -271,7 +271,8 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
               this._changeDetectorRef.markForCheck();
               //console.log('File Content:', fileContent);
             };
-            fileReader.readAsText(selectedFile);
+            fileReader.readAsText(selectedFile, 'ISO-8859-1');
+            
           } else {
             console.error("No file selected.");
           }
