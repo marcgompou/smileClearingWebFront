@@ -121,7 +121,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     //getCompteByEntreprise();
     this.loadCompte();
     this.loadEntreprise();
-this.loadSUperExportateur();
+    this.loadSUperExportateur();
     this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
       takeUntil(this._unsubscribeAll),
               
@@ -129,7 +129,9 @@ this.loadSUperExportateur();
       this.dataSource = new MatTableDataSource(res.data);
     
      
-    })
+    });
+
+    this.entrepriseForm.get('identreprise').setValue('0');
 
     this._importerRemiseService.superExportateurs$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
       takeUntil(this._unsubscribeAll),

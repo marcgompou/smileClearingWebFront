@@ -40,7 +40,7 @@
                             <!-- <mat-label>Entreprise</mat-label> -->
                             <mat-select formControlName="identreprise" matInput id="identreprise" required
                                 placeholder="Selectionner une Entreprise" (selectionChange)="onSelectChange($event)">
-                                <!-- <mat-option value=""></mat-option> -->
+                                <mat-option value="0">Toutes les entreprises</mat-option>
                                 <mat-option *ngFor="let  Entreprise of listeEntreprise" [value]="Entreprise.identreprise"> 
                                     {{Entreprise.nomEntreprise }} 
                                 </mat-option>
@@ -48,7 +48,7 @@
                         </mat-form-field>
 
 
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"  [disabled]="dataSource.data.length === 0 || !entrepriseForm.valid">
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"  [disabled]="dataSource.data.length === 0 || !entrepriseForm.valid  || entrepriseForm.value.identreprise=='0'">
                               
                          
                             <mat-icon [svgIcon]="'mat_solid:arrow_downward'"></mat-icon>
