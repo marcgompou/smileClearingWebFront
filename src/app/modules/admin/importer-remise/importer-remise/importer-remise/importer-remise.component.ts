@@ -30,6 +30,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   noData: any;
   remiseData: any;
   listeEntreprise: any[] = [];
+  listeSuperExportateur: any[] = [];
   //public selectedValue: string;
   idEntreprise: string = "0";
   montantTotal: number = 0;
@@ -120,6 +121,25 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     //getCompteByEntreprise();
     this.loadCompte();
     this.loadEntreprise();
+this.loadSUperExportateur();
+    this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
+      takeUntil(this._unsubscribeAll),
+              
+      console.log ("res-----------", res.data.length);
+      this.dataSource = new MatTableDataSource(res.data);
+    
+     
+    })
+
+    this._importerRemiseService.superExportateurs$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
+      takeUntil(this._unsubscribeAll),
+              
+      console.log ("res-----------", res.data.length);
+      this.dataSource = new MatTableDataSource(res.data);
+    
+     
+    })
+
 
     // Subscribe to search input field value changes
     this.searchInputControl.valueChanges
@@ -142,6 +162,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     
 
   }
+  
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
@@ -151,6 +172,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     private _router: Router,
     private _importerRemiseService:ImporterRemiseService,
     private _entrepriseService: ImporterRemiseService,
+    private _superExportateurService:ImporterRemiseService
 
 
   ) {
@@ -170,8 +192,6 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
     this._changeDetectorRef.markForCheck();
     this.remiseData = row;
-
-
   }
 
   updateList(newMatTable: MatTableDataSource<any>) {
@@ -187,83 +207,6 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
 
-  // openDetailComponent(component: DetailsRemiseComponent) {
-
-  //   component.matDrawer = this.matDrawer;
-  //   component.formTitle = "CHEQUE";
-  //   //component.chequeData = this.remiseData;
-  //   //Initialisation formulaire details
-  //   component.formFields = [
-  //     {
-  //       key: "id",
-  //       libelle: "Identifiant de Remise",
-  //       validators: {
-  //         min: 7,
-  //         max: 7,
-  //         required: true
-  //       }
-  //     },
-  //     {
-  //       key: "codeBanque",
-  //       libelle: "Code Banque",
-  //       placeholder: "Ex: CI131",
-  //       validators: {
-  //         min: 5,
-  //         max: 5,
-  //         required: true,
-  //       }
-  //     },
-  //     {
-  //       key: "codeAgence",
-  //       libelle: "Code Agence",
-  //       placeholder: "Ex: 01001",
-  //       validators: {
-  //         min: 5,
-  //         max: 5,
-  //         required: true
-  //       }
-  //     },
-
-  //     {
-  //       key: "compte",
-  //       libelle: "Compte",
-  //       validators: {
-  //         min: 12,
-  //         max: 12,
-  //         required: true
-  //       }
-  //     },
-  //     {
-  //       key: "cleRib",
-  //       libelle: "Cle Rib",
-  //       validators: {
-  //         min: 2,
-  //         max: 50,
-  //         required: true
-  //       }
-
-  //     },
-  //     {
-  //       key: "montant",
-  //       libelle: "Montant",
-  //       type: "number",
-  //       validators: {
-  //         minValue: 1000,
-  //         min: 1,
-  //         max: 11,
-  //         required: true
-  //       }
-
-  //     },
-  //     {
-  //       key: "tire",
-  //       libelle: "Titulaire",
-  //       validators: {
-  //         max: 50
-  //       }
-  //     }
-  //   ]
-  // }
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['./'], { relativeTo: this._activatedRoute });
@@ -279,25 +222,39 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
       next: (response: any) => {
         console.log("Response compteEntreprises ===>", response);
         if (response == null) { response = []; }
-
         this.listeEntreprise = response.data;
-
         this._changeDetectorRef.markForCheck();
       },
       error: (error) => {
-        //not show historique
-        //this.showData = false;
         console.error('Error : ', JSON.stringify(error));
         // Set the alert
         this.alert = { type: 'error', message: error.error.message ?? error.error };
         // Show the alert
         this.showAlert = true;
-
         this._changeDetectorRef.markForCheck();
       }
     });
+  }
+  loadSUperExportateur(){
+    this._importerRemiseService.superExportateurs$.pipe(takeUntil(this._unsubscribeAll)).subscribe({
+      next:(response : any)=>{
+          console.log("Response loadSUperExportateur ===>",response);
+          if (response == null) { response = []; }
+          this.listeSuperExportateur = response.data;
+          this._changeDetectorRef.markForCheck();
+      }
+    }) 
 
   }
+
+//   loadSUperExportateur(){
+// this._importerRemiseService..pipe(takeUntil(this._unsubscribeAll)).subscribe({
+//   next:(response)=>{
+//       console.log(response);
+//       this._superExportateurService.getSuperExportateur.next(response.data);
+//       this._changeDetectorRef.markForCheck();
+// })
+//   }
 
   // this._importerRemiseService.importerRemise(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
   //   next:(response)=>{
@@ -315,6 +272,7 @@ this.idEntreprise = event.value?event.value:"0";
   console.log('Valeur sélectionnée :', this.idEntreprise);
   this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
   this._tableDataService.getDatasByPath().subscribe();
+  
   this._changeDetectorRef.markForCheck();
   // Utilisez selectedValue pour prendre des mesures en conséquence
 }
@@ -408,7 +366,31 @@ this.idEntreprise = event.value?event.value:"0";
 
   }
 
+  // loadSuperExportateur(){
+  //   this._superExportateurService.superExportateurs$.pipe(takeUntil(this._unsubscribeAll)
+  //   ).subscribe({
+  //       next: (response:any) => {
+  //         console.log("===listeSuperEntreprise mbg=============>", response);
+  //         if(response==null){response=[];}
+         
+  //         this.listeSuperEntreprise = response.data;
 
+  //         this._changeDetectorRef.markForCheck();
+  //       }, 
+  //       error: (error) => {
+  //         //not show historique
+  //         //this.showData = false;
+  //         console.error('Error : ',JSON.stringify(error));
+  //         // Set the alert
+  //         this.alert = { type: 'error', message: error.error.message??error.error };
+  //         // Show the alert
+  //         this.showAlert = true;
+          
+  //         this._changeDetectorRef.markForCheck();
+  //       }
+  //   });
+
+  // }
 
   /**
    * On destroy

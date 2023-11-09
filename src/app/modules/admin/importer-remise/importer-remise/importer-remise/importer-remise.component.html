@@ -48,8 +48,8 @@
                         </mat-form-field>
 
 
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                              >
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"  [disabled]="dataSource.data.length === 0 || !entrepriseForm.valid">
+                              
                          
                             <mat-icon [svgIcon]="'mat_solid:arrow_downward'"></mat-icon>
                             <span class="ml-2">Importer</span>
@@ -63,20 +63,28 @@
                 <div class="flex flex-auto overflow-hidden">
                     <!-- remiseCheques list -->
                     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
-                        <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
-                           
+                        <div class="flex  items-center relative back   md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >                
                             <ng-container>
-                                <span class="inline-block align-middle">
-
-                                    <!-- Nombre de chèque : {{ nombreCheque }} -->
-                                </span>
-                            </ng-container>
-                            <ng-container>
-                                <span class="inline-block align-middle">
-
-                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
-
-                                </span>
+                                <div *ngIf="listeSuperExportateur && listeSuperExportateur.length > 0">
+                                    <table class="w-full">
+                                      <thead>
+                                        <tr class="bg-gray-200 dark:bg-gray-800">
+                                          <th class="py-2 px-4 text-left">Nom Entreprise</th>
+                                          <th class="py-2 px-4 text-left">Nombre de chèque total</th>
+                                          <th class="py-2 px-4 text-left">Montant Total</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody class="space-y-2">
+                                        <tr *ngFor="let superExportateur of listeSuperExportateur" class="border-b">
+                                          <td class="py-2 px-4">{{ superExportateur.nomEntreprise }}</td>
+                                          <td class="py-2 px-4">{{ superExportateur.nbrChequeTotal }}</td>
+                                          <td class="py-2 px-4">{{ superExportateur.montantTotal | currency:'CFA':'symbol':'1.0-2' }}</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  
+                                   
                             </ng-container>
                         </div>
                         

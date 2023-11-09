@@ -20,3 +20,10 @@ export class Entreprises {
     nomEntreprise: string;
     dateCreation: string;
     descriptionActivite: string;}
+
+
+    export class SuperExportateur {
+        identreprise: string;
+        nbrExportation : string;
+        montantTotal: string;
+       }

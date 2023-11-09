@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, filter, catchError, Observable, of, switchMap, tap, map, take, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
-import { Entreprises, Remise } from '../remise.type';
+import { Entreprises, Remise, SuperExportateur } from '../remise.type';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,9 @@ export class ImporterRemiseService {
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _remiseAvalides: BehaviorSubject< Remise []| null> = new BehaviorSubject(null);
   private _entreprises: BehaviorSubject<Entreprises[] | null> = new BehaviorSubject(null);
-
+  private _superExportateurs: BehaviorSubject<any> = new BehaviorSubject(null);
+  
+ 
 
 
   /**
@@ -44,6 +46,10 @@ export class ImporterRemiseService {
     return this._entreprises.asObservable();
   }
 
+  get superExportateurs$(): Observable<any[]> {
+    return this._superExportateurs.asObservable();
+  }
+  
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
@@ -60,6 +66,15 @@ export class ImporterRemiseService {
       );
   }
 
+  getSuperExportateur(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiUrl}/exportation/remise/max`).pipe(
+      tap((response) => {
+        console.log('test==========exportplus============================');
+        console.log(response);
+        this._superExportateurs.next(response);
+      })
+    );
+  }
 
 
    //Table data service
