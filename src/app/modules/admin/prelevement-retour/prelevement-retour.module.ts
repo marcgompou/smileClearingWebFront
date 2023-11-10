@@ -22,6 +22,7 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FuseAlertModule } from '@fuse/components/alert';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 
 

@@ -11,6 +11,7 @@ export class TraitementPrelevementService {
   private _prelevements: BehaviorSubject<Prelevement[] | null> = new BehaviorSubject(null);
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _prelevementAvalides: BehaviorSubject< Prelevement []| null> = new BehaviorSubject(null);
+  private _prelevement: BehaviorSubject<Prelevement | null> = new BehaviorSubject(null);
   
 
   /**
@@ -33,12 +34,14 @@ export class TraitementPrelevementService {
     return this._prelevementAvalides.asObservable();
   }
   // Setter to update the array
-  public setPrelevement$(newArray: Prelevement[]): void {
+  public setPrelevements$(newArray: Prelevement[]): void {
     this._prelevements.next(newArray);
   }
 
  
-
+  public setPrelevement$(newArray: Prelevement): void {
+    this._prelevement.next(newArray);
+  }
 
   getPrelevementAtraitement(): Observable<any>
   {

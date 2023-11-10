@@ -27,6 +27,7 @@ export class DetailsPrelevementComponent implements OnInit {
   drawerMode: 'side' | 'over';
   noData: any;
   prelevementData: any;
+  prelevementRemiseData: any;
   montantTotal: number = 0;
   nombreRemise: number = 0;
   remiseIsInCorrect: boolean = true;
@@ -134,12 +135,23 @@ export class DetailsPrelevementComponent implements OnInit {
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des prelevement de tableData common
-    this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details prelevement response=======>",response)
-      this.prelevementData=response;
+    // this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+    //   console.log("details prelevement response=======>",response)
+    //   this.prelevementData=response;
+    //   try{
+    //     this.montantTotal=this.prelevementData.data?.reduce((a, b) => a + b.montant, 0);
+    //     this.nomFichier=this.prelevementData.data[0]?.nomfichier || '';
+    //   }catch(error){
+    //     this.montantTotal=0;
+    //   }
+    // })
+
+    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("details prelevementRemiseData response=======>",response)
+      this.prelevementRemiseData=response;
       try{
-        this.montantTotal=this.prelevementData.data?.reduce((a, b) => a + b.montant, 0);
-        this.nomFichier=this.prelevementData.data[0]?.nomfichier || '';
+        this.montantTotal=this.prelevementRemiseData?.mtTotal || 0;
+        this.nomFichier=this.prelevementRemiseData?.nomfichier || '';
       }catch(error){
         this.montantTotal=0;
       }
@@ -149,6 +161,7 @@ export class DetailsPrelevementComponent implements OnInit {
       this.id = params['id'];
       console.log("id in details", this.id);
     })
+
 
 
 
@@ -172,7 +185,7 @@ export class DetailsPrelevementComponent implements OnInit {
 
   cloturerPrelevement(){
     console.log("traitement prelevement id", this.prelevementData);
-    this._traitementPrelevementService.cloturerPrelevement(this.prelevementData.id).pipe().subscribe({
+    this._traitementPrelevementService.cloturerPrelevement(this.id).pipe().subscribe({
       next:(response)=>{
           console.log(response);
           this.goBackToList();
@@ -182,11 +195,11 @@ export class DetailsPrelevementComponent implements OnInit {
 
   telechargerPrelevementValider(): void {
     
-    this._traitementPrelevementService.telechargerPrelevementValider(this.prelevementData.id).pipe().subscribe(blob => {
+    this._traitementPrelevementService.telechargerPrelevementValider(this.id).pipe().subscribe(blob => {
       // Create a temporary anchor element and trigger the download
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download = this.prelevementData.nomfichier+".rec"; // Set the desired file name
+      link.download =  this.nomFichier+".rec"; // Set the desired file name
       link.click();
     });
   }

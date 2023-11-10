@@ -455,7 +455,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       const nomBanque = data.substring(57, 74).trim() || null;
       const libelleOperat = data.substring(74, 104).trim();
       const montant = parseInt(data.substring(104, 116).trim()) || null;
-      const statut = parseInt(data.substring(117, 119).trim()) || 8;
+      const statut = parseInt(data.substring(117, 119).trim()) ?? 8;
   
       console.log("statut=============>", statut);
   

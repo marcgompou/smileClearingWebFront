@@ -24,21 +24,11 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 })
 
 
-export class ListeTraitementPrelevementComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
-  remiseData: any;
   listeCompteEntreprise: any[] = [];
-  montantTotal: number = 0;
-  nombreRemise: number = 0;
   statut: string = "0";
-  remiseIsInCorrect: boolean = true;
-
-
-  @ViewChild(MatPaginator) private _paginator: MatPaginator;
-  @ViewChild(MatSort) private _sort: MatSort;
-
-
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
@@ -123,13 +113,13 @@ export class ListeTraitementPrelevementComponent implements OnInit, AfterViewIni
   ngOnInit() {
 
 
-    this._tableDataService.datas$.subscribe((res: any) => {
-      console.log("res-----------", res.data.length);
-      this.dataSource = new MatTableDataSource(res.data);
+    // this._tableDataService.datas$.subscribe((res: any) => {
+    //   console.log("res-----------", res.data.length);
+    //   this.dataSource = new MatTableDataSource(res.data);
 
-    })
+    // })
     //getCompteByEntreprise();
-    this.loadData();
+   // this.loadData();
 
 
     // Subscribe to search input field value changes
@@ -176,27 +166,7 @@ export class ListeTraitementPrelevementComponent implements OnInit, AfterViewIni
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   }
-  selectedRow(row) {
-
-    const index = this.dataSource.data.indexOf(row);
-    this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
-    this._changeDetectorRef.markForCheck();
-    this.remiseData = row;
-
-
-  }
-
-  updateList(newMatTable: MatTableDataSource<any>) {
-    this.dataSource = newMatTable;
-    this._changeDetectorRef.markForCheck();
-  }
-
-  getColumnHeaderText(column: string): string {
-
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-
-  }
+ 
 
   
   onBackdropClicked(): void {
@@ -208,68 +178,37 @@ export class ListeTraitementPrelevementComponent implements OnInit, AfterViewIni
   }
 
 
-  loadData() {
-    this._prelevementService.PrelevementAvalides$.pipe(takeUntil(this._unsubscribeAll)
-    ).subscribe({
-      next: (response: any) => {
-        console.log("Response compteEntreprises ===>", response);
-        if (response == null) { response = []; }
+  // loadData() {
+  //   this._prelevementService.PrelevementAvalides$.pipe(takeUntil(this._unsubscribeAll)
+  //   ).subscribe({
+  //     next: (response: any) => {
+  //       console.log("Response compteEntreprises ===>", response);
+  //       if (response == null) { response = []; }
 
-        this.listeCompteEntreprise = response.data;
+  //       this.listeCompteEntreprise = response.data;
 
-        this._changeDetectorRef.markForCheck();
-      },
-      error: (error) => {
-        //not show historique
-        //this.showData = false;
-        console.error('Error : ', JSON.stringify(error));
-        // Set the alert
-        this.alert = { type: 'error', message: error.error.message ?? error.error };
-        // Show the alert
-        this.showAlert = true;
+  //       this._changeDetectorRef.markForCheck();
+  //     },
+  //     error: (error) => {
+  //       //not show historique
+  //       //this.showData = false;
+  //       console.error('Error : ', JSON.stringify(error));
+  //       // Set the alert
+  //       this.alert = { type: 'error', message: error.error.message ?? error.error };
+  //       // Show the alert
+  //       this.showAlert = true;
 
-        this._changeDetectorRef.markForCheck();
-      }
-    });
+  //       this._changeDetectorRef.markForCheck();
+  //     }
+  //   });
 
-  }
+  // }
 
 
   /**
      * After view init
      */
-  ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      // this._sort.sort({
-      //   id: 'name',
-      //   start: 'asc',
-      //   disableClear: true
-      // });
-
-      // Mark for check
-      //this._changeDetectorRef.markForCheck();
-
-      // this._sort.sortChange
-      //   .pipe(takeUntil(this._unsubscribeAll))
-      //   .subscribe(() => {
-      //     this._paginator.pageIndex = 0;
-
-      //     this.closeDetails();
-      //   });
-
-      // merge(this._sort.sortChange, this._paginator.page).pipe(
-      //   switchMap(() => {
-      //     this.closeDetails();
-      //     this.isLoading = true;
-      //     return null;
-      //   }),
-      //   map(() => {
-      //     this.isLoading = false;
-      //   })
-      // ).subscribe();
-    }
-  }
+  
 
   //recherche les prelevement selon le statut
   onSelectChange(event: MatSelectChange) {

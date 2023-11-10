@@ -36,16 +36,16 @@
                             <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
                             <span class="ml-2">Retour</span>
                         </button>
-                        <ng-container *ngIf="prelevementData?.statut==13" >
+                        <ng-container *ngIf="prelevementRemiseData?.statut==13" >
                             <button class="ml-4" mat-flat-button [color]="'primary'" (click)="cloturerPrelevement()">
                                 <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
                                 <span class="ml-2">Clôturer</span>
                             </button>
                         </ng-container>
-                        <ng-container *ngIf="prelevementData?.statut==3 ">
+                        <ng-container *ngIf="prelevementRemiseData?.statut==3">
                             <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerPrelevementValider()" >
                                 <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
-                                <span class="ml-2">Gérérer Fichier Retour</span>
+                                <span class="ml-2">Générer Fichier</span>
                             </button>
                         </ng-container>
                     </form>
