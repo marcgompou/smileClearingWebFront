@@ -52,6 +52,9 @@ export class  TableDataService {
         this.data.next(data);
     }
     
+    public setDatas$(data): void{
+        this.datas.next(data);
+    }
 
     getDatas(): Observable<any> {
         //Verifier que filter object exist

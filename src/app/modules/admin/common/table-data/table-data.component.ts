@@ -39,14 +39,16 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input("filterObject") filterObject: any = null;
   @Input("dataStructure") dataStructure: filterForm[];
   @Input("displayedColumns") displayedColumns: string[];
-  @Input("data") data: any[];
-  @Input("endpoint") endpoint: string;
+  data: any[];
+  @Input("endpoint") endpoint: string="";
+  @Input("serverSideLoad") serverSideLoad: boolean = true;
   @Input("filterFormBasic") filterFormBasic: filterForm[];
   @Input("filterFormAdvance") filterFormAdvance: filterForm[];
-  @Input("title") title: string;
+  @Input("title") title: string="";
   @Input("canClick") canClick: boolean = false;
   @Input("idRow") idRow: string = "";
-  @Input("dataKey") dataKey = "data";
+  /*** Peut prendre la valeur '$' si les donnée sont directement accessible depuis la racine ***/
+  @Input("dataKey") dataKey = "data"; 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
@@ -119,24 +121,43 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
       this.paginationObject
     );
 
-    this.paginationObject = {
-      size: event.pageSize,
-      page: event.pageIndex,
-    };
-    this._tableDateService._paginationObject = this.paginationObject;
-    this._tableDateService._endpoint = this.endpoint;
-    this._tableDateService._filterObject = this.filterObject;
 
-    this._tableDateService.getDatas().pipe().subscribe();
-    //this.loadData();
+    if(this.serverSideLoad){
+      this.paginationObject = {
+        size: event.pageSize,
+        page: event.pageIndex,
+      };
+      this._tableDateService._paginationObject = this.paginationObject;
+      this._tableDateService._endpoint = this.endpoint;
+      this._tableDateService._filterObject = this.filterObject;
+      this._tableDateService.getDatas().pipe().subscribe();
+    }else{
+
+       // Calculate the start and end index based on the page size and page index
+      const startIndex = event.pageIndex * event.pageSize;
+      const endIndex = startIndex + event.pageSize;
+      this.pageSize=event.pageSize;
+      this.currentPage=event.pageIndex;
+      console.log("start and end index",startIndex +' '+ endIndex);
+      // Slice the data to display the current page
+      const pageData = this.data.slice(startIndex, endIndex);
+      this.dataSource.data = pageData
+      console.log("length===>",this.data.length);
+
+    }
+    this._changeDetectorRef.markForCheck();
   }
 
   //Retrieve response data from dynamic json path;
   //In case data is in nested json
   getValueByPath(obj, path) {
-    const pathParts = path.split(".");
     let value = obj;
 
+    if(path=="$"||path==""){
+      return value;
+    }
+    const pathParts = path.split(".");
+    console.log(obj);
     for (const part of pathParts) {
       if (value.hasOwnProperty(part)) {
         value = value[part];
@@ -169,10 +190,20 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
             response = [];
           }
           data = this.getValueByPath(response, this.dataKey);
-          this.dataSource = new MatTableDataSource(data);
-          this.totalRows = response?.totalCount || data.length;
-          this.currentPage = response?.page || 0;
-          this.pageSize = response?.pageSize || 0;
+          this.data=data;
+          if(this.serverSideLoad){
+            this.dataSource = new MatTableDataSource(data);
+            this.totalRows = response?.totalCount ||0;
+            this.currentPage = response?.page || 0;
+            this.pageSize = response?.pageSize || 0;
+          }else{
+            //Si toutes les données sont chargées une seule fois ?
+            console.log("start and end index",this.currentPage +' '+ this.pageSize);
+
+            this.dataSource = new MatTableDataSource(this.data.slice(this.currentPage, this.pageSize));
+            this.totalRows =  data.length;
+          }
+          
           this._changeDetectorRef.markForCheck();
         },
         error: (error) => {
@@ -190,5 +221,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
           this._changeDetectorRef.markForCheck();
         },
       });
-  }
+  
+  
+    }
 }

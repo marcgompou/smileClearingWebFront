@@ -16,7 +16,9 @@ export class StatusPillDirective implements OnInit,AfterViewInit {
             'flex',
             'items-center',
             'justify-center',
-            'w-30',
+            'w-27',
+            'text-sm',
+            'font-bold',
             'h-8',
             'rounded-full',
             'text-white'

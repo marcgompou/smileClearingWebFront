@@ -1,14 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormControl, FormGroup,  } from '@angular/forms';
+
 import { Subject} from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
-import {  PrelevementRetourService } from '../prelevement-retour.service';
-import { Prelevement } from '../prelevement-retour.type';
+import { PrelevementRetourService } from '../prelevement-retour.service';
+import { TableDataService } from '../../common/table-data/table-data.services';
 
 
 
@@ -24,32 +21,25 @@ import { Prelevement } from '../prelevement-retour.type';
 
 
 
-export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PrelevementRetourComponent implements OnInit, OnDestroy {
   drawerMode: 'side' | 'over';
-  pageSizeOptions=[10,25];
-  // montantTotal:number=0;
-  // nombreCheque:number=0;
-  // remiseIsInCorrect:boolean=true;
+
   nomFichierCharger: string | undefined="";
   nomFichierChargerNormal: string | undefined;
-
-  received: Prelevement[] = [];
-  totalRows = 0;
-  pageSize = 10;
-  currentPage = 0;
   
   /**Prelevement data */
   headerData:any= {};
   totalData:any={}
   detailsData:any[]=[]
+  totalRows = 0;
+
   /**Prelevement data */
 
-  /**MatTable */
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  @ViewChild('paginator') paginator: MatPaginator;
+  /**form data*/
+  
   @ViewChild('fileInput', { static: false }) fileInput: any;
-  @ViewChild(MatSort) sort: MatSort;
-  /**MatTable */
+
+  /**form data*/
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: ''
@@ -65,8 +55,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
   prelevementForm : FormGroup;
 
   dataStructure = [
-    // { key: 'codeOperation', label: 'Code Operation' },
-    // { key: 'codeEnreg', label: 'Code Enreg' },
+
     { key: 'numLigne', label: 'Num. Ligne' },
     { key: 'dateEcheance', label: 'Date Echeance' },
     { key: 'banque', label: 'Banque' },
@@ -77,14 +66,18 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
     { key: 'libelleOperat', label: 'Libellé Opération' },
     { 
       key: 'statut', 
+      type:'status',
       label: 'Etat prelev.', 
+      "statusValues":[
+        { value: 0, libelle: "Payé", color: "#68D391" }, // Green
+        { value: 1, libelle: "Debit. interdit", color: "#FF5733" }, // Orange
+        { value: 4, libelle: "Cpte. fermé", color: "#808080" }, // Gray
+        { value: 5, libelle: "Cpte. inexistant", color: "#FFD700" }, // Yellow
+        { value: 6, libelle: "Rejetée", color: "#F56565" } // Red
+      ]
     },
-
     { key: 'montant', label: 'Montant' }
   ];
-
-  
-//  displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant','statut'];
   
   displayedColumns: string[] = ['numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant','statut'];
   
@@ -93,10 +86,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _prelevementRetourService: PrelevementRetourService,
-  
-   // private _chequeService: CreerRemiseService,
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router) {
+    private _tableDataService: TableDataService) {
       this.prelevementForm = this._formBuilder.group({
         fichierPrelevement: [''], // This is the FormControl
         // Add other form controls here
@@ -104,53 +94,14 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
   }
 
 
-
-
-  
-
   //CYCLE DE VIE
   ngOnInit() {
-
-  
-
+    this._tableDataService.setDatas$([])
   }
-
-
-  
 
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   }
-
-
-
-
-
-  onBackdropClicked(): void {
-    // Go back to the list
-    this._router.navigate(['./'], { relativeTo: this._activatedRoute });
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
-  }
-
-
-
-
-  /**
-   * After view init
-   */
-  ngAfterViewInit(): void {
-
-    this.dataSource= new MatTableDataSource<any>([]);
-    this.dataSource.paginator = this.paginator;
-    this._changeDetectorRef.detectChanges();
-  }
-
-  selectedRow(row) {
-    
-  }
-
 
   onSubmit() { 
 
@@ -158,35 +109,36 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
       prelevementEntete: this.headerData,
       prelevementDetails: this.detailsData,
       prelevementTotal: this.totalData
-  }
-
-   this._prelevementRetourService.chargerRetourPrelevement(data).subscribe({
-    next: (data) => {
-      this.isLoading = true;
-      // Réinitialisation des données du formulaire et de la table
-      this.dataSource = new MatTableDataSource<any>([]);
-      this.headerData.nom = "";
-      this.totalData.montant = "0";
-      this._changeDetectorRef.detectChanges();
-      this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
-      this.showAlert = true;
-      this.isLoading = false;
-      this._changeDetectorRef.detectChanges();
-
-      // Affichage d'un message de succès
-      // Vous pouvez ajouter ici un message de succès si nécessaire
-    },
-    error: (error) => {
-      this.detailsData=[]
-      // Affichage d'un message d'erreur
-      console.error('Error : ', JSON.stringify(error));
-      this.alert = { type: 'error', message: error.error.message ?? error.message };
-      this.showAlert = true;
-      this._changeDetectorRef.detectChanges();
-      this.isLoading = false;
-      this._changeDetectorRef.detectChanges();
     }
-  });
+
+    this._prelevementRetourService.chargerRetourPrelevement(data).subscribe({
+      next: (data) => {
+        this.isLoading = true;
+        // Réinitialisation des données du formulaire et de la table
+        this._tableDataService.setDatas$( [])
+        this.headerData.nom = "";
+        this.totalData.montant = "0";
+        this._changeDetectorRef.detectChanges();
+        this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
+        this.showAlert = true;
+        this.isLoading = false;
+        this.detailsData=[];
+        this._changeDetectorRef.detectChanges();
+
+        // Affichage d'un message de succès
+        // Vous pouvez ajouter ici un message de succès si nécessaire
+      },
+      error: (error) => {
+        this.detailsData=[]
+        // Affichage d'un message d'erreur
+        console.error('Error : ', JSON.stringify(error));
+        this.alert = { type: 'error', message: error.error.message ?? error.message };
+        this.showAlert = true;
+        this._changeDetectorRef.detectChanges();
+        this.isLoading = false;
+        this._changeDetectorRef.detectChanges();
+      }
+    });
    
   }
   
@@ -205,7 +157,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
   }
 
   clearFile(){
-    this.dataSource.data=[];
+    this._tableDataService.setDatas$([])
     this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.headerData={}
     this.totalData={}
@@ -257,16 +209,9 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
               }
               if(this.detailsData.length>0){
                 
-                const startIndex = 0;
-                const endIndex = 15;
-
-                // Slice the data to display the current page
-                this.dataSource.data = this.detailsData.slice(startIndex, endIndex);
-
-                // Update the data source and total items
-                
+                //Envoie des données dans table data
+                this._tableDataService.setDatas$( this.detailsData)
                 this.totalRows=this.detailsData.length;
-                console.log(this.detailsData);
               }
               this._changeDetectorRef.markForCheck();
               //console.log('File Content:', fileContent);
@@ -280,7 +225,7 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
           this.isLoading = false;
       }catch(e){
         console.log(e)
-        this.dataSource.data=[];
+        this._tableDataService.setDatas$( [])
         this._changeDetectorRef.detectChanges();
       }
   }
@@ -292,27 +237,6 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
 
   }
 
-
-
-  loadData(pageSize: number, pageIndex: number) {
-   
-
-    // Calculate the start and end index based on the page size and page index
-    const startIndex = pageIndex * pageSize;
-    const endIndex = startIndex + pageSize;
-
-    // Slice the data to display the current page
-    const pageData = this.detailsData.slice(startIndex, endIndex);
-
-    // Update the data source and total items
-    this.dataSource.data = pageData;
-    this.totalRows = this.detailsData.length;
-  }
-
-  onPageChange(event: PageEvent) {
-    const { pageSize, pageIndex } = event;
-    this.loadData(pageSize, pageIndex);
-  }
 
    convertDateToDateTime(dateStr: string): string  {
     if (dateStr.length !== 6) {
@@ -422,24 +346,6 @@ export class PrelevementRetourComponent implements OnInit, AfterViewInit, OnDest
 
   }
 
-  statusCodeToText(code:number):string{
-
-      switch(code){
-          case 0:
-            return "Payé";
-          case 1:
-            return "Debit interdit";
-          case 4:
-            return "Compte fermé";
-          case 5:
-            return "Debit interdit";
-          case 6:
-            return " Rejeté";
-          default:
-            return "-";
-      }
-    
-  }
 
   extractDetails(data: string) {
     try {

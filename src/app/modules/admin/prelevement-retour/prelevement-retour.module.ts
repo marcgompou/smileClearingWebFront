@@ -23,6 +23,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TableDataModule } from '../common/table-data/table-data.module';
 
 
 
@@ -51,6 +52,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     MatAutocompleteModule,
     FuseAlertModule,
+    TableDataModule,
     RouterModule.forChild(prelevementRetourRouting)
 
   ]
