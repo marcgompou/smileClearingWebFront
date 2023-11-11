@@ -155,7 +155,7 @@ export class DetailsPrelevementComponent implements OnInit {
       }catch(error){
         this.montantTotal=0;
       }
-    })
+    })   
 
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];
