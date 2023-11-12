@@ -114,11 +114,7 @@ export class DetailsPrelevementComponent implements OnInit {
   }
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
-    private _formBuilder: UntypedFormBuilder,
-   // private _chequeService: CreerPrelevementService,
     private _validerPrelevementService:ValiderPrelevementService,
-    //private _telechargerPrelevementService:ValiderPrelevementService,
-    private _tableDataService: TableDataService,
     private _fuseMediaWatcherService: FuseMediaWatcherService,
     private _dialog: MatDialog,
     private _activatedRoute: ActivatedRoute,
@@ -126,11 +122,13 @@ export class DetailsPrelevementComponent implements OnInit {
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des prelevement de tableData common
-    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-        this.prelevementData=response;
+    this._validerPrelevementService.prelevementRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("------------------------------------------------------------->") 
+      this.prelevementData=response?.data;
         console.log(response);
 
         this.montantTotal=response?.mtTotal || 0;
+
     })
 
     this._activatedRoute.params.subscribe(params => {

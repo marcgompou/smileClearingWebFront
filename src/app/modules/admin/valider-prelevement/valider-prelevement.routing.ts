@@ -9,9 +9,10 @@ import { DetailsChequeComponent } from '../remise-aller/remise-aller/details-che
 import { DetailsPrelevementComponent } from './valider-prelevement/details-prelevement/details-prelevement.component';
 import { ValiderPrelevementComponent } from './valider-prelevement/valider-prelevement/valider-prelevement.component';
 import { PrelevementValiderComponent } from './valider-prelevement/valider-prelevement.component';
+import { LoadPrelevRemiseByIdResolver } from './valider-prelevement/valider-prelevement.resolver';
 
 const endpoint = "prelevement";
-const endpointDetails = "prelevement";
+const endpointDetails = "prelevement/details";
 
 export const validerPrelevementRoutes: Route[] =
 [
@@ -25,23 +26,18 @@ export const validerPrelevementRoutes: Route[] =
                 component: ValiderPrelevementComponent,
                 resolve: {
                     data: LoadSansPaginationDataResolver,
+
                 },
             },
             {
                 path: 'details/:id',
                 component: DetailsPrelevementComponent,
                 resolve: {
-                    data: LoadSansPaginationDataResolver, //LoadDataResolver
+                    dataDetails: LoadSansPaginationDataResolver, //LoadDataResolver
+                    prelevRemise:LoadPrelevRemiseByIdResolver
                 },
                 data: { breadcrumb: 'Details prélèvement', endpoint: endpointDetails },
-                // children: [
-                //     {
-                //         path: 'details/:id',
-                //         component: DetailsChequeComponent,
-                //         //canDeactivate: [CanDeactivateDetailsSuivi]
 
-                //     }
-                // ]
             }
         ]
     }

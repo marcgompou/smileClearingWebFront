@@ -10,6 +10,8 @@ import { Prelevement } from '../prelevement.type';
 export class ValiderPrelevementService {
   // private _remise: BehaviorSubject<Remise | null> = new BehaviorSubject(null);
   private _prelevements: BehaviorSubject<Prelevement[] | null> = new BehaviorSubject(null);
+  private _prelevementRemise: BehaviorSubject<any | null> = new BehaviorSubject(null);
+
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _prelevementAvalides: BehaviorSubject< Prelevement []| null> = new BehaviorSubject(null);
   
@@ -25,6 +27,9 @@ export class ValiderPrelevementService {
   get prelevement$(): Observable<any[]> {
     return this._prelevements.asObservable();
   }
+  get prelevementRemise$(): Observable<any> {
+    return this._prelevementRemise.asObservable();
+  }
 
   get titulaire$(): Observable<any[]> {
     return this._titulaire.asObservable();
@@ -38,7 +43,9 @@ export class ValiderPrelevementService {
     this._prelevements.next(newArray);
   }
 
- 
+  public setPrelevementRemise$(newArray: Prelevement[]): void {
+    this._prelevementRemise.next(newArray);
+  }
 
 
   getPrelevementAvalider(): Observable<any>
@@ -52,6 +59,17 @@ export class ValiderPrelevementService {
       );
   }
 
+
+  getPrelevementRemiseById(id): Observable<any>
+  {
+      return this._httpClient.get<any>(`${environment.apiUrl}/prelevement/${id}`).pipe(
+          tap((response) => {
+            console.log('test======================================');
+            console.log(response);
+              this._prelevementRemise.next(response);
+          })
+      );
+  }
 
 
    //Table data service

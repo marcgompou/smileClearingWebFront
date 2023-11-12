@@ -26,7 +26,12 @@
             </table>
             <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" (pageSize)="pageSize"
                 [pageSizeOptions]="pageSizeOptions" showFirstLastButtons  (page)="pageChanged($event)" aria-label="Select page">
+            
+                <button>
+                    <mat-icon [svgIcon]="'heroicons_outline:refresh'">red</mat-icon>            
+                </button>
             </mat-paginator>
+            
         </div>
     </div>
 </ng-container>

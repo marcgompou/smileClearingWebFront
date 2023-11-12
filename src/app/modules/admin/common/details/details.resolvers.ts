@@ -6,7 +6,6 @@ import {
   Router
 } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
-import { TableDataService } from '../table-data/table-data.services';
 import { DetailsService } from './details.service';
 
 
