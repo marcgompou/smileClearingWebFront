@@ -91,13 +91,11 @@ export class ImprimerRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 
   public displayedColumns: string[] = ['reference', 'nbremise', 'nbcheque', 'montantTotal', 'dateExport'];
 
-  sent = [];
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   selectedRemise: any | null = null;
   selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  // remises$: Observable<Remise[]>;
   scannerIsConnected = false;
 
 

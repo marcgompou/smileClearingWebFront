@@ -1,13 +1,13 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {  ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl,  FormGroup } from '@angular/forms';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import {  PageEvent } from '@angular/material/paginator';
 import { Subject} from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { PrelevementAllerService } from '../prelevement-aller.service';
-import { Prelevement } from '../prelevement-aller.type';
+import { TableDataService } from '../../common/table-data/table-data.services';
 
 
 
@@ -23,14 +23,9 @@ import { Prelevement } from '../prelevement-aller.type';
 
 
 
-export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestroy {
-  // montantTotal:number=0;
-  // nombreCheque:number=0;
-  // remiseIsInCorrect:boolean=true;
-  nomFichierChargerNormal: string | undefined;
+export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
 
-  
-  
+  nomFichierChargerNormal: string | undefined;
   /**Prelevement data */
   headerData:any= {};
   totalData:any={}
@@ -57,7 +52,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   prelevementForm: FormGroup
   nomFichierCharger:string='';
-   dataStructure = [
+  dataStructure = [
     { key: 'codeOperation', label: 'Code Operation' },
     { key: 'codeEnreg', label: 'Code Enreg' },
     { key: 'numLigne', label: 'Num. Ligne' },
@@ -68,12 +63,12 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     { key: 'nomDebit', label: 'Nom Débit' },
     { key: 'nomBanque', label: 'Nom Banque' },
     { key: 'libelleOperat', label: 'Libellé Opérat' },
-    { key: 'montant', label: 'Montant' }
+    { key: 'montant', label: 'Montant','type':'montant' }
   ];
 
   
   displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant'];
-  totalRows: number;
+  totalRows: number=0;
   nombreprelevement: number;
   
   
@@ -82,14 +77,10 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _prelevementAllerService: PrelevementAllerService,
-   // private _chequeService: CreerRemiseService,
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router) {
-  
-
+    private _tableDataService: TableDataService
+    ) {
       this.prelevementForm = this._formBuilder.group({
-        fichierPrelevement: [''], // This is the FormControl
-        // Add other form controls here
+        fichierPrelevement: [''], // 
       });
   }
 
@@ -100,9 +91,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
 
   //CYCLE DE VIE
   ngOnInit() {
-    
-  
-
+    this._tableDataService.setDatas$([]);
   }
 
 
@@ -113,73 +102,33 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   }
 
 
-
-
-
-  onBackdropClicked(): void {
-    // Go back to the list
-    this._router.navigate(['./'], { relativeTo: this._activatedRoute });
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
-  }
-
-
-
-
-  /**
-   * After view init
-   */
-  ngAfterViewInit(): void {
-
-    this.dataSource= new MatTableDataSource<any>([]);
-    this._changeDetectorRef.detectChanges();
-  }
-
-  selectedRow(row) {
-    
-  }
-
-
   onSubmit() { 
     this.showAlert = false;
-
+    this.isLoading = true;
     let data={
       prelevementEntete: this.headerData,
       prelevementDetails: this.detailsData,
       prelevementTotal: this.totalData
-  }
+    }
 
   
    this._prelevementAllerService.createPrelevement(data).subscribe({
-    next: (data) => {
-     
-      // Réinitialisation des données du formulaire et de la table
-      this.dataSource = new MatTableDataSource<any>([]);
-      this.headerData.nom = "";
-      this.totalData.montant = "0";
-      this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
-      this.showAlert = true;
-      this._changeDetectorRef.detectChanges();
-      this.clearFile();
-      
-      //this.closeAlert();
-      // Affichage d'un message de succès
-      // Vous pouvez ajouter ici un message de succès si nécessaire
-    },
-    error: (error) => {
-      
-      // Affichage d'un message d'erreur
-      console.error('Error : ', JSON.stringify(error));
-      this.alert = { type: 'error', message: error.error.message ?? error.message };
-      this.showAlert = true;
-      
-      
-      this._changeDetectorRef.detectChanges();
-    }
-  });
-   
-
+      next: (data) => {
+        this.clearFile();
+        this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
+        this.showAlert = true;
+      },
+      error: (error) => {
+        // Affichage d'un message d'erreur
+        console.error('Error : ', JSON.stringify(error));
+        this.alert = { type: 'error', message: error.error.message ?? error.message };
+        this.showAlert = true;
+      },
+      complete: () => {
+        this.isLoading = false;
+        this._changeDetectorRef.detectChanges();
+      }
+    });
   }
   
 
@@ -192,114 +141,73 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
     this._unsubscribeAll.complete();
   }
 
-  trackByFn(index: number, item: any): any {
-    return item.id || index;
-  }
 
   clearFile(){
-    this.dataSource.data=[];
+    this._tableDataService.setDatas$([]);
     this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.headerData={}
     this.totalData={}
     this.totalRows = 0;
     
     if (this.fileInput) {
-      this.fileInput.nativeElement.value = null; // Clear the input value
-    //  closeAlert();
+      this.fileInput.nativeElement.value = null;
     }
-    
     
     this._changeDetectorRef.detectChanges();
   }
 
   onFileSelected(event: any) {
+    try{
+      const selectedFile = event.target.files[0];
+      if (selectedFile) {
+        this.detailsData=[];
+        const fileNameWithExtension = selectedFile.name;
+        const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
+        this.nomFichierCharger = fileNameWithoutExtension;
     
-    const selectedFile = event.target.files[0];
-   
-    
-
-
-   // console.log('Nom du fichier sélectionné :', this.nomFichierCharger);
-
-    if (selectedFile) {
-      this.detailsData=[];
-      const fileNameWithExtension = selectedFile.name;
-      const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
-      this.nomFichierCharger = fileNameWithoutExtension;
-  
-      this.prelevementForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
-      // Now, you can read the file content or perform other operations with it.
-      const fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const fileContent = e.target.result as string;
-        const lines = fileContent.split('\n'); // Split the content into lines
-        const totalLines = lines.length;
-        for (let i = 0; i < totalLines; i++) {
-          const line = lines[i];
-          // CALL FUNCTION TO RETRIEVE THE HEADER
-          if (i === 0) {
-            this.extractHeaderValues(line);
+        this.prelevementForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
+        // Now, you can read the file content or perform other operations with it.
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+          const fileContent = e.target.result as string;
+          const lines = fileContent.split('\n'); // Split the content into lines
+          const totalLines = lines.length;
+          for (let i = 0; i < totalLines; i++) {
+            const line = lines[i];
+            // CALL FUNCTION TO RETRIEVE THE HEADER
+            if (i === 0) {
+              this.extractHeaderValues(line);
+            }
+            //Details
+            if(i>0 && i<totalLines-2){
+              this.detailsData.push(this.extractDetails(line));
+            }
+            // CALL FUNCTION TO RETRIEVE THE LAST LINE 
+            if (i === totalLines-2) {
+              this.extractTotalData(line);
+            }
           }
-          //Details
-          if(i>0 && i<totalLines-2){
-            this.detailsData.push(this.extractDetails(line));
+          if(this.detailsData.length>0){
+            this._tableDataService.setDatas$( this.detailsData)
+            this.totalRows=this.detailsData.length;
           }
-          // CALL FUNCTION TO RETRIEVE THE LAST LINE 
-          if (i === totalLines-2) {
-            this.extractTotalData(line);
-          }
-        }
-        if(this.detailsData.length>0){
-          
-          const startIndex = 0;
-          const endIndex = 15;
-
-          // Slice the data to display the current page
-          this.dataSource.data = this.detailsData.slice(startIndex, endIndex);
-
-          // Update the data source and total items
-         
-         
-          this.totalRows=this.detailsData.length;
-          console.log(this.detailsData);
-        }
-        this._changeDetectorRef.markForCheck();
-        //console.log('File Content:', fileContent);
-      };
-      fileReader.readAsText(selectedFile, 'ISO-8859-1');
-    } else {
-      console.error("No file selected.");
+          this._changeDetectorRef.markForCheck();
+        };
+        fileReader.readAsText(selectedFile, 'ISO-8859-1');
+      } else {
+        console.error("No file selected.");
+      }
+    }catch(error){
+      console.log(error)
+      this.alert = { type: 'error', message: error.error.message ?? error.message };
+      this.showAlert = true;
+    }finally{
+      this._tableDataService.setDatas$([])
+      this.isLoading = false;
+      this._changeDetectorRef.detectChanges();
     }
   }
 
-  getColumnHeaderText(column: string): string {
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-
-  }
-
-
-
-  loadData(pageSize: number, pageIndex: number) {
-   
-
-    // Calculate the start and end index based on the page size and page index
-    const startIndex = pageIndex * pageSize;
-    const endIndex = startIndex + pageSize;
-
-    // Slice the data to display the current page
-    const pageData = this.detailsData.slice(startIndex, endIndex);
-
-    // Update the data source and total items
-    this.dataSource.data = pageData;
-    this.totalRows = this.detailsData.length;
-  }
-
-  onPageChange(event: PageEvent) {
-    const { pageSize, pageIndex } = event;
-    this.loadData(pageSize, pageIndex);
-  }
 
    convertDateToDateTime(dateStr: string): string  {
     if (dateStr.length !== 6) {
@@ -314,7 +222,7 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
       const year = parseInt(dateStr.substring(4, 6)) + 2000;
   
       if (isNaN(year) || isNaN(month) || isNaN(day)) {
-       return "";
+        return "";
       }
   
       const dateEmission = new Date(year, month, day);
@@ -326,11 +234,11 @@ export class PrelevementAllerComponent implements OnInit, AfterViewInit, OnDestr
   }
  // const dateEmission = convertDateToDateTime(dateStr);
   extractHeaderValues(headerLine: string) {
-console.log("headerLine",headerLine);
+    console.log("headerLine",headerLine);
     const compteCrediteRaw = headerLine.substring(22, 33).trim();
     const compteCredite = compteCrediteRaw[0] === '0' ? compteCrediteRaw.substring(1) : compteCrediteRaw;
     const dateOperStartIndex = compteCrediteRaw[0] === '0' ? 64 : 63;
-     this.headerData = {
+    this.headerData = {
       nomFichier : this.nomFichierCharger ,
       nomFichierGenerer : "nomParDefaut",
       codeOperation: headerLine.substring(0, 2).trim(),

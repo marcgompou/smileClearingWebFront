@@ -115,26 +115,22 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.isLoading = true;
         // Réinitialisation des données du formulaire et de la table
-        this._tableDataService.setDatas$( [])
-        this.headerData.nom = "";
-        this.totalData.montant = "0";
+        this.clearFile();
         this._changeDetectorRef.detectChanges();
         this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
         this.showAlert = true;
         this.isLoading = false;
         this.detailsData=[];
-        this._changeDetectorRef.detectChanges();
-
-        // Affichage d'un message de succès
-        // Vous pouvez ajouter ici un message de succès si nécessaire
       },
       error: (error) => {
         this.detailsData=[]
         // Affichage d'un message d'erreur
         console.error('Error : ', JSON.stringify(error));
         this.alert = { type: 'error', message: error.error.message ?? error.message };
-        this.showAlert = true;
-        this._changeDetectorRef.detectChanges();
+        this.showAlert = true;        
+        this.isLoading = false;
+      },
+      complete() {
         this.isLoading = false;
         this._changeDetectorRef.detectChanges();
       }
@@ -157,7 +153,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
   }
 
   clearFile(){
-    this._tableDataService.setDatas$([])
+    this._tableDataService.setDatas$([]);
     this.prelevementForm.get('fichierPrelevement')?.setValue("");
     this.headerData={}
     this.totalData={}
@@ -175,59 +171,60 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
     try{
       this.isLoading = true;
       this.detailsData=[];
-          const selectedFile = event.target.files[0];
-          console.log('Nom du fichier sélectionné :', this.nomFichierCharger);
+      const selectedFile = event.target.files[0];
+      console.log('Nom du fichier sélectionné :', this.nomFichierCharger);
 
-          if (selectedFile) {
-            const selectedFile = event.target.files[0];
-        
-            const fileNameWithExtension = selectedFile.name;
-            const fileNameWithoutExtension = fileNameWithExtension.split('.').slice(0, -1).join('.');
-            this.nomFichierCharger = fileNameWithoutExtension;
-            this.prelevementForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
-          
-            // Now, you can read the file content or perform other operations with it.
-            const fileReader = new FileReader();
-            fileReader.onload = (e) => {
-              const fileContent = e.target.result as string;
-              const lines = fileContent.split('\n'); // Split the content into lines
-              const totalLines = lines.length;
-              for (let i = 0; i < totalLines; i++) {
-                const line = lines[i];
-                // CALL FUNCTION TO RETRIEVE THE HEADER
-                if (i === 0) {
-                  this.extractHeaderValues(line);
-                }
-                //Details
-                if(i>0 && i<totalLines-2){
-                    this.detailsData.push(this.extractDetails(line));
-                }
-                // CALL FUNCTION TO RETRIEVE THE LAST LINE 
-                if (i === totalLines-2) {
-                  this.extractTotalData(line);
-                }
-              }
-              if(this.detailsData.length>0){
-                
-                //Envoie des données dans table data
-                this._tableDataService.setDatas$( this.detailsData)
-                this.totalRows=this.detailsData.length;
-              }
-              this._changeDetectorRef.markForCheck();
-              //console.log('File Content:', fileContent);
-            };
-            fileReader.readAsText(selectedFile, 'ISO-8859-1');
-            
-          } else {
-            console.error("No file selected.");
+      if (selectedFile) {
+        const selectedFile = event.target.files[0];
+    
+        const fileNameWithExtension = selectedFile.name;
+        const fileNameWithoutExtension = fileNameWithExtension.split('.').slice(0, -1).join('.');
+        this.nomFichierCharger = fileNameWithoutExtension;
+        this.prelevementForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
+      
+        // Now, you can read the file content or perform other operations with it.
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+          const fileContent = e.target.result as string;
+          const lines = fileContent.split('\n'); // Split the content into lines
+          const totalLines = lines.length;
+          for (let i = 0; i < totalLines; i++) {
+            const line = lines[i];
+            // CALL FUNCTION TO RETRIEVE THE HEADER
+            if (i === 0) {
+              this.extractHeaderValues(line);
+            }
+            //Details
+            if(i>0 && i<totalLines-2){
+                this.detailsData.push(this.extractDetails(line));
+            }
+            // CALL FUNCTION TO RETRIEVE THE LAST LINE 
+            if (i === totalLines-2) {
+              this.extractTotalData(line);
+            }
           }
-          this._changeDetectorRef.detectChanges();
-          this.isLoading = false;
-      }catch(e){
-        console.log(e)
-        this._tableDataService.setDatas$( [])
-        this._changeDetectorRef.detectChanges();
+          if(this.detailsData.length>0){
+            
+            //Envoie des données dans table data
+            this._tableDataService.setDatas$( this.detailsData)
+            this.totalRows=this.detailsData.length;
+          }
+          this._changeDetectorRef.markForCheck();
+          //console.log('File Content:', fileContent);
+        };
+        fileReader.readAsText(selectedFile, 'ISO-8859-1');
+        
+      } else {
+        console.error("No file selected.");
       }
+      
+    }catch(e){
+      console.log(e)
+    }finally{
+      this._tableDataService.setDatas$([])
+      this.isLoading = false;
+      this._changeDetectorRef.detectChanges();
+    }
   }
 
   getColumnHeaderText(column: string): string {

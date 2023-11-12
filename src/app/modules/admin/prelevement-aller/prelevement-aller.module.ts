@@ -22,6 +22,7 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FuseAlertModule } from '@fuse/components/alert';
+import { TableDataModule } from '../common/table-data/table-data.module';
 
 
 
@@ -33,7 +34,6 @@ import { FuseAlertModule } from '@fuse/components/alert';
     CommonModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatDatepickerModule,
     MatDividerModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -41,7 +41,6 @@ import { FuseAlertModule } from '@fuse/components/alert';
     MatInputModule,
     MatMenuModule,
     MatPaginatorModule,
-    MatMomentDateModule,
     MatProgressBarModule,
     MatRadioModule,
     MatTableModule,
@@ -50,6 +49,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
     SharedModule,
     MatAutocompleteModule,
     FuseAlertModule,
+    TableDataModule,
     RouterModule.forChild(prelevementAller)
 
   ]
