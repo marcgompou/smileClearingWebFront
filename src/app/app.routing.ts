@@ -129,6 +129,14 @@ export const appRoutes: Route[] = [
                 data: { breadcrumb: 'Faqs' },
                 loadChildren: () => import('app/modules/admin/help-center/help-center.module').then(m => m.HelpCenterModule)
             },
+
+
+            {
+                path: 'dashboard',
+                data: { breadcrumb: 'Dashboard' },
+                loadChildren: () => import('app/modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule)
+            },
+
             {
                 path: 'help-centerguides',
                 data: { breadcrumb: 'Guides Utilisateurs' },

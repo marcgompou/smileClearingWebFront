@@ -38,21 +38,17 @@
 
                         
 
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-72"
-                        appearance="outline">
-                        <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate placeholder="Date de début" formControlName="dateDebut" matInput  >
-                            <input matEndDate placeholder="Date de fin" formControlName="dateFin" matInput >
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle class="max-w-xs fuse-mat-dense " matSuffix
-                            matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker touchUi #picker></mat-date-range-picker>
-                    </mat-form-field>
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mb-8" appearance="outline">
+                            <mat-date-range-input [rangePicker]="picker">
+                              <input matStartDate placeholder="Date de début" formControlName="dateDebut">
+                              <input matEndDate placeholder="Date de fin" formControlName="dateFin">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matIconSuffix matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
 
 
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                         >
-                         
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit">
                             <mat-icon [svgIcon]="'mat_solid:search'"></mat-icon>
                             <span class="ml-2">Rechercher</span>
                         </button>
@@ -73,17 +69,13 @@
                                     <!-- Nombre de chèque : {{ nombreCheque }} -->
                                 </span>
                             </ng-container>
-                            <ng-container>
-                                <span class="inline-block align-middle">
-
-                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
-
-                                </span>
-                            </ng-container>
                         </div>
                         
-                    <app-table-data [endpoint]="'exportation'" [title]="'Liste des exportations'"
-                    [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
+                    <app-table-data 
+                    [endpoint]="'exportation/imprimer'" 
+                    [title]="'Liste des exportations'"
+                    [displayedColumns]="displayedColumns" 
+                    [dataStructure]="dataStructure" [idRow]="'id'"
                     [canClick]="true">
                     </app-table-data> 
 

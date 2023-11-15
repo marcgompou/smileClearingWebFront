@@ -31,7 +31,22 @@ export class NavigationService {
   ];
 
   defaultNavigation: FuseNavigationItem[] = [
-    //BLOCK REMISE
+    {
+      id: "home",
+      title: "Accueil",
+      subtitle: "",
+      type: "group",
+      icon: "heroicons_outline:home",
+      children: [
+        {
+          id: "dashboard",
+          title: "Accueil",
+          type: "basic",
+          link: "/home",
+          icon: "heroicons_outline:home"
+        },
+      ],
+    },
 
     {
       id: "smilecheck",
@@ -39,7 +54,6 @@ export class NavigationService {
       subtitle: "",
       type: "group",
       icon: "heroicons_outline:chart-pie",
-      //permission: SecService.permissions.ROLE_VALIDATION,
       children: [
         {
           id: "dashboard",
@@ -51,6 +65,7 @@ export class NavigationService {
         },
       ],
     },
+
     {
       id: "smilecheck",
       title: "REMISE ALLER",
@@ -460,8 +475,16 @@ export class NavigationService {
     authorizedNavigation: FuseNavigationItem[]
   ) {
     for (const item of navigation) {
+
       if (
-        item.id == "home" ||
+        item.id == "home") {
+        authorizedNavigation.push(item);
+        continue;
+      }
+
+
+      if (
+        
         (item.type === "basic" &&
           item.permission &&
           roles.includes(item.permission))
