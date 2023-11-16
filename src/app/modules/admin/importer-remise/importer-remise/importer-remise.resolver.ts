@@ -29,7 +29,8 @@ export class LoadDataEntrepriseResolver implements Resolve<boolean> {
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         return forkJoin({
           superExportateur: this._entreprises.getSuperExportateur(),
-          entreprises: this._entreprises.getEntreprise()
+          entreprises: this._entreprises.getEntreprise(),
+          
         }).pipe(
           catchError((error) => {
             console.error('Erreur :', error);

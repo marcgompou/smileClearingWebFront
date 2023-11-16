@@ -231,7 +231,7 @@ export class DetailsImprimerComponent implements OnInit {
               {
                 alignment: "center",
                 bold: true,
-                text: "Liste des cheques remise",
+                text: "LISTE DES CHEQUES EXPORTES",
                 margin: [0, 35, 0, 30],
               },
               {

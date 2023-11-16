@@ -43,7 +43,7 @@ export class NavigationService {
           title: "Accueil",
           type: "basic",
           link: "/home",
-          icon: "heroicons_outline:home"
+          icon: "heroicons_outline:home",
         },
       ],
     },
@@ -59,7 +59,7 @@ export class NavigationService {
           id: "dashboard",
           title: "dashboard",
           type: "basic",
-          link: "/home",
+          link: "/dashboard",
           icon: "heroicons_outline:chart-pie",
           permission: SecService.permissions.ROLE_VISUALISATION,
         },
@@ -75,14 +75,14 @@ export class NavigationService {
       children: [
         {
           id: "creationremise",
-          title: "Création Remise",
+          title: "Créer Remise",
           type: "collapsable",
           icon: "heroicons_outline:pencil-alt",
           permission: SecService.permissions.ROLE_CREATION,
           children: [
             {
               id: "creerRemiseCheque",
-              title: "Creer remise chèque",
+              title: "Création remise chèque",
               type: "basic",
               icon: "heroicons_outline:pencil",
               link: "/remise",
@@ -100,7 +100,7 @@ export class NavigationService {
           children: [
             {
               id: "validerRemise",
-              title: "Validation Remise",
+              title: "Validation/Exportation",
               type: "basic",
               icon: "heroicons_outline:check-circle",
               link: "/validerRemise",
@@ -108,7 +108,7 @@ export class NavigationService {
             },
             {
               id: "imprimerRemise",
-              title: "Impression Remise",
+              title: "Impression Remises Exportées",
               type: "basic",
               icon: "heroicons_solid:printer",
               link: "/imprimerRemise",
@@ -130,7 +130,7 @@ export class NavigationService {
       children: [
         {
           id: "pages",
-          title: "Prélèvement",
+          title: "Créer Prélèvement",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
           permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
@@ -163,7 +163,7 @@ export class NavigationService {
           children: [
             {
               id: "validerPrelevement",
-              title: "Valider Prélèvement",
+              title: "Validation Prélèvement",
               type: "basic",
               icon: "heroicons_outline:check-circle",
               link: "/validerPrelevement",

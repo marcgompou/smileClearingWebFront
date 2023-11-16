@@ -331,9 +331,19 @@ this.idEntreprise = event.value?event.value:"0";
         console.log(response);
         this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
         this._tableDataService.getDatasByPath().subscribe();
+        this._superExportateurService.getSuperExportateur().subscribe();
         this._changeDetectorRef.markForCheck();
 
-    } 
+    } ,
+     error: (error) => {
+        console.error('Error : ', JSON.stringify(error));
+        // Set the alert
+        this.alert = { type: 'error', message: error.error.message ?? error.error };
+        // Show the alert
+        this.showAlert = true;
+        this._changeDetectorRef.markForCheck();
+      }
+
   })
 
 

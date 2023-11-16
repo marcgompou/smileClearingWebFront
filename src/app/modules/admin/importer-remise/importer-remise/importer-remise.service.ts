@@ -72,6 +72,7 @@ export class ImporterRemiseService {
         console.log('test==========exportplus============================');
         console.log(response);
         this._superExportateurs.next(response);
+        
       })
     );
   }

@@ -27,7 +27,7 @@ export class ListComponent implements OnInit,OnDestroy {
     selectedRowIndex: any;
     _dataSource: MatTableDataSource<Utilisateurs>;
     private _searchTerms = new Subject<string>();
-    _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'nomEntreprise','statut'];
+    _displayedColumns: string[] = ['dateCreation', 'email', 'prenom','nom', 'fonction', 'nomEntreprise','statut','emailConfirmed'];
     dataStructure = [
         {
             "key": "dateCreation",
@@ -59,10 +59,19 @@ export class ListComponent implements OnInit,OnDestroy {
             "type":"status",
             "label": "Statut",
             "statusValues":[
-              {value:true,libelle:"Désactivé",color:"#F56565"},
-              {value:false,libelle:"Activé",color:"#68D391"}
+              {value:false,libelle:"Désactivé",color:"#F56565"},
+              {value:true,libelle:"Activé",color:"#68D391"}
           ]
         },
+        {
+          "key": "emailConfirmed",
+          "type":"status",
+          "label": "Confirmation Email",
+          "statusValues":[
+            {value:false,libelle:"Non confirmé",color:"#F56565"},
+            {value:true,libelle:"Confirmé",color:"#68D391"}
+        ]
+      },
         
     ];
 
@@ -272,7 +281,7 @@ export class ListComponent implements OnInit,OnDestroy {
             type: "select",
             disabled:true,
             writeInCreate:false,
-            options: [{ value: true, libelle: "Désactivé" }, { value: false, libelle: "Activé" }],
+            options: [{ value: false, libelle: "Désactivé" }, { value: true, libelle: "Activé" }],
           }
         ];
         component.actionsButtons = [
