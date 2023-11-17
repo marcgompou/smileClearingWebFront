@@ -169,6 +169,17 @@ export class DetailsPrelevementComponent implements OnInit {
       
     });
   }
+  AnnulerPrelevement(){
+    console.log("valider prelevement id", this.prelevementData);
+    this._validerPrelevementService.validerPrelevement(this.prelevementData.id).pipe().subscribe({
+      next:(response)=>{
+          console.log(response);
+          this.goBackToList();
+          this.showAlert = true;
+      }
+      
+    });
+  }
 
   telechargerPrelevement(): void {
     
@@ -180,6 +191,10 @@ export class DetailsPrelevementComponent implements OnInit {
       console.log("statut prel",this.prelevementData.statut);
       link.click();
     });
+  }
+  telechargerRelance(): void {
+    this._validerPrelevementService.telechargerRelance(this.prelevementData.id).pipe().subscribe();
+    
   }
 
 }

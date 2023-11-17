@@ -56,7 +56,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
     { key: 'codeOperation', label: 'Code Operation' },
     { key: 'codeEnreg', label: 'Code Enreg' },
     { key: 'numLigne', label: 'Num. Ligne' },
-    { key: 'dateEcheance', label: 'Date Echeance' },
+    { key: 'dateEcheance', label: 'Date Echeance',type:"date" },
     { key: 'banque', label: 'Banque' },
     { key: 'guichet', label: 'Guichet' },
     { key: 'compteDebite', label: 'Compte Débité' },
@@ -97,9 +97,9 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
 
   
 
-  closeAlert() {
-    this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
-  }
+  // closeAlert() {
+  //   this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
+  // }
 
 
   onSubmit() { 
@@ -117,14 +117,14 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
         this.clearFile();
         this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
         this.showAlert = true;
+        this._changeDetectorRef.detectChanges();
+
       },
       error: (error) => {
         // Affichage d'un message d'erreur
         console.error('Error : ', JSON.stringify(error));
         this.alert = { type: 'error', message: error.error.message ?? error.message };
         this.showAlert = true;
-      },
-      complete: () => {
         this.isLoading = false;
         this._changeDetectorRef.detectChanges();
       }

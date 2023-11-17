@@ -113,15 +113,6 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
 
-    // this._tableDataService.datas$.subscribe((res: any) => {
-    //   console.log("res-----------", res.data.length);
-    //   this.dataSource = new MatTableDataSource(res.data);
-
-    // })
-    //getCompteByEntreprise();
-   // this.loadData();
-
-
     // Subscribe to search input field value changes
     this.searchInputControl.valueChanges
       .pipe(
@@ -178,36 +169,6 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   }
 
 
-  // loadData() {
-  //   this._prelevementService.PrelevementAvalides$.pipe(takeUntil(this._unsubscribeAll)
-  //   ).subscribe({
-  //     next: (response: any) => {
-  //       console.log("Response compteEntreprises ===>", response);
-  //       if (response == null) { response = []; }
-
-  //       this.listeCompteEntreprise = response.data;
-
-  //       this._changeDetectorRef.markForCheck();
-  //     },
-  //     error: (error) => {
-  //       //not show historique
-  //       //this.showData = false;
-  //       console.error('Error : ', JSON.stringify(error));
-  //       // Set the alert
-  //       this.alert = { type: 'error', message: error.error.message ?? error.error };
-  //       // Show the alert
-  //       this.showAlert = true;
-
-  //       this._changeDetectorRef.markForCheck();
-  //     }
-  //   });
-
-  // }
-
-
-  /**
-     * After view init
-     */
   
 
   //recherche les prelevement selon le statut
@@ -232,18 +193,6 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   }
 
 
-  // closeDetails(): void {
-  //   this.selectedRemise = null;
-  // }
 
-  // toggleDetails(numChq: string): void {
-  //   // If the product is already selected...
-  //   if (this.selectedRemise && this.selectedRemise.numChq === numChq) {
-  //     // Close the details
-  //     this.closeDetails();
-  //     return;
-  //   }
-
-  // }
 
 }

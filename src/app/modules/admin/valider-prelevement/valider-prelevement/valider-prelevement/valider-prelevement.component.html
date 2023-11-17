@@ -40,7 +40,6 @@
                                 class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
                                 Validation Prelevement</div>
                         </ng-container>
-              
                     </div>
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
@@ -50,9 +49,9 @@
                             <!-- <mat-label>Statut</mat-label> -->
                             <mat-select formControlName="statut" matInput id="statut" required
                                 placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
-                                <mat-option value="1"  >A Valider</mat-option>
-                                <mat-option value="3" >Exporté</mat-option>
-                                <mat-option value="16">Prelevement Clôturé</mat-option>
+                                <mat-option value="1">A Valider</mat-option>
+                                <mat-option value="3">Exporté</mat-option>
+                                <mat-option value="16">Clôturé</mat-option>
                             </mat-select> 
                         </mat-form-field>
                        
@@ -66,18 +65,9 @@
                     <!-- remiseCheques list -->
                     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
                         <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
-                           
                             <ng-container>
                                 <span class="inline-block align-middle">
-
-                                    <!-- Nombre de chèque : {{ nombreCheque }} -->
-                                </span>
-                            </ng-container>
-                            <ng-container>
-                                <span class="inline-block align-middle">
-
                                     Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
-
                                 </span>
                             </ng-container>
                         </div>
@@ -85,56 +75,12 @@
 
 
 
-                        <!-- TABLEAU DES CHEQUES-->
+                        <!-- TABLEAU -->
                         
 
-                        <ng-template #rowDetailsTemplate let-cheque>
-                            <div class="shadow-lg overflow-hidden">
-                                <div class="flex border-b">
-                                    <!-- Selected cheque form -->
-                                    <form class="flex flex-col w-full" [formGroup]="selectedChequeForm">
-
-                                        <div class="flex flex-col sm:flex-row p-8">
-
-                                        </div>
-                                        <div class="flex items-center justify-between w-full border-t px-8 py-4">
-                                            <button class="-ml-4" mat-button [color]="'warn'"
-                                                (click)="deleteSelectedCheque()">
-                                                Supprimer
-                                            </button>
-                                            <div class="flex items-center">
-                                                <div class="flex items-center mr-4" *ngIf="flashMessage">
-                                                    <ng-container *ngIf="flashMessage === 'success'">
-                                                        <mat-icon class="text-green-500"
-                                                            [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                                                        <span class="ml-2">cheque updated</span>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="flashMessage === 'error'">
-                                                        <mat-icon class="text-red-500"
-                                                            [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                                                        <span class="ml-2">An error occurred, try again!</span>
-                                                    </ng-container>
-                                                </div>
-                                                <button mat-flat-button [color]="'primary'"
-                                                    (click)="updateSelectedCheque()">
-                                                    Modifier
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </ng-template>
                         <app-table-data [endpoint]="'prelevement'" [title]="'Liste des prelevements'"
                         [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
                         [canClick]="true">
-
-
-                        <!-- <app-table-data [endpoint]="'remise/entreprise'" [title]="'Liste des Remise'"
-                        [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'reference'"
-                        [canClick]="compteClientForm.get('statut').value !== '3'">
-                    </app-table-data> -->
 
                     </app-table-data>
 

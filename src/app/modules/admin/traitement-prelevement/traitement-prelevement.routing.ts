@@ -4,6 +4,7 @@ import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsPrelevementComponent } from './traitement-prelevement/details-prelevement/details-prelevement.component';
 import { ListeTraitementPrelevementComponent } from './traitement-prelevement/liste-traitement-prelevement/liste-traitement-prelevement.component';
 import { TraitementPrelevementComponent } from './traitement-prelevement/traitement-prelevement.component';
+import { LoadPrelevATraiterByIdResolver } from './traitement-prelevement/traitement-prelevement.resolver';
 
 const endpoint = "prelevement/admin";
 const endpointDetails = "prelevement/admin";
@@ -27,6 +28,7 @@ export const traitementPrelevementRoutes: Route[] =
                 component: DetailsPrelevementComponent,
                 resolve: {
                     data: LoadSansPaginationDataResolver,
+                    prelevement:LoadPrelevATraiterByIdResolver
                 },
                 data: { breadcrumb: 'Détails prelevement ', endpoint: endpointDetails },
                 children: [

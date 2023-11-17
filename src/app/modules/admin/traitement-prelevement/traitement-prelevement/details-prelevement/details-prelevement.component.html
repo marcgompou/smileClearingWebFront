@@ -48,6 +48,13 @@
                                 <span class="ml-2">Générer Fichier</span>
                             </button>
                         </ng-container>
+
+                        <ng-container *ngIf="prelevementRemiseData?.statut==16">
+                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerPrelevement()" >
+                                <mat-icon [svgIcon]="'mat_solid:refresh'" ></mat-icon>
+                                <span class="ml-2">Générer Fichier Relance</span>
+                            </button>
+                        </ng-container>
                     </form>
                 </div>
             </div>
@@ -76,7 +83,7 @@
                             [displayedColumns]="displayedColumns" 
                             [dataStructure]="dataStructure" 
                             [idRow]="'id'"
-                            [canClick]="prelevementData?.statut == 13">
+                            [canClick]="prelevementRemiseData?.statut == 13">
                         </app-table-data>
                     </div>
                 </div>

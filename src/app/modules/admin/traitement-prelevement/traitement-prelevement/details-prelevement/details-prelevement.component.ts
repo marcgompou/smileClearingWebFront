@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
@@ -11,11 +11,15 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { TraitementPrelevementService } from '../traitement-prelevement.service';
 import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-details-prelevement',
   templateUrl: './details-prelevement.component.html',
-  styleUrls: ['./details-prelevement.component.scss']
+  styleUrls: ['./details-prelevement.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: fuseAnimations
 })
 export class DetailsPrelevementComponent implements OnInit {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
@@ -29,15 +33,11 @@ export class DetailsPrelevementComponent implements OnInit {
   id: string = "";
   isLoading = false;
 
-
-  @ViewChild(MatPaginator) private _paginator: MatPaginator;
-  @ViewChild(MatSort) private _sort: MatSort;
-
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
   pageSizeOptions: number[] = [10, 25];
-
+  canRelance: boolean = false;
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -76,6 +76,20 @@ export class DetailsPrelevementComponent implements OnInit {
       "label": "Montant"
 
     },
+    { 
+      key: 'statut', 
+      type:'status',
+      label: 'Etat prelev.', 
+      "statusValues":[
+        { value: 1, libelle: "Enregistré", color: "#2986cc" }, // Green
+        { value: 3, libelle: "Exporté", color: "#16537e" }, // Green
+        { value: 13, libelle: "Payé", color: "#68D391" }, // Green
+        { value: 10, libelle: "Debit. interdit", color: "#FF5733" }, // Orange
+        { value: 40, libelle: "Cpte. fermé", color: "#808080" }, // Gray
+        { value: 50, libelle: "Cpte. inexistant", color: "#FFD700" }, // Yellow
+        { value: 60, libelle: "Rejetée", color: "#F56565" } // Red
+      ]
+    },
     {
       "key": "motif",
       "label": "Motif"
@@ -91,7 +105,7 @@ export class DetailsPrelevementComponent implements OnInit {
 
 
   ];
-  public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient"];
+  public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient","statut"];
   
 
 
@@ -115,11 +129,6 @@ export class DetailsPrelevementComponent implements OnInit {
     this._changeDetectorRef.markForCheck();
   }
 
-  getColumnHeaderText(column: string): string {
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-  }
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
    // private _chequeService: CreerPrelevementService,
@@ -131,54 +140,63 @@ export class DetailsPrelevementComponent implements OnInit {
     private _router: Router) {}
 
   ngOnInit(): void {
-    //Recuperation de la ligne selectionner dans la liste des prelevement de tableData common
-    // this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-    //   console.log("details prelevement response=======>",response)
-    //   this.prelevementData=response;
-    //   try{
-    //     this.montantTotal=this.prelevementData.data?.reduce((a, b) => a + b.montant, 0);
-    //     this.nomFichier=this.prelevementData.data[0]?.nomfichier || '';
-    //   }catch(error){
-    //     this.montantTotal=0;
-    //   }
-    // })
+   
 
-    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+    this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("details prelevementRemiseData response=======>",response)
-      this.prelevementRemiseData=response;
+      let result:any=response;
+      try{
+        let findPrelevToRelance=result.data?.findIndex((el) =>  el.statut==10||el.statut==40);//debit interdit et rejeté
+        this.canRelance=findPrelevToRelance!=-1 && findPrelevToRelance!=null && findPrelevToRelance!=undefined;    
+      }catch(error){
+        console.log(error)
+      }
+    });
+    
+    this._traitementPrelevementService.prelevement$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("----------------prelevement$----------------------------->",response) 
+      this.prelevementRemiseData=response?.data;
       try{
         this.montantTotal=this.prelevementRemiseData?.mtTotal || 0;
         this.nomFichier=this.prelevementRemiseData?.nomfichier || '';
       }catch(error){
+        console.log(error)
         this.montantTotal=0;
       }
-    })   
+      this._changeDetectorRef.detectChanges();
+
+    });
+
+
+
 
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];
-      console.log("id in details", this.id);
     })
 
 
 
 
-  this._fuseMediaWatcherService.onMediaChange$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(({matchingAliases}) => {
-          // Set the drawerMode if the given breakpoint is active
-          if ( matchingAliases.includes('lg') )
-          {
-              this.drawerMode = 'side';
-          }
-          else
-          {
-              this.drawerMode = 'over';
-          }
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
-      }
-  );
+    this._fuseMediaWatcherService.onMediaChange$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(({matchingAliases}) => {
+            // Set the drawerMode if the given breakpoint is active
+            if ( matchingAliases.includes('lg') )
+            {
+                this.drawerMode = 'side';
+            }
+            else
+            {
+                this.drawerMode = 'over';
+            }
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        }
+    );
   }
+
+
+
 
   cloturerPrelevement(){
     console.log("traitement prelevement id", this.prelevementData);
@@ -200,6 +218,16 @@ export class DetailsPrelevementComponent implements OnInit {
   telechargerPrelevementValider(): void {
     
     this._traitementPrelevementService.telechargerPrelevementValider(this.id).pipe().subscribe(blob => {
+      // Create a temporary anchor element and trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download =  this.nomFichier+".rec"; // Set the desired file name
+      link.click();
+    });
+  }
+  telechargerRelance(): void {
+    
+    this._traitementPrelevementService.telechargerRelance(this.id).pipe().subscribe(blob => {
       // Create a temporary anchor element and trigger the download
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -233,7 +261,7 @@ export class DetailsPrelevementComponent implements OnInit {
       },
       {
         libelle: "montant",
-        value: 500000,
+        value: this.montantTotal,
       },
       {
         libelle: "motif",
@@ -264,6 +292,9 @@ export class DetailsPrelevementComponent implements OnInit {
     
     //Initialisation formulaire details
     component.formFields = [
+      {
+
+      },
       {
         key: "statut",
         libelle: "Etat Paiement",

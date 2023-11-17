@@ -57,7 +57,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
   dataStructure = [
 
     { key: 'numLigne', label: 'Num. Ligne' },
-    { key: 'dateEcheance', label: 'Date Echeance' },
+    { key: 'dateEcheance', label: 'Date Echeance',type:"date" },
     { key: 'banque', label: 'Banque' },
     { key: 'guichet', label: 'Guichet' },
     { key: 'compteDebite', label: 'Compte Débité' },
@@ -116,11 +116,11 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         // Réinitialisation des données du formulaire et de la table
         this.clearFile();
-        this._changeDetectorRef.detectChanges();
         this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
         this.showAlert = true;
         this.isLoading = false;
         this.detailsData=[];
+        this._changeDetectorRef.detectChanges();
       },
       error: (error) => {
         this.detailsData=[]
@@ -246,7 +246,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
       const year = parseInt(dateStr.substring(4, 6)) + 2000;
   
       if (isNaN(year) || isNaN(month) || isNaN(day)) {
-       return "";
+        return "";
       }
   
       const dateEmission = new Date(year, month, day);
@@ -276,8 +276,8 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
         
       };
     }
-     catch(e){
-      console.log("extractHeaderValues=eeee==>",e.message);
+    catch(e){
+        console.log("extractHeaderValues=eeee==>",e.message);
         this.headerData= {
           nomFichier : "-" ,
           nomFichierGenerer : "-",
@@ -296,7 +296,6 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
         throw new Error(e);  
       }
       
-  
   }
 
   extractTotalData(data: string) {
@@ -338,7 +337,6 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
       };  
       throw new Error(e);  
     }
-
   }
 
 
@@ -357,9 +355,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
       const libelleOperat = data.substring(74, 104).trim();
       const montant = parseInt(data.substring(104, 116).trim()) || null;
       const statut = parseInt(data.substring(117, 119).trim()) ?? 8;
-  
       console.log("statut=============>", statut);
-  
       // Création de l'objet résultant
       const result = {
         codeOperation,
@@ -376,7 +372,6 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
         zoneVide: "zoneVide",
         statut,
       };
-  
       return result;
     } catch (e) {
       // En cas d'erreur, renvoyer un objet vide avec des valeurs par défaut

@@ -22,7 +22,11 @@ export class TraitementPrelevementService {
 
  
   // Getter for the observable
-  get prelevement$(): Observable<any[]> {
+  get prelevement$(): Observable<any> {
+    return this._prelevement.asObservable();
+  }
+
+  get prelevements$(): Observable<any[]> {
     return this._prelevements.asObservable();
   }
 
@@ -74,10 +78,23 @@ export class TraitementPrelevementService {
   telechargerPrelevementValider(id:string): Observable<Blob> {
     // Make a GET request to the file URL, specifying responseType as 'blob'
     return this._httpClient.get(`${environment.apiUrl}/prelevement/admin/telechargement/${id}`, { responseType: 'blob' });
-}
+  }
+  telechargerRelance(id:string): Observable<Blob> {
+    // Make a GET request to the file URL, specifying responseType as 'blob'
+    return this._httpClient.get(`${environment.apiUrl}/prelevement/admin/telechargementReprise/${id}`, { responseType: 'blob' });
+  }
 
 
- 
+  getPrelevementATraiter(id): Observable<any>
+  {
+      return this._httpClient.get<any>(`${environment.apiUrl}/prelevement/admin/atraiter/${id}`).pipe(
+          tap((response) => {
+            console.log('test======================================');
+            console.log(response);
+              this._prelevement.next(response);
+          })
+      );
+  }
 
 
 

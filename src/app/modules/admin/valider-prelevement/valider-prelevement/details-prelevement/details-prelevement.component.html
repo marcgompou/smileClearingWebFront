@@ -43,6 +43,14 @@
                                 <span class="ml-2">Valider</span>
                             </button>
                         </ng-container>
+                        <ng-container *ngIf="prelevementData?.statut==1" >
+                            <button class="ml-4" mat-flat-button [color]="'warn'" (click)="AnnulerPrelevement()">
+                                <mat-icon [svgIcon]="'mat_solid:delete'" ></mat-icon>
+                                <span class="ml-2">Annuler</span>
+                            </button>
+                        </ng-container>
+
+
                         <ng-container *ngIf="prelevementData?.statut==16">
                             <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerPrelevement()" >
                                 <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
@@ -50,7 +58,7 @@
                             </button>
                         </ng-container>
                         <ng-container *ngIf="prelevementData?.statut==16">
-                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerPrelevement()" >
+                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerRelance()" >
                                 <mat-icon [svgIcon]="'mat_solid:refresh'" ></mat-icon>
                                 <span class="ml-2">Générer Fichier Relance</span>
                             </button>
