@@ -197,10 +197,14 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
             this.currentPage = response?.page || 0;
             this.pageSize = response?.pageSize || 0;
           }else{
+            this.dataSource = new MatTableDataSource([]);
             //Si toutes les données sont chargées une seule fois ?
             console.log("start and end index",this.currentPage +' '+ this.pageSize);
-
-            this.dataSource = new MatTableDataSource(this.data.slice(this.currentPage, this.pageSize));
+            
+            //si le tableau est vide
+            if(data.length){
+              this.dataSource = new MatTableDataSource(this.data.slice(this.currentPage, this.pageSize));           
+            }
             this.totalRows =  data.length;
           }
           

@@ -5,17 +5,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { Prelevement } from '../../prelevement.type';
-//import { DetailsChequeComponent } from '../../prelevement-aller/prelevement-aller/details-cheque/details-cheque.component';
-import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-//import { CreerRemiseService } from '../../prelevement-aller/prelevement-aller/prelevement.service';
 import { TableDataService } from '../../../common/table-data/table-data.services';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { TraitementPrelevementService } from '../traitement-prelevement.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
-//import { DeleteChequeConfirmationComponent } from '../../prelevement-aller/prelevement-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
 
 @Component({
   selector: 'app-details-prelevement',
@@ -96,12 +91,14 @@ export class DetailsPrelevementComponent implements OnInit {
 
 
   ];
-
-
-
   public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient"];
-  public nomFichier: string = "";
+  
 
+
+
+  
+  
+  public nomFichier: string = "-";
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
@@ -189,6 +186,13 @@ export class DetailsPrelevementComponent implements OnInit {
       next:(response)=>{
           console.log(response);
           this.goBackToList();
+      },error:(error)=>{
+          console.error('Error : ', JSON.stringify(error));
+          // Set the alert
+          this.alert = { type: 'error', message: error.error.message??error.error };
+          // Show the alert
+          this.showAlert = true;
+          this._changeDetectorRef.detectChanges();
       }
     });
   }
@@ -257,11 +261,6 @@ export class DetailsPrelevementComponent implements OnInit {
       },
     ];
     
-
-
-    
-    //Endpoint pour supprimer un cheque
-    //component.endpoint="remise/suppression/cheque";
     
     //Initialisation formulaire details
     component.formFields = [

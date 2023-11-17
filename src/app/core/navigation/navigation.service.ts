@@ -300,7 +300,7 @@ export class NavigationService {
               title: "Relance prélèvement",
               type: "basic",
               icon: "heroicons_outline:switch-horizontal",
-              link: "/impressionRemiseExporter",
+              link: "/relancePrelevement",
               permission: SecService.permissions.ROLE_ADMIN,
             },
           ],

@@ -129,10 +129,8 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
         this.alert = { type: 'error', message: error.error.message ?? error.message };
         this.showAlert = true;        
         this.isLoading = false;
-      },
-      complete() {
-        this.isLoading = false;
         this._changeDetectorRef.detectChanges();
+
       }
     });
    

@@ -1,16 +1,14 @@
     <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
     <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
-    [dismissible]="true"
-    [dismissed]="false"
-    [showIcon]="true"
+        [dismissible]="true"
+        [dismissed]="false"
+        [showIcon]="true"
         [@shake]="alert.type === 'error'">
         {{ alert.message }}
-
-     
     </fuse-alert>
 
 
-    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
         <mat-drawer-content class="flex flex-col">
 
             <!-- Header -->
@@ -39,19 +37,24 @@
                             <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
                             <span class="ml-2">Retour</span>
                         </button>
-                       
                         <ng-container *ngIf="prelevementData?.statut==1" >
-                        <button class="ml-4" mat-flat-button [color]="'primary'" (click)="validerPrelevement()">
-                            <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
-                            <span class="ml-2">Valider</span>
-                        </button></ng-container>
-
+                            <button class="ml-4" mat-flat-button [color]="'primary'" (click)="validerPrelevement()">
+                                <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
+                                <span class="ml-2">Valider</span>
+                            </button>
+                        </ng-container>
                         <ng-container *ngIf="prelevementData?.statut==16">
                             <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerPrelevement()" >
                                 <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
                                 <span class="ml-2">Gérérer Fichier Retour</span>
-                            </button></ng-container>
-                      
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="prelevementData?.statut==16">
+                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerPrelevement()" >
+                                <mat-icon [svgIcon]="'mat_solid:refresh'" ></mat-icon>
+                                <span class="ml-2">Générer Fichier Relance</span>
+                            </button>
+                        </ng-container>
                     </form>
                 </div>
             </div>
@@ -61,7 +64,6 @@
                     <!-- remiseCheques list -->
                     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
                         <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
-                           
                             <ng-container>
                                 <span class="inline-block align-middle">
                                     Fichier prélèvement : {{ prelevementData?.nomfichier }}

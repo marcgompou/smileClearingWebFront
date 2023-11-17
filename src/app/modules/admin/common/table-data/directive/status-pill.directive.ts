@@ -26,8 +26,11 @@ export class StatusPillDirective implements OnInit,AfterViewInit {
         if (this.appStatusPill.type === 'status') {
             let index = this.appStatusPill.statusValues.findIndex(item => item.value == this.stateValue);
             if(index>-1){
-                this.renderer.setStyle(this.el.nativeElement, 'background', this.appStatusPill.statusValues[index]?.color??"gray");
+                this.renderer.setStyle(this.el.nativeElement, 'background', this.appStatusPill.statusValues[index]?.color?? '#808080');
                 this.stateLabel=this.appStatusPill.statusValues[index]?.libelle??"par defaut";
+            }else{
+                this.renderer.setStyle(this.el.nativeElement, 'background', '#808080');
+                this.stateLabel="par defaut";
             }
             classes.forEach(className => {
                 this.renderer.addClass(this.el.nativeElement, className);
