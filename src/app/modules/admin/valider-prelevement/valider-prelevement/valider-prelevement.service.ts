@@ -97,12 +97,7 @@ export class ValiderPrelevementService {
     return this._httpClient.get(`${environment.apiUrl}/prelevement/telechargementRetour/${id}`, { responseType: 'blob' });
   }
 
-  // telechargerRelance(id:string): Observable<HttpResponse<Blob>> {
-  //   // Make a GET request to the file URL, specifying responseType as 'blob'
-  //  // return this._httpClient.get(`${environment.apiUrl}/prelevement/telechargementReprise/${id}`, { responseType: 'blob' });
-  //  return this._httpClient.get(`${environment.apiUrl}/prelevement/telechargementReprise/${id}`, { observe: 'response', responseType: 'blob' });
 
-  // }
 
   telechargerRelance(id: string): Observable<void> {
     return this._httpClient.get(`${environment.apiUrl}/prelevement/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })

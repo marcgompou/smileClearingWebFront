@@ -22,7 +22,12 @@
 
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr (click)="selectedRow(row)" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr (click)="selectedRow(row)" mat-row *matRowDef="let row; columns: displayedColumns;"
+                [ngClass]="{'bg-primary-50 dark:bg-hover': selectedRowIndex && selectedRowIndex == row[this.idRow],
+                            'hover:bg-gray-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !==row[this.idRow],'pointer':canClick}">
+                </tr>
+
+
             </table>
             <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" (pageSize)="pageSize"
                 [pageSizeOptions]="pageSizeOptions" showFirstLastButtons  (page)="pageChanged($event)" aria-label="Select page">
