@@ -9,7 +9,7 @@ import { HelpCenterSupportComponent } from './support/support.component';
 
 export const helpCenterRoutes: Route[] = [
     {
-        path     : '',
+        path     : 'accueil',
         component: HelpCenterComponent,
         resolve  : {
             faqs: HelpCenterMostAskedFaqsResolver
