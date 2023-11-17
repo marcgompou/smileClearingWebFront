@@ -50,6 +50,8 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   /*** Peut prendre la valeur '$' si les donnée sont directement accessible depuis la racine ***/
   @Input("dataKey") dataKey = "data"; 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private id:undefined=null;
+  private selectedRowIndex: any=undefined;
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
     message: "",
@@ -62,7 +64,6 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     size: 10,
   };
   /**DataTable */
-  selectedRowIndex: any;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -85,6 +86,12 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataStructure.forEach((element) => {
       this.restructuredData[element.key] = element;
     });
+    this._activatedRoute.params.subscribe(params=>{
+      // this.id = params['id'];
+      // console.log(this.id);
+      // this.selectedRowIndex=this.id??undefined;
+      console.log("id in details",this.id);
+    })
 
     this._changeDetectorRef.markForCheck();
   }
@@ -94,11 +101,16 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
       this._router.navigate(["./details", row[this.idRow]], {
         relativeTo: this._activatedRoute,
       });
+      this.selectedRowIndex=row[this.idRow]
       this._tableDateService.setData$(row);
       this._changeDetectorRef.markForCheck();
     }
   }
 
+  selectedRowChangeColor() {
+    this._changeDetectorRef.markForCheck();
+  }
+  
   /**
    * On destroy
    */

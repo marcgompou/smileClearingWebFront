@@ -6,26 +6,21 @@
                 <div class="pl-6 relative w-full h-40 sm:h-26">
                     <!-- Close button -->
                     <div class="flex items-center justify-between w-full max-w-3xl mx-auto pt-6 ">
-                        <div class="text-3xl font-extrabold tracking-tight leading-none">MODIFICATION - {{formTitle}}</div>
-                        <button
-                            mat-icon-button
-                            [matMenuTriggerFor]="moreMenu">
+                        <div class="text-3xl font-extrabold tracking-tight leading-none">MODIFICATION - {{formTitle}}
+                        </div>
+                        <button mat-icon-button [matMenuTriggerFor]="moreMenu">
                             <mat-icon [color]="'primary'" [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                         </button>
-                        
+
                         <mat-menu #moreMenu="matMenu">
-                            <button *ngFor="let actionButtons of actionsButtons"  
-                                [disabled]="data[actionButtons?.disabledKey]==actionButtons?.disableValue &&  actionButtons.disabledKey!=undefined" 
-                                mat-menu-item  
-                                type="button" [matTooltip]="actionButtons.label" 
+                            <button *ngFor="let actionButtons of actionsButtons"
+                                [disabled]="data[actionButtons?.disabledKey]==actionButtons?.disableValue &&  actionButtons.disabledKey!=undefined"
+                                mat-menu-item type="button" [matTooltip]="actionButtons.label"
                                 (click)="handleButtonClick(actionButtons)">
                                 <mat-icon [svgIcon]="actionButtons.icon"></mat-icon>
                                 <span>{{actionButtons.label}}</span>
                             </button>
-                            <button [disabled]="!this.canDelete" 
-                                mat-menu-item 
-                                type="button" [matTooltip]="'Supprimer'" 
-                                
+                            <button [disabled]="!this.canDelete" mat-menu-item type="button" [matTooltip]="'Supprimer'"
                                 (click)="supprimer()">
                                 <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                                 <span>Supprimer</span>
@@ -39,19 +34,22 @@
                 </div>
                 <!-- alert Fields  class="mt-8 -mb-4"-->
                 <div class="pl-6  pr-6 pt-0 py-0 sm:p-12 sm:pt-0" *ngIf="showAlert">
-                    <fuse-alert  [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
-                    [dismissible]="true"
-                    [dismissed]="false"
-                    [showIcon]="true"
-                        [@shake]="alert.type === 'error'">
+                    <fuse-alert [appearance]="'outline'" [showIcon]="false" [type]="alert.type" [dismissible]="true"
+                        [dismissed]="false" [showIcon]="true" [@shake]="alert.type === 'error'">
                         {{ alert.message }}
                     </fuse-alert>
                 </div>
-                <!--TODO IMPROVE DESIGN-->
-                <div *ngFor="let item of staticDatas">
-                    <p><strong>Libelle:</strong> {{ item.libelle }}</p>
-                    <p><strong>Value:</strong> {{ item.value }}</p>
-                </div>
+                <!--TODO IMPROVE- DESIGN DISPLAY READONLY INFORMATION -->
+                <ng-container *ngFor="let item of staticDatas">
+                    <form class="flex flex-col rounded overflow-hidden">
+                        <div class="pl-6 pr-6 pt-2 py-1 sm:p-12 sm:pt-0">
+                            <mat-form-field [ngClass]="_fieldClass">
+                                <mat-label>{{ item.libelle }}</mat-label>
+                                <input disabled="true" id="{{ fieldConfig.key }}" matInput [value]="item.value"/>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </ng-container>
                 <form class="flex flex-col rounded overflow-hidden" #formNgForm="ngForm" [formGroup]="form"
                     (ngSubmit)="onSubmit()">
                     <div class="pl-6 pr-6 pt-2 py-1 sm:p-12 sm:pt-0">
@@ -86,7 +84,7 @@
                                 <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('regex')">Format
                                     incorrect</mat-error>
                             </mat-form-field>
-                            
+
                             <!--Date-->
                             <mat-form-field [ngClass]="_fieldClass" *ngIf="fieldConfig?.type === 'date'">
                                 <mat-label>{{ fieldConfig.libelle }}</mat-label>
@@ -123,7 +121,8 @@
                             </mat-form-field>
 
                             <!--Select Simple-->
-                            <mat-form-field   [ngClass]="_fieldClass" *ngIf="fieldConfig?.type === 'select' && !fieldConfig?.multiple">
+                            <mat-form-field [ngClass]="_fieldClass"
+                                *ngIf="fieldConfig?.type === 'select' && !fieldConfig?.multiple">
                                 <mat-label [for]="fieldConfig.key">{{ fieldConfig.libelle }}</mat-label>
                                 <mat-select [formControlName]="fieldConfig.key" [id]="fieldConfig.key">
                                     <mat-option *ngFor="let option of fieldConfig.options" [value]="option.value">{{
@@ -135,19 +134,23 @@
                             </mat-form-field>
 
                             <!--Select Multiple -->
-                            <mat-form-field [ngClass]="_fieldClass" *ngIf="fieldConfig?.type === 'select'&&fieldConfig?.multiple">
+                            <mat-form-field [ngClass]="_fieldClass"
+                                *ngIf="fieldConfig?.type === 'select'&&fieldConfig?.multiple">
                                 <mat-label>{{ fieldConfig.libelle }}</mat-label>
 
-                                <mat-select [formControlName]="fieldConfig.key" id="{{ fieldConfig.key }}" multiple="true">
+                                <mat-select [formControlName]="fieldConfig.key" id="{{ fieldConfig.key }}"
+                                    multiple="true">
                                     <mat-select-trigger>
                                         {{form.get(fieldConfig.key).value?.[0] || ''}}
-                                         <span *ngIf="(form.get(fieldConfig.key).value?.length || 0) > 1" >
-                                        (+{{(form.get(fieldConfig.key).value?.length || 0) - 1}} {{form.get(fieldConfig.key).value?.length === 2 ? 'autre' : 'autres'}})
-                                        </span> 
+                                        <span *ngIf="(form.get(fieldConfig.key).value?.length || 0) > 1">
+                                            (+{{(form.get(fieldConfig.key).value?.length || 0) - 1}}
+                                            {{form.get(fieldConfig.key).value?.length === 2 ? 'autre' : 'autres'}})
+                                        </span>
                                     </mat-select-trigger>
-                                    <mat-option *ngFor="let option of fieldConfig.options" [value]="option">{{option}}</mat-option>
+                                    <mat-option *ngFor="let option of fieldConfig.options"
+                                        [value]="option">{{option}}</mat-option>
                                 </mat-select>
-                               
+
 
                                 <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('required')">Ce champ est
                                     obligatoire
@@ -211,21 +214,21 @@
 
                     <div class="pl-7 pr-7">
 
-                        <div class="flex items-center mt-5 -mx-10 sm:-mx-12 py-2 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
-                            
-                            
+                        <div
+                            class="flex items-center mt-5 -mx-10 sm:-mx-12 py-2 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
 
-                            
+
+
+
 
 
                             <!-- Cancel -->
-                            <button class="ml-auto mr-1"  
-                            mat-flat-button
-                            [color]="'accent'" [matTooltip]="'Cancel'" type="button" (click)="annuler()" >
+                            <button class="ml-auto mr-1" mat-flat-button [color]="'accent'" [matTooltip]="'Cancel'"
+                                type="button" (click)="annuler()">
                                 Annuler
                             </button>
                             <!-- Save -->
-                            <button mat-raised-button  [disabled]="form.invalid" color="primary"
+                            <button mat-raised-button [disabled]="form.invalid" color="primary"
                                 type="submit">Enregistrer
                                 <mat-progress-spinner *ngIf="form.invalid" [diameter]="24" [mode]="'indeterminate'">
                                 </mat-progress-spinner>
