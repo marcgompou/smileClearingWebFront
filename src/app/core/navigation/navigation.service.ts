@@ -175,13 +175,13 @@ export class NavigationService {
     },
 
     {
-      id: "smilecheckweb-prelevement",
+      id: "support",
       title: "CENTRE DE SUPPORT",
       subtitle: "",
       type: "group",
       icon: "heroicons_outline:help",
 
-      permission: SecService.permissions.ROLE_VISUALISATION,
+      
       children: [
         {
           id: "smilecheckweb-support",
@@ -189,41 +189,40 @@ export class NavigationService {
           subtitle: "",
           type: "collapsable",
           icon: "heroicons_outline:support",
-          permission: SecService.permissions.ROLE_VISUALISATION,
+          
           children: [
             {
-              id: "help-center",
-              title: "Accueil",
+              id: "centre-aide",
+              title: "Accueil Support",
               type: "basic",
               icon: "heroicons_outline:support",
               link: "/help-center",
-              permission: SecService.permissions.ROLE_VISUALISATION,
+              
             },
 
             {
-              id: "help-centerfaqs",
+              id: "centre-aidefaqs",
               title: "FAQs",
               type: "basic",
               icon: "heroicons_outline:information-circle",
               link: "/help-center/faqs",
-              permission: SecService.permissions.ROLE_VISUALISATION,
+             
             },
-
+            
             {
-              id: "help-centerguides",
+              id: "centre-aideguides",
               title: "Guide",
               type: "basic",
               icon: "heroicons_outline:book-open",
               link: "/help-center/guides",
-              permission: SecService.permissions.ROLE_VISUALISATION,
+              
             },
             {
-              id: "help-centersupport",
+              id: "centre-aidesupport",
               title: "Ouvrir un Ticket",
               type: "basic",
               icon: "heroicons_outline:chat-alt-2",
               link: "/help-center/support",
-              permission: SecService.permissions.ROLE_VISUALISATION,
             },
           ],
         },
@@ -231,7 +230,7 @@ export class NavigationService {
     },
 
     {
-      id: "smilecheckweb-prelevement",
+      id: "smilecheckweb-administration",
       title: "ADMINISTRATION",
       subtitle: "",
       type: "group",
@@ -482,7 +481,37 @@ export class NavigationService {
         continue;
       }
 
+      if (
+        item.id == "support") {
+        authorizedNavigation.push(item);
+        continue;
+      }
+      if ( 
+        item.id == "centre-aide") {
+        authorizedNavigation.push(item);
+        continue;
+      }
+      if (
+        item.id == "smilecheckweb-support") {
+        authorizedNavigation.push(item);
+        continue;
+      }
+      if (
+        item.id == "centre-aidefaqs") {
+        authorizedNavigation.push(item);
+        continue;
+      }
 
+      if (
+        item.id == "centre-aideguides") {
+        authorizedNavigation.push(item);
+        continue;
+      }
+      if (
+        item.id == "centre-aidesupport") {
+        authorizedNavigation.push(item);
+        continue;
+      }
       if (
         
         (item.type === "basic" &&
