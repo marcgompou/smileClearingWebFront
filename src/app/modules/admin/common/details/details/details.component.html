@@ -40,19 +40,23 @@
                     </fuse-alert>
                 </div>
                 <!--TODO IMPROVE- DESIGN DISPLAY READONLY INFORMATION -->
-                <ng-container *ngFor="let item of staticDatas">
-                    <form class="flex flex-col rounded overflow-hidden">
-                        <div class="pl-6 pr-6 pt-2 py-1 sm:p-12 sm:pt-0">
+                <form class="flex flex-col rounded overflow-hidden" #formNgForm="ngForm">
+                    <div class="pl-6 pr-0 ? py-1 sm:p-12 sm:pt-0">
+                        <ng-container *ngFor="let item of staticDatas">
+
                             <mat-form-field [ngClass]="_fieldClass">
                                 <mat-label>{{ item.libelle }}</mat-label>
-                                <input disabled="true" id="{{ fieldConfig.key }}" matInput [value]="item.value"/>
+                                <input type="text" disabled="true" id="{{ item.libelle }}" matInput
+                                    [value]="item.value" />
                             </mat-form-field>
-                        </div>
-                    </form>
-                </ng-container>
+                        </ng-container>
+                    </div>
+                </form>
+
+
                 <form class="flex flex-col rounded overflow-hidden" #formNgForm="ngForm" [formGroup]="form"
                     (ngSubmit)="onSubmit()">
-                    <div class="pl-6 pr-6 pt-2 py-1 sm:p-12 sm:pt-0">
+                    <div class="pl-6 pr-6 ? py-1 sm:p-12 sm:pt-0">
                         <ng-container *ngFor="let fieldConfig of formFields">
                             <!--Textarea-->
                             <mat-form-field [ngClass]="_fieldClass" *ngIf=" fieldConfig.type === 'textarea'">
@@ -216,12 +220,6 @@
 
                         <div
                             class="flex items-center mt-5 -mx-10 sm:-mx-12 py-2 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent">
-
-
-
-
-
-
                             <!-- Cancel -->
                             <button class="ml-auto mr-1" mat-flat-button [color]="'accent'" [matTooltip]="'Cancel'"
                                 type="button" (click)="annuler()">

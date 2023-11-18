@@ -11,7 +11,8 @@
         <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
             [disableClose]="true" #matDrawer>
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
-        </mat-drawer> 
+        </mat-drawer>
+         
         <mat-drawer-content class="flex flex-col">
             <!-- Header -->
             <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
@@ -76,6 +77,7 @@
                             </ng-container>
                         </div>
                         <!-- TABLEAU DES PRELEVEMENTS -->
+                        <div class="relative">
                         <app-table-data 
                             [endpoint]="'prelevement'+id" 
                             [title]="'Liste des Prelevement'"
@@ -85,6 +87,7 @@
                             [idRow]="'id'"
                             [canClick]="prelevementRemiseData?.statut == 13">
                         </app-table-data>
+                    </div>
                     </div>
                 </div>
             </form>
