@@ -74,7 +74,8 @@ export class DetailsComponent implements OnInit,OnChanges {
     }
     this._activatedRoute.params.subscribe(params=>{
       this.id = params['id'];
-      console.log("id in details",this.id);
+  
+      this._detaisService.setId(this.id);
     })
   
   }
@@ -82,6 +83,7 @@ export class DetailsComponent implements OnInit,OnChanges {
   //Close the form and go back
   closeForm(){
     this.matDrawer.close();
+    this._detaisService.setId(null);
     this._router.navigate(['../../'], {relativeTo: this._activatedRoute});
   }
 

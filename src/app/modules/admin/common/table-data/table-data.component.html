@@ -23,8 +23,8 @@
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr (click)="selectedRow(row)" mat-row *matRowDef="let row; columns: displayedColumns;"
-                [ngClass]="{'bg-primary-50 dark:bg-hover': selectedRowIndex && selectedRowIndex == row[this.idRow],
-                            'hover:bg-gray-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !==row[this.idRow],'pointer':canClick}">
+                [ngClass]="{'bg-primary-200 dark:bg-hover': selectedRowIndex && selectedRowIndex == row[this.idRow],
+                            'hover:bg-primary-100 dark:hover:bg-hover': !selectedRowIndex || selectedRowIndex !==row[this.idRow],'pointer':canClick}">
                 </tr>
 
 

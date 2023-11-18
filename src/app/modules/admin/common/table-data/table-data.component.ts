@@ -16,6 +16,7 @@ import { TableDataService } from "./table-data.services";
 import { FuseAlertType } from "@fuse/components/alert";
 import { takeUntil, Subject } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
+import { DetailsService } from "../details/details.service";
 
 interface filterForm {
   label: string;
@@ -32,6 +33,7 @@ interface filterForm {
 export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private _tableDateService: TableDataService,
+    private _detailsService: DetailsService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _router: Router,
     private _activatedRoute: ActivatedRoute
@@ -50,7 +52,6 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   /*** Peut prendre la valeur '$' si les donnée sont directement accessible depuis la racine ***/
   @Input("dataKey") dataKey = "data"; 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  private id:undefined=null;
   private selectedRowIndex: any=undefined;
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
@@ -86,11 +87,12 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataStructure.forEach((element) => {
       this.restructuredData[element.key] = element;
     });
-    this._activatedRoute.params.subscribe(params=>{
-      // this.id = params['id'];
-      // console.log(this.id);
-      // this.selectedRowIndex=this.id??undefined;
-      console.log("id in details",this.id);
+
+    this._detailsService.id$.subscribe((id) => {
+      this.selectedRowIndex=id||undefined;
+
+      console.log("=============_detailsService==========>",this.selectedRowIndex);
+      //this.selectedRowChangeColor(id);
     })
 
     this._changeDetectorRef.markForCheck();
@@ -107,8 +109,8 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  selectedRowChangeColor() {
-    this._changeDetectorRef.markForCheck();
+  selectedRowChangeColor(id):void {
+    this.selectedRowIndex= this.dataSource.data?.find(item => item[this.idRow] === id) ??undefined;
   }
   
   /**

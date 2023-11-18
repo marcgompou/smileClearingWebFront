@@ -15,6 +15,7 @@ export class DetailsService {
   
   private data: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  private id: BehaviorSubject<any> = new BehaviorSubject(null);
 
 
 
@@ -34,7 +35,13 @@ export class DetailsService {
       return this.data.asObservable();
   }
 
+  get id$(): Observable<any> {
+    return this.id.asObservable();
+  }
 
+setId(id){
+  this.id.next(id);
+}
 
 
 
