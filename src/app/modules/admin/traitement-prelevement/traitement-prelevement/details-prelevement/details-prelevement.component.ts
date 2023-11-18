@@ -160,9 +160,9 @@ export class DetailsPrelevementComponent implements OnInit {
       let result:any=response;
       try{
         console.log("details prelevementRemiseData 22222 response=======>",response)
-        this.chequeData=response;
+        this.prelevementData=response;
         this.montantTo=response?.montant || 0;
-        console.log("details prelevementRemiseData 333 response=======>",this.chequeData)
+        console.log("details prelevementRemiseData 333 response=======>",this.prelevementData)
          }catch(error){
         console.log(error)
       }
@@ -261,70 +261,25 @@ export class DetailsPrelevementComponent implements OnInit {
     component.endpoint="prelevement/admin/modificationEtatPaiement";
     component.loadDataOnInit=false;
     component.canDelete=false;
-    component.staticDatas=[
-      {
-        libelle: "codeBanque",
-        value: this.chequeData?.codeBanque,
-      },
-      {
-        libelle: "codeagence",
-        value: this.chequeData.codeagence,
-      },
-      {
-        libelle: "dateEcheance",
-        value: this.chequeData?.dateEcheance,
-      },
-      {
-        libelle: "montant",
-        value: this.chequeData.montant,
-      },
-      {
-        libelle: "motif",
-        value: this.chequeData?.motif,
-      },
-      {
-        libelle: "nomBanque",
-        value: this.chequeData?.nomBanque,
-      },
-      {
-        libelle: "nomClient",
-        value: this.chequeData?.nomClient,
-      },
-      {
-        libelle: "nomfichier",
-        value: this.chequeData?.nomfichier,
-      },
-      {
-        libelle: "numCompte",
-        value: this.chequeData?.numCompte,
-      },
-      {
-        libelle: "statut",
-        value: 3,
-      },
-    ];
-    
+   
     
     //Initialisation formulaire details
     component.formFields = [
-      {
-
-      },
+      
       {
         key: "statut",
         libelle: "Etat Paiement",
         type:"select",
+        
+        
         options:[
+          
           {
-            value:"",
-            libelle: "",
-          },
-          {
-            value: 60,
+            value: "60",
             libelle: "Rejeté",
           },
           {
-            value: 13,
+            value: "13",
             libelle: "Reglé",
           }
 
