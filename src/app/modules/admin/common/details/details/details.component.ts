@@ -151,6 +151,8 @@ export class DetailsComponent implements OnInit,OnChanges {
       }
   }
 
+
+  
   onSubmit(){
     if (this.form.valid){
       //const formData = this.form.getRawValue(); 

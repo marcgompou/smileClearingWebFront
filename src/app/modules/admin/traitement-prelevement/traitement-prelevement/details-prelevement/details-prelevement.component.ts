@@ -113,6 +113,7 @@ export class DetailsPrelevementComponent implements OnInit {
   
   
   public nomFichier: string = "-";
+  montantTo: any;
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
@@ -143,7 +144,7 @@ export class DetailsPrelevementComponent implements OnInit {
    
 
     this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details prelevementRemiseData response=======>",response)
+      console.log("details prelevementRemiseData 1111 response=======>",response)
       let result:any=response;
       try{
         let findPrelevToRelance=result.data?.findIndex((el) =>  el.statut==10||el.statut==40);//debit interdit et rejeté
@@ -152,9 +153,23 @@ export class DetailsPrelevementComponent implements OnInit {
         console.log(error)
       }
     });
+
+
+    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("details prelevementRemiseData 1111 response=======>",response)
+      let result:any=response;
+      try{
+        console.log("details prelevementRemiseData 22222 response=======>",response)
+        this.chequeData=response;
+        this.montantTo=response?.montant || 0;
+        console.log("details prelevementRemiseData 333 response=======>",this.chequeData)
+         }catch(error){
+        console.log(error)
+      }
+    });
     
     this._traitementPrelevementService.prelevement$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("----------------prelevement$----------------------------->",response) 
+      console.log("----------------prelevement$777----------------------------->",response) 
       this.prelevementRemiseData=response?.data;
       try{
         this.montantTotal=this.prelevementRemiseData?.mtTotal || 0;
@@ -241,7 +256,7 @@ export class DetailsPrelevementComponent implements OnInit {
   openDetailComponent(component: DetailsComponent) {
 
     component.matDrawer = this.matDrawer;
-    component.formTitle = "Prélèvement";
+    component.formTitle = "PRELEVEMENT";
     component.constructorPayload = Prelevement.constructorPrelevement;
     component.endpoint="prelevement/admin/modificationEtatPaiement";
     component.loadDataOnInit=false;
@@ -249,39 +264,39 @@ export class DetailsPrelevementComponent implements OnInit {
     component.staticDatas=[
       {
         libelle: "codeBanque",
-        value: "131",
+        value: this.chequeData?.codeBanque,
       },
       {
         libelle: "codeagence",
-        value: "01010",
+        value: this.chequeData.codeagence,
       },
       {
         libelle: "dateEcheance",
-        value: "2022-06-20T00:00:00",
+        value: this.chequeData?.dateEcheance,
       },
       {
         libelle: "montant",
-        value: this.montantTotal,
+        value: this.chequeData.montant,
       },
       {
         libelle: "motif",
-        value: "CI17C02360 059 08022633 CI131",
+        value: this.chequeData?.motif,
       },
       {
         libelle: "nomBanque",
-        value: "ABJ-PLTEAU",
+        value: this.chequeData?.nomBanque,
       },
       {
         libelle: "nomClient",
-        value: "BUREAUTIQUE PROFESSIONNE",
+        value: this.chequeData?.nomClient,
       },
       {
         libelle: "nomfichier",
-        value: "avp_1000_17092023161640",
+        value: this.chequeData?.nomfichier,
       },
       {
         libelle: "numCompte",
-        value: "19001260002",
+        value: this.chequeData?.numCompte,
       },
       {
         libelle: "statut",

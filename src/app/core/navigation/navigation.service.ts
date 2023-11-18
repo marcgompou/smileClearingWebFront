@@ -196,7 +196,7 @@ export class NavigationService {
               title: "Accueil Support",
               type: "basic",
               icon: "heroicons_outline:support",
-              link: "/help-center",
+              link: "/help-center/accueil",
               
             },
 
@@ -251,22 +251,7 @@ export class NavigationService {
               link: "/importerRemise",
               permission: SecService.permissions.ROLE_ADMIN,
             },
-            // {
-            //     id: 'imprimerRemiseImporter',
-            //     title: 'Impression Remise Importer',
-            //     type: 'basic',
-            //     icon: 'heroicons_solid:printer',
-            //     link: '/imprimerRemiseImporter',
-            //     permission: SecService.permissions.ROLE_ADMIN
-            // },
-            // {
-            //     id: 'impressionCheque',
-            //     title: 'Impression Chèque',
-            //     type: 'basic',
-            //     icon: 'heroicons_solid:printer',
-            //     link: '/impressionCheque',
-            //     permission: SecService.permissions.ROLE_ADMIN
-            // },
+         
           ],
         },
         {
@@ -313,40 +298,15 @@ export class NavigationService {
       subtitle: "",
       type: "group",
       icon: "heroicons_outline:home",
+      permission: SecService.permissions.ROLE_SUPERADMIN,
       children: [
-        // {
-        //   id: "smilecheckweb-support",
-        //   title: "ENTREPRISE",
-        //   subtitle: "",
-        //   type: "collapsable",
-        //   icon: "heroicons_outline:support",
-        //   children: [
-        //     {
-        //       id: "help-center",
-        //       title: "Parametrages Endos",
-        //       type: "basic",
-        //       //    icon : 'heroicons_outline:support',
-        //       link: "/help-center",
-        //       permission: SecService.permissions.ROLE_SUPERADMIN,
-        //     },
-
-        //     {
-        //       id: "help-centerfaqs",
-        //       title: "Reinitialisation de mot de passe",
-        //       type: "basic",
-        //       //icon : 'heroicons_outline:support',
-        //       link: "/help-center/faqs",
-        //       permission: SecService.permissions.ROLE_SUPERADMIN,
-        //     },
-        //   ],
-        // },
-
         {
           id: "smilecheckweb-support",
           title: "ADMINISTRATEUR",
           subtitle: "",
           type: "collapsable",
           icon: "heroicons_outline:shield-check",
+          permission: SecService.permissions.ROLE_SUPERADMIN,
           children: [
             {
               id: "parametreClient",
@@ -365,7 +325,6 @@ export class NavigationService {
               link: "/parametreUser",
               permission: SecService.permissions.ROLE_SUPERADMIN,
             },
-
             {
               id: "parametreCompte",
               title: "Parametrage Compte Bancaire",
@@ -383,7 +342,6 @@ export class NavigationService {
               link: "/parametreAgence",
               permission: SecService.permissions.ROLE_SUPERADMIN,
             },
-
             {
               id: "parametreEntreprise",
               title: "Parametrages Entreprise",
@@ -486,32 +444,33 @@ export class NavigationService {
         authorizedNavigation.push(item);
         continue;
       }
-      if ( 
-        item.id == "centre-aide") {
-        authorizedNavigation.push(item);
-        continue;
-      }
-      if (
-        item.id == "smilecheckweb-support") {
-        authorizedNavigation.push(item);
-        continue;
-      }
-      if (
-        item.id == "centre-aidefaqs") {
-        authorizedNavigation.push(item);
-        continue;
-      }
+      // if ( 
+      //   item.id == "centre-aide") {
+      //   authorizedNavigation.push(item);
+      //   continue;
+      // }
+      // if (
+      //   item.id == "smilecheckweb-support") {
+      //   authorizedNavigation.push(item);
+      //   continue;
+      // }
+      // if (
+      //   item.id == "centre-aidefaqs") {
+      //   authorizedNavigation.push(item);
+      //   continue;
+      // }
 
-      if (
-        item.id == "centre-aideguides") {
-        authorizedNavigation.push(item);
-        continue;
-      }
-      if (
-        item.id == "centre-aidesupport") {
-        authorizedNavigation.push(item);
-        continue;
-      }
+      // if (
+      //   item.id == "centre-aideguides") {
+      //   authorizedNavigation.push(item);
+      //   continue;
+      // }
+      // if (
+      //   item.id == "centre-aidesupport") {
+      //   authorizedNavigation.push(item);
+      //   continue;
+      // }
+      
       if (
         
         (item.type === "basic" &&
