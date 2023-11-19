@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, filter, catchError, Observable, of, switchMap, tap, map, take, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 import { Prelevement } from '../prelevement.type';
@@ -79,11 +79,36 @@ export class TraitementPrelevementService {
     // Make a GET request to the file URL, specifying responseType as 'blob'
     return this._httpClient.get(`${environment.apiUrl}/prelevement/admin/telechargement/${id}`, { responseType: 'blob' });
   }
-  telechargerRelance(id:string): Observable<Blob> {
-    // Make a GET request to the file URL, specifying responseType as 'blob'
-    return this._httpClient.get(`${environment.apiUrl}/prelevement/admin/telechargementReprise/${id}`, { responseType: 'blob' });
+  telechargerRelance(id: string): Observable<void> {
+    return this._httpClient.get(`${environment.apiUrl}/prelevement/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })
+      .pipe(
+        map((response: HttpResponse<ArrayBuffer>) => {
+          console.log("===relance response===>",response)
+          const contentDispositionHeader = response.headers.get('Content-Disposition');
+          console.log('===Content-Disposition===>',contentDispositionHeader)
+          const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+          const matches = contentDispositionHeader.match(filenameRegex);
+          
+          // Check if there is a match and get the filename
+          const filename = matches && matches[1];
+          
+          console.log('Filename:', filename);
+          const blob = new Blob([response.body], { type: 'application/octet-stream' });
+
+          // Trigger the download
+          this.downloadFileBlob(blob, filename || 'file.txt');
+        })
+      );
   }
 
+  private downloadFileBlob(blob: Blob, filename: string): void {
+    const downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    downloadLink.download = filename;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 
   getPrelevementATraiter(id): Observable<any>
   {

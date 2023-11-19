@@ -241,14 +241,7 @@ export class DetailsPrelevementComponent implements OnInit {
     });
   }
   telechargerRelance(): void {
-    
-    this._traitementPrelevementService.telechargerRelance(this.id).pipe().subscribe(blob => {
-      // Create a temporary anchor element and trigger the download
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.download =  this.nomFichier+".rec"; // Set the desired file name
-      link.click();
-    });
+    this._traitementPrelevementService.telechargerRelance(this.prelevementData.id).pipe().subscribe();
   }
 
 
