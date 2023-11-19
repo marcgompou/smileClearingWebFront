@@ -6,7 +6,7 @@ import { Directive, Input, ElementRef, OnInit, Renderer2,AfterViewInit } from '@
 export class StatusPillDirective implements OnInit,AfterViewInit {
     @Input() appStatusPill: any; // Input data for the directive
     @Input() stateValue: any; // Input data for the directive
-
+    responsiveSizes: { [key: string]: string }={ 'sm': 'text-sm', 'md': 'text-md', 'lg': 'text-lg', 'xl': 'text-xl', '2xl': 'text-2xl' }
     stateLabel="par defaut";
 
     constructor(private el: ElementRef, private renderer: Renderer2) { }
@@ -38,6 +38,7 @@ export class StatusPillDirective implements OnInit,AfterViewInit {
             });
         }
     }
+    
     ngAfterViewInit() {
         this.el.nativeElement.textContent = this.stateLabel;
     }

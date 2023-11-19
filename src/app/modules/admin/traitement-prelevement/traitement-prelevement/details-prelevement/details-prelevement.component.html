@@ -51,7 +51,7 @@
                         </ng-container>
 
                         <ng-container *ngIf="prelevementRemiseData?.statut==16">
-                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerPrelevement()" >
+                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerRelance()" >
                                 <mat-icon [svgIcon]="'mat_solid:refresh'" ></mat-icon>
                                 <span class="ml-2">Générer Fichier Relance</span>
                             </button>
