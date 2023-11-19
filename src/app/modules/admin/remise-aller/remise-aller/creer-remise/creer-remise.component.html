@@ -54,11 +54,10 @@
                         </mat-form-field>
 
 
-                        <button class="ml-4 mt-4" mat-flat-button [disabled]="!scannerIsConnected"
+                        <button class="ml-4 mt-4" mat-stroked-button  [disabled]="!scannerIsConnected"
                             (click)="scannerCheque()">
-                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span>Scanner chèque</span>
-                        </button>
+                            <mat-icon  color="primary" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span [ngClass]="{'text-primary': scannerIsConnected}">Scanner chèque</span>                        </button>
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
                             [disabled]="(!compteClientForm.valid )|| (remiseIsInCorrect) || dataSource.data.length==0">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>

@@ -1,13 +1,14 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   ViewChild,
+  ViewEncapsulation,
 } from "@angular/core";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -17,6 +18,7 @@ import { FuseAlertType } from "@fuse/components/alert";
 import { takeUntil, Subject } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DetailsService } from "../details/details.service";
+import { fuseAnimations } from "@fuse/animations";
 
 interface filterForm {
   label: string;
@@ -29,6 +31,9 @@ interface filterForm {
   selector: "app-table-data",
   templateUrl: "./table-data.component.html",
   styleUrls: ["./table-data.component.scss"],
+  // encapsulation  : ViewEncapsulation.None,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
+  // animations     : fuseAnimations
 })
 export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
@@ -70,9 +75,9 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
 
   isLoading = false;
-  totalRows = 0;
-  pageSize = 10;
-  currentPage = 0;
+  public totalRows:number = 0;
+  pageSize: number = 10;
+  currentPage: number = 0;
   pageSizeOptions: number[] = [10, 25];
   _displayedColumns: string[];
 
@@ -82,7 +87,6 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     //Load initial data
-    this.loadData();
 
     this.dataStructure.forEach((element) => {
       this.restructuredData[element.key] = element;
@@ -125,6 +129,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.loadData();
     this._changeDetectorRef.detectChanges();
   }
 
@@ -197,7 +202,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (response: any) => {
-          console.log("Response===> :", response);
+          console.log("Response table data===> :", response);
 
           let data: any[] = [];
           if (response == null) {
@@ -205,13 +210,20 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           data = this.getValueByPath(response, this.dataKey);
           this.data=data;
+
           if(this.serverSideLoad){
-            this.dataSource = new MatTableDataSource(data);
+            this.dataSource = new MatTableDataSource<any>(data);
+            console.log("response?.totalCount ||0;",response?.totalCount ||0);
+            console.log("response ||0;",response);
+            console.log("response?.totalCount ||0;",response?.totalCount);
+
             this.totalRows = response?.totalCount ||0;
             this.currentPage = response?.page || 0;
             this.pageSize = response?.pageSize || 0;
+            this._changeDetectorRef.markForCheck();
+
           }else{
-            this.dataSource = new MatTableDataSource([]);
+            this.dataSource = new MatTableDataSource<any>([]);
             //Si toutes les données sont chargées une seule fois ?
             console.log("start and end index",this.currentPage +' '+ this.pageSize);
             

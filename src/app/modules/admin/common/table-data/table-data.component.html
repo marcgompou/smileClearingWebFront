@@ -29,7 +29,7 @@
 
 
             </table>
-            <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" (pageSize)="pageSize"
+            <mat-paginator #paginator [length]="totalRows"  (pageSize)="pageSize"
                 [pageSizeOptions]="pageSizeOptions" showFirstLastButtons  (page)="pageChanged($event)" aria-label="Select page">
             
                 <button>
