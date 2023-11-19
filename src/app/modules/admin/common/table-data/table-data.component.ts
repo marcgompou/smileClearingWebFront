@@ -223,13 +223,17 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
             this._changeDetectorRef.markForCheck();
 
           }else{
+            const startIndex = this.currentPage * this.pageSize;
+            const endIndex = startIndex + this.pageSize;
+
             this.dataSource = new MatTableDataSource<any>([]);
             //Si toutes les données sont chargées une seule fois ?
             console.log("start and end index",this.currentPage +' '+ this.pageSize);
             
             //si le tableau est vide
+            console.log("========dtleng========>",data.length)
             if(data.length){
-              this.dataSource = new MatTableDataSource(this.data.slice(this.currentPage, this.pageSize));           
+              this.dataSource = new MatTableDataSource(data.slice(startIndex, endIndex));           
             }
             this.totalRows =  data.length;
           }
