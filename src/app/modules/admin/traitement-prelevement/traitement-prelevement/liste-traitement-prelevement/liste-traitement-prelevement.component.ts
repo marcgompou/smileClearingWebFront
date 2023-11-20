@@ -1,11 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {  ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable, distinctUntilChanged, filter } from 'rxjs';
-import { Prelevement } from '../../prelevement.type';
+// import { MatPaginator } from '@angular/material/paginator';
+// import { MatSort } from '@angular/material/sort';
+import { takeUntil, debounceTime, switchMap, map, Subject, distinctUntilChanged, filter } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-import { TraitementPrelevementService } from '../traitement-prelevement.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,18 +23,12 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 
 
 export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
-  @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
-  drawerMode: 'side' | 'over';
-  listeCompteEntreprise: any[] = [];
-  statut: string = "0";
-  totalRows = 0;
-  pageSize = 10;
-  currentPage = 0;
-  pageSizeOptions: number[] = [10, 25];
 
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  statut: string = "0";
+  criteria="";
+
+  // @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // @ViewChild(MatSort) sort: MatSort;
   private _searchTerms = new Subject<string>();
 
   alert: { type: FuseAlertType; message: string } = {
@@ -93,15 +85,12 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
 
   public displayedColumns: string[] = ['codeEmetteur', 'nomfichier', 'codeagence', 'compteCredite', 'nbPrelevement', 'mtTotal', 'dateEdition', 'dateEngistrement'];
 
-  sent = [];
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
-  selectedRemise: any | null = null;
-  selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   _filterObject:any={criteria:""};
-  compteClientForm = new FormGroup({
+  statutPrelevementForm = new FormGroup({
     statut: new FormControl('', Validators.required),
 
   })
@@ -132,17 +121,12 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    this.compteClientForm = this._formBuilder.group({
+    this.statutPrelevementForm = this._formBuilder.group({
       statut: ['3']
     });
 
     // Subscribe to MatDrawer opened change
-    this.matDrawer.openedChange.subscribe((opened) => {
-      if (!opened) {
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
-      }
-  });
+   
 
 
   this._searchTerms
@@ -152,13 +136,15 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   // Ignore if the new term is the same as the previous term
   filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
   switchMap((term: string) => {
-    this._filterObject={ criteria: term }
-    this._tableDataService._filterObject = { criteria: term };
-    this._tableDataService._hasPagination = true;
-    this._tableDataService._paginationObject = {
-      page: 0,
-      size: 10
-    };
+    this.criteria=term;
+    this._filterObject={ criteria: this.criteria ,statut:this.statut};
+    // this._tableDataService._filterObject = this._filterObject
+    // this._tableDataService._hasPagination = true;
+    // this._tableDataService._paginationObject = {
+    //   page: 0,
+    //   size: 10
+    // };
+    this.filtering();
     return this._tableDataService.getDatas();
   })
 )
@@ -171,11 +157,11 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
-    private _prelevementService: TraitementPrelevementService,
+    // private _prelevementService: TraitementPrelevementService,
     private _activatedRoute: ActivatedRoute,
     private _tableDataService: TableDataService,
     private _router: Router,
-    private _traitementPrelevementService: TraitementPrelevementService,
+    // private _traitementPrelevementService: TraitementPrelevementService,
 
 
   ) {
@@ -210,12 +196,22 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value ? event.value : "0";
     console.log('Valeur sélectionnée :', this.statut);
-    this._tableDataService._endpoint = `prelevement/admin/?statut=${this.statut}`;
+    this.filtering();
     this._tableDataService.getDatasByPath().subscribe();
     this._changeDetectorRef.markForCheck();
   }
 
 
+  filtering(): void {
+    
+    this._tableDataService._endpoint = `prelevement/admin`;
+    this._tableDataService._filterObject = this._filterObject
+    this._tableDataService._hasPagination = true;
+    this._tableDataService._paginationObject = {
+      page: 0,
+      size: 10
+    };
+  }
 
 
   /**
