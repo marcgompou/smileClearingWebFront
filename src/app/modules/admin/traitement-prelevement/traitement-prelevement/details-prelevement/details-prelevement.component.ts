@@ -246,9 +246,13 @@ export class DetailsPrelevementComponent implements OnInit {
         console.log(response);
         this.goBackToList();
       },error:(error)=>{
-        console.error('Error : ', JSON.stringify(error));
+        
+        //console.log('Error : ', error.);
+        const dataString = new TextDecoder().decode(error.error);
+        const data = JSON.parse(dataString);
+        console.log('error 123',dataString);
         // Set the alert
-        this.alert = { type: 'error', message: error.error.message??error.error };
+        this.alert = { type: 'error', message: data.message };
         // Show the alert
         this.showAlert = true;
         this._changeDetectorRef.detectChanges();

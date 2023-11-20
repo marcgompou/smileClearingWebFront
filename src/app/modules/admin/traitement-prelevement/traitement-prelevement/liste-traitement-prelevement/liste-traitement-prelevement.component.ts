@@ -196,8 +196,10 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value ? event.value : "0";
     console.log('Valeur sélectionnée :', this.statut);
+    this._filterObject={ criteria: this.criteria ,statut:this.statut};
     this.filtering();
-    this._tableDataService.getDatasByPath().subscribe();
+    //this._tableDataService.getDatasByPath().subscribe();
+    this._tableDataService.getDatas().subscribe();
     this._changeDetectorRef.markForCheck();
   }
 
