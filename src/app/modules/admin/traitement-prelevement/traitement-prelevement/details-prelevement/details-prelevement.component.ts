@@ -241,7 +241,21 @@ export class DetailsPrelevementComponent implements OnInit {
     });
   }
   telechargerRelance(): void {
-    this._traitementPrelevementService.telechargerRelance(this.prelevementData.id).pipe().subscribe();
+    this._traitementPrelevementService.telechargerRelance(this.prelevementData.id).pipe().subscribe({
+      next:(response)=>{
+        console.log(response);
+        this.goBackToList();
+      },error:(error)=>{
+        console.error('Error : ', JSON.stringify(error));
+        // Set the alert
+        this.alert = { type: 'error', message: error.error.message??error.error };
+        // Show the alert
+        this.showAlert = true;
+        this._changeDetectorRef.detectChanges();
+      }
+
+    });
+    
   }
 
 

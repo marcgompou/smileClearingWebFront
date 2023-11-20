@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, O
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable } from 'rxjs';
+import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable, distinctUntilChanged, filter } from 'rxjs';
 import { Prelevement } from '../../prelevement.type';
 import { fuseAnimations } from '@fuse/animations';
 import { TraitementPrelevementService } from '../traitement-prelevement.service';
@@ -37,6 +37,7 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  private _searchTerms = new Subject<string>();
 
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
@@ -99,7 +100,7 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-
+  _filterObject:any={criteria:""};
   compteClientForm = new FormGroup({
     statut: new FormControl('', Validators.required),
 
@@ -135,6 +136,37 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
       statut: ['3']
     });
 
+    // Subscribe to MatDrawer opened change
+    this.matDrawer.openedChange.subscribe((opened) => {
+      if (!opened) {
+          // Mark for check
+          this._changeDetectorRef.markForCheck();
+      }
+  });
+
+
+  this._searchTerms
+.pipe(
+  debounceTime(300), // Adjust the debounce time (in milliseconds) as needed
+  distinctUntilChanged(),
+  // Ignore if the new term is the same as the previous term
+  filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
+  switchMap((term: string) => {
+    this._filterObject={ criteria: term }
+    this._tableDataService._filterObject = { criteria: term };
+    this._tableDataService._hasPagination = true;
+    this._tableDataService._paginationObject = {
+      page: 0,
+      size: 10
+    };
+    return this._tableDataService.getDatas();
+  })
+)
+.subscribe(() => {
+  // Perform any additional actions after the data is retrieved.
+  this._changeDetectorRef.detectChanges();
+});
+
   }
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
@@ -152,7 +184,10 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
 
   }
 
-
+  applyFilter(event: Event): void {
+    const query = (event.target as HTMLInputElement).value;
+    this._searchTerms.next(query);
+  }
 
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
@@ -175,7 +210,7 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value ? event.value : "0";
     console.log('Valeur sélectionnée :', this.statut);
-    this._tableDataService._endpoint = `prelevement?statut=${this.statut}`;
+    this._tableDataService._endpoint = `prelevement/admin/?statut=${this.statut}`;
     this._tableDataService.getDatasByPath().subscribe();
     this._changeDetectorRef.markForCheck();
   }

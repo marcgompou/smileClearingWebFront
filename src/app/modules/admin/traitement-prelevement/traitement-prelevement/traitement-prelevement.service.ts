@@ -80,7 +80,7 @@ export class TraitementPrelevementService {
     return this._httpClient.get(`${environment.apiUrl}/prelevement/admin/telechargement/${id}`, { responseType: 'blob' });
   }
   telechargerRelance(id: string): Observable<void> {
-    return this._httpClient.get(`${environment.apiUrl}/prelevement/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })
+    return this._httpClient.get(`${environment.apiUrl}/prelevement/admin/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })
       .pipe(
         map((response: HttpResponse<ArrayBuffer>) => {
           console.log("===relance response===>",response)
