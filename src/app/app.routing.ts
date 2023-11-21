@@ -113,11 +113,7 @@ export const appRoutes: Route[] = [
                 data: { breadcrumb: 'Retour prélèvement' },
                 loadChildren: () => import('app/modules/admin/prelevement-retour/prelevement-retour.module').then(m => m.PrelevementRetourModule)
             },
-            {
-                path: 'relancePrelevement',
-                data: { breadcrumb: 'Relance prélèvement' },
-                loadChildren: () => import('app/modules/admin/relance-prelevement/relance-prelevement.module').then(m => m.RelancePrelevementModule)
-            },
+          
 
             {
                 path: 'help-center',

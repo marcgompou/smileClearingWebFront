@@ -279,14 +279,7 @@ export class NavigationService {
               permission: SecService.permissions.ROLE_ADMIN,
             },
 
-            {
-              id: "relancePrelevement",
-              title: "Relance prélèvement",
-              type: "basic",
-              icon: "heroicons_outline:switch-horizontal",
-              link: "/relancePrelevement",
-              permission: SecService.permissions.ROLE_ADMIN,
-            },
+           
           ],
         },
       ],
