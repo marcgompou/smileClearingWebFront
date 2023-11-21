@@ -51,7 +51,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-
+  label="Charger un fichier .emi"
   prelevementForm : FormGroup;
 
   dataStructure = [
@@ -96,7 +96,8 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
 
   //CYCLE DE VIE
   ngOnInit() {
-    this._tableDataService.setDatas$([])
+    this._tableDataService.setDatas$([]);
+    this.prelevementForm.get('fichierPrelevement')?.setValue(this.label);
   }
 
   closeAlert() {
@@ -152,7 +153,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
 
   clearFile(){
     this._tableDataService.setDatas$([]);
-    this.prelevementForm.get('fichierPrelevement')?.setValue("");
+    this.prelevementForm.get('fichierPrelevement')?.setValue(this.label);
     this.headerData={}
     this.totalData={}
     this.totalRows = 0;

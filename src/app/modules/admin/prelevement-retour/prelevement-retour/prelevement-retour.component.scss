@@ -1,7 +1,5 @@
-/* Align the MatPaginator to the right */
-/* Align the MatPaginator to the right */
-.table-container ::ng-deep .mat-paginator {
-    justify-content: flex-end;
-    display: flex;
-  }
-  
+
+.placeholder-style {
+    color: #888; /* You can adjust the color to your preference */
+    font-style: italic; /* You can use italic or adjust the font style as needed */
+}
