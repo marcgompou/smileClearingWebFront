@@ -13,15 +13,18 @@ export const helpCenterRoutes: Route[] = [
         component: HelpCenterComponent,
         resolve  : {
             faqs: HelpCenterMostAskedFaqsResolver
-        }
+        },
+        children: [
+            {
+                path     : 'accueil',
+                component: HelpCenterComponent,
+                resolve  : {
+                    faqs: HelpCenterMostAskedFaqsResolver
+                }
+            },
+        ]
     },
-    {
-        path     : 'accueil',
-        component: HelpCenterComponent,
-        resolve  : {
-            faqs: HelpCenterMostAskedFaqsResolver
-        }
-    },
+   
     {
         path     : 'faqs',
         component: HelpCenterFaqsComponent,
