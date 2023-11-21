@@ -33,31 +33,28 @@
         
                     <div class="flex flex-col min-w-0 ml-4">
                         <ng-container>
-                            <div
-                                class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
-                                Création remise chèque</div>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                                Création remise chèque
+                            </div>
                         </ng-container>
                         <app-status [status]="scannerIsConnected"></app-status>
                     </div>
                 </div>
-                <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8" appearance="outline">
-                            
-                            <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required
-                                placeholder="Selectionner un compte">
-                                <mat-option value=""></mat-option>
+                <div class="flex items-center">
+                    <form class="flex flex-auto items-center" [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
+                            <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required>
+                                <mat-option hidden value="" style="color: #888; ">Choisir Compte</mat-option>
                                 <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.id"> 
-                                    {{compteEntreprise.designation }} - {{ compteEntreprise.compte.slice(-4)}}
+                                    {{compteEntreprise?.designation }} - {{ compteEntreprise?.compte?.slice(-4)}}
                                 </mat-option>
                             </mat-select> 
                         </mat-form-field>
-
-
-                        <button class="ml-4 mt-4" mat-stroked-button  [disabled]="!scannerIsConnected"
+                        <button class="ml-4" mat-stroked-button  [disabled]="!scannerIsConnected"
                             (click)="scannerCheque()">
                             <mat-icon  color="primary" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span [ngClass]="{'text-primary': scannerIsConnected}">Scanner chèque</span>                        </button>
+                            <span [ngClass]="{'text-primary': scannerIsConnected}">Scanner chèque</span>                        
+                        </button>
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
                             [disabled]="(!compteClientForm.valid )|| (remiseIsInCorrect) || dataSource.data.length==0">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
@@ -98,8 +95,7 @@
                                     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
                                         <!-- Column Structure -->
                                         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-                                            <th mat-header-cell *matHeaderCellDef class="mat-header-style"> {{
-                                                getColumnHeaderText(column) }} </th>
+                                            <th mat-header-cell *matHeaderCellDef class="mat-header-style"> {{ restructuredData[column]?.label }} </th>
                                             <td mat-cell *matCellDef="let element" class="mat-column-style"> {{
                                                 element[column] }} </td>
                                         </ng-container>
@@ -122,44 +118,6 @@
 
                         </ng-container>
 
-                        <ng-template #rowDetailsTemplate let-cheque>
-                            <div class="shadow-lg overflow-hidden">
-                                <div class="flex border-b">
-                                    <!-- Selected cheque form -->
-                                    <form class="flex flex-col w-full" [formGroup]="selectedChequeForm">
-
-                                        <div class="flex flex-col sm:flex-row p-8">
-
-                                        </div>
-                                        <div class="flex items-center justify-between w-full border-t px-8 py-4">
-                                            <button class="-ml-4" mat-button [color]="'warn'"
-                                                (click)="deleteSelectedCheque()">
-                                                Supprimer
-                                            </button>
-                                            <div class="flex items-center">
-                                                <div class="flex items-center mr-4" *ngIf="flashMessage">
-                                                    <ng-container *ngIf="flashMessage === 'success'">
-                                                        <mat-icon class="text-green-500"
-                                                            [svgIcon]="'heroicons_outline:check'"></mat-icon>
-                                                        <span class="ml-2">cheque updated</span>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="flashMessage === 'error'">
-                                                        <mat-icon class="text-red-500"
-                                                            [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                                                        <span class="ml-2">An error occurred, try again!</span>
-                                                    </ng-container>
-                                                </div>
-                                                <button mat-flat-button [color]="'primary'"
-                                                    (click)="updateSelectedCheque()">
-                                                    Modifier
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </ng-template>
 
 
                     </div>

@@ -54,7 +54,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input("title") title: string="";
   @Input("canClick") canClick: boolean = false;
   @Input("idRow") idRow: string = "";
-  /*** Peut prendre la valeur '$' si les donnée sont directement accessible depuis la racine ***/
+  /*** Peut prendre la valeur '$' si les donnée sont directement accessibles depuis la racine ***/
   @Input("dataKey") dataKey = "data"; 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   private selectedRowIndex: any=undefined;
@@ -81,7 +81,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   pageSizeOptions: number[] = [10, 25];
   _displayedColumns: string[];
 
-  //Permet d'acceder plus facilement aux données sans utiliser les fonction
+  //Permet d'acceder plus facilement aux données sans utiliser les fonctions
   //(les fonction causes des soucis de performances du aux appels multiples a chaque rendue)
   restructuredData: any = {};
 
@@ -94,9 +94,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this._detailsService.id$.subscribe((id) => {
       this.selectedRowIndex=id||undefined;
-
       console.log("=============_detailsService==========>",this.selectedRowIndex);
-      //this.selectedRowChangeColor(id);
     })
 
     this._changeDetectorRef.markForCheck();
@@ -122,7 +120,6 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    // this._tableDateService.datas.next([]);
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

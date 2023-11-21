@@ -40,9 +40,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   nombreCheque:number=0;
   remiseIsInCorrect:boolean=true;
   //listeCompteEntreprise: any;
-  enregistrerRemise() {
-    throw new Error('Method not implemented.');
-  }
+ 
   selectedProject: string = 'ACME Corp. Backend App';
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
@@ -68,6 +66,10 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     message: ''
   };
   showAlert: boolean = false;
+  //Permet d'acceder plus facilement aux données sans utiliser les fonctions
+  //(les fonction causes des soucis de performances du aux appels multiples a chaque rendue)
+  restructuredData: any = {};
+
 
   public dataStructure = [
 
@@ -118,7 +120,6 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sent = [];
   isLoading = false;
-  searchInputControl: UntypedFormControl = new UntypedFormControl();
   selectedCheque: any | null = null;
   selectedChequeForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -132,20 +133,15 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private _websocketService: WebsocketService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _formBuilder: UntypedFormBuilder,
     private _chequeService: CreerRemiseService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
-    public _tableDateService: TableDataService,
     private _fuseMediaWatcherService: FuseMediaWatcherService,) 
     
     {
       
       
-      //  //   Charger le tableau received à partir du JSON
-      // const predefinedJson =remise;
-      // this.received = predefinedJson as Cheque[] ;
-      // this._chequeService.setRemise$(this.received);
+
 
       
 
@@ -200,48 +196,20 @@ form: FormGroup;
 
   //CYCLE DE VIE
   ngOnInit() {
-    //this._tableDateService.setData$([]);
     this._chequeService.setRemise$([]);
-    
+    this.dataStructure.forEach((element) => {
+      this.restructuredData[element.key] = element;
+    });
 
-    // this._activatedRoute.params.subscribe(params => {
-    //   // Effectuez le rechargement du composant en fonction des paramètres
-    // //  this.reloadComponent(params);
-    // });
-
-
-  
     //getCompteByEntreprise();
     this.loadCompte();
     this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" });
     
 
-    // Subscribe to search input field value changes
-    this.searchInputControl.valueChanges
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        debounceTime(300),
-        switchMap((query) => {
-          this.closeDetails();
-          this.isLoading = true;
-          //TODO RETURN CORRECT VALUE
-          return null;
-          //   return this._inventoryService.getProducts(0, 10, 'name', 'asc', query);
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe();
+   
 
       
 
-      // this.formFields.forEach(field => { 
-      //            console.log("fields in details=====>", field),
-      //             this.form.patchValue({
-      //                [field.key]: this.chequeData[field.key]
-      //              })
-      //           });
 
     this._chequeService.remise$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
@@ -251,7 +219,8 @@ form: FormGroup;
           
           //Verifier si le cheque est valide
           this.remiseIsInCorrect = !table.reduce((accumulator: boolean, cheque: Cheque) => {
-            return accumulator && cheque.chequeIsCorrect && (cheque.montant>=1000) ;}, true);
+            return accumulator && cheque.chequeIsCorrect && (cheque.montant>=1000) ;
+          }, true);
           
 
 
@@ -259,13 +228,7 @@ form: FormGroup;
           this.montantTotal=table.reduce((total, obj) => total + obj.montant, 0);
           this.nombreCheque=table.length;
 
-          // this.chequeData = table;
-          //          this.formFields.forEach(field => { 
-          //           console.log("fields in details=====>", field),
-          //           this.form.patchValue({
-          //             [field.key]: this.chequeData[field.key]
-          //           })
-          //         });
+         
           this._changeDetectorRef.markForCheck();
 
         }else{
@@ -302,9 +265,7 @@ form: FormGroup;
 
   }
 
-reloadComponent(params: any): void {
-    // Effectuez le rechargement en fonction des paramètres ici
-  }
+
   
 
   closeAlert() {
@@ -427,9 +388,7 @@ reloadComponent(params: any): void {
         next: (response:any) => {
           console.log("Response compteEntreprises ===>", response);
           if(response==null){response=[];}
-         
           this.listeCompteEntreprise = response.data;
-
           this._changeDetectorRef.markForCheck();
         }, 
         error: (error) => {
@@ -449,8 +408,8 @@ reloadComponent(params: any): void {
 
 
   /**
-     * After view init
-     */
+   * After view init
+   */
   ngAfterViewInit(): void {
     if (this._sort && this._paginator) {
       // Set the initial sort
@@ -490,28 +449,9 @@ reloadComponent(params: any): void {
     }
   }
 
-/**
-   * Enregistrer
-   */
- 
-// {
-//   "idCompte":4,
-//   "cheques":[{
-//       "imageRecto":""               
-//       "imageVerso":"",
-//       "numChq": "9147290",
-//       "codeBanque": "CI032",
-//       "cleRib": "20",
-//       "compte": "002032230004",
-//       "montant": 5044800,
-//       "chequeIsCorrect": true,
-//       "titulaire":"Maikol",
-//       "agence":"01030"
-//   }]
-// }
+
 
   onSubmit() {
-   
     
     if(this.compteClientForm.valid && ! this.remiseIsInCorrect){
     let idCompteClient=this.compteClientForm.value.idCompteClient;
@@ -541,13 +481,10 @@ reloadComponent(params: any): void {
             type: 'success',
             message: response.message
           };
-        
           //Vide le tableau
           this._chequeService.updateDataTable([]);
-          console.log("enregistrer chq======>",this._chequeService);
           this.received = [];// Réinitialise le tableau
-      this.showAlert = true;
-   // this._tableDateService.datas.next([]);  
+          this.showAlert = true;
         },
         error: (error) => {
           console.error('Error : ', JSON.stringify(error));
@@ -575,20 +512,6 @@ reloadComponent(params: any): void {
 
   }
 
-
-  // deleteSelectedCheque() {
-
-
-  // }
-
-  // getCompteByEntreprise(){
-      
-  // };
-
-  // updateSelectedCheque() {
-
-
-  // }
 
 
   //PRIVATE METHODE
