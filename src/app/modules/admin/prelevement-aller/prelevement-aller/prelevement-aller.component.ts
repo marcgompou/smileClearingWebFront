@@ -31,7 +31,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
   totalData:any={}
   detailsData:any[]=[]
   /**Prelevement data */
-
+  label="Charger avis prélèvement"  
   //Form
   @ViewChild('fileInput', { static: false }) fileInput: any;
 
@@ -92,6 +92,8 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
   //CYCLE DE VIE
   ngOnInit() {
     this._tableDataService.setDatas$([]);
+    this.prelevementForm.get('fichierPrelevement')?.setValue(this.label);
+
   }
 
 
@@ -144,7 +146,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
 
   clearFile(){
     this._tableDataService.setDatas$([]);
-    this.prelevementForm.get('fichierPrelevement')?.setValue("");
+    this.prelevementForm.get('fichierPrelevement')?.setValue(this.label);
     this.headerData={}
     this.totalData={}
     this.totalRows = 0;

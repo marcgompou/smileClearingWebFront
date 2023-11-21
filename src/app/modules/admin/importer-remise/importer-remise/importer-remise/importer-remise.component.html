@@ -33,10 +33,10 @@
               
                     </div>
                 </div>
-                <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form [formGroup]="entrepriseForm" (ngSubmit)="onSubmit()">
+                <div class="flex items-center">
+                    <form class="flex flex-auto items-center" [formGroup]="entrepriseForm" (ngSubmit)="onSubmit()">
 
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8" appearance="outline">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
                             <!-- <mat-label>Entreprise</mat-label> -->
                             <mat-select formControlName="identreprise" matInput id="identreprise" required
                                 placeholder="Selectionner une Entreprise" (selectionChange)="onSelectChange($event)">
@@ -46,11 +46,7 @@
                                 </mat-option>
                             </mat-select> 
                         </mat-form-field>
-
-
                         <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"  [disabled]="dataSource.data.length === 0 || !entrepriseForm.valid  || entrepriseForm.value.identreprise=='0'">
-                              
-                         
                             <mat-icon [svgIcon]="'mat_solid:arrow_downward'"></mat-icon>
                             <span class="ml-2">Importer</span>
                         </button>
@@ -65,9 +61,14 @@
                     <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
                         <div class="flex  items-center relative back   md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >                
                             <ng-container>
-                                <div *ngIf="listeSuperExportateur && listeSuperExportateur.length > 0">
+                                <div *ngIf="listeSuperExportateur && listeSuperExportateur?.length > 0">
                                     <table class="w-full">
                                       <thead>
+                                        <tr class="bg-gray-200 dark:bg-gray-800">
+                                            <th></th>
+                                            <th>TOP 3 EXPORTATION A TRAITER</th>
+                                            <th></th>
+                                        </tr>
                                         <tr class="bg-gray-200 dark:bg-gray-800">
                                           <th class="py-2 px-4 text-left">Nom Entreprise</th>
                                           <th class="py-2 px-4 text-left">Nombre de chèque total</th>

@@ -68,7 +68,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
    
     {
       "key": "reference",
-      "label": "reference"
+      "label": "Référence"
     },
 
     {
@@ -77,7 +77,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     },
     {
       "key": "nbcheque",
-      "label": "Nombre de Cheque"
+      "label": "Nombre de Chèque"
     },
     {
       "key": "montantTotal",
@@ -249,24 +249,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
 
-//   loadSUperExportateur(){
-// this._importerRemiseService..pipe(takeUntil(this._unsubscribeAll)).subscribe({
-//   next:(response)=>{
-//       console.log(response);
-//       this._superExportateurService.getSuperExportateur.next(response.data);
-//       this._changeDetectorRef.markForCheck();
-// })
-//   }
 
-  // this._importerRemiseService.importerRemise(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
-  //   next:(response)=>{
-  //       console.log(response);
-  //       this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
-  //       this._tableDataService.getDatasByPath().subscribe();
-  //       this._changeDetectorRef.markForCheck();
-
-  //   } 
-  // })
 
 
 onSelectChange(event: MatSelectChange) {
@@ -358,9 +341,7 @@ this.idEntreprise = event.value?event.value:"0";
         next: (response:any) => {
           console.log("===Response Entreprises =============>", response);
           if(response==null){response=[];}
-         
           this.listeEntreprise = response.data;
-
           this._changeDetectorRef.markForCheck();
         }, 
         error: (error) => {
@@ -371,38 +352,12 @@ this.idEntreprise = event.value?event.value:"0";
           this.alert = { type: 'error', message: error.error.message??error.error };
           // Show the alert
           this.showAlert = true;
-          
           this._changeDetectorRef.markForCheck();
         }
     });
 
   }
 
-  // loadSuperExportateur(){
-  //   this._superExportateurService.superExportateurs$.pipe(takeUntil(this._unsubscribeAll)
-  //   ).subscribe({
-  //       next: (response:any) => {
-  //         console.log("===listeSuperEntreprise mbg=============>", response);
-  //         if(response==null){response=[];}
-         
-  //         this.listeSuperEntreprise = response.data;
-
-  //         this._changeDetectorRef.markForCheck();
-  //       }, 
-  //       error: (error) => {
-  //         //not show historique
-  //         //this.showData = false;
-  //         console.error('Error : ',JSON.stringify(error));
-  //         // Set the alert
-  //         this.alert = { type: 'error', message: error.error.message??error.error };
-  //         // Show the alert
-  //         this.showAlert = true;
-          
-  //         this._changeDetectorRef.markForCheck();
-  //       }
-  //   });
-
-  // }
 
   /**
    * On destroy
