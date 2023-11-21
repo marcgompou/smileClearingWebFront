@@ -12,24 +12,25 @@
         <div class="grid grid-cols-2 gap-4 mt-8">
             <!-- Informations Personnelles -->
             <div>
-                <h3 class="text-2xl font-semibold mb-8 text-primary">Informations Personnelles</h3>
+                <h3 class="flex items-center text-2xl font-semibold mb-8 text-primary">
+                    <mat-icon svgIcon="heroicons_outline:identification" class="mr-2 text-4xl"></mat-icon>
+                    <span>Informations Personnelles</span>
+                </h3>
                 <div class="flex flex-col ">
                     <div class="text-lg mb-4">
-                        <span class="font-semibold text-primary">Nom Complet :</span> {{ user?.nom }} {{ user?.prenom }}
+                        <span class="font-semibold text-primary">Prénom :</span>  {{ user?.prenom }}
                     </div>
                     <div class="text-lg mb-4">
-                        <span class="font-semibold text-primary">Fonction :</span> {{ user?.fonction }}
+                        <span class="font-semibold text-primary">Nom :</span> {{ user?.prenom }}
                     </div>
                     <div *ngIf="user?.idEntreprise && user?.nomEntreprise" class="text-lg mb-4">
                         <span class="font-semibold text-primary">Entreprise :</span> {{ user?.nomEntreprise }}
                     </div>
-
+                    <div class="text-lg mb-4">
+                        <span class="font-semibold text-primary">Fonction :</span> {{ user?.fonction }}
+                    </div>
                     <div *ngIf="!user?.idEntreprise" class="text-lg mb-4">
                         <span class="font-semibold text-primary">Profile d'administration :</span> OUI
-                    </div>
-
-                    <div class="text-lg mb-4">
-                        <span class="font-semibold text-primary">Nom d'utilisateur :</span> {{ user?.nom }}
                     </div>
                     <div class="text-lg mb-4">
                         <span class="font-semibold text-primary">Email :</span> {{ user?.email }}
@@ -39,7 +40,10 @@
 
             <!-- Informations sur les Rôles -->
             <div>
-                <h3 class="text-2xl font-semibold mb-8 text-primary">Rôles</h3>
+                <h3 class="flex items-center text-2xl font-semibold mb-8 text-primary">
+                    <mat-icon svgIcon="heroicons_outline:shield-check" style="font-size: 1.5rem;" class="mr-2"></mat-icon>
+                    <span>Rôles</span>
+                </h3>
                 <ul class="list-disc pl-4">
                     <li class="text-lg" *ngFor="let role of user?.roles">
                         {{ role }}

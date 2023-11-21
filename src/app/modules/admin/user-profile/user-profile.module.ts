@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserProfileRoutes } from './user-profile.routing';
 import { RouterModule } from '@angular/router';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 
 
@@ -12,6 +13,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
+    MatIconModule,
     RouterModule.forChild(UserProfileRoutes),
 
   ]
