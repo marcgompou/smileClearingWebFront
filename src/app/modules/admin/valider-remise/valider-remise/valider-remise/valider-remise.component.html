@@ -27,10 +27,9 @@
                         </ng-container>
                     </div>
                 </div>
-                <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8"
-                            appearance="outline">
+                <div class="flex items-center">
+                    <form class="flex flex-auto items-center" [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
                             <mat-select formControlName="statut" matInput id="statut" required
                                 placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
                                 <mat-option value="1">A Valider</mat-option>

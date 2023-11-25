@@ -28,13 +28,13 @@
 
                     </div>
                 </div>
-                <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form #formNgForm="ngForm" [formGroup]="form" (ngSubmit)="rechercheStatisque()">
+                <div class="flex items-center">
+                    <form #formNgForm="ngForm" class="flex flex-auto items-center" [formGroup]="form" (ngSubmit)="rechercheStatisque()">
 
                     
                         
 
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mb-8" appearance="outline">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mt-4" >
                             <mat-date-range-input [rangePicker]="picker">
                               <input matStartDate placeholder="Date de début" formControlName="dateDebut">
                               <input matEndDate placeholder="Date de fin" formControlName="dateFin">
@@ -43,8 +43,7 @@
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
 
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mb-8 "
-                            appearance="outline">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
                             <mat-select formControlName="idEntreprise" matInput id="idEntreprise" required select
                                 placeholder="Entreprise">
                                 <mat-option *ngFor="let  entreprise of listeEntreprise"

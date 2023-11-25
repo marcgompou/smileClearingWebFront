@@ -437,33 +437,6 @@ export class NavigationService {
         authorizedNavigation.push(item);
         continue;
       }
-      // if ( 
-      //   item.id == "centre-aide") {
-      //   authorizedNavigation.push(item);
-      //   continue;
-      // }
-      // if (
-      //   item.id == "smilecheckweb-support") {
-      //   authorizedNavigation.push(item);
-      //   continue;
-      // }
-      // if (
-      //   item.id == "centre-aidefaqs") {
-      //   authorizedNavigation.push(item);
-      //   continue;
-      // }
-
-      // if (
-      //   item.id == "centre-aideguides") {
-      //   authorizedNavigation.push(item);
-      //   continue;
-      // }
-      // if (
-      //   item.id == "centre-aidesupport") {
-      //   authorizedNavigation.push(item);
-      //   continue;
-      // }
-      
       if (
         
         (item.type === "basic" &&

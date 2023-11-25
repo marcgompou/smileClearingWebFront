@@ -23,7 +23,7 @@ import { ApexOptions } from 'apexcharts';
 import { HomeComponent } from 'app/modules/admin/home/home.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { Subject } from 'rxjs';
-import { DashBoardRoutes } from './home.routing';
+import {  HomeRoutes } from './home.routing';
 import { MatNativeDateModule } from '@angular/material/core';
 
 const exampleRoutes: Route[] = [
@@ -64,7 +64,7 @@ const exampleRoutes: Route[] = [
         MatFormFieldModule,
         MatDatepickerModule, 
         MatNativeDateModule,
-        RouterModule.forChild(DashBoardRoutes),
+        RouterModule.forChild(HomeRoutes),
     ]
 })
 export class HomeModule

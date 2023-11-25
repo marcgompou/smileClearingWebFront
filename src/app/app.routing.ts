@@ -162,6 +162,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/compte/compte.module').then(m => m.CompteModule)
             },
             {
+                path: 'monProfil',
+                data: { breadcrumb: 'Mon profile' },
+                loadChildren: () => import('app/modules/admin/user-profile/user-profile.module').then(m => m.UserProfileModule)
+            },
+            {
                 path: 'parametreAgence',
                 data: { breadcrumb: 'Parametrage de agence bancaire' },
                 loadChildren: () => import('app/modules/admin/agence/agence.module').then(m => m.AgenceModule)

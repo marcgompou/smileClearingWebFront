@@ -75,25 +75,15 @@
                            
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    <!-- Nombre de chèque : {{ nombreCheque }} -->
                                 </span>
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>
                         </div>
                        
-                        <!-- <app-table-data 
-                            [endpoint]="'remise/export'+id" 
-                            [title]="'Liste des Cheques'"
-                            [dataKey]="'data.remise'"
-                            [displayedColumns]="displayedColumns" 
-                            [dataStructure]="dataStructure" 
-                            [idRow]="'reference'"
-                            [canClick]="true">
-                        </app-table-data> -->
+
                          <!-- TABLEAU DES REMISES EXPORTEES-->
                         <app-table-data 
                             [endpoint]="'exportation'" 

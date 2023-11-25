@@ -88,7 +88,7 @@ export class ImprimerRemiseService {
 
 
   getEntreprise(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/?size=9500`).pipe(
+    return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
       tap((response) => {
         console.log('test======================================');
         console.log(response);
@@ -119,7 +119,7 @@ getEntrepriseById(identreprise :string): Observable<any> {
     )
   }
 
-
+ 
 
 }
 

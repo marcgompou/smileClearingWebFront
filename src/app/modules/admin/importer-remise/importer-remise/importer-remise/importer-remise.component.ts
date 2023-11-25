@@ -24,7 +24,7 @@ import { MatSelectChange } from '@angular/material/select';
 })
 
 
-export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ImporterRemiseComponent implements OnInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
   noData: any;
@@ -174,13 +174,7 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
     private _router: Router,
     private _importerRemiseService:ImporterRemiseService,
     private _entrepriseService: ImporterRemiseService,
-    private _superExportateurService:ImporterRemiseService
-
-
-  ) {
-
-
-
+    private _superExportateurService:ImporterRemiseService ) {
   }
 
 
@@ -188,25 +182,11 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   }
-  selectedRow(row) {
 
-    const index = this.dataSource.data.indexOf(row);
-    this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
-    this._changeDetectorRef.markForCheck();
-    this.remiseData = row;
-  }
 
   updateList(newMatTable: MatTableDataSource<any>) {
     this.dataSource = newMatTable;
     this._changeDetectorRef.markForCheck();
-  }
-
-  getColumnHeaderText(column: string): string {
-
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-
   }
 
   onBackdropClicked(): void {
@@ -255,54 +235,13 @@ export class ImporterRemiseComponent implements OnInit, AfterViewInit, OnDestroy
 onSelectChange(event: MatSelectChange) {
 this.idEntreprise = event.value?event.value:"0";
   console.log('Valeur sélectionnée :', this.idEntreprise);
-  this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
+  this._tableDataService._endpoint=`exportation/admin?idEntreprise=${this.idEntreprise}`;
   this._tableDataService.getDatasByPath().subscribe();
   
   this._changeDetectorRef.markForCheck();
   // Utilisez selectedValue pour prendre des mesures en conséquence
 }
-  /**
-     * After view init
-     */
-  ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      this._sort.sort({
-        id: 'name',
-        start: 'asc',
-        disableClear: true
-      });
-
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-
-      // If the user changes the sort order...
-      this._sort.sortChange
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(() => {
-          // Reset back to the first page
-          this._paginator.pageIndex = 0;
-
-          // Close the details
-          this.closeDetails();
-        });
-
-      // Get products if sort or page changes
-      merge(this._sort.sortChange, this._paginator.page).pipe(
-        switchMap(() => {
-          this.closeDetails();
-          this.isLoading = true;
-          // return this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-          //TODO RETURN CORRECT VALUE
-          return null;
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      ).subscribe();
-    }
-  }
-
+  
   
 
   onSubmit() {

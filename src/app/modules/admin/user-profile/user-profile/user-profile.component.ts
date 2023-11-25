@@ -10,6 +10,17 @@ import { User } from 'app/core/user/user.types';
 })
 export class UserProfileComponent implements OnInit {
   user:User
+  _roleMap={
+    VALID_PRELEVEMENT :"VALIDATION PRELEVEMENT",
+    CREATION:"CREATION REMISE",
+    CHARG_PRELEVEMENT:"CHARGEMENT PRELEVEMENT",
+    VALIDATION:'VALIDATION REMISE',
+    ADMIN:"TRAITEMENT REMISE PRELEVEMEMT (ADMIN)",
+    SUPERADMIN:"SUPER ADMINISTRATEUR",
+    VISUALISATION:"VISUALISATION",
+    "EXPORTATION":"EXPORTATION",
+
+}
   constructor(private _userService: UserService,
     private _router: Router) { }
 

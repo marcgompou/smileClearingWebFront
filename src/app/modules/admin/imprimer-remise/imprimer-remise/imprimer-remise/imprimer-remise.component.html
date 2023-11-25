@@ -34,11 +34,11 @@
                     </div>
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
-                    <form [formGroup]="imprimerForm" (ngSubmit)="onSubmit()">
+                    <form class="flex items-center" [formGroup]="imprimerForm" (ngSubmit)="onSubmit()">
 
                         
 
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mb-8" appearance="outline">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mt-4" >
                             <mat-date-range-input [rangePicker]="picker">
                               <input matStartDate placeholder="Date de début" formControlName="dateDebut">
                               <input matEndDate placeholder="Date de fin" formControlName="dateFin">
@@ -48,7 +48,7 @@
                         </mat-form-field>
 
 
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit">
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit" [disabled]="!imprimerForm.valid">
                             <mat-icon [svgIcon]="'mat_solid:search'"></mat-icon>
                             <span class="ml-2">Rechercher</span>
                         </button>

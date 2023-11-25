@@ -157,6 +157,14 @@ export class DetailsImprimerComponent implements OnInit {
         next: (response) => {
           console.log("responsetest", response);
           //Permet d'initialiser les polices à utiliser
+
+          const imageBlocks = response.data.map(el => ({
+            image: el.imagerecto,
+            width: 100, // adjust the width as needed
+            alignment: 'center',
+            margin: [0, 10, 0, 20], // adjust the margins as needed
+          }));
+
           pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
           const currentDate: Date = new Date();

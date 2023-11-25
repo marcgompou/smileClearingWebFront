@@ -46,8 +46,8 @@
                                 </mat-option>
                             </mat-select> 
                         </mat-form-field>
-                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"  [disabled]="dataSource.data.length === 0 || !entrepriseForm.valid  || entrepriseForm.value.identreprise=='0'">
-                            <mat-icon [svgIcon]="'mat_solid:arrow_downward'"></mat-icon>
+                        <button class="ml-4" mat-flat-button color="primary" type="submit"  [disabled]="dataSource.data.length === 0 || !entrepriseForm.valid  || entrepriseForm.value.identreprise=='0'">
+                            <mat-icon svgIcon="mat_solid:arrow_upward"></mat-icon>
                             <span class="ml-2">Importer</span>
                         </button>
                     </form>
@@ -68,11 +68,14 @@
                                             <th></th>
                                             <th>TOP 3 EXPORTATION A TRAITER</th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                         <tr class="bg-gray-200 dark:bg-gray-800">
                                           <th class="py-2 px-4 text-left">Nom Entreprise</th>
                                           <th class="py-2 px-4 text-left">Nombre de chèque total</th>
                                           <th class="py-2 px-4 text-left">Montant Total</th>
+                                          <th class="py-2 px-4 text-left">Date exportation</th>
+
                                         </tr>
                                       </thead>
                                       <tbody class="space-y-2">
@@ -80,6 +83,8 @@
                                           <td class="py-2 px-4">{{ superExportateur.nomEntreprise }}</td>
                                           <td class="py-2 px-4">{{ superExportateur.nbrChequeTotal }}</td>
                                           <td class="py-2 px-4">{{ superExportateur.montantTotal | currency:'CFA':'symbol':'1.0-2' }}</td>
+                                          <td class="py-2 px-4">{{ superExportateur.dateExportation | date }}</td>
+
                                         </tr>
                                       </tbody>
                                     </table>
@@ -89,9 +94,9 @@
                             </ng-container>
                         </div>
                         
-                    <app-table-data [endpoint]="'exportation'" [title]="'Liste des exportations'"
+                    <app-table-data [endpoint]="'exportation/admin'" [title]="'Liste des exportations'"
                     [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
-                    [canClick]="true">
+                    [canClick]="false">
                     </app-table-data> 
 
                     </div>

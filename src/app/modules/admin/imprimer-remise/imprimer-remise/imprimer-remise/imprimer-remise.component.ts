@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 import { MatSelectChange } from '@angular/material/select';
+import { Moment } from 'moment';
 //import {img} from './image';
 
 @Component({
@@ -200,19 +201,19 @@ export class ImprimerRemiseComponent implements OnInit, OnDestroy {
 
   onSubmit() {
 
-    //let listRemises: any[] = [];
-    
-  this._imprimerRemiseService.getRemiseImprimer(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
-    next:(response)=>{
-        console.log(response);
-        this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
-        this._tableDataService.getDatasByPath().subscribe();
-        this._changeDetectorRef.markForCheck();
+    let dateDebut = new Date(this.imprimerForm.get('dateDebut').value).toISOString().split('T')[0];
+    let dateFin = new Date(this.imprimerForm.get('dateFin').value).toISOString().split('T')[0];
+    this._tableDataService._filterObject={
 
-    } 
-  })
+      'dateDebut':dateDebut,
+      'dateFin':dateFin
+    }
+    this._tableDataService._endpoint=`exportation`;
+    this._tableDataService.getDatas().subscribe();
+    this._changeDetectorRef.markForCheck();
 
-
+    console.log("date debut ===>",dateDebut);
+    console.log("date debut ===>",dateFin);
 
 
   }

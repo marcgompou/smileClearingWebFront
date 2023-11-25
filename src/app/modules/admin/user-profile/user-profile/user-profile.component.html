@@ -1,9 +1,9 @@
- <div class="p-4 bg-gray-200 bg-white rounded shadow-md"><!-- p-8  rounded shadow-md -->
+ <div class="p-8  bg-white w-full "><!-- p-8  rounded shadow-md -->
     <div class="flex flex-auto items-center min-w-0">
         <div class="flex flex-col min-w-0 ml-4">
             <ng-container>
                 <div class="text-3xl md:text-5xl font-semibold tracking-tight leading-8 md:leading-snug truncate">
-                    Mon Profile
+                    Mon Profil
                 </div>
             </ng-container>
         </div>
@@ -45,8 +45,8 @@
                     <span>Rôles</span>
                 </h3>
                 <ul class="list-disc pl-4">
-                    <li class="text-lg" *ngFor="let role of user?.roles">
-                        {{ role }}
+                    <li class="text-lg tex-bold" *ngFor="let role of user?.roles">
+                        {{ _roleMap[role] }}
                     </li>
                 </ul>
             </div>

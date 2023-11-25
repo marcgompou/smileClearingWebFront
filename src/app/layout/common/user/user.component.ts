@@ -34,13 +34,12 @@ export class UserComponent implements OnInit, OnDestroy
     {
     }
 
+
+    
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * On init
-     */
     ngOnInit(): void
     {
         // Subscribe to user changes
@@ -53,6 +52,9 @@ export class UserComponent implements OnInit, OnDestroy
             });
     }
 
+    navigateToProfile() {
+        this._router.navigate(['/monProfil']);
+    }
     /**
      * On destroy
      */
@@ -63,29 +65,6 @@ export class UserComponent implements OnInit, OnDestroy
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Update the user status
-     *
-     * @param status
-     */
-    // updateUserStatus(status: string): void
-    // {
-    //     // Return if user is not available
-    //     if ( !this.user )
-    //     {
-    //         return;
-    //     }
-
-    //     // Update the user
-    //     // this._userService.update({
-    //     //     ...this.user,
-    //     //     status
-    //     // }).subscribe();
-    // }
 
     /**
      * Sign out
