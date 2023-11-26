@@ -19,7 +19,28 @@ export const appRoutes: Route[] = [
     // path. Below is another redirection for that ,path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
     {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'home'},
-
+    // Error
+    {
+        path: 'error', 
+        data: { breadcrumb: 'Erreur' },
+        children: [
+            {
+                path: '401', 
+                data: { breadcrumb: 'Non autorisé' },
+                loadChildren: () => import('app/modules/admin/pages/error/error-403/error-403.module').then(m => m.Error403Module)
+            },
+            {
+                path: '404', 
+                data: { breadcrumb: 'Introuvable' },
+                loadChildren: () => import('app/modules/admin/pages/error/error-404/error-404.module').then(m => m.Error404Module)
+            },
+            {
+                path: '500', 
+                data: { breadcrumb: 'Interne au serveur' },
+                loadChildren: () => import('app/modules/admin/pages/error/error-500/error-500.module').then(m => m.Error500Module)
+            }
+        ]
+    },
 
     // Auth routes for authenticated users
     {
@@ -47,9 +68,9 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'sign-in', loadChildren: () => import('app/modules/auth/sign-in/sign-in.module').then(m => m.AuthSignInModule)},
-            {path: 'confirmation', loadChildren: () => import('app/modules/admin/confirmation-utilisateur/confirmation-utilisateur.module').then(m => m.ConfirmationUtilisateurModule)},
-            {path: 'forgot-password', loadChildren: () => import('app/modules/auth/forgot-password/forgot-password.module').then(m => m.AuthForgotPasswordModule)},
-            {path: 'reset-password', loadChildren: () => import('app/modules/auth/reset-password/reset-password.module').then(m => m.AuthResetPasswordModule)},
+            //{path: 'confirmation', loadChildren: () => import('app/modules/admin/confirmation-utilisateur/confirmation-utilisateur.module').then(m => m.ConfirmationUtilisateurModule)},
+            // {path: 'forgot-password', loadChildren: () => import('app/modules/auth/forgot-password/forgot-password.module').then(m => m.AuthForgotPasswordModule)},
+            //{path: 'reset-password', loadChildren: () => import('app/modules/auth/reset-password/reset-password.module').then(m => m.AuthResetPasswordModule)},
         
         ]
     },
@@ -183,28 +204,9 @@ export const appRoutes: Route[] = [
                     
                 ]
             },
-             // Error
-            {
-                path: 'error', 
-                data: { breadcrumb: 'Erreur' },
-                children: [
-                    {
-                        path: '401', 
-                        data: { breadcrumb: 'Non autorisé' },
-                        loadChildren: () => import('app/modules/admin/pages/error/error-403/error-403.module').then(m => m.Error403Module)
-                    },
-                    {
-                        path: '404', 
-                        data: { breadcrumb: 'Introuvable' },
-                        loadChildren: () => import('app/modules/admin/pages/error/error-404/error-404.module').then(m => m.Error404Module)
-                    },
-                    {
-                        path: '500', 
-                        data: { breadcrumb: 'Interne au serveur' },
-                        loadChildren: () => import('app/modules/admin/pages/error/error-500/error-500.module').then(m => m.Error500Module)
-                    }
-                ]
-            },
+
         ]
-    }
+    },
+    //not-found
+    { path: '**', redirectTo: '/error/404' }
 ];

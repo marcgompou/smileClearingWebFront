@@ -39,7 +39,7 @@ export class NavigationService {
       icon: "heroicons_outline:home",
       children: [
         {
-          id: "dashboard",
+          id: "",
           title: "Accueil",
           type: "basic",
           link: "/home",
@@ -57,7 +57,7 @@ export class NavigationService {
       children: [
         {
           id: "dashboard",
-          title: "dashboard",
+          title: "Dashboard",
           type: "basic",
           link: "/dashboard",
           icon: "heroicons_outline:chart-pie",

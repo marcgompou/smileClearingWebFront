@@ -76,6 +76,7 @@
                             <app-table-data [endpoint]="'remise/cheques/'+id"
                                 [title]="'Liste des Remises'"
                                 [dataKey]="'data.cheques'" 
+                                [serverSideLoad]="false"
                                 [displayedColumns]="displayedColumns"
                                 [dataStructure]="dataStructure" 
                                 [idRow]="'id'"

@@ -15,14 +15,13 @@ export class UserProfileComponent implements OnInit {
     CREATION:"CREATION REMISE",
     CHARG_PRELEVEMENT:"CHARGEMENT PRELEVEMENT",
     VALIDATION:'VALIDATION REMISE',
-    ADMIN:"TRAITEMENT REMISE PRELEVEMEMT (ADMIN)",
+    ADMIN:"TRAITEMENT REMISE ET PRELEVEMEMT (ADMIN)",
     SUPERADMIN:"SUPER ADMINISTRATEUR",
     VISUALISATION:"VISUALISATION",
-    "EXPORTATION":"EXPORTATION",
+    EXPORTATION:"EXPORTATION",
 
-}
-  constructor(private _userService: UserService,
-    private _router: Router) { }
+  }
+  constructor(private _userService: UserService,private _router: Router) { }
 
   ngOnInit(): void {
 
@@ -30,5 +29,5 @@ export class UserProfileComponent implements OnInit {
       this.user = user;
     });
   }
- 
+
 }

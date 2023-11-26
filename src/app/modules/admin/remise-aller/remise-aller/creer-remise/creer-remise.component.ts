@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, F
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { WebsocketService } from 'app/core/websocket/websocket.service';
-import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable, startWith } from 'rxjs';
+import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable } from 'rxjs';
 import { Cheque } from '../../cheque.type';
 import { fuseAnimations } from '@fuse/animations';
 import { CreerRemiseService } from '../remise.service';
@@ -12,12 +12,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { DetailsChequeComponent } from '../details-cheque/details-cheque.component';
 import { FuseAlertType } from '@fuse/components/alert';
-import { RouterModule, Routes, ExtraOptions } from '@angular/router';
-import {img} from './image';
-import {remise} from './example_remise';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
-//import {RemiseRoutingModule} from './remise-aller.routing';
 @Component({
   selector: 'app-creer-remise',
   templateUrl: './creer-remise.component.html',
@@ -41,23 +36,21 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
   remiseIsInCorrect:boolean=true;
   //listeCompteEntreprise: any;
  
-  selectedProject: string = 'ACME Corp. Backend App';
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
   
 
-  title = 'socketrv';
   command = 'StartScanner';
   action = 'CONNECT';
   neostate='0';
-  received: Cheque[] = [];
+  // received: Cheque[] = [];
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
   pageSizeOptions: number[] = [10, 25];
   filteredOptionCompteEnt: Observable<string[]>;
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
+  dataSource: MatTableDataSource<Cheque> = new MatTableDataSource<Cheque>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -161,7 +154,7 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
           let chqScanned=JSON.parse(msg.result) as Cheque;
 
           //Si le cheque est déjà dans le tableau  ne pas l'ajouter 
-          let findCheque=this.received.find(chq=>{
+          let findCheque=this.dataSource.data.find(chq=>{
           return chq.codeAgence==chqScanned.codeAgence &&  
             chq.codeBanque==chqScanned.codeBanque &&  
             chq.codeAgence==chqScanned.codeAgence &&
@@ -170,9 +163,9 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
           });
  
           if(!findCheque){
-            this.received.push(chqScanned);
-            this._chequeService.setRemise$(this.received);
-            console.log("Response received: --------", this.received);
+            this.dataSource.data.push(chqScanned);
+            this._chequeService.setRemise$(this.dataSource.data);
+            console.log("Response received: --------", this.dataSource.data);
             //console.log("Response dataSource verifier -------: ", this.dataSource);
           }
           else{
@@ -203,7 +196,7 @@ form: FormGroup;
 
     //getCompteByEntreprise();
     this.loadCompte();
-    this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" });
+    this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" ,token:localStorage.getItem("accessToken")});
     
 
    
@@ -279,18 +272,12 @@ form: FormGroup;
     this._changeDetectorRef.markForCheck();
   }
 
-  updateList(newMatTable: MatTableDataSource<any>) {
-    this.dataSource = newMatTable;
-    this._changeDetectorRef.markForCheck();
-  }
+  // updateList(newMatTable: MatTableDataSource<any>) {
+  //   this.dataSource = newMatTable;
+  //   this._changeDetectorRef.markForCheck();
+  // }
 
-  getColumnHeaderText(column: string): string {
 
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-
-  }
 
   openDetailComponent(component: DetailsChequeComponent) {
 
@@ -457,7 +444,7 @@ form: FormGroup;
     let idCompteClient=this.compteClientForm.value.idCompteClient;
     let listCheques:any[] = [];
 
-    this.received.forEach(chq=> {
+    this.dataSource.data.forEach(chq=> {
         console.log("enregistrer chq======>",chq);
         listCheques.push({
           imageVerso :chq.imageVerso ,
@@ -483,7 +470,7 @@ form: FormGroup;
           };
           //Vide le tableau
           this._chequeService.updateDataTable([]);
-          this.received = [];// Réinitialise le tableau
+          this.dataSource =new MatTableDataSource<Cheque>([]);// Réinitialise le tableau
           this.showAlert = true;
         },
         error: (error) => {

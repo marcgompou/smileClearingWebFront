@@ -1,79 +1,73 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
     <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
-    [dismissible]="true"
-    [dismissed]="false"
-    [showIcon]="true"
+        [dismissible]="true"
+        [dismissed]="false"
+        [showIcon]="true"
         [@shake]="alert.type === 'error'">
         {{ alert.message }}
-
-      
     </fuse-alert>
-
+    <!-- Loader -->
+    <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+        <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+    </div>
 
     <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
         <mat-drawer-content class="flex flex-col">
             <!-- Header -->
-            <div
-                class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
-                <!-- Loader -->
-                <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
-                    <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-                </div>
+            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
                 <!-- Title -->
-                <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8">
-                    <!-- Title -->
-                    <div>
-                        <div class="text-4xl font-extrabold tracking-tight leading-none">Traitement Prelevement</div>
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                                Traitement prélèvement
+                            </div>
+                        </ng-container>
                     </div>
-                    <!-- Main actions -->
-                    <div class="flex items-center mt-4 sm:mt-0 md:mt-4 w-full">
-                        <!-- Search -->
-                        <form  class="flex items-center w-full" [formGroup]="statutPrelevementForm">
-                                <mat-form-field
-                                    class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded mr-4  md:w-5/6">
-                                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-                                    <input id="filter_table" matInput (keyup)="applyFilter($event)" [autocomplete]="'off'"
-                                        [placeholder]="'Rechercher nom de fichier prelevement'">
-                                </mat-form-field>
-                            <!-- Add utilisateur button -->
-                            
-                                <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded max-w-xs  md:w-1/5 " >
-                                    <mat-select formControlName="statut" matInput id="statut" required
-                                        placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
-                                        <mat-option value="3">Validé</mat-option>
-                                        <mat-option value="13">Retour Prelevement</mat-option>
-                                        <mat-option value="16">Clôturé</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                        </form>
+                </div>
+                <!-- Main actions -->
+                <div class="flex items-center">
+                    <!-- Search -->
+                    <form  class="flex flex-auto items-center" [formGroup]="statutPrelevementForm">
+                            <mat-form-field
+                                class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-80 mt-4 mr-4">
+                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                                <input id="filter_table" matInput (keyup)="applyFilter($event)" [autocomplete]="'off'"
+                                    [placeholder]="'Nom fichier prelevement'">
+                            </mat-form-field>
+                            <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4" >
+                                <mat-select formControlName="statut" matInput id="statut" required
+                                    placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
+                                    <mat-option value="3">Validé</mat-option>
+                                    <mat-option value="13">Retour Prelevement</mat-option>
+                                    <mat-option value="16">Clôturé</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                    </form>
 
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <!-- Main -->
+                <div class="flex flex-auto overflow-hidden">
+                    <!-- INFO  -->
+                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+                        <div
+                            class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5">
+                            
+                        </div>
+                        <!--table data-->
+                        <app-table-data [endpoint]="'prelevement/admin'" 
+                        [filterObject]="_filterObject"
+                        [title]="'Liste des prelevements'"
+                        [displayedColumns]="displayedColumns" 
+                        [dataStructure]="dataStructure" [idRow]="'id'"
+                        [canClick]="true" >
+                        </app-table-data>
                     </div>
                 </div>
             </div>
-            <form class="flex flex-col ">
-
-                <!-- Main -->
-                <div class="flex flex-auto overflow-hidden">
-                    <!-- remiseCheques list -->
-                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
-                        <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
-                        </div>
-
-
-
-
-                        <!-- TABLEAU -->
-                        
-
-                        <app-table-data [endpoint]="'prelevement'" [title]="'Liste des prelevements'"
-                        [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
-                        [canClick]="true" >
-                    </app-table-data>
-
-                    </div>
-
-                </div>
-            </form>
         </mat-drawer-content>
 
     </mat-drawer-container>

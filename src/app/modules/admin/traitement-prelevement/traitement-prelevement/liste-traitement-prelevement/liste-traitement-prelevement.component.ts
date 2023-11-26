@@ -103,23 +103,7 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
 
-    // Subscribe to search input field value changes
-    this.searchInputControl.valueChanges
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        debounceTime(300),
-        switchMap((query) => {
-          // this.closeDetails();
-          this.isLoading = true;
-          //TODO RETURN CORRECT VALUE
-          return null;
-          //   return this._inventoryService.getProducts(0, 10, 'name', 'asc', query);
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe();
+  
 
     this.statutPrelevementForm = this._formBuilder.group({
       statut: ['3']
@@ -137,13 +121,13 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
   switchMap((term: string) => {
     this.criteria=term;
-    this._filterObject={ criteria: this.criteria ,statut:this.statut};
-    // this._tableDataService._filterObject = this._filterObject
-    // this._tableDataService._hasPagination = true;
-    // this._tableDataService._paginationObject = {
-    //   page: 0,
-    //   size: 10
-    // };
+    this._filterObject={ criteria: this.criteria ,statut:this.statutPrelevementForm.get('statut').value};
+    // // this._tableDataService._filterObject = this._filterObject
+    // // this._tableDataService._hasPagination = true;
+    // // this._tableDataService._paginationObject = {
+    // //   page: 0,
+    // //   size: 10
+    // // };
     this.filtering();
     return this._tableDataService.getDatas();
   })
@@ -196,7 +180,7 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value ? event.value : "0";
     console.log('Valeur sélectionnée :', this.statut);
-    this._filterObject={ criteria: this.criteria ,statut:this.statut};
+    this._filterObject={ criteria: this.criteria ,statut:event.value};
     this.filtering();
     //this._tableDataService.getDatasByPath().subscribe();
     this._tableDataService.getDatas().subscribe();
@@ -205,7 +189,7 @@ export class ListeTraitementPrelevementComponent implements OnInit, OnDestroy {
 
 
   filtering(): void {
-    
+    this._filterObject.statut=this.statutPrelevementForm.get('statut').value;
     this._tableDataService._endpoint = `prelevement/admin`;
     this._tableDataService._filterObject = this._filterObject
     this._tableDataService._hasPagination = true;

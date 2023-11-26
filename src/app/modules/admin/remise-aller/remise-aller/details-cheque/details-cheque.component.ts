@@ -15,6 +15,7 @@ import { img } from '../creer-remise/image';
 import { Cheque } from '../../cheque.type';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { DeleteChequeConfirmationComponent } from './delete-confirmation/delete-cheque-confirmation.component';
+import { DetailsService } from 'app/modules/admin/common/details/details.service';
 
 @Component({
   selector: 'app-details-cheque',
@@ -53,8 +54,7 @@ export class DetailsChequeComponent implements OnInit,OnDestroy, OnChanges {
     private formBuilder: FormBuilder,
     private _changeDetectorRef: ChangeDetectorRef,
     private _tableDataService: TableDataService,
-    
-    private _fuseMediaWatcherService: FuseMediaWatcherService,
+    private _detailsService: DetailsService,
     private _remiseService: CreerRemiseService,
     public _dialog: MatDialog,
 
@@ -276,6 +276,7 @@ loadData():void{
   closeForm() {
     //Remettre le tableau comme il etait
     this.matDrawer.close();
+    this._detailsService.setId(null);
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
     this._changeDetectorRef.markForCheck();
   }

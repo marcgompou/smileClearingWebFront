@@ -1,4 +1,4 @@
-# PISFN - Admin template 
+#SMILECHECK ADMIN TEMPLATE
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli)
 
