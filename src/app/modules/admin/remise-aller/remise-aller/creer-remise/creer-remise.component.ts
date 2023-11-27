@@ -133,53 +133,12 @@ export class CreerRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
     
     {
       
-      
+      this.initiateWebsocketConnexion();
 
 
       
 
-      _websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
-
-      if (msg.action === "neoEtat" ) {
-        this.scannerIsConnected = 
-        (msg.result != "Deconnecté") ||
-        (msg.result == "Deconnecté" && msg.neostate == "4") ;
-    
      
-      }
-      // CHargement du tableau des chèques dans la creation de remise
-      else {
-        if (msg.action === "neoResult"){
-          this.scannerIsConnected = true;
-          let chqScanned=JSON.parse(msg.result) as Cheque;
-
-          //Si le cheque est déjà dans le tableau  ne pas l'ajouter 
-          let findCheque=this.dataSource.data.find(chq=>{
-          return chq.codeAgence==chqScanned.codeAgence &&  
-            chq.codeBanque==chqScanned.codeBanque &&  
-            chq.codeAgence==chqScanned.codeAgence &&
-            chq.compte==chqScanned.compte &&
-            chq.numChq==chqScanned.numChq ;
-          });
- 
-          if(!findCheque){
-            this.dataSource.data.push(chqScanned);
-            this._chequeService.setRemise$(this.dataSource.data);
-            console.log("Response received: --------", this.dataSource.data);
-            //console.log("Response dataSource verifier -------: ", this.dataSource);
-          }
-          else{
-            const errorMessage=`Vous avez déjà scanné ce chèque (${chqScanned.numChq}) plus d'une fois`;
-            console.log("cheque exist=====>",errorMessage)
-            this.alert = { type: 'error', message:errorMessage };
-            this.showAlert = true;
-          }
-        }
-      }
-      console.log("Response from websocket: ", msg);
-      
-      this._changeDetectorRef.markForCheck();
-    })
   }
 
 form: FormGroup;
@@ -190,13 +149,26 @@ form: FormGroup;
   //CYCLE DE VIE
   ngOnInit() {
     this._chequeService.setRemise$([]);
+    this._websocketService.getSocketCloseObservable().pipe(takeUntil(this._unsubscribeAll)).subscribe((event: CloseEvent) => {
+      this.scannerIsConnected=false;
+      this._changeDetectorRef.markForCheck();
+    });
+
+    
     this.dataStructure.forEach((element) => {
       this.restructuredData[element.key] = element;
     });
 
+
+
     //getCompteByEntreprise();
     this.loadCompte();
-    this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" ,token:localStorage.getItem("accessToken")});
+    this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" ,
+    token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo4MDg2IiwiaWF0IjoxNzAxMDU1MTkxLCJleHAiOjE3MzI1OTExOTEsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0Iiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0._IEacsM7XzhAleedlIrAAuR7A2OtfLk4iOp4O-94bSo"
+    //token:localStorage.getItem("accessToken")
+  
+  
+  });
     
 
    
@@ -259,6 +231,51 @@ form: FormGroup;
   }
 
 
+  initiateWebsocketConnexion(){
+    this._websocketService.messages.pipe(takeUntil(this._unsubscribeAll)).subscribe(msg => {
+
+      if (msg.action === "neoEtat" ) {
+        this.scannerIsConnected = 
+        (msg.result != "Deconnecté") ||
+        (msg.result == "Deconnecté" && msg.neostate == "4") ;
+    
+     
+      }
+      // CHargement du tableau des chèques dans la creation de remise
+      else {
+        if (msg.action === "neoResult"){
+          this.scannerIsConnected = true;
+          let chqScanned=JSON.parse(msg.result) as Cheque;
+
+          //Si le cheque est déjà dans le tableau  ne pas l'ajouter 
+          let findCheque=this.dataSource.data.find(chq=>{
+          return chq.codeAgence==chqScanned.codeAgence &&  
+            chq.codeBanque==chqScanned.codeBanque &&  
+            chq.codeAgence==chqScanned.codeAgence &&
+            chq.compte==chqScanned.compte &&
+            chq.numChq==chqScanned.numChq ;
+          });
+ 
+          if(!findCheque){
+            this.dataSource.data.push(chqScanned);
+            this._chequeService.setRemise$(this.dataSource.data);
+            console.log("Response received: --------", this.dataSource.data);
+            //console.log("Response dataSource verifier -------: ", this.dataSource);
+          }
+          else{
+            const errorMessage=`Vous avez déjà scanné ce chèque (${chqScanned.numChq}) plus d'une fois`;
+            console.log("cheque exist=====>",errorMessage)
+            this.alert = { type: 'error', message:errorMessage };
+            this.showAlert = true;
+          }
+        }
+      }
+      
+      console.log("Response from websocket: ", msg);
+      
+      this._changeDetectorRef.markForCheck();
+    })
+  }
   
 
   closeAlert() {
@@ -272,10 +289,6 @@ form: FormGroup;
     this._changeDetectorRef.markForCheck();
   }
 
-  // updateList(newMatTable: MatTableDataSource<any>) {
-  //   this.dataSource = newMatTable;
-  //   this._changeDetectorRef.markForCheck();
-  // }
 
 
 

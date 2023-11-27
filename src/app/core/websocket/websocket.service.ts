@@ -19,7 +19,7 @@ export interface Message {
 export class WebsocketService {
     private subject: AnonymousSubject<MessageEvent>;
     public messages: Subject<Message>;
-    private connexionState: BehaviorSubject<any> = new BehaviorSubject(null);
+    private socketCloseSubject: Subject<CloseEvent> = new Subject();
 
     constructor() {
         this.messages = <Subject<Message>>this.connect(environment.SOCKET_URL).pipe(
@@ -50,7 +50,11 @@ export class WebsocketService {
         let observable = new Observable((obs: Observer<MessageEvent>) => {
             ws.onmessage = obs.next.bind(obs);
             ws.onerror = obs.error.bind(obs);
-            ws.onclose = obs.complete.bind(obs);
+            ws.onclose =(event: CloseEvent) => {
+                obs.complete.bind(obs);
+                console.log("===============websocket closed============")
+                this.socketCloseSubject.next(event);            
+            };
             return ws.close.bind(ws);
         });
         let observer = {
@@ -72,5 +76,9 @@ export class WebsocketService {
             }
         };
         return new AnonymousSubject<MessageEvent>(observer, observable);
+    }
+
+    public getSocketCloseObservable(): Observable<CloseEvent> {
+        return this.socketCloseSubject.asObservable();
     }
 }
