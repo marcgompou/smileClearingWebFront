@@ -179,7 +179,7 @@ export class NavigationService {
       title: "CENTRE DE SUPPORT",
       subtitle: "",
       type: "group",
-      icon: "heroicons_outline:help",
+      
 
       
       children: [
