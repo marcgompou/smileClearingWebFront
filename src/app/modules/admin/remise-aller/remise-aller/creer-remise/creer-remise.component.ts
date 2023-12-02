@@ -163,9 +163,7 @@ form: FormGroup;
 
     //getCompteByEntreprise();
     this.loadCompte();
-    this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" ,
-    token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo4MDg2IiwiaWF0IjoxNzAxMDU1MTkxLCJleHAiOjE3MzI1OTExOTEsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0Iiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0._IEacsM7XzhAleedlIrAAuR7A2OtfLk4iOp4O-94bSo"
-    //token:localStorage.getItem("accessToken")
+    this._websocketService.messages.next({ command: this.command, action: this.action, result: "", neostate: "0" ,token:localStorage.getItem("accessToken")
   
   
   });
