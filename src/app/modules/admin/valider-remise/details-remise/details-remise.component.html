@@ -35,15 +35,15 @@
                 </div>
                 <div class="flex items-center sm:mt-0 sm:ml-4">
                     <form>
-                        <button class="ml-4" type="'button'" (click)="goBackToList()" mat-stroked-button
+                        <button class="ml-4 sm:mt-2" type="'button'" (click)="goBackToList()" mat-stroked-button
                             [color]="'accent'">
                             <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
-                            <span class="ml-1 ">Retour</span>
+                            <span class="ml-2">Retour</span>
                         </button>
-                        <button class="ml-4" mat-flat-button [color]="'warn'" (click)="supprimerRemise()"
+                        <button class="ml-4 sm:mt-2" mat-flat-button [color]="'warn'" (click)="supprimerRemise()"
                             [disabled]="montantTotal==0">
                             <mat-icon [svgIcon]="'mat_solid:delete'"></mat-icon>
-                            <span class="ml-1">Supprimer</span>
+                            <span class="ml-2">Supprimer</span>
                         </button>
                         <button class="ml-4 sm:mt-2" mat-flat-button [color]="'primary'" (click)="validerRemise()"
                             [disabled]="montantTotal==0">
