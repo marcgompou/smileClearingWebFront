@@ -51,7 +51,7 @@
                             </mat-select> 
                         </mat-form-field>
                         <button class="ml-4" mat-stroked-button  [disabled]="!scannerIsConnected"
-                            (click)="scannerCheque()">
+                            (click)="scannerCheque()" type="button">
                             <mat-icon  color="primary" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                             <span [ngClass]="{'text-primary': scannerIsConnected}">Scanner chèque</span>                        
                         </button>
