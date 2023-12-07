@@ -533,7 +533,7 @@ form: FormGroup;
     let message = {
       action: 'SCAN',
       command: '',
-      result: 'demarré'
+      result: ''
     }
 
     this.sent.push(message);
