@@ -39,8 +39,8 @@
               "moment",
               "quill",
               "lodash",
-              "pdfmake",
-              
+              "pdfmake"
+
             ],
             "assets": [
               "src/favicon-16x16.png",
