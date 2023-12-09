@@ -533,7 +533,9 @@ form: FormGroup;
     let message = {
       action: 'SCAN',
       command: '',
-      result: ''
+      result: '',
+      token:localStorage.getItem("accessToken")
+
     }
 
     this.sent.push(message);
