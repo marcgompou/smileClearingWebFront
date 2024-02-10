@@ -134,7 +134,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/prelevement-retour/prelevement-retour.module').then(m => m.PrelevementRetourModule)
             },
           
-
+            {
+                path: 'operationBancaire',
+                data: { breadcrumb: 'Operation Bancaire' },
+                loadChildren: () => import('app/modules/admin/prelevement-retour/prelevement-retour.module').then(m => m.PrelevementRetourModule)
+            },
             {
                 path: 'help-center',
                 data: { breadcrumb: 'Support' },
@@ -180,6 +184,12 @@ export const appRoutes: Route[] = [
                 path: 'parametreCompte',
                 data: { breadcrumb: 'Parametrage de compte bancaire' },
                 loadChildren: () => import('app/modules/admin/compte/compte.module').then(m => m.CompteModule)
+            },
+
+            {
+                path: 'parametreCompteAfb120',
+                data: { breadcrumb: 'Parametrage de compte bancaire AFB120' },
+                loadChildren: () => import('app/modules/admin/compteAfb120/compteAfb.module').then(m => m.CompteAfbModule)
             },
             {
                 path: 'monProfil',

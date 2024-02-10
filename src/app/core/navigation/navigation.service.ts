@@ -175,6 +175,36 @@ export class NavigationService {
     },
 
     {
+      id: "smilecheckweb-operationBancaire",
+      title: "OPERATION BANCAIRE",
+      subtitle: "",
+      type: "group",
+      icon: "heroicons_outline:transaction",
+      children: [
+        {
+          id: "pages",
+          title: "Transaction Bancaire",
+          type: "collapsable",
+          icon: "heroicons_outline:document-download",
+          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+          children: [
+            {
+              id: "operationBancaire",
+              title: "Transaction Bancaire",
+              type: "basic",
+              icon: "heroicons_outline:arrow-circle-down",
+              link: "/operationBancaire",
+              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+            },
+           
+          ],
+        },
+
+        
+      ],
+    },
+
+    {
       id: "support",
       title: "CENTRE DE SUPPORT",
       subtitle: "",
@@ -320,13 +350,20 @@ export class NavigationService {
             },
             {
               id: "parametreCompte",
-              title: "Parametrage Compte Bancaire",
+              title: "Parametrage Compte remise",
               type: "basic",
               //icon : 'heroicons_outline:support',
               link: "/parametreCompte",
               permission: SecService.permissions.ROLE_SUPERADMIN,
             },
-
+            {
+              id: "parametreCompteAfb120",
+              title: "Parametrage Compte AFB120",
+              type: "basic",
+              //icon : 'heroicons_outline:support',
+              link: "/parametreCompteAfb120",
+              permission: SecService.permissions.ROLE_SUPERADMIN,
+            },
             {
               id: "parametreAgence",
               title: "Parametrage Agence Bancaire",

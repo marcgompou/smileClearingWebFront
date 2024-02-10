@@ -12,7 +12,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { Subject, takeUntil } from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
-import { Compte } from "app/modules/admin/compte/compte/compte.types";
+import { CompteAfb } from "app/modules/admin/compteAfb120/compteAfb/compteAfb.types";
 import { CompteService } from "app/modules/admin/compte/compte/compte.service";
 import { MatDrawer } from "@angular/material/sidenav";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -31,19 +31,19 @@ import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"],
 })
-export class ListComponent implements OnInit {
+export class ListAfbComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;
   drawerMode: "side" | "over";
 
   /**DataTable */
   selectedRowIndex: any;
-  _dataSource: MatTableDataSource<Compte>;
+  _dataSource: MatTableDataSource<CompteAfb>;
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
 
   /**compte */
-  _compte: Compte[] = [];
+  _compte: CompteAfb[] = [];
   entreprises: any[];
   agences: any[];
   //utilisateur connecté
@@ -79,10 +79,7 @@ export class ListComponent implements OnInit {
       key: "designation",
       label: "Libelle du compte",
     },
-    {
-      key: "agenceRemettant",
-      label: "Agence Remettant",
-    },
+    
     {
       key: "statut",
       label: "Etat",
@@ -104,15 +101,14 @@ export class ListComponent implements OnInit {
     "agence",
     "compte",
     "cleRib",
-    "agenceRemettant",
     "statut",
   ];
 
   openCreateComponent(component: CreateComponent) {
     component.matDrawer = this.matDrawer;
     component.endpoint = "compteClient";
-    component.formTitle = "COMPTE";
-    component.constructorPayload = Compte.constructorCompte;
+    component.formTitle = "COMPTE AFB120";
+    component.constructorPayload = CompteAfb.constructorCompte;
     component.formFields = [
       {
         key: "banque",
@@ -170,6 +166,7 @@ export class ListComponent implements OnInit {
           //  email:true
         },
       },
+      
       {
         key: "identreprise",
         libelle: "Entreprise",
@@ -180,18 +177,7 @@ export class ListComponent implements OnInit {
         },
       },
 
-      {
-        key: "agenceRemettant",
-        libelle: "Agence remettant",
-        type: "select",
-        options: this._agences,
-        validators: {
-          min: 5,
-          max: 5,
-          required: true,
-          //  email:true
-        },
-      },
+      
     ];
   }
   /**
@@ -340,7 +326,7 @@ export class ListComponent implements OnInit {
    *
    * @param row
    */
-  selctedRow(row: Compte) {
+  selctedRow(row: CompteAfb) {
     this.selectedRowIndex = row.id;
     this._router.navigate(["./", this.selectedRowIndex], {
       relativeTo: this._activatedRoute,
