@@ -98,6 +98,7 @@ export class DetailsComponent implements OnInit,OnChanges {
   setupFormFields(): void {
 
     try{
+        let formFieldsValueTrans:any; 
         console.log("======>details form fields",this.formFields);
         this.formFields.forEach(field => {
           const validators = [];
@@ -135,7 +136,17 @@ export class DetailsComponent implements OnInit,OnChanges {
           if(!this.form){
             this.form = this.formBuilder.group({});
           }
-          this.form.addControl(field.key, this.formBuilder.control(fieldValue, validators));
+          formFieldsValueTrans=fieldValue;
+          if(field?.type==="text"||field?.type==="textarea"|| field?.type === undefined ){
+            if(fieldValue){
+              formFieldsValueTrans=fieldValue.trim();
+            }
+
+
+
+          }
+
+          this.form.addControl(field.key, this.formBuilder.control(formFieldsValueTrans, validators));
           if(field?.disabled){
             this.form.get(field.key).disable();
           }

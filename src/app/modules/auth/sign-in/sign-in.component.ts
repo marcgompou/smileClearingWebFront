@@ -202,7 +202,7 @@ export class AuthSignInComponent implements OnInit {
             [
               Validators.required,
               Validators.pattern(
-                /^(?=\D*\d)(?=[^a-z]*[a-z])(?=.*[$@$!%*?&])(?=[^A-Z]*[A-Z]).{8,30}$/
+                /^(?=\D*\d)(?=[^a-z]*[a-z])(?=.*[!@#$%^&*()_+{}|:"<>?`\-=[\];',./])(?=[^A-Z]*[A-Z]).{8,30}$/
               ),
             ],
           ],

@@ -9,7 +9,7 @@ import { LoadDetailsResolver } from '../common/details/details.resolvers';
 import { EntreprisesResolver } from '../entreprise/entreprise/entreprise.resolver';
 import { AgencesResolver } from '../agence/agence/agence.resolver';
 
-const endpoint = "compteClient";
+const endpoint = "compteAfb120";
 export const compteAfbRoutes: Route[] = [
     {
         path: '',

@@ -91,7 +91,6 @@ mat-icon-button
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('required')">Ce champ est obligatoire</mat-error>
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('minlength')">La longueur minimun "{{ fieldConfig.validators.min }}"</mat-error>
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('maxlength')">Longueur maximum "{{ fieldConfig.validators.max }}".</mat-error>
-                        <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('email')">Email invalide</mat-error>
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('regex')">Format incorrect</mat-error>
                     
                   </mat-form-field>
@@ -102,7 +101,6 @@ mat-icon-button
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('required')">Ce champ est obligatoire</mat-error>
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('minlength')">La longueur minimun "{{ fieldConfig.validators.min }}"</mat-error>
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('maxlength')">Longueur maximum "{{ fieldConfig.validators.max }}".</mat-error>
-                        <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('email')">Email invalide</mat-error>
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('regex')">Format incorrect</mat-error>
                   
                   </mat-form-field>

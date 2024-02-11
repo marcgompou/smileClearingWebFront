@@ -180,8 +180,7 @@
                         Mot de passe obligatoire
                     </mat-error>
                     <mat-error *ngIf="passwordModifForm.controls['password'].hasError('pattern')">
-                        Format du mot de passe invalide: il doit être de 8 caractères minimum et doit contenir au moins un chiffre, un caractère spécial, une lettre majuscule et une lettre minuscule
-                    </mat-error>
+                        Le format du mot de passe est incorrect : il doit comporter au moins 8 caractères, inclure au minimum un chiffre, un caractère spécial, une lettre majuscule et une lettre minuscule. Ces caractères peuvent être renseignés dans n'importe quel ordre.                    </mat-error>
                 </mat-form-field>
 
                 <!-- Password Confirm field -->

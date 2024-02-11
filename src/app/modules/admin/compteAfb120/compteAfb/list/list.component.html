@@ -72,8 +72,12 @@
                 <div class="relative">
 
 
-                    <app-table-data [endpoint]="'compteClient'" [title]="'Liste des Comptes'"
-                        [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
+                    <app-table-data [endpoint]="'compteAfb120'" 
+                        [title]="'Liste des Comptes'"
+                        [displayedColumns]="displayedColumns" 
+                        [dataStructure]="dataStructure" 
+                        [idRow]="'id'"
+                        [filterObject]="_filterObject"   
                         [canClick]="true">
                     </app-table-data>
                 </div>

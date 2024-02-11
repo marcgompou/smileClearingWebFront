@@ -84,7 +84,7 @@ export class CreateComponent implements OnInit {
           error: (error) => {
             console.error('Error : ', JSON.stringify(error));
             this.form.enable();
-            this.formNgForm.resetForm();
+            //this.formNgForm.resetForm();
             this.alert = { type: 'error', message: error.error.message??error.message };
             this.showAlert = true;
             this._changeDetectorRef.detectChanges();

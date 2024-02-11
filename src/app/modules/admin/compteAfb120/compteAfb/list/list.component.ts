@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
-import { Subject, takeUntil } from "rxjs";
+import { Subject, debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
 import { CompteAfb } from "app/modules/admin/compteAfb120/compteAfb/compteAfb.types";
 import { CompteService } from "app/modules/admin/compte/compte/compte.service";
@@ -25,6 +25,7 @@ import { ResponseContrat } from "app/modules/admin/common/contrat/response.type"
 import { CreateComponent } from "app/modules/admin/common/create/create/create.component";
 import { EntrepriseService } from "app/modules/admin/entreprise/entreprise/entreprise.service";
 import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
+import { TableDataService } from "app/modules/admin/common/table-data/table-data.services";
 
 @Component({
   selector: "app-list",
@@ -38,6 +39,8 @@ export class ListAfbComponent implements OnInit {
   /**DataTable */
   selectedRowIndex: any;
   _dataSource: MatTableDataSource<CompteAfb>;
+  private _searchTerms = new Subject<string>();
+  _filterObject:any={criteria:""};
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
@@ -106,7 +109,7 @@ export class ListAfbComponent implements OnInit {
 
   openCreateComponent(component: CreateComponent) {
     component.matDrawer = this.matDrawer;
-    component.endpoint = "compteClient";
+    component.endpoint = "compteAfb120";
     component.formTitle = "COMPTE AFB120";
     component.constructorPayload = CompteAfb.constructorCompte;
     component.formFields = [
@@ -148,11 +151,11 @@ export class ListAfbComponent implements OnInit {
       {
         key: "cleRib",
         libelle: "Cle Rib",
-
-        validators: {
+        validators: { 
           min: 2,
           max: 2,
           required: true,
+          regex:/\b\d{2}\b/
         },
       },
 
@@ -163,7 +166,6 @@ export class ListAfbComponent implements OnInit {
           min: 2,
           max: 50,
           required: true,
-          //  email:true
         },
       },
       
@@ -173,7 +175,7 @@ export class ListAfbComponent implements OnInit {
         type: "select",
         options: this._entreprises,
         validators: {
-          max: 100,
+          required: true
         },
       },
 
@@ -189,6 +191,8 @@ export class ListAfbComponent implements OnInit {
     private _userService: UserService,
     private _activatedRoute: ActivatedRoute,
     private _entrepriseService: EntrepriseService,
+    private _tableDataService: TableDataService,
+
     private _agenceService: AgenceService,
     private _router: Router,
     private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -225,6 +229,31 @@ export class ListAfbComponent implements OnInit {
         // Mark for check
         this._changeDetectorRef.markForCheck();
       });
+
+      this._searchTerms
+      .pipe(
+        debounceTime(300), // Adjust the debounce time (in milliseconds) as needed
+        distinctUntilChanged(),
+        // Ignore if the new term is the same as the previous term
+        filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
+        switchMap((term: string) => {
+          this._filterObject={ criteria: term }
+          this._tableDataService._filterObject = { criteria: term };
+          this._tableDataService._hasPagination = true;
+          this._tableDataService._paginationObject = {
+            page: 0,
+            size: 10
+          };
+          return this._tableDataService.getDatas();
+        })
+      )
+      .subscribe(() => {
+        // Perform any additional actions after the data is retrieved.
+        this._changeDetectorRef.detectChanges();
+      });
+
+
+
 
     this._entrepriseService.entreprises$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -319,8 +348,7 @@ export class ListAfbComponent implements OnInit {
    */
   applyFilter(event: Event): void {
     const query = (event.target as HTMLInputElement).value;
-    this._dataSource.filter = query.trim().toLowerCase();
-    this._changeDetectorRef.detectChanges();
+    this._searchTerms.next(query);
   }
   /**
    *

@@ -54,7 +54,7 @@ export class CompteService
     createCompte( compte: CompteAfb): Observable<any> {
         console.log('*------------------idEntreprise',compte.identreprise);
         return this._httpClient.post(
-            `${environment.apiUrl}/compteClient`,
+            `${environment.apiUrl}/compteAfb120`,
             compte
         ).pipe(
             catchError((error) => {
@@ -74,7 +74,7 @@ export class CompteService
      */
     update(id: string, compte: CompteAfb): Observable<any> {
         return this._httpClient.put(
-            `${environment.apiUrl}/compteClient/${id}`,
+            `${environment.apiUrl}/compteAfb120/${id}`,
             compte
         ).pipe(
             catchError((error) => {
@@ -92,7 +92,7 @@ export class CompteService
     get():Observable<any>
     {
 
-        return this._httpClient.get<any>(`${environment.apiUrl}/compteClient`).pipe(
+        return this._httpClient.get<any>(`${environment.apiUrl}/compteAfb120`).pipe(
             tap((response) => {
                 console.log('test======================================');
                 console.log(response);
@@ -128,7 +128,7 @@ export class CompteService
      */
     getById(id: string): Observable<any>
     {
-        return this._httpClient.get<any>(`${environment.apiUrl}/compteClient/${id}`).pipe(
+        return this._httpClient.get<any>(`${environment.apiUrl}/compteAfb120/${id}`).pipe(
             tap((response) => {
                 this._client.next(response);
             })
@@ -142,7 +142,7 @@ export class CompteService
      */
     delete(id: string): Observable<any>
     {
-        return this._httpClient.delete<any>(`${environment.apiUrl}/compteClient/${id}`).pipe(
+        return this._httpClient.delete<any>(`${environment.apiUrl}/compteAfb120/${id}`).pipe(
             catchError((error) =>{
                 throw error;
             }),
