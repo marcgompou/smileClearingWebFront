@@ -137,7 +137,7 @@ export const appRoutes: Route[] = [
             {
                 path: 'operationBancaire',
                 data: { breadcrumb: 'Operation Bancaire' },
-                loadChildren: () => import('app/modules/admin/prelevement-retour/prelevement-retour.module').then(m => m.PrelevementRetourModule)
+                loadChildren: () => import('app/modules/admin/transaction-bancaire/transaction-bancaire.module').then(m => m.TransactionBancaireModule)
             },
             {
                 path: 'help-center',
