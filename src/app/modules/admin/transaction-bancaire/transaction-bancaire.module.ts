@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ValiderTransactionComponent } from './transaction-bancaire/transaction-bancaire/transaction-bancaire.component';
+import { TransactionComponent } from './transaction-bancaire/transaction-bancaire/transaction-bancaire.component';
 import { RouterModule } from '@angular/router';
 import { validerTransactionRoutes } from './transaction-bancaire.routing';
 import { SharedModule } from 'app/shared/shared.module';
@@ -36,8 +36,8 @@ import { FuseAlertModule } from '@fuse/components/alert';
 
 @NgModule({
   declarations: [
-    ValiderTransactionComponent,
-    TransactionValiderComponent,
+   TransactionComponent,
+   TransactionValiderComponent,
    DetailsTransactionComponent,
   //  DetailsImprimerComponent,
   ],

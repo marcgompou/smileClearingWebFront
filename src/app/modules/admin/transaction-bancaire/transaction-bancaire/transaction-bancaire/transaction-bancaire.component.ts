@@ -24,7 +24,7 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 })
 
 
-export class ValiderTransactionComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
   // noData: any;
@@ -96,7 +96,6 @@ export class ValiderTransactionComponent implements OnInit, AfterViewInit, OnDes
   selectedRemise: any | null = null;
   selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  // remises$: Observable<Remise[]>;
   _prelevementList:any[]=[];
 
   compteClientForm = new FormGroup({
