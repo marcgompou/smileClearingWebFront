@@ -50,51 +50,45 @@ export class ValiderTransactionComponent implements OnInit, AfterViewInit, OnDes
 
   public dataStructure = [
 
-
-   
-    {
-      "key": "codeEmetteur",
-      "label": "Code emetteur"
-    },
+    
     {
       "key": "nomfichier",
       "label": "Nom fichier"
     },
 
     {
-      "key": "codeagence",
-      "label": "Code Agence"
+      "key": "montantAs",
+      "label": "Solde Veille"
     },
     {
-      "key": "compteCredite",
-      "label": "Compte crédité"
+      "key": "montantNs",
+      "label": "Nouveau Solde"
     },
     {
-      "key": "nbTransaction",
-      "label": "Nombre Transaction"
-
-    },
-    {
-      "key": "mtTotal",
-      "label": "Montant Total"
-
-    },
-    {
-      "key": "dateEdition",
-      "label": "Date edition",
+      "key": "dateAs",
+      "label": "Date Comptable veille",
       "type": "date"
     },
-
     {
-      "key": "dateEngistrement",
-      "label": "Date engistrement",
+      "key": "dateNs",
+      "label": "Date Comptable",
       "type": "date"
+    },
+    {
+      "key": "dateEnregistrement",
+      "label": "Date Enregistrement",
+      "type": "date"
+    },
+    {
+      "key": "numeroCompte",
+      "label": "numeroCompte",
+
     },
 
 
   ];
 
-  public displayedColumns: string[] = ['codeEmetteur', 'nomfichier', 'codeagence', 'compteCredite', 'nbTransaction', 'mtTotal', 'dateEdition', 'dateEngistrement'];
+  public displayedColumns: string[] = ['nomfichier', 'montantAs', 'montantNs', 'dateAs', 'dateNs', 'dateEnregistrement', 'numeroCompte'];
 
   sent = [];
   isLoading = false;
@@ -278,7 +272,7 @@ export class ValiderTransactionComponent implements OnInit, AfterViewInit, OnDes
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value?event.value:"0";
       console.log('Valeur sélectionnée :', this.statut);
-      this._tableDataService._endpoint=`prelevement?statut=${this.statut}`;
+      this._tableDataService._endpoint=`detailsCompteAfb120?=${this.statut}`;
       this._tableDataService.getDatasByPath().subscribe();
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence

@@ -49,15 +49,16 @@
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
                         
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mt-4" >
-                            <!-- <mat-label>Statut</mat-label> -->
-                            <mat-select formControlName="statut" matInput id="statut" required
-                                placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
-                                <mat-option value="1">A Valider</mat-option>
-                                <mat-option value="3">Exporté</mat-option>
-                                <mat-option value="16">Clôturé</mat-option>
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
+                            <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required>
+                                <mat-option hidden value="" style="color: #888; ">Choisir Compte</mat-option>
+                                <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.id"> 
+                                    {{compteEntreprise?.designation }} - {{ compteEntreprise?.compte?.slice(-4)}}
+                                </mat-option>
                             </mat-select> 
                         </mat-form-field>
+
+                       
                        
                     </form>
                 </div>

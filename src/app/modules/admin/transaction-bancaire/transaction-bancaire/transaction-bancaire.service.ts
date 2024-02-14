@@ -12,6 +12,10 @@ export class ValiderTransactionService {
   private _transactions: BehaviorSubject<Transaction[] | null> = new BehaviorSubject(null);
   private _transactionRemise: BehaviorSubject<any | null> = new BehaviorSubject(null);
 
+  private _data: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _entreprise: BehaviorSubject<any> = new BehaviorSubject(null);
+
+
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _transactionAvalides: BehaviorSubject< Transaction []| null> = new BehaviorSubject(null);
   
@@ -60,15 +64,23 @@ export class ValiderTransactionService {
   }
 
 
-  getTransactionRemiseById(id): Observable<any>
+  getTransaction(dateDebut:string,dateFin:string,idEntreprise:any=null): Observable<any>
   {
-      return this._httpClient.get<any>(`${environment.apiUrl}/transaction/${id}`).pipe(
-          tap((response) => {
-            console.log('test======================================');
-            console.log(response);
-              this._transactionRemise.next(response);
-          })
-      );
+    let params:HttpParams = new HttpParams();
+    params = params.set('dateDebut', dateDebut);
+    params = params.set('dateFin', dateFin);
+    if(idEntreprise){
+        params = params.set('idEntreprise', idEntreprise);
+    }
+    return this._httpClient.get<any>(`${environment.apiUrl}/`,
+    {
+        params:params   
+    }).pipe(
+        tap((response) => {
+            console.log("=Service data getDataDashboard response========>", response)
+            this._data.next(response);
+        })
+    );
   }
 
 

@@ -14,7 +14,7 @@ import { ValiderTransactionService } from './transaction-bancaire.service';
        * Constructor
        */
     constructor(
-        private _prelevementService: ValiderTransactionService,
+        private _transactionService: ValiderTransactionService,
       private _router: Router)
     {
     }
@@ -23,16 +23,20 @@ import { ValiderTransactionService } from './transaction-bancaire.service';
   
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
     {
-          return this._prelevementService.getTransactionRemiseById(route.paramMap.get('id')).pipe(
-              // Error here means the requested product is not available
-              catchError((error) => {
-                  console.error("--------------------------error resolver LoadPrelevRemiseByIdResolver-----------",error);  
-                  // Navigate to there
-                  this._router.navigateByUrl("home");
-                  // Throw an error
-                  throw error;
-              })
-          );
+      const today = new Date();
+
+      // Set the time to the beginning of the day (0:00:00)
+      today.setHours(0, 0, 0, 0);
+
+      // Calculate the end of the day (23:59:59)
+      const endOfDay = new Date(today);
+      endOfDay.setHours(23, 59, 59, 999);
+      const dateDebut = today.toISOString();
+      const dateFin = endOfDay.toISOString();
+        
+        return this._transactionService.getTransaction(dateDebut,dateFin);
+
+         
     }
   
   }

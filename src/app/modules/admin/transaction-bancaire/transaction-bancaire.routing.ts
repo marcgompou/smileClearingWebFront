@@ -11,8 +11,8 @@ import { ValiderTransactionComponent } from './transaction-bancaire/transaction-
 import { TransactionValiderComponent } from './transaction-bancaire/transaction-bancaire.component';
 import { LoadPrelevRemiseByIdResolver } from './transaction-bancaire/transaction-bancaire.resolver';
 
-const endpoint = "prelevement";
-const endpointDetails = "prelevement/details";
+const endpoint = "detailsCompteAfb120";
+const endpointDetails = "detailsCompteAfb120/details";
 
 export const validerTransactionRoutes: Route[] =
 [
