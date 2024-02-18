@@ -186,7 +186,7 @@ export class NavigationService {
           title: "Transaction Bancaire",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
-          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT, //TODO
           children: [
             {
               id: "operationBancaire",

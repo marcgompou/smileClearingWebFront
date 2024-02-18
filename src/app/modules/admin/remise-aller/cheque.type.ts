@@ -25,6 +25,6 @@ export class CompteEntreprises {
     cleRib: string;
     designation: string;
     statut?: string;
-    agenceRemettant: string;
+    agenceRemettant?: string;
     identreprise: number;}
   

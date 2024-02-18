@@ -3,10 +3,9 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, O
 import { FormBuilder, FormControl, FormGroup, NgForm, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { WebsocketService } from 'app/core/websocket/websocket.service';
 import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
-import { MatIconModule } from '@angular/material/icon';
+// import { MatIconModule } from '@angular/material/icon';
 import { ApexOptions } from 'apexcharts';
 import { DashboardService } from '../dashboard.service';
 import { Router } from '@angular/router';

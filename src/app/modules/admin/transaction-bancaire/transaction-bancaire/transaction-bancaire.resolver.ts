@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
-import { ValiderTransactionService } from './transaction-bancaire.service';
+import {TransactionService } from './transaction-bancaire.service';
 //import { ValiderRemiseService } from './valider-remise.service';
 
 
@@ -14,7 +14,7 @@ import { ValiderTransactionService } from './transaction-bancaire.service';
        * Constructor
        */
     constructor(
-        private _transactionService: ValiderTransactionService,
+        private _transactionService: TransactionService,
       private _router: Router)
     {
     }
@@ -40,3 +40,32 @@ import { ValiderTransactionService } from './transaction-bancaire.service';
     }
   
   }
+@Injectable({
+  providedIn: 'root'
+})
+export class CompteEntreprisesAfb120Resolver implements Resolve<any>
+{
+    /**
+     * Constructor
+     */
+    constructor( private _transactionService: TransactionService)
+    {
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Resolver
+     *
+     * @param route
+     * @param state
+     */
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+    {
+        return this._transactionService.getCompteAll();
+    }
+
+    
+}

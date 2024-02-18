@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <form class="flex items-center sm:mt-0 sm:ml-4" [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
+                    <form class="flex items-center sm:mt-0 sm:ml-4" [formGroup]="form" (ngSubmit)="onSubmit()">
                         
                         <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-60 mr-2 mt-4" >
                             <mat-date-range-input [rangePicker]="picker">
@@ -50,14 +50,28 @@
                         </mat-form-field>
                         
                         <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
-                            <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required>
-                                <mat-option hidden value="" style="color: #888; ">Choisir Compte</mat-option>
-                                <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.id"> 
+                            <mat-select formControlName="compte" matInput id="compte" required>
+                                <!-- <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.compte"> 
                                     {{compteEntreprise?.designation }} - {{ compteEntreprise?.compte?.slice(-4)}}
-                                </mat-option>
+                                </mat-option> -->
+                                <ng-container *ngIf="listeCompteEntreprise && listeCompteEntreprise.length > 0">
+                                    <mat-option *ngFor="let compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.compte"> 
+                                        {{compteEntreprise?.designation}} - {{compteEntreprise?.compte?.slice(-4)}}
+                                    </mat-option>
+                                </ng-container>
+                                <ng-container *ngIf="!listeCompteEntreprise || listeCompteEntreprise?.length === 0">
+                                    <mat-option [value]="0">
+                                        compteEntreprise?.designation
+                                    </mat-option>
+                                </ng-container>
+                                
                             </mat-select> 
                         </mat-form-field>
-
+                        <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
+                            [disabled]="form.invalid || form.controls?.compte?.value == '0'">
+                            <mat-icon [svgIcon]="'mat_solid:search'"></mat-icon>
+                            <span>Rechercher</span>
+                        </button>
                        
                        
                     </form>
@@ -83,11 +97,14 @@
                         <!-- TABLEAU -->
                         
 
-                        <app-table-data [endpoint]="'prelevement'" [title]="'Liste des prelevements'"
-                        [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
-                        [canClick]="true">
-
-                    </app-table-data>
+                        <app-table-data 
+                            [endpoint]="'detailsCompteAfb120'" 
+                            [filterObject]="_filterObject"
+                            [displayedColumns]="displayedColumns" 
+                            [dataStructure]="dataStructure" 
+                            [idRow]="'id'"
+                            [canClick]="true">
+                        </app-table-data>
 
                     </div>
 

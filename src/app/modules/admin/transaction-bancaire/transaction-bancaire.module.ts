@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionComponent } from './transaction-bancaire/transaction-bancaire/transaction-bancaire.component';
 import { RouterModule } from '@angular/router';
-import { validerTransactionRoutes } from './transaction-bancaire.routing';
+import { transactionRoutes } from './transaction-bancaire.routing';
 import { SharedModule } from 'app/shared/shared.module';
-import { StatusComponent } from '../common/status/status.component';
-import { TransactionValiderComponent } from './transaction-bancaire/transaction-bancaire.component';
+import { TransactionBancaireComponent } from './transaction-bancaire/transaction-bancaire.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -36,8 +35,8 @@ import { FuseAlertModule } from '@fuse/components/alert';
 
 @NgModule({
   declarations: [
+  TransactionBancaireComponent,
    TransactionComponent,
-   TransactionValiderComponent,
    DetailsTransactionComponent,
   //  DetailsImprimerComponent,
   ],
@@ -67,7 +66,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
         DetailsModule,
         MatAutocompleteModule,
         FuseAlertModule,
-        RouterModule.forChild(validerTransactionRoutes)
+        RouterModule.forChild(transactionRoutes)
 
   ]
 })

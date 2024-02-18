@@ -5,14 +5,14 @@
                 <!-- Column Structure -->
                 <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
                     <th mat-header-cell *matHeaderCellDef class="mat-header-style"> {{ restructuredData[column]?.label || ""  }}</th>
-                    <ng-container *ngIf="restructuredData[column].type!='status' ">
+                    <ng-container *ngIf="restructuredData[column]?.type!='status' ">
                         <td  mat-cell *matCellDef="let element" class="mat-column-style" > 
-                            {{element[column] | dataTablePipe: restructuredData[column].type}}
+                            {{element[column] | dataTablePipe: restructuredData[column]?.type}}
                         </td>
                     </ng-container>
                     
                     <!--Status-->
-                    <ng-container *ngIf="restructuredData[column].type=='status'">
+                    <ng-container *ngIf="restructuredData[column]?.type=='status'">
                         <td  mat-cell *matCellDef="let element" class="min-w-46 items-center"> 
                         <span [appStatusPill]="restructuredData[column]" [stateValue]="element[column]" >
                             {{    element[column] }}

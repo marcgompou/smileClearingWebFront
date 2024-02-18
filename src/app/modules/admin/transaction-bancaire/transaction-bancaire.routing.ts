@@ -2,17 +2,17 @@ import { Route } from '@angular/router';
 import { LoadDataResolver, LoadSansPaginationDataResolver } from '../common/table-data/table-data.resolver';
 import { DetailsTransactionComponent } from './transaction-bancaire/details-transaction/details-transaction.component';
 import { TransactionComponent } from './transaction-bancaire/transaction-bancaire/transaction-bancaire.component';
-import { TransactionValiderComponent } from './transaction-bancaire/transaction-bancaire.component';
-import { LoadPrelevRemiseByIdResolver } from './transaction-bancaire/transaction-bancaire.resolver';
+import { TransactionBancaireComponent } from './transaction-bancaire/transaction-bancaire.component';
+import { CompteEntreprisesAfb120Resolver, LoadPrelevRemiseByIdResolver } from './transaction-bancaire/transaction-bancaire.resolver';
 
 const endpoint = "detailsCompteAfb120";
 const endpointDetails = "detailsCompteAfb120/details";
 
-export const validerTransactionRoutes: Route[] =
+export const transactionRoutes: Route[] =
 [
     {
         path: '',
-        component: TransactionValiderComponent,
+        component: TransactionBancaireComponent,
         data: { breadcrumb: 'Liste', endpoint: endpoint },
         children: [
             {
@@ -21,7 +21,7 @@ export const validerTransactionRoutes: Route[] =
                 resolve: {
                     //data: LoadSansPaginationDataResolver,
                     data: LoadDataResolver,
-
+                    compteEntreprise:CompteEntreprisesAfb120Resolver
                 },
             },
             {
@@ -29,7 +29,7 @@ export const validerTransactionRoutes: Route[] =
                 component: DetailsTransactionComponent,
                 resolve: {
                     dataDetails: LoadSansPaginationDataResolver, //LoadDataResolver
-                    prelevRemise:LoadPrelevRemiseByIdResolver
+                    // prelevRemise:LoadPrelevRemiseByIdResolver
                 },
                 data: { breadcrumb: 'Details transaction', endpoint: endpointDetails },
 

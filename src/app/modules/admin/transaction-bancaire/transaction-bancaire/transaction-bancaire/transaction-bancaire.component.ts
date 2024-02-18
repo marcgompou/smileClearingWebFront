@@ -1,11 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl, NgForm } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable } from 'rxjs';
 //import { Transaction } from '../../transaction.type';
 import { fuseAnimations } from '@fuse/animations';
-import { ValiderTransactionService } from '../transaction-bancaire.service';
+import { TransactionService } from '../transaction-bancaire.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
@@ -33,9 +33,17 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
   montantTotal: number = 0;
   //nombreRemise: number = 0;
   statut: string = "0";
+  _filterObject:any={criteria:""}
+
+
+  dateDebut="";
+  dateFin="";
+  compte="0"
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
+  @ViewChild('formNgForm') formNgForm: NgForm;
+  form: FormGroup = new FormGroup({})
 
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
@@ -52,7 +60,7 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
 
     
     {
-      "key": "nomfichier",
+      "key": "nomFichier",
       "label": "Nom fichier"
     },
 
@@ -88,107 +96,103 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ];
 
-  public displayedColumns: string[] = ['nomfichier', 'montantAs', 'montantNs', 'dateAs', 'dateNs', 'dateEnregistrement', 'numeroCompte'];
+  public displayedColumns: string[] = ['nomFichier', 'montantAs', 'montantNs', 'dateAs', 'dateNs', 'dateEnregistrement', 'numeroCompte'];
 
-  sent = [];
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
-  selectedRemise: any | null = null;
-  selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  _prelevementList:any[]=[];
 
-  compteClientForm = new FormGroup({
-    statut: new FormControl('', Validators.required),
+  // compteClientForm = new FormGroup({
+  //   statut: new FormControl('', Validators.required),
 
-  })
+  // })
 
  
 
 
 
   //CYCLE DE VIE
-  ngOnInit() {
-
-    
-    this._tableDataService.datas$.subscribe((res:any) => {
-      this._prelevementList=res.data as any[];
-      this.dataSource = new MatTableDataSource(res.data);
-
-      this.montantTotal=this._prelevementList.reduce((a, b) => a + b.mtTotal, 0);
-
-    });
-    //getCompteByEntreprise();
-    this.loadCompte();
-   
-
-    // Subscribe to search input field value changes
-    this.searchInputControl.valueChanges
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        debounceTime(300),
-        switchMap((query) => {
-          this.closeDetails();
-          this.isLoading = true;
-          //TODO RETURN CORRECT VALUE
-          return null;
-          //   return this._inventoryService.getProducts(0, 10, 'name', 'asc', query);
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe();
-
-      this.compteClientForm = this._formBuilder.group({
-        statut: ['1']
-        //mySelect: ['option2'] // Set the default value here
-      });
-
-  }
+  
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
-    private _prelevementService: ValiderTransactionService,
     private _activatedRoute: ActivatedRoute,
     private _tableDataService:TableDataService,
     private _router: Router,
-    private _validerTransactionService:ValiderTransactionService,
-
-
+    private _transactionService:TransactionService
   ) {
 
 
 
   }
+  ngOnInit() {
 
+    
+    this._tableDataService.datas$.subscribe((res:any) => {
+      console.log("===========>", res.data);
+      this.dataSource = new MatTableDataSource(res.data);
+    });
+    this.form = this._formBuilder.group({
+      dateDebut: [new Date().toISOString().split('T')[0], [Validators.required]],
+      dateFin: [new Date().toISOString().split('T')[0], [Validators.required]],
+      compte:['1', [Validators.required]],
+    });
+    this.loadCompte();
+  
+  }
+
+  onSubmit(){
+
+    this.dateDebut = new Date(this.form.get('dateDebut').value).toISOString().split('T')[0];
+    this.dateFin = new Date(this.form.get('dateFin').value).toISOString().split('T')[0];
+    this.compte=this.form.get('compte').value;
+
+    console.log("dateDebut:", this.dateDebut);
+    console.log("dateFin:",this.dateFin);
+
+    console.log("compte:",this.form.get('compte').value);
+
+    this._filterObject={ 
+      compte:this.form.get('compte').value,
+      dateDebut:this.dateDebut,
+      dateFin:this.dateFin,
+    };
+
+    this.filtering();
+
+    this._tableDataService.getDatas().subscribe();
+
+
+  }
+
+  filtering(): void {
+    this._tableDataService._endpoint = `detailsCompteAfb120`;
+    this._tableDataService._filterObject = this._filterObject
+    this._tableDataService._hasPagination = true;
+    this._tableDataService._paginationObject = {
+      page: 0,
+      size: 10
+    };
+  }
 
 
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   }
-  selectedRow(row) {
+  
 
-    const index = this.dataSource.data.indexOf(row);
-    this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
-    this._changeDetectorRef.markForCheck();
-    this.remiseData = row;
+  // updateList(newMatTable: MatTableDataSource<any>) {
+  //   this.dataSource = newMatTable;
+  //   this._changeDetectorRef.markForCheck();
+  // }
 
+  // getColumnHeaderText(column: string): string {
 
-  }
+  //   //  console.log("column===>",column)
+  //   let found = this.dataStructure.find(e => e.key == column);
+  //   return found ? found.label : "";
 
-  updateList(newMatTable: MatTableDataSource<any>) {
-    this.dataSource = newMatTable;
-    this._changeDetectorRef.markForCheck();
-  }
-
-  getColumnHeaderText(column: string): string {
-
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-
-  }
+  // }
 
   onBackdropClicked(): void {
     // Go back to the list
@@ -200,13 +204,25 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   loadCompte() {
-    this._prelevementService.TransactionAvalides$.pipe(takeUntil(this._unsubscribeAll)
+    this._transactionService.compteEntreprises$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
       next: (response: any) => {
         console.log("Response compteEntreprises ===>", response);
-        if (response == null) { response = []; }
+        if (response == null || response?.data == undefined || response?.data?.length == 0) {
+          
+          let respDefault:any={
+            data:[]
+          }
+          respDefault.data[0]={
+            compte:"0",
+            designation:"Aucun compte disponible"
+          }
+          response = respDefault;
+        
+        }
 
         this.listeCompteEntreprise = response.data;
+        this.form.get('compte').setValue(response.data[0].compte);
 
         this._changeDetectorRef.markForCheck();
       },
@@ -245,20 +261,15 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
       this._sort.sortChange
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe(() => {
-          // Reset back to the first page
           this._paginator.pageIndex = 0;
-
           // Close the details
-          this.closeDetails();
+         // this.closeDetails();
         });
 
-      // Get products if sort or page changes
       merge(this._sort.sortChange, this._paginator.page).pipe(
         switchMap(() => {
-          this.closeDetails();
+         // this.closeDetails();
           this.isLoading = true;
-          // return this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-          //TODO RETURN CORRECT VALUE
           return null;
         }),
         map(() => {
@@ -269,9 +280,11 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSelectChange(event: MatSelectChange) {
-    this.statut = event.value?event.value:"0";
-      console.log('Valeur sélectionnée :', this.statut);
-      this._tableDataService._endpoint=`detailsCompteAfb120?=${this.statut}`;
+    this.compte = event.value?event.value:"0";
+      this._filterObject={
+        compte:this.compte
+      }
+      this.filtering();
       this._tableDataService.getDatasByPath().subscribe();
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence
@@ -295,9 +308,7 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
   //     })
   // );
 
-  onSubmit() {
-
-  }
+ 
 
 
 
@@ -315,22 +326,14 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
-  closeDetails(): void {
-    this.selectedRemise = null;
-  }
-
-
-
-  toggleDetails(numChq: string): void {
-    // If the product is already selected...
-    if (this.selectedRemise && this.selectedRemise.numChq === numChq) {
-      // Close the details
-      this.closeDetails();
-      return;
-    }
 
 
 
 
-  }
+
+
+
+
+
+  
 }

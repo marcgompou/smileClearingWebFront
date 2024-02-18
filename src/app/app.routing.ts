@@ -193,7 +193,7 @@ export const appRoutes: Route[] = [
             },
             {
                 path: 'monProfil',
-                data: { breadcrumb: 'Mon profile' },
+                data: { breadcrumb: 'Mon profil' },
                 loadChildren: () => import('app/modules/admin/user-profile/user-profile.module').then(m => m.UserProfileModule)
             },
             {

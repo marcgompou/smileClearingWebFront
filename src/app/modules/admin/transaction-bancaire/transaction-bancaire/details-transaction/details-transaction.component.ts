@@ -7,7 +7,7 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
-import { ValiderTransactionService } from '../transaction-bancaire.service';
+import { TransactionService } from '../transaction-bancaire.service';
 import {  MatDialog } from '@angular/material/dialog';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
@@ -112,7 +112,7 @@ export class DetailsTransactionComponent implements OnInit {
 
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
-    private _validerTransactionService:ValiderTransactionService,
+    private _transactionService :TransactionService,
     private _fuseMediaWatcherService: FuseMediaWatcherService,
     private _tableDataService:TableDataService,
     private _activatedRoute: ActivatedRoute,
@@ -120,7 +120,7 @@ export class DetailsTransactionComponent implements OnInit {
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des transaction de tableData common
-    this._validerTransactionService.transactionRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+    this._transactionService.transactionRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("------------------------------------------------------------->",response?.data) 
       this.transactionData=response?.data;
       this.montantTotal=response?.data?.mtTotal || 0;
@@ -160,40 +160,40 @@ export class DetailsTransactionComponent implements OnInit {
 
   validerTransaction(){
     console.log("valider transaction id", this.transactionData);
-    this._validerTransactionService.validerTransaction(this.transactionData.id).pipe().subscribe({
-      next:(response)=>{
-          console.log(response);
-          this.goBackToList();
-          this.showAlert = true;
-      }
+    // this._transactionService.validerTransaction(this.transactionData.id).pipe().subscribe({
+    //   next:(response)=>{
+    //       console.log(response);
+    //       this.goBackToList();
+    //       this.showAlert = true;
+    //   }
       
-    });
+    // });
   }
   AnnulerTransaction(){
     console.log("valider transaction id", this.transactionData);
-    this._validerTransactionService.validerTransaction(this.transactionData.id).pipe().subscribe({
-      next:(response)=>{
-          console.log(response);
-          this.goBackToList();
-          this.showAlert = true;
-      }
+    // this._transactionService.validerTransaction(this.transactionData.id).pipe().subscribe({
+    //   next:(response)=>{
+    //       console.log(response);
+    //       this.goBackToList();
+    //       this.showAlert = true;
+    //   }
       
-    });
+    // });
   }
 
   telechargerTransaction(): void {
     
-    this._validerTransactionService.telechargerRetourTransaction(this.transactionData.id).pipe().subscribe(blob => {
-      // Create a temporary anchor element and trigger the download
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.download = this.transactionData.nomfichier+".emi"; // Set the desired file name
-      console.log("statut prel",this.transactionData.statut);
-      link.click();
-    });
+    // this._transactionService.telechargerRetourTransaction(this.transactionData.id).pipe().subscribe(blob => {
+    //   // Create a temporary anchor element and trigger the download
+    //   const link = document.createElement('a');
+    //   link.href = window.URL.createObjectURL(blob);
+    //   link.download = this.transactionData.nomfichier+".emi"; // Set the desired file name
+    //   console.log("statut prel",this.transactionData.statut);
+    //   link.click();
+    // });
   }
   telechargerRelance(): void {
-    this._validerTransactionService.telechargerRelance(this.transactionData.id).pipe().subscribe();
+    // this._transactionService.telechargerRelance(this.transactionData.id).pipe().subscribe();
     
   }
 
