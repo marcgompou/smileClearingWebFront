@@ -21,6 +21,8 @@ export class DetailsTransactionComponent implements OnInit {
   drawerMode: 'side' | 'over';
   transactionData: any;
   montantTotal: number = 0;
+  ancienSolde: number = 0;
+  nouveauSolde: number = 0;
   nombreRemise: number = 0;
   canRelance: boolean = false;
   id: string = "";
@@ -110,10 +112,11 @@ export class DetailsTransactionComponent implements OnInit {
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des transaction de tableData common
-    this._transactionService.transactionRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("------------------------------------------------------------->",response?.data) 
+    this._transactionService.transactionBancaire$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("------------------------------------------------------------->TESTTTT",response?.data) 
       this.transactionData=response?.data;
-      this.montantTotal=response?.data?.mtTotal || 0;
+      this.nouveauSolde=response?.data?.montantNs || 0;
+      this.ancienSolde=response?.data?.montantAs || 0;
      
     });
     this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{

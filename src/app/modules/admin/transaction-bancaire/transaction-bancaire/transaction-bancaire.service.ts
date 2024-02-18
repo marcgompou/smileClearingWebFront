@@ -11,7 +11,7 @@ import { CompteEntreprises } from '../../remise-aller/cheque.type';
 export class TransactionService {
   // private _remise: BehaviorSubject<Remise | null> = new BehaviorSubject(null);
   private _transactions: BehaviorSubject<Transaction[] | null> = new BehaviorSubject(null);
-  private _transactionRemise: BehaviorSubject<any | null> = new BehaviorSubject(null);
+  private _transactionBancaire: BehaviorSubject<any | null> = new BehaviorSubject(null);
   private _compteAfbEntreprises: BehaviorSubject<CompteEntreprises[]|null>=new BehaviorSubject(null);
   private _data: BehaviorSubject<any> = new BehaviorSubject(null);
  // private _entreprise: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -32,8 +32,8 @@ export class TransactionService {
   get transaction$(): Observable<any[]> {
     return this._transactions.asObservable();
   }
-  get transactionRemise$(): Observable<any> {
-    return this._transactionRemise.asObservable();
+  get transactionBancaire$(): Observable<any> {
+    return this._transactionBancaire.asObservable();
   }
 
   get titulaire$(): Observable<any[]> {
@@ -54,8 +54,8 @@ export class TransactionService {
     this._transactions.next(newArray);
   }
 
-  public setTransactionRemise$(newArray: Transaction[]): void {
-    this._transactionRemise.next(newArray);
+  public setTransactionBancaire$(newArray: Transaction[]): void {
+    this._transactionBancaire.next(newArray);
   }
 
   public getCompteAll(): Observable<any>
@@ -89,7 +89,16 @@ export class TransactionService {
     );
   }
 
-
+  getTrasactionById(id): Observable<any>
+  {
+      return this._httpClient.get<any>(`${environment.apiUrl}/detailsCompteAfb120/${id}`).pipe(
+          tap((response) => {
+            console.log('test======================================');
+            console.log(response);
+              this._transactionBancaire.next(response);
+          })
+      );
+  }
    //Table data service
 
   // updateDataTable(value: any) {
@@ -112,7 +121,7 @@ export class TransactionService {
 
    telechargerTransactionAfb(id:string): Observable<Blob> {
      // Make a GET request to the file URL, specifying responseType as 'blob'
-     return this._httpClient.get(`${environment.apiUrl}/transaction/telechargementRetour/${id}`, { responseType: 'blob' });
+     return this._httpClient.get(`${environment.apiUrl}/transaction/telechargement/${id}`, { responseType: 'blob' });
    }
 
 

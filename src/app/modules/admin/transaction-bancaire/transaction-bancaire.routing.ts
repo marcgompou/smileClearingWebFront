@@ -3,7 +3,7 @@ import { LoadDataResolver, LoadSansPaginationDataResolver } from '../common/tabl
 import { DetailsTransactionComponent } from './transaction-bancaire/details-transaction/details-transaction.component';
 import { TransactionComponent } from './transaction-bancaire/transaction-bancaire/transaction-bancaire.component';
 import { TransactionBancaireComponent } from './transaction-bancaire/transaction-bancaire.component';
-import { CompteEntreprisesAfb120Resolver, LoadPrelevRemiseByIdResolver } from './transaction-bancaire/transaction-bancaire.resolver';
+import { CompteEntreprisesAfb120Resolver,  LoadTransactionBancaireByIdResolver } from './transaction-bancaire/transaction-bancaire.resolver';
 
 const endpoint = "detailsCompteAfb120";
 const endpointDetails = "detailsCompteAfb120/details";
@@ -29,7 +29,8 @@ export const transactionRoutes: Route[] =
                 component: DetailsTransactionComponent,
                 resolve: {
                     dataDetails: LoadSansPaginationDataResolver, //LoadDataResolver
-                    // prelevRemise:LoadPrelevRemiseByIdResolver
+                     //prelevRemise:LoadPrelevRemiseByIdResolver
+                     TransacBancaire:LoadTransactionBancaireByIdResolver
                 },
                 data: { breadcrumb: 'Details transaction', endpoint: endpointDetails },
 

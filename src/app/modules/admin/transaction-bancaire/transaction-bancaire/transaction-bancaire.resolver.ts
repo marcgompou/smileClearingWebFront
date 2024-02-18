@@ -38,6 +38,7 @@ import {TransactionService } from './transaction-bancaire.service';
 
          
     }
+   
   
   }
 @Injectable({
@@ -68,4 +69,34 @@ export class CompteEntreprisesAfb120Resolver implements Resolve<any>
     }
 
     
+}
+@Injectable({
+  providedIn: 'root'
+})
+export class LoadTransactionBancaireByIdResolver implements Resolve<boolean> {
+  /**
+     * Constructor
+     */
+  constructor(
+      private _transactionService: TransactionService,
+    private _router: Router)
+  {
+  }
+
+
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+  {
+        return this._transactionService.getTrasactionById(route.paramMap.get('id')).pipe(
+            // Error here means the requested product is not available
+            catchError((error) => {
+                console.error("--------------------------error resolver LoadTransactionBancaireByIdResolver-----------",error);  
+                // Navigate to there
+                this._router.navigateByUrl("home");
+                // Throw an error
+                throw error;
+            })
+        );
+  }
+
 }

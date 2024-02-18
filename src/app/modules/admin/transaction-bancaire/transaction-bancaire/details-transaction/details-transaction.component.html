@@ -37,12 +37,11 @@
                             <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
                             <span class="ml-2">Retour</span>
                         </button>
-                        <ng-container *ngIf="transactionData?.nomfichier">
-                            <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerTransaction()" >
+                       <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerTransaction()" >
                                 <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
                                 <span class="ml-2">Générer Fichier AFB120</span>
                             </button>
-                        </ng-container>
+                        
                       
                     </form>
                 </div>
@@ -55,12 +54,17 @@
                         <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Fichier Transaction : {{ transactionData?.nomfichier }}
+                                    Fichier Transaction : {{ transactionData?.nomFichier }}
                                 </span>
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
+                                    Ancien Solde : {{ ancienSolde | currency:'CFA':'symbol':'1.0-2' }}
+                                </span>
+                            </ng-container>
+                            <ng-container>
+                                <span class="inline-block align-middle">
+                                    Nouveau Solde : {{ nouveauSolde | currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>
                         </div>
