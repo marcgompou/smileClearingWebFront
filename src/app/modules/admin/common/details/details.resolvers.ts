@@ -37,10 +37,10 @@ export class LoadDetailsResolver implements Resolve<boolean> {
 
                 // Log the error
                 console.error(error);
-
+                console.error(`Could not find endpoint ${endpoint}`);
                 // Get the parent url
                 const parentUrl = state.url.split('/').slice(0, -1).join('/');
-
+                this._detailService.setId(null);
                 // Navigate to there
                 this._router.navigateByUrl(parentUrl);
 

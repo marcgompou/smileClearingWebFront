@@ -102,15 +102,23 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedRow(row) {
     if (this.canClick) {
-      this._router.navigate(["./details", row[this.idRow]], {
-        relativeTo: this._activatedRoute,
-      });
-      this.selectedRowIndex=row[this.idRow]
-      this._tableDateService.setData$(row);
-      this._changeDetectorRef.markForCheck();
+      try {
+        this._router.navigate(["./details", row[this.idRow]], {
+          relativeTo: this._activatedRoute,
+        });
+  
+        this.selectedRowIndex = row[this.idRow];
+        this._tableDateService.setData$(row);
+        this._changeDetectorRef.markForCheck();
+      } catch (error) {
+        console.log("error in table data", error);
+        this.selectedRowIndex =undefined;    
+        this._tableDateService.setData$(null);  
+         console.error("Une erreur est survenue lors de la sélection de la ligne : ", error);
+        // Vous pouvez également afficher un message à l'utilisateur, enregistrer l'erreur dans un service de journalisation, etc.
+      }
     }
   }
-
   selectedRowChangeColor(id):void {
     this.selectedRowIndex= this.dataSource.data?.find(item => item[this.idRow] === id) ??undefined;
   }
@@ -190,6 +198,9 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
    * Récuperer les données du tableau  de l'objet
    */
   loadData(): void {
+
+    console.log("reload===> :");
+    this.selectedRowIndex=undefined;
     // Hide the alert
     this._tableDateService._paginationObject = this.paginationObject;
     this._tableDateService._endpoint = this.endpoint;

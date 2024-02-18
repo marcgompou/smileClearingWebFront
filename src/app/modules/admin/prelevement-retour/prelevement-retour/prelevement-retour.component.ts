@@ -226,12 +226,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
     }
   }
 
-  getColumnHeaderText(column: string): string {
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
 
-  }
 
 
    convertDateToDateTime(dateStr: string): string  {

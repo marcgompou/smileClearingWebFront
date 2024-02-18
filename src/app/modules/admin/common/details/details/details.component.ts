@@ -74,7 +74,7 @@ export class DetailsComponent implements OnInit,OnChanges {
     }
     this._activatedRoute.params.subscribe(params=>{
       this.id = params['id'];
-  
+      console.log("====================> id",this.id)
       this._detaisService.setId(this.id);
     })
   
@@ -348,6 +348,8 @@ toggleEditMode(editMode: boolean | null = null): void
           this._changeDetectorRef.markForCheck();
         }, 
         error: (error) => {
+          this.closeForm();
+
           //not show historique
           this.showData = false;
           console.error('Error : ',JSON.stringify(error));

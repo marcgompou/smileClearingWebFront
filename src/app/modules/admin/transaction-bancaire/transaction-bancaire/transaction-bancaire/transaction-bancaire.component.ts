@@ -12,6 +12,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { MatSelectChange } from '@angular/material/select';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Moment } from 'moment';
 //import {img} from './image';
 
 @Component({
@@ -30,7 +32,7 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
   // noData: any;
   remiseData: any;
   listeCompteEntreprise: any[] = [];
-  montantTotal: number = 0;
+  solde: number = 0;
   //nombreRemise: number = 0;
   statut: string = "0";
   _filterObject:any={criteria:""}
@@ -96,19 +98,14 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ];
 
-  public displayedColumns: string[] = ['nomFichier', 'montantAs', 'montantNs', 'dateAs', 'dateNs', 'dateEnregistrement', 'numeroCompte'];
+  public displayedColumns: string[] = this.dataStructure.map((col) => col.key);
 
-  isLoading = false;
+  // isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-
-  // compteClientForm = new FormGroup({
-  //   statut: new FormControl('', Validators.required),
-
-  // })
-
- 
-
+  //Date minimum et date maximum pour la recherche
+  minDate: Date;
+  maxDate: Date;
 
 
   //CYCLE DE VIE
@@ -121,10 +118,17 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _transactionService:TransactionService
   ) {
-
+    const today = new Date();
+    this.maxDate = new Date(); // Aujourd'hui
+    // Pour minDate, soustrayez 3 mois de la date actuelle
 
 
   }
+
+
+
+
+
   ngOnInit() {
 
     
@@ -181,6 +185,20 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
 
+
+  addEvent(type: string, event: MatDatepickerInputEvent<Moment>) {
+     console.log(`${type}: ${event.value}`);
+     var date = event.value;
+     console.log(date)
+     if (type === 'dateDebutChange' && date) {
+       // Définir la date maximale pour la date de fin
+       const newMaxDate = new Date(date.year(), date.month() + 3, date.date());
+        //Si la date de fin est supérieure à aujourd'hui alors elle est definie sur aujord'hui
+       this.maxDate=newMaxDate>new Date()?new Date():newMaxDate;
+     }
+  
+  
+  }
   // updateList(newMatTable: MatTableDataSource<any>) {
   //   this.dataSource = newMatTable;
   //   this._changeDetectorRef.markForCheck();
@@ -246,37 +264,37 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
      * After view init
      */
   ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      this._sort.sort({
-        id: 'name',
-        start: 'asc',
-        disableClear: true
-      });
+    // if (this._sort && this._paginator) {
+    //   // Set the initial sort
+    //   this._sort.sort({
+    //     id: 'name',
+    //     start: 'asc',
+    //     disableClear: true
+    //   });
 
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
+    //   // Mark for check
+    //   this._changeDetectorRef.markForCheck();
 
-      // If the user changes the sort order...
-      this._sort.sortChange
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(() => {
-          this._paginator.pageIndex = 0;
-          // Close the details
-         // this.closeDetails();
-        });
+    //   // If the user changes the sort order...
+    //   this._sort.sortChange
+    //     .pipe(takeUntil(this._unsubscribeAll))
+    //     .subscribe(() => {
+    //       this._paginator.pageIndex = 0;
+    //       // Close the details
+    //      // this.closeDetails();
+    //     });
 
-      merge(this._sort.sortChange, this._paginator.page).pipe(
-        switchMap(() => {
-         // this.closeDetails();
-          this.isLoading = true;
-          return null;
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      ).subscribe();
-    }
+    //   merge(this._sort.sortChange, this._paginator.page).pipe(
+    //     switchMap(() => {
+    //      // this.closeDetails();
+    //       this.isLoading = true;
+    //       return null;
+    //     }),
+    //     map(() => {
+    //       this.isLoading = false;
+    //     })
+    //   ).subscribe();
+    // }
   }
 
   onSelectChange(event: MatSelectChange) {

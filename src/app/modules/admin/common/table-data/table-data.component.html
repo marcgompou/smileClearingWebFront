@@ -29,13 +29,17 @@
 
 
             </table>
-            <mat-paginator #paginator [length]="totalRows"  (pageSize)="pageSize"
-                [pageSizeOptions]="pageSizeOptions" showFirstLastButtons  (page)="pageChanged($event)" aria-label="Select page">
+            <div class="flex  items-center bg-white" >
+                <mat-paginator #paginator [length]="totalRows" [pageSize]="pageSize"
+                               [pageSizeOptions]="pageSizeOptions" showFirstLastButtons
+                               (page)="pageChanged($event)" aria-label="Select page">
+                
+                </mat-paginator>
             
-                <button>
-                    <mat-icon [svgIcon]="'heroicons_outline:refresh'">red</mat-icon>            
+                <button (click)="this._tableDateService.getDatas().pipe().subscribe()" class="flex -mx-1 items-center justify-center">
+                    <mat-icon [svgIcon]="'heroicons_outline:refresh'"></mat-icon>
                 </button>
-            </mat-paginator>
+            </div>
             
         </div>
     </div>
@@ -43,6 +47,6 @@
 <ng-template #noData>
     <div class="p-8 sm:p-8 border-t text-center">
         <div class="text-2xl font-semibold text-gray-600 mb-4">Aucune donnée</div>
-        <p class="text-sm text-gray-400">Il n'y a aucune donnée enregistrée</p>
+        <p class="text-sm text-gray-400">Il n'y a aucune donnée ne remplie les critères de recherches choisis</p>
     </div>
 </ng-template>
