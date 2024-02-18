@@ -110,10 +110,10 @@ export class TransactionService {
 
   // }
 
-  // telechargerRetourTransaction(id:string): Observable<Blob> {
-  //   // Make a GET request to the file URL, specifying responseType as 'blob'
-  //   return this._httpClient.get(`${environment.apiUrl}/transaction/telechargementRetour/${id}`, { responseType: 'blob' });
-  // }
+   telechargerTransactionAfb(id:string): Observable<Blob> {
+     // Make a GET request to the file URL, specifying responseType as 'blob'
+     return this._httpClient.get(`${environment.apiUrl}/transaction/telechargementRetour/${id}`, { responseType: 'blob' });
+   }
 
 
 

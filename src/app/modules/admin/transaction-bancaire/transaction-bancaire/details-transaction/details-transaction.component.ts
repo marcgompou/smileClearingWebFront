@@ -36,6 +36,8 @@ export class DetailsTransactionComponent implements OnInit {
   };
   showAlert: boolean = false;
 
+ 
+
   public dataStructure = [
 
     {
@@ -44,61 +46,49 @@ export class DetailsTransactionComponent implements OnInit {
     },
 
     {
-      "key": "codeagence",
+      "key": "codeGuichet",
       "label": "Code agence"
-
     },
     {
-      "key": "numCompte",
+      "key": "numeroCpte",
       "label": "Numero compte"
     },
     {
-      "key": "motif",
+      "key": "codeOpInterne",
+      "label": "Code operation"
+    },
+    {
+      "key": "libelle",
       "label": "Motif"
-
     },
-    {
-      "key": "nomClient",
-      "label": "Nom Débit"
-
-    },
-    {
-      "key": "nomBanque",
-      "label": "Nom banque"
-    },
-
     {
       "key": "montant",
       "label": "Montant",
       "type": "montant"
-
     },
-
-    { 
-      key: 'statut', 
-      type:'status',
-      label: 'Etat prelev.', 
-      "statusValues":[
-        { value: 1, libelle: "Enregistré", color: "#2986cc" }, // Green
-        { value: 3, libelle: "Exporté", color: "#16537e" }, // Green
-        { value: 13, libelle: "Payé", color: "#68D391" }, // Green
-        { value: 10, libelle: "Debit. interdit", color: "#FF5733" }, // Orange
-        { value: 40, libelle: "Cpte. fermé", color: "#808080" }, // Gray
-        { value: 50, libelle: "Cpte. inexistant", color: "#FFD700" }, // Yellow
-        { value: 60, libelle: "Rejetée", color: "#F56565" } // Red
-      ]
+    {
+      "key": "dateOpe",
+      "label": "Date operation",
+      "type":"date"
     },
 
     {
-      "key": "dateEcheance",
-      "label": "Date echéance",
+      "key": "dateValeur",
+      "label": "Date valeur",
       "type":"date"
     },
+    
+    {
+      "key": "refRel",
+      "label": "reference operation"
+    },
+
+   
   ];
 
 
 
-  public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient","nomBanque","dateEcheance","statut"];
+  public displayedColumns: string[] = ["codeBanque","codeGuichet","numeroCpte","codeOpInterne","libelle","montant","dateOpe","dateValeur","refRel"];
 
 
   
@@ -160,37 +150,20 @@ export class DetailsTransactionComponent implements OnInit {
 
   validerTransaction(){
     console.log("valider transaction id", this.transactionData);
-    // this._transactionService.validerTransaction(this.transactionData.id).pipe().subscribe({
-    //   next:(response)=>{
-    //       console.log(response);
-    //       this.goBackToList();
-    //       this.showAlert = true;
-    //   }
-      
-    // });
   }
   AnnulerTransaction(){
     console.log("valider transaction id", this.transactionData);
-    // this._transactionService.validerTransaction(this.transactionData.id).pipe().subscribe({
-    //   next:(response)=>{
-    //       console.log(response);
-    //       this.goBackToList();
-    //       this.showAlert = true;
-    //   }
-      
-    // });
   }
 
   telechargerTransaction(): void {
     
-    // this._transactionService.telechargerRetourTransaction(this.transactionData.id).pipe().subscribe(blob => {
-    //   // Create a temporary anchor element and trigger the download
-    //   const link = document.createElement('a');
-    //   link.href = window.URL.createObjectURL(blob);
-    //   link.download = this.transactionData.nomfichier+".emi"; // Set the desired file name
-    //   console.log("statut prel",this.transactionData.statut);
-    //   link.click();
-    // });
+     this._transactionService.telechargerTransactionAfb(this.transactionData.id).pipe().subscribe(blob => {
+       // Create a temporary anchor element and trigger the download
+       const link = document.createElement('a');
+       link.href = window.URL.createObjectURL(blob);
+       link.download = this.transactionData.nomfichier+".emi"; // Set the desired file name
+       link.click();
+     });
   }
   telechargerRelance(): void {
     // this._transactionService.telechargerRelance(this.transactionData.id).pipe().subscribe();
