@@ -129,6 +129,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/valider-prelevement/valider-prelevement.module').then(m => m.PrelevementValiderModule)
             },
             {
+                path: 'validerPrelevementInterbancaire',
+                data: { breadcrumb: 'Valider prélèvement Interbancaire' },
+                loadChildren: () => import('app/modules/admin/valider-prelevement-interbancaire/valider-prelevement-interbancaire.module').then(m => m.PrelevementValiderInterbancaireModule)
+            },
+            {
                 path: 'traitementPrelevement',
                 data: { breadcrumb: 'Traitement prélèvement' },
                 loadChildren: () => import('app/modules/admin/traitement-prelevement/traitement-prelevement.module').then(m => m.TraitementPrelevementModule)

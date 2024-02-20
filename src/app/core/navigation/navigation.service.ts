@@ -215,11 +215,11 @@ export class NavigationService {
           permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
           children: [
             {
-              id: "validerPrelevement",
+              id: "validerPrelevementInterbancaire",
               title: "Validation Prélèvement interbancaire",
               type: "basic",
               icon: "heroicons_outline:check-circle",
-              link: "/validerPrelevement",
+              link: "/validerPrelevementInterbancaire",
               permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
             },
           ],
