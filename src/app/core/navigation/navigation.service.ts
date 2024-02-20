@@ -123,47 +123,100 @@ export class NavigationService {
 
     {
       id: "smilecheckweb-prelevement",
-      title: "PRELEVEMENT ALLER",
+      title: "PRELEVEMENT INTERNE",
       subtitle: "",
       type: "group",
       icon: "heroicons_outline:document-download",
       children: [
         {
           id: "pages",
-          title: "Créer Prélèvement",
+          title: "Créer Prélèvement interne",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
           permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
           children: [
             {
               id: "chargerPrelevement",
-              title: "Charger Prélèvement",
+              title: "Charger Prélèvement interne",
               type: "basic",
               icon: "heroicons_outline:arrow-circle-down",
               link: "/chargerPrelevement",
               permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
             },
-            {
-              id: "impressionPrelevement",
-              title: "Impression Prelevement",
-              type: "basic",
-              icon: "heroicons_solid:printer",
-              link: "/impressionPrelevement",
-              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
-            },
+            // {
+            //   id: "impressionPrelevement",
+            //   title: "Impression Prelevement interne",
+            //   type: "basic",
+            //   icon: "heroicons_solid:printer",
+            //   link: "/impressionPrelevement",
+            //   permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+            // },
           ],
         },
 
         {
           id: "pages",
-          title: "Valider Prélèvement",
+          title: "Valider Prélèvement interne",
           type: "collapsable",
           icon: "heroicons_outline:clipboard-check",
           permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
           children: [
             {
               id: "validerPrelevement",
-              title: "Validation Prélèvement",
+              title: "Validation Prélèvement interne",
+              type: "basic",
+              icon: "heroicons_outline:check-circle",
+              link: "/validerPrelevement",
+              permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      id: "smilecheckweb-prelevement",
+      title: "PRELEVEMENT INTERBANCAIRE",
+      subtitle: "",
+      type: "group",
+      icon: "heroicons_outline:document-download",
+      children: [
+        {
+          id: "pages",
+          title: "Créer Prélèvement interbancaire",
+          type: "collapsable",
+          icon: "heroicons_outline:document-download",
+          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+          children: [
+            {
+              id: "chargerPrelevementInterBancaire",
+              title: "Charger Prélèvement interbancaire",
+              type: "basic",
+              icon: "heroicons_outline:arrow-circle-down",
+              link: "/chargerPrelevementInterBancaire",
+              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+            },
+            // {
+            //   id: "impressionPrelevement",
+            //   title: "Impression Prelevement interbancaire",
+            //   type: "basic",
+            //   icon: "heroicons_solid:printer",
+            //   link: "/impressionPrelevement",
+            //   permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+            // },
+          ],
+        },
+
+        {
+          id: "pages",
+          title: "Valider Prélèvement interbancaire",
+          type: "collapsable",
+          icon: "heroicons_outline:clipboard-check",
+          permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
+          children: [
+            {
+              id: "validerPrelevement",
+              title: "Validation Prélèvement interbancaire",
               type: "basic",
               icon: "heroicons_outline:check-circle",
               link: "/validerPrelevement",

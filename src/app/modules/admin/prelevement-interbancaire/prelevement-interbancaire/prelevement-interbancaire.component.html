@@ -16,7 +16,7 @@
                         <ng-container>
                             <div
                                 class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
-                                Charger prélèvement</div>
+                                Charger prélèvement interbancaire</div>
                         </ng-container>
                     </div>
                 </div>
@@ -48,11 +48,11 @@
                         <div
                             class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5">
 
-                            <ng-container>
+                            <!-- <ng-container>
                                 <span class="inline-block align-middle">
-                                    Nom bénéficiaire prélèvement : {{ headerData?.nom ?? "-" }}
+                                    Nom bénéficiaire prélèvement: {{ headerData?.nom ?? "-" }}
                                 </span>
-                            </ng-container>
+                            </ng-container> -->
                             <ng-container>
                                 <span class="inline-block align-middle">
                                     Nombre de prélèvement : {{ (totalRows ? totalRows:0) }}
@@ -60,7 +60,7 @@
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Montant total prélèvement : {{ (totalData?.montant ? totalData?.montant:0) |
+                                    Montant total prélèvement : {{ (headerData?.montantTotal ? headerData?.montantTotal:0) |
                                     currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>

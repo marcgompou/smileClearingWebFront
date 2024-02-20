@@ -6,15 +6,15 @@ import { fuseAnimations } from '@fuse/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
-import { PrelevementAllerService } from '../prelevement-aller.service';
+import { PrelevementInterbancaireService } from '../prelevement-interbancaire.service';
 import { TableDataService } from '../../common/table-data/table-data.services';
 
 
 
 @Component({
-  selector: 'app-prelevement-aller',
-  templateUrl: './prelevement-aller.component.html',
-  styleUrls: ['./prelevement-aller.component.scss'],
+  selector: 'app-prelevement-interbancaire',
+  templateUrl: './prelevement-interbancaire.component.html',
+  styleUrls: ['./prelevement-interbancaire.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations
@@ -23,7 +23,7 @@ import { TableDataService } from '../../common/table-data/table-data.services';
 
 
 
-export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
+export class PrelevementInterbancaireComponent  implements OnInit, OnDestroy  {
 
   nomFichierChargerNormal: string | undefined;
   /**Prelevement data */
@@ -53,21 +53,21 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
   prelevementForm: FormGroup
   nomFichierCharger:string='';
   dataStructure = [
-    { key: 'codeOperation', label: 'Code Operation' },
+   // { key: 'codeOperation', label: 'Code Operation' },
     { key: 'codeEnreg', label: 'Code Enreg' },
-    { key: 'numLigne', label: 'Num. Ligne' },
-    { key: 'dateEcheance', label: 'Date Echeance',type:"date" },
-    { key: 'banque', label: 'Banque' },
-    { key: 'guichet', label: 'Guichet' },
-    { key: 'compteDebite', label: 'Compte Débité' },
-    { key: 'nomDebit', label: 'Nom Débit' },
-    { key: 'nomBanque', label: 'Nom Banque' },
-    { key: 'libelleOperat', label: 'Libellé Opérat' },
-    { key: 'montant', label: 'Montant','type':'montant' }
+    { key: 'nomDebite', label: 'Nom Client Debite' },
+   // { key: 'typeRibDonneurOrdre', label: 'Type RIB DO' },
+    { key: 'ribDebite', label: 'RIB client Debite' },
+    { key: 'montant', label: 'Montant','type':'montant'  },
+    { key: 'nomClientDonneurOrdre', label: 'Nom Donneur Ordre' },
+    { key: 'numAutorisation', label: 'Num. Autorisation' },
+    { key: 'libelleTransaction', label: 'Libelle Transaction ' },
+    { key: 'RefEmetteur', label: 'Ref Emetteur' }
+  
   ];
 
   
-  displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant'];
+  displayedColumns: string[] = [ 'codeEnreg', 'nomDebite', 'ribDebite', 'montant', 'nomClientDonneurOrdre', 'numAutorisation', 'libelleTransaction', 'RefEmetteur'];
   totalRows: number=0;
   nombreprelevement: number;
   
@@ -76,7 +76,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
-    private _prelevementAllerService: PrelevementAllerService,
+    private _prelevementInterbancaireService: PrelevementInterbancaireService,
     private _tableDataService: TableDataService
     ) {
       this.prelevementForm = this._formBuilder.group({
@@ -114,7 +114,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
     }
 
   
-   this._prelevementAllerService.createPrelevement(data).subscribe({
+   this._prelevementInterbancaireService.createPrelevement(data).subscribe({
       next: (data) => {
         this.clearFile();
         this.alert = { type: 'success', message: 'Enregistrement effectué avec succès' };
@@ -181,13 +181,13 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
               this.extractHeaderValues(line);
             }
             //Details
-            if(i>0 && i<totalLines-2){
+            if(i>0 && i<totalLines-1){
               this.detailsData.push(this.extractDetails(line));
             }
             // CALL FUNCTION TO RETRIEVE THE LAST LINE 
-            if (i === totalLines-2) {
-              this.extractTotalData(line);
-            }
+            // if (i === totalLines-2) {
+            //   this.extractTotalData(line);
+            // }
           }
           if(this.detailsData.length>0){
             this._tableDataService.setDatas$( this.detailsData)
@@ -237,92 +237,96 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
  // const dateEmission = convertDateToDateTime(dateStr);
   extractHeaderValues(headerLine: string) {
     console.log("headerLine",headerLine);
-    const compteCrediteRaw = headerLine.substring(22, 33).trim();
-    const compteCredite = compteCrediteRaw[0] === '0' ? compteCrediteRaw.substring(1) : compteCrediteRaw;
-    const dateOperStartIndex = compteCrediteRaw[0] === '0' ? 64 : 63;
+    // const compteCrediteRaw = headerLine.substring(22, 33).trim();
+    // const compteCredite = compteCrediteRaw[0] === '0' ? compteCrediteRaw.substring(1) : compteCrediteRaw;
+    // const dateOperStartIndex = compteCrediteRaw[0] === '0' ? 64 : 63;
+    const montantTotal= headerLine.substring(23, 49).trim();
+    console.log("mnt",montantTotal);
+     //const codeOperation = data.substring(0, 2).trim();
+   // const montantTotal: headerLine.substring(23, 16).trim(),
     this.headerData = {
       nomFichier : this.nomFichierCharger ,
       nomFichierGenerer : "nomParDefaut",
-      codeOperation: headerLine.substring(0, 2).trim(),
-      codeEnreg: headerLine.substring(2, 3).trim(),
-      numLigne: parseInt(headerLine.substring(3, 8).trim(), 10),
-      dateEmission: this.convertDateToDateTime(headerLine.substring(8, 14).trim()),
-      banque: headerLine.substring(14, 17).trim(),
-      guichet: headerLine.substring(17, 22).trim(),
-      compteCredite: compteCredite,
-      nom: headerLine.substring(33, 57).trim(),
-      codeEmeteur: headerLine.substring(57, 62).trim(),
-      //dateOper:  this.convertDateToDateTime(headerLine.substring(63, 69).trim()),
-      dateOper: this.convertDateToDateTime(headerLine.substring(dateOperStartIndex, dateOperStartIndex + 6).trim()),
-      zoneVide: "zoneVide",
-      
+      Info: headerLine.substring(0, 1).trim(),
+      type: headerLine.substring(1, 4).trim(),
+      codeagence: headerLine.substring(5, 10).trim(),
+      numerofichier: headerLine.substring(10, 16).trim(),
+      devise: headerLine.substring(16, 19).trim(),
+      nombedeligne: headerLine.substring(19, 23).trim(),
+      montantTotal : headerLine.substring(23, 49).trim(),
+     // 
+    
     };
   
   }
 
-  extractTotalData(data: string) {
-    const codeOperation = data.substring(0, 2).trim();
-    const codeEnreg = data.substring(2, 3).trim();
-    const numLigne = data.substring(3, 8).trim() || null;
-    const dateEmission =  this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
-    const zoneVide1 = data.substring(14, 22).trim();
-    const compte = data.substring(22, 33).trim() || null;
-    const zoneVide2 = data.substring(33, 108).trim();
-    const montant =data.substring(104, 116).trim() || null;
-    const zoneVide3 = data.substring(116, 128).trim();
-    //this.nombreprelevement=data.length;
-    this.totalData= {
-        codeOperation,
-        codeEnreg,
-        numLigne,
-        dateEmission,
-        zoneVide1,
-        compte,
-        zoneVide2,
-        montant,
-        zoneVide3,
-    };
+  // extractTotalData(data: string) {
+  //   const codeOperation = data.substring(0, 2).trim();
+  //   const codeEnreg = data.substring(2, 3).trim();
+  //   const numLigne = data.substring(3, 8).trim() || null;
+  //   const dateEmission =  this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
+  //   const zoneVide1 = data.substring(14, 22).trim();
+  //   const compte = data.substring(22, 33).trim() || null;
+  //   const zoneVide2 = data.substring(33, 108).trim();
+  //   const montant =data.substring(104, 116).trim() || null;
+  //   const zoneVide3 = data.substring(116, 128).trim();
+  //   //this.nombreprelevement=data.length;
+  //   this.totalData= {
+  //       codeOperation,
+  //       codeEnreg,
+  //       numLigne,
+  //       dateEmission,
+  //       zoneVide1,
+  //       compte,
+  //       zoneVide2,
+  //       montant,
+  //       zoneVide3,
+  //   };
 
-  }
+  // }
 
-  extractDetails(data: string) :{codeOperation,
-      codeEnreg,numLigne,dateEcheance,
-      banque,guichet,compteDebite,
-      nomDebit,nomBanque,libelleOperat,
-      montant,zoneVide,
+  extractDetails(data: string) :{ codeOperation,
+    codeEnreg,
+    typeRibDonneurOrdre,
+    ribDonneurOrdre,
+    typeRibDebite,
+    ribDebite,
+    montant,
+    nomClientDonneurOrdre,
+    numAutorisation,
+    nomDebite,
+    libelleTransaction,
+    RefEmetteur,
+    zoneVide, 
+//Champ non significatif 149 Rempli avec des blancs
   }{
-        const codeOperation = data.substring(0, 2).trim();
-        const codeEnreg = data.substring(2, 3).trim();
-        const numLigne = parseInt(data.substring(3, 8).trim()) || null;
-        const dateEcheance = this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
-        const banque = data.substring(14, 17).trim();
-        const guichet = data.substring(17, 22).trim();
-        const compteDebite = data.substring(22, 33).trim();
-        const nomDebit = data.substring(33, 57).trim();
-        const nomBanque = data.substring(57, 74).trim() || null;
-        const libelleOperat = data.substring(74, 104).trim();
-        const montant = parseFloat(data.substring(104, 116).trim()) || null;
+        const codeOperation = data.substring(35, 38).trim();
+        const codeEnreg = data.substring(38, 46).trim();
+        const typeRibDonneurOrdre = data.substring(46, 47).trim();
+        const ribDonneurOrdre = data.substring(47, 71).trim();
+        const typeRibDebite = data.substring(71, 71).trim();
+        const ribDebite = data.substring(72, 96).trim();
+        const montant = parseFloat(data.substring(96, 112).trim()) || null;
+        const nomClientDonneurOrdre = data.substring(112, 147).trim();
+        const numAutorisation = data.substring(147, 157).trim();
+        const nomDebite = data.substring(157, 192).trim();
+        const libelleTransaction = data.substring(192, 262).trim();
+        const RefEmetteur = data.substring(262, 286).trim();
         const zoneVide = "zoneVide";
         return  {
             codeOperation,
             codeEnreg,
-            numLigne,
-            dateEcheance,
-            banque,
-            guichet,
-            compteDebite,
-            nomDebit,
-            nomBanque,
-            libelleOperat,
+            typeRibDonneurOrdre,
+            ribDonneurOrdre,
+            typeRibDebite,
+            ribDebite,
             montant,
+            nomClientDonneurOrdre,
+            numAutorisation,
+            nomDebite,
+            libelleTransaction,
+            RefEmetteur,
             zoneVide,
         };
   }
-
-
-
-
-
-
-
 }
