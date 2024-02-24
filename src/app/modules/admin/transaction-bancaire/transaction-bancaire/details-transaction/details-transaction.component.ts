@@ -6,9 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, catchError, of, takeUntil } from 'rxjs';
 import { TransactionService } from '../transaction-bancaire.service';
-import {  MatDialog } from '@angular/material/dialog';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
 @Component({
@@ -23,14 +22,10 @@ export class DetailsTransactionComponent implements OnInit {
   montantTotal: number = 0;
   ancienSolde: number = 0;
   nouveauSolde: number = 0;
-  nombreRemise: number = 0;
   canRelance: boolean = false;
   id: string = "";
   isLoading = false;
-  pageSizeOptions: number[] = [10, 25];
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
@@ -151,26 +146,45 @@ export class DetailsTransactionComponent implements OnInit {
     );
   }
 
-  validerTransaction(){
-    console.log("valider transaction id", this.transactionData);
-  }
-  AnnulerTransaction(){
-    console.log("valider transaction id", this.transactionData);
-  }
+  // validerTransaction(){
+  //   console.log("valider transaction id", this.transactionData);
+  // }
+  // AnnulerTransaction(){
+  //   console.log("valider transaction id", this.transactionData);
+  // }
 
   telechargerTransaction(): void {
-    
-     this._transactionService.telechargerTransactionAfb(this.transactionData.id).pipe().subscribe(blob => {
-       // Create a temporary anchor element and trigger the download
-       const link = document.createElement('a');
-       link.href = window.URL.createObjectURL(blob);
-       link.download = this.transactionData.nomfichier+".emi"; // Set the desired file name
-       link.click();
-     });
+    this._transactionService.telechargerTransactionAfb(this.transactionData.id)
+        .pipe(
+            catchError(error => {
+                console.error('Error : ', JSON.stringify(error));
+                let message="";
+
+              if (error.error.code == 404) {
+                //error.error.message ?? error.error
+                message = (error && error.error && error.error.message) ? 
+                error.error.message : 
+                "Le fichier sélectionné est introuvable";
+              }
+
+                this.alert = { type: 'error', message: message  };
+                this.showAlert = true;
+                this._changeDetectorRef.markForCheck();
+                return of(null);
+            })
+        )
+        .subscribe(blob => {
+            if (blob) { // Vérifiez si blob n'est pas null suite à une erreur capturée
+                // Créez un élément d'ancrage temporaire et déclenchez le téléchargement
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = this.transactionData?.nomFichier ; // Définissez le nom de fichier souhaité
+                document.body.appendChild(link); // Ajoutez le lien au document pour garantir la compatibilité
+                link.click();
+                document.body.removeChild(link); // Nettoyez en supprimant le lien
+            }
+        });
   }
-  telechargerRelance(): void {
-    // this._transactionService.telechargerRelance(this.transactionData.id).pipe().subscribe();
-    
-  }
+
 
 }

@@ -121,7 +121,7 @@ export class TransactionService {
 
    telechargerTransactionAfb(id:string): Observable<Blob> {
      // Make a GET request to the file URL, specifying responseType as 'blob'
-     return this._httpClient.get(`${environment.apiUrl}/transaction/telechargement/${id}`, { responseType: 'blob' });
+     return this._httpClient.get(`${environment.apiUrl}/detailsCompteAfb120/telechargement/${id}`, { responseType: 'blob' });
    }
 
 
