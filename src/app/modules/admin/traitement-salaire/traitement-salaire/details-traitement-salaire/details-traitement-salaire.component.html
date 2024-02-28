@@ -1,0 +1,94 @@
+    <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+        [dismissible]="true"
+        [dismissed]="false"
+        [showIcon]="true"
+        [@shake]="alert.type === 'error'">
+        {{ alert.message }}
+    </fuse-alert>
+
+
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+        <mat-drawer-content class="flex flex-col">
+
+            <!-- Header -->
+
+            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+                <!-- Loader -->
+                <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+                    <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+                </div>
+                <!-- Title -->
+                
+                <div class="flex flex-auto items-center min-w-0">
+                    
+        
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div
+                                class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                                Détails Transactions</div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="flex items-center sm:mt-0 sm:ml-4">
+                    <form>
+                        <button class="ml-4" type="'button'" (click)="goBackToList()" mat-stroked-button [color]="'accent'">
+                            <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
+                            <span class="ml-2">Retour</span>
+                        </button>
+                       <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerTransaction()" >
+                                <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
+                                <span class="ml-2">Générer Fichier AFB120</span>
+                            </button>
+                        
+                      
+                    </form>
+                </div>
+            </div>
+            <form class="flex flex-col ">
+                <!-- Main -->
+                <div class="flex flex-auto overflow-hidden">
+                    <!-- remiseCheques list -->
+                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+                        <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
+                            <ng-container>
+                                <span class="inline-block align-middle">
+                                    Fichier Transaction : {{ transactionData?.nomFichier }}
+                                </span>
+                            </ng-container>
+                            <ng-container>
+                                <span class="inline-block align-middle">
+                                    Ancien Solde : {{ ancienSolde | currency:'CFA':'symbol':'1.0-2' }}
+                                </span>
+                            </ng-container>
+                            <ng-container>
+                                <span class="inline-block align-middle">
+                                    Nouveau Solde : {{ nouveauSolde | currency:'CFA':'symbol':'1.0-2' }}
+                                </span>
+                            </ng-container>
+                        </div>
+
+
+
+
+                        <!-- TABLEAU DES CHEQUES-->
+                        <app-table-data 
+                            [endpoint]="'transaction'+id" 
+                            [title]="'Liste des Transaction'"
+                            [dataKey]="'data'"
+                            [serverSideLoad]="false"
+                            [displayedColumns]="displayedColumns" 
+                            [dataStructure]="dataStructure" 
+                            [idRow]="'id'"
+                            [canClick]="false">
+                        </app-table-data>
+
+                    </div>
+
+                </div>
+            </form>
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+</div>

@@ -118,6 +118,50 @@ export class NavigationService {
         },
       ],
     },
+    //Salaire
+    {
+      id: "smilecheckweb-salaires",
+      title: "TRAITEMENT SALAIRE",
+      subtitle: "",
+      type: "group",
+      icon: "heroicons_outline:document-download",
+      children: [
+        {
+          id: "pages",
+          title: "",
+          type: "collapsable",
+          icon: "heroicons_outline:document-download",
+          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+          children: [
+            {
+              id: "chargerSalaire",
+              title: "Charger Prélèvement interne",
+              type: "basic",
+              icon: "heroicons_outline:arrow-circle-down",
+              link: "/chargerPrelevement",
+              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+            },
+            {
+              id: "validerSalaire",
+              title: "Valider salaire",
+              type: "basic",
+              icon: "heroicons_solid:check",
+              link: "/validerSalaire",
+              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+            },
+            // {
+            //   id: "impressionPrelevement",
+            //   title: "Impression Prelevement interne",
+            //   type: "basic",
+            //   icon: "heroicons_solid:printer",
+            //   link: "/impressionPrelevement",
+            //   permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+            // },
+          ],
+        },
+      ],
+    },
+
 
     //PRELEVEMENT
 
