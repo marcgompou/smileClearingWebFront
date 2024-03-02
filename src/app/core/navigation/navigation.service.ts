@@ -131,32 +131,33 @@ export class NavigationService {
           title: "Salaire",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
-          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+          permission: SecService.permissions.ROLE_VALID_SALAIRE, //CHARG_SALAIRE
           children: [
             {
               id: "chargerSalaire",
-              title: "Charger Prélèvement interne",
+              title: "Charger salaire",
               type: "basic",
               icon: "heroicons_outline:arrow-circle-down",
               link: "/chargerSalaire",
-              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+              permission: SecService.permissions.ROLE_VALID_SALAIRE , //CHARG_SALAIRE
             },
+          ],
+        },
+        {
+          id: "pages",
+          title: "Valider Salaire",
+          type: "collapsable",
+          icon: "heroicons_outline:document-download",
+          permission: SecService.permissions.ROLE_VALID_SALAIRE, //CHARG_SALAIRE
+          children: [
             {
               id: "validerSalaire",
-              title: "Valider salaire",
+              title: "Charger salaire",
               type: "basic",
               icon: "heroicons_solid:check",
               link: "/validerSalaire",
-              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+              permission: SecService.permissions.ROLE_VALID_SALAIRE,
             },
-            // {
-            //   id: "impressionPrelevement",
-            //   title: "Impression Prelevement interne",
-            //   type: "basic",
-            //   icon: "heroicons_solid:printer",
-            //   link: "/impressionPrelevement",
-            //   permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
-            // },
           ],
         },
       ],

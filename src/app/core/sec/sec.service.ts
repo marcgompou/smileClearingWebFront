@@ -13,6 +13,9 @@ export class SecService
         ROLE_SUPERADMIN:"SUPERADMIN",
         ROLE_CREATION:"CREATION",
         ROLE_ADMIN:"ADMIN",
+        ROLE_VALID_SALAIRE:"VALID_SALAIRE",
+        ROLE_CHARG_SALAIRE:"CHARG_SALAIRE"
+
     }
     
     /**
