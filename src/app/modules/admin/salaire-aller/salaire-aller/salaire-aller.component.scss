@@ -1,0 +1,56 @@
+/* Align the MatPaginator to the right */
+/* Align the MatPaginator to the right */
+.table-container ::ng-deep .mat-paginator {
+    justify-content: flex-end;
+    display: flex;
+  }
+  
+  .mat-header-row {
+    border-bottom-width: 2px;
+    border-bottom-color: #e2e8f0;
+    background-color: #f9fafb;
+  }
+  
+  .mat-row:nth-child(odd) {
+    background-color: #f7fafc;
+  }
+  
+  .mat-cell {
+    border-bottom-width: 1px;
+    border-bottom-color: #e2e8f0;
+  }
+  
+  .mat-footer-row {
+    border-top-width: 2px;
+    border-top-color: #e2e8f0;
+    background-color: #f9fafb;
+  }
+  
+  /* Custom styles for pagination */
+  .mat-paginator {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px;
+  }
+  
+  .mat-paginator-page-size {
+    margin-right: 14px;
+  }
+  
+  /* Add smooth bottom border for rows */
+  .mat-row:not(:last-child) .mat-cell,
+  .mat-footer-row:not(:last-child) .mat-footer-cell {
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .mat-row:not(:last-child) .mat-cell,
+.mat-footer-row:not(:last-child) .mat-footer-cell {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Add beautiful shadow effect to the table */
+.mat-table {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+

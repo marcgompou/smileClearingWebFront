@@ -128,7 +128,7 @@ export class NavigationService {
       children: [
         {
           id: "pages",
-          title: "",
+          title: "Salaire",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
           permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
@@ -138,7 +138,7 @@ export class NavigationService {
               title: "Charger Prélèvement interne",
               type: "basic",
               icon: "heroicons_outline:arrow-circle-down",
-              link: "/chargerPrelevement",
+              link: "/chargerSalaire",
               permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
             },
             {

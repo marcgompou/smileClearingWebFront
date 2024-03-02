@@ -70,4 +70,4 @@ import { TraitementSalaireComponent } from './traitement-salaire/traitement-sala
 
   ]
 })
-export class TransactionBancaireModule { }
+export class TraitementSalaireModule { }

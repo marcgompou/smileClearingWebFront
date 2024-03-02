@@ -241,7 +241,7 @@ export class DetailsPrelevementComponent implements OnInit {
     });
   }
   telechargerRelance(): void {
-    this._traitementPrelevementService.telechargerRelance(this.prelevementData.id).pipe().subscribe({
+    this._traitementPrelevementService.telechargerRelance(this.id).pipe().subscribe({
       next:(response)=>{
         console.log(response);
         this.goBackToList();

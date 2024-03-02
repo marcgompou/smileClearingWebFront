@@ -117,6 +117,14 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/prelevement-aller/prelevement-aller.module').then(m => m.PrelevementAllerModule)
             },
 
+
+            {
+                path: 'chargerSalaire',
+                data: { breadcrumb: 'Charger salaire' },
+                loadChildren: () => import('app/modules/admin/traitement-salaire/traitement-salaire.module').then(m => m.TraitementSalaireModule)
+            },
+
+
             {
                 path: 'chargerPrelevementInterBancaire',
                 data: { breadcrumb: 'Charger prélèvement interbancaire' },
