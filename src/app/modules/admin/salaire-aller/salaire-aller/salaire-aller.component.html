@@ -29,7 +29,7 @@
                                 (click)="fileInput.click()">folder</mat-icon>
                             <mat-icon matSuffix (click)="clearFile()"
                                 *ngIf="this.salaireForm.get('fichierSalaire').value!=label && this.salaireForm.get('fichierSalaire').value!=null && this.salaireForm.get('fichierSalaire').value!=undefined">clear</mat-icon>
-                            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".rec,.txt,.prn"
+                            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".rec,.txt,.prn,.xls,.xlsx"
                                 style="display: none" />
                         </mat-form-field>
                         <button class="ml-4 " mat-flat-button [color]="'primary'" type="submit"
