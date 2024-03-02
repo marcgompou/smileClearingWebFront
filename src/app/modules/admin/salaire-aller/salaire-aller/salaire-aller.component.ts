@@ -1,6 +1,6 @@
 import {  ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl,  FormGroup } from '@angular/forms';
-import { Subject} from 'rxjs';
+import { Subject, timeout} from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
@@ -24,11 +24,11 @@ import { TableDataService } from '../../common/table-data/table-data.services';
 export class SalaireAllerComponent  implements OnInit, OnDestroy  {
 
   nomFichierChargerNormal: string | undefined;
-  /**Prelevement data */
+  /**Salaire data */
   headerData:any= {};
   totalData:any={}
   detailsData:any[]=[]
-  /**Prelevement data */
+  /**Salaire data */
   label="Charger fichier prélèvement"  
   //Form
   @ViewChild('fileInput', { static: false }) fileInput: any;
@@ -48,7 +48,7 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  prelevementForm: FormGroup
+  salaireForm: FormGroup
   nomFichierCharger:string='';
   dataStructure = [
     { key: 'codeOperation', label: 'Code Operation' },
@@ -68,7 +68,7 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
   displayedColumns: string[] = ['codeOperation', 'codeEnreg', 'numLigne', 'dateEcheance', 'banque', 'guichet', 'compteDebite', 'nomDebit', 'nomBanque', 'libelleOperat', 'montant'];
   totalRows: number=0;
   nombreprelevement: number;
-  
+  hasError=false;
   
 
   constructor(
@@ -77,8 +77,8 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
     private _salaireAllerService: SalaireAllerService,
     private _tableDataService: TableDataService
     ) {
-      this.prelevementForm = this._formBuilder.group({
-        fichierPrelevement: [''], // 
+      this.salaireForm = this._formBuilder.group({
+        fichierSalaire: [''], // 
       });
   }
 
@@ -90,7 +90,7 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
   //CYCLE DE VIE
   ngOnInit() {
     this._tableDataService.setDatas$([]);
-    this.prelevementForm.get('fichierPrelevement')?.setValue(this.label);
+    this.salaireForm.get('fichierSalaire')?.setValue(this.label);
 
   }
 
@@ -144,11 +144,11 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
 
   clearFile(){
     this._tableDataService.setDatas$([]);
-    this.prelevementForm.get('fichierPrelevement')?.setValue(this.label);
+    this.salaireForm.get('fichierSalaire')?.setValue(this.label);
     this.headerData={}
     this.totalData={}
     this.totalRows = 0;
-    
+    this.hasError=false
     if (this.fileInput) {
       this.fileInput.nativeElement.value = null;
     }
@@ -158,14 +158,15 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
 
   onFileSelected(event: any) {
     try{
-      const selectedFile = event.target.files[0];
+      const selectedFile = event.target.files[0];     
+      this.isLoading = true;
       if (selectedFile) {
         this.detailsData=[];
         const fileNameWithExtension = selectedFile.name;
         const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
         this.nomFichierCharger = fileNameWithoutExtension;
     
-        this.prelevementForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
+        this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension);
         // Now, you can read the file content or perform other operations with it.
         const fileReader = new FileReader();
         fileReader.onload = (e) => {
@@ -201,6 +202,7 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
       console.log(error)
       this.alert = { type: 'error', message: error.error.message ?? error.message };
       this.showAlert = true;
+      this.hasError=true
     }finally{
       this._tableDataService.setDatas$([])
       this.isLoading = false;
@@ -213,6 +215,10 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
     if (dateStr.length !== 6) {
       // Vérifier la longueur de la chaîne d'entrée
       console.error("La chaîne de date doit avoir une longueur de 6 caractères.");
+      this.alert = { type: 'error', message: "La chaîne de date doit avoir une longueur de 6 caractères."};
+      this.hasError=true
+
+      this.showAlert = true;
       return "";
     }
   
@@ -222,12 +228,16 @@ export class SalaireAllerComponent  implements OnInit, OnDestroy  {
       const year = parseInt(dateStr.substring(4, 6)) + 2000;
   
       if (isNaN(year) || isNaN(month) || isNaN(day)) {
+        this.hasError=true
+
         return "";
       }
   
       const dateEmission = new Date(year, month, day);
       return dateEmission.toISOString().substring(0, 10);
     } catch (error) {
+      this.hasError=true
+
       console.error("Erreur lors de la conversion de la date : " + error.message);
       return "";
     }

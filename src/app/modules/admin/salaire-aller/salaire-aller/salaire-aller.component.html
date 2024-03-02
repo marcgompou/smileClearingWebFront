@@ -21,19 +21,19 @@
                     </div>
                 </div>
                 <div class="flex items-center ">
-                    <form class="flex flex-auto items-center" [formGroup]="prelevementForm" (ngSubmit)="onSubmit()">
+                    <form class="flex flex-auto items-center" [formGroup]="salaireForm" (ngSubmit)="onSubmit()">
                         <mat-form-field 
                             class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
-                            <input matInput formControlName="fichierPrelevement"  style="color: #888; " readonly />
-                            <mat-icon *ngIf="this.prelevementForm.get('fichierPrelevement').value==label" matSuffix
+                            <input matInput formControlName="fichierSalaire"  style="color: #888; " readonly />
+                            <mat-icon *ngIf="this.salaireForm.get('fichierSalaire').value==label" matSuffix
                                 (click)="fileInput.click()">folder</mat-icon>
                             <mat-icon matSuffix (click)="clearFile()"
-                                *ngIf="this.prelevementForm.get('fichierPrelevement').value!=label && this.prelevementForm.get('fichierPrelevement').value!=null && this.prelevementForm.get('fichierPrelevement').value!=undefined">clear</mat-icon>
+                                *ngIf="this.salaireForm.get('fichierSalaire').value!=label && this.salaireForm.get('fichierSalaire').value!=null && this.salaireForm.get('fichierSalaire').value!=undefined">clear</mat-icon>
                             <input type="file" #fileInput (change)="onFileSelected($event)" accept=".rec,.txt,.prn"
                                 style="display: none" />
                         </mat-form-field>
                         <button class="ml-4 " mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="(!prelevementForm.valid) || totalRows==0 ">
+                            [disabled]="(!salaireForm.valid) || totalRows==0 || this.hasError">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
                             <span>Enregistrer</span>
                         </button>
@@ -50,17 +50,17 @@
 
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Nom bénéficiaire prélèvement : {{ headerData?.nom ?? "-" }}
+                                    Nom Entreprise : {{ headerData?.nom ?? "-" }}
                                 </span>
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Nombre de prélèvement : {{ (totalRows ? totalRows:0) }}
+                                    Nombre de bénéficiaire(s) : {{ (totalRows ? totalRows:0) }}
                                 </span>
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Montant total prélèvement : {{ (totalData?.montant ? totalData?.montant:0) |
+                                    Montant total  : {{ (totalData?.montant ? totalData?.montant:0) |
                                     currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>
