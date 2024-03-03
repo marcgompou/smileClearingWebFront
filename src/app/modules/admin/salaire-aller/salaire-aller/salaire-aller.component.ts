@@ -35,7 +35,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   totalData: any = {};
   detailsData: any[] = [];
   /**Salaire data */
-  label = "Charger fichier prélèvement";
+  label = "Charger fichier salaire";
   //Form
   @ViewChild("fileInput", { static: false }) fileInput: any;
 
@@ -172,13 +172,19 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
-    
+
+      const fileNameWithExtension = selectedFile.name;
+      const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
+      this.nomFichierCharger = fileNameWithoutExtension;
+  console.log("fileNameWithoutExtension",fileNameWithoutExtension) ;
+    this.salaireForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
       if (fileExtension === "txt") {
         // Traiter le fichier comme un fichier texte
+        this.clearFile();
         this.processTextFile(selectedFile);
       } else if (fileExtension === "xlsx") {
         // Traiter le fichier comme un fichier Excel
-        
+        this.clearFile();
         this.processExcelFile(selectedFile);
       } else {
         // Gérer le cas où l'extension de fichier n'est ni txt ni xlsx

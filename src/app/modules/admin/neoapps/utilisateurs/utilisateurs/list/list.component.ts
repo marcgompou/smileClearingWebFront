@@ -269,7 +269,7 @@ export class ListComponent implements OnInit,OnDestroy {
             libelle: "Roles",
             type:"select",
             multiple:true,
-            options:['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'],
+            options:['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN','VALID_PRELEVEMENT_INTER_BANK','CHARG_AFB120','CHARG_PRELEVEMENT_INTER_BANK','CONSULT_SALAIRE'],
             validators: {
               max: 130,
               required: true,

@@ -38,10 +38,10 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     isNotUserAdmin=true;
     rolesList: string[] =  ['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN'];
     disabledOptions:string[]=[];
-    rolesForNonAdmin=['CHARG_PRELEVEMENT','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','CREATION'];;
+    rolesForNonAdmin=['CHARG_PRELEVEMENT','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','CREATION','VALID_PRELEVEMENT_INTER_BANK','CHARG_AFB120','CHARG_PRELEVEMENT_INTER_BANK','CONSULT_SALAIRE'];;
     entreprises: any[];
 
-    
+   
     /**
      * Constructor
      */

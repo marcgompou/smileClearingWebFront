@@ -147,14 +147,14 @@ export class NavigationService {
           id: "pages",
           title: "Valider Salaire",
           type: "collapsable",
-          icon: "heroicons_outline:document-download",
+          icon: "heroicons_outline:clipboard-check",
           permission: SecService.permissions.ROLE_VALID_SALAIRE, //CHARG_SALAIRE
           children: [
             {
               id: "validerSalaire",
               title: "Charger salaire",
               type: "basic",
-              icon: "heroicons_solid:check",
+              icon: "heroicons_solid:check-circle",
               link: "/validerSalaire",
               permission: SecService.permissions.ROLE_VALID_SALAIRE,
             },
@@ -231,7 +231,7 @@ export class NavigationService {
           title: "Créer Prélèvement interbancaire",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
-          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT_INTER_BANK,
           children: [
             {
               id: "chargerPrelevementInterBancaire",
@@ -239,7 +239,7 @@ export class NavigationService {
               type: "basic",
               icon: "heroicons_outline:arrow-circle-down",
               link: "/chargerPrelevementInterBancaire",
-              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT_INTER_BANK,
             },
             // {
             //   id: "impressionPrelevement",
@@ -257,7 +257,7 @@ export class NavigationService {
           title: "Valider Prélèvement interbancaire",
           type: "collapsable",
           icon: "heroicons_outline:clipboard-check",
-          permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
+          permission: SecService.permissions.ROLE_VALID_PRELEVEMENT_INTER_BANK,
           children: [
             {
               id: "validerPrelevementInterbancaire",
@@ -265,7 +265,7 @@ export class NavigationService {
               type: "basic",
               icon: "heroicons_outline:check-circle",
               link: "/validerPrelevementInterbancaire",
-              permission: SecService.permissions.ROLE_VALID_PRELEVEMENT,
+              permission: SecService.permissions.ROLE_VALID_PRELEVEMENT_INTER_BANK,
             },
           ],
         },
@@ -277,14 +277,14 @@ export class NavigationService {
       title: "OPERATION BANCAIRE",
       subtitle: "",
       type: "group",
-      icon: "heroicons_outline:transaction",
+      icon: "heroicons_outline:document-download",
       children: [
         {
           id: "pages",
           title: "Transaction Bancaire",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
-          permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT, //TODO
+          permission: SecService.permissions.ROLE_CHARG_AFB120, //TODO
           children: [
             {
               id: "operationBancaire",
@@ -292,7 +292,7 @@ export class NavigationService {
               type: "basic",
               icon: "heroicons_outline:arrow-circle-down",
               link: "/operationBancaire",
-              permission: SecService.permissions.ROLE_CHARG_PRELEVEMENT,
+              permission: SecService.permissions.ROLE_CHARG_AFB120,
             },
            
           ],
