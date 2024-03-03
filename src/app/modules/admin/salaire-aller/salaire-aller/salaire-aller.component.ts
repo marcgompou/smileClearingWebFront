@@ -62,7 +62,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     libelle;
     banque;
 
-    dataStructure = [
+    dataStructure: any[] = [
       { key: "codeEnreg", label: "Code Enreg" },
       { key: "nom", label: "Nom" },
       { key: "domici", label: "Domiciliation" },
@@ -172,12 +172,13 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
-
+    
       if (fileExtension === "txt") {
         // Traiter le fichier comme un fichier texte
         this.processTextFile(selectedFile);
       } else if (fileExtension === "xlsx") {
         // Traiter le fichier comme un fichier Excel
+        
         this.processExcelFile(selectedFile);
       } else {
         // Gérer le cas où l'extension de fichier n'est ni txt ni xlsx
@@ -224,83 +225,37 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
 
   processExcelFile(selectedFile: File) {
     const fileReader = new FileReader();
+    this.addRibColumn();
+    console.log(selectedFile, "selectedFile");
     fileReader.onload = (e) => {
       const arrayBuffer = e.target.result;
       const workbook = XLSX.read(arrayBuffer, { type: "array" });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-  
-      const data = rawData.slice(1).map((row) => {
-        let obj = {};
-        this.dataStructure.forEach((item, index) => {
-          obj[item.key] = row[index] || ""; // Utilisez "" comme valeur par défaut si la cellule est vide
-        });
-        return obj;
-      });
-  
-      this.dataSource.data = data;
-      this.isLoading = false;
-      this._changeDetectorRef.markForCheck();
+      this._tableDataService.setDatas$(
+        rawData.slice(1).map((row) => ({
+          nom: row[0],
+          guichet: row[4],
+           compte : row[5],
+           montant : row[2],
+           libelle : row[1],
+           banque : row[3],
+           cleRib : row[6],
+        }))
+      );
+    
+      
     };
     fileReader.readAsArrayBuffer(selectedFile);
   }
 
-  // onFileSelected(event: any) {
-
-  //   try{
-
-  //     const selectedFile = event.target.files[0];
-  //     this.isLoading = true;
-  //     if (selectedFile) {
-  //       this.detailsData=[];
-  //       const fileNameWithExtension = selectedFile.name;
-  //       const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
-  //       this.nomFichierCharger = fileNameWithoutExtension;
-
-  //       this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension);
-  //       // Now, you can read the file content or perform other operations with it.
-  //       const fileReader = new FileReader();
-  //       fileReader.onload = (e) => {
-  //         const fileContent = e.target.result as string;
-  //         const lines = fileContent.split('\n'); // Split the content into lines
-  //         const totalLines = lines.length;
-  //         for (let i = 0; i < totalLines; i++) {
-  //           const line = lines[i];
-  //           // CALL FUNCTION TO RETRIEVE THE HEADER
-  //           if (i === 0) {
-  //             this.extractHeaderValues(line);
-  //           }
-  //           //Details
-  //           if(i>0 && i<totalLines-2){
-  //             this.detailsData.push(this.extractDetails(line));
-  //           }
-  //           // CALL FUNCTION TO RETRIEVE THE LAST LINE
-  //           if (i === totalLines-2) {
-  //             this.extractTotalData(line);
-  //           }
-  //         }
-  //         if(this.detailsData.length>0){
-  //           this._tableDataService.setDatas$( this.detailsData)
-  //           this.totalRows=this.detailsData.length;
-  //         }
-  //         this._changeDetectorRef.markForCheck();
-  //       };
-  //       fileReader.readAsText(selectedFile, 'ISO-8859-1');
-  //     } else {
-  //       console.error("No file selected.");
-  //     }
-  //   }catch(error){
-  //     console.log(error)
-  //     this.alert = { type: 'error', message: error.error.message ?? error.message };
-  //     this.showAlert = true;
-  //     this.hasError=true
-  //   }finally{
-  //     this._tableDataService.setDatas$([])
-  //     this.isLoading = false;
-  //     this._changeDetectorRef.detectChanges();
-  //   }
-  // }
+  addRibColumn () {
+    
+    this.dataStructure.push({ key: 'cleRib', label: 'Cle RIB' });
+     this.displayedColumns.push('cleRib');
+    this._changeDetectorRef.detectChanges();
+  }
 
   convertDateToDateTime(dateStr: string): string {
     if (dateStr.length !== 5) {
