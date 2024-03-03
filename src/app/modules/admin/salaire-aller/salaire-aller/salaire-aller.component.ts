@@ -88,7 +88,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     ];
     
   totalRows: number = 0;
-  nombreprelevement: number;
+  nombreSalaire: number;
   hasError = false;
 
   constructor(
@@ -171,13 +171,18 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
+      this.detailsData=[];
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
-
       const fileNameWithExtension = selectedFile.name;
       const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
       this.nomFichierCharger = fileNameWithoutExtension;
+      
   console.log("fileNameWithoutExtension",fileNameWithoutExtension) ;
-    this.salaireForm.get('fichierPrelevement')?.setValue(fileNameWithoutExtension);
+    this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension);
+    //this.salaireForm.get('fichierSalaire')?.setValue(this.nomFichierCharger);
+    
+    console.log("this.salaireForm.get",this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension))
+    this._changeDetectorRef.markForCheck();
       if (fileExtension === "txt") {
         // Traiter le fichier comme un fichier texte
         this.clearFile();
