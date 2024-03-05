@@ -32,6 +32,14 @@
                             <input type="file" #fileInput (change)="onFileSelected($event)" accept=".rec,.txt,.xls,.xlsx"
                                 style="display: none" />
                         </mat-form-field>
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
+                            <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required>
+                                <mat-option hidden value="" style="color: #888; ">Choisir Compte</mat-option>
+                                <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.id"> 
+                                    {{compteEntreprise?.designation }} - {{ compteEntreprise?.compte?.slice(-4)}}
+                                </mat-option>
+                            </mat-select> 
+                        </mat-form-field>
                         <button class="ml-4 " mat-flat-button [color]="'primary'" type="submit"
                             [disabled]="(!salaireForm.valid) || totalRows==0 || this.hasError">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>

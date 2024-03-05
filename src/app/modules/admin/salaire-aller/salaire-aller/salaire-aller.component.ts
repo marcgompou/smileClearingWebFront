@@ -12,13 +12,16 @@ import {
   UntypedFormBuilder,
   UntypedFormControl,
   FormGroup,
+  FormControl,
+  Validators,
 } from "@angular/forms";
-import { Subject, timeout } from "rxjs";
+import { BehaviorSubject, Subject, takeUntil, timeout } from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
 import { MatTableDataSource } from "@angular/material/table";
 import { FuseAlertType } from "@fuse/components/alert";
 import { SalaireAllerService } from "../salaire-aller.service";
 import { TableDataService } from "../../common/table-data/table-data.services";
+import { CompteEntreprises } from "../salaire-aller.type";
 
 @Component({
   selector: "app-salaire-aller",
@@ -34,6 +37,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   headerData: any = {};
   totalData: any = {};
   detailsData: any[] = [];
+  listeCompteEntreprise: any[] = [];
   /**Salaire data */
   label = "Charger fichier salaire";
   //Form
@@ -95,7 +99,9 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _salaireAllerService: SalaireAllerService,
-    private _tableDataService: TableDataService
+    private _tableDataService: TableDataService,
+   // private _compteEntreprises: BehaviorSubject<CompteEntreprises[] | null> = new BehaviorSubject(null);
+
   ) {
     this.salaireForm = this._formBuilder.group({
       fichierSalaire: [""], //
@@ -106,12 +112,17 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._tableDataService.setDatas$([]);
     this.salaireForm.get("fichierSalaire")?.setValue(this.label);
+    this.loadCompte();
   }
 
   // closeAlert() {
   //   this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   // }
+  compteClientForm = new FormGroup({
+    idCompteClient: new FormControl<any>('', Validators.required)
 
+  })
+  
   onSubmit() {
     this.showAlert = false;
     this.isLoading = true;
@@ -393,5 +404,29 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       libelle,
       banque,
     };
+  }
+
+  loadCompte(){
+    this._salaireAllerService.compteEntreprises$.pipe(takeUntil(this._unsubscribeAll)
+    ).subscribe({
+        next: (response:any) => {
+          console.log("Response compteEntreprises ===>", response);
+          if(response==null){response=[];}
+          this.listeCompteEntreprise = response.data;
+          this._changeDetectorRef.markForCheck();
+        }, 
+        error: (error) => {
+          //not show historique
+          //this.showData = false;
+          console.error('Error : ',JSON.stringify(error));
+          // Set the alert
+          this.alert = { type: 'error', message: error.error.message??error.error };
+          // Show the alert
+          this.showAlert = true;
+          
+          this._changeDetectorRef.markForCheck();
+        }
+    });
+
   }
 }

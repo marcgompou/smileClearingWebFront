@@ -14,3 +14,13 @@ export interface Salaire {
     NomClient: string;
     DateCreation: Date;
 }
+export class CompteEntreprises {
+    id?: number;
+    banque: string;
+    agence: string;
+    compte: string;
+    cleRib: string;
+    designation: string;
+    statut?: string;
+    agenceRemettant?: string;
+    identreprise: number;}
