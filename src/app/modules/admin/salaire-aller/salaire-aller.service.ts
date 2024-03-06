@@ -19,8 +19,10 @@ export class SalaireAllerService {
     return this._compteEntreprises.asObservable();
   }
   createSalaire(data: any):  Observable<any>{
-    return this._httpClient.post<any>(`${environment.apiUrl}/salaire/`,data)
+    return this._httpClient.post<any>(`${environment.apiUrl}/salaires/`,data)
   }
+
+  
   getCompteByEntreprise(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiUrl}/compteClient/entreprise`).pipe(
       tap((response) => {

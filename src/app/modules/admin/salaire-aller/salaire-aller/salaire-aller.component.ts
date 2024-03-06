@@ -42,10 +42,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   label = "Charger fichier salaire";
   //Form
   @ViewChild("fileInput", { static: false }) fileInput: any;
-
-  /**MatTable */
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  /**MatTable */
+  fileExtension:string=""
+ 
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
     message: "",
@@ -55,44 +53,45 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  salaireForm = new FormGroup({
-    idCompteClient: new FormControl<any>('', Validators.required)
-  }) as FormGroup;
+  salaireForm: FormGroup 
   nomFichierCharger: string = "";
-    codeEnreg;
-    nom;
-    domici;
-    guichet;
-    compte;
-    montant;
-    libelle;
-    banque;
+  codeEnreg;
+  nom;
+  domici;
+  guichet;
+  compte;
+  montant;
+  libelle;
+  banque;
 
-    dataStructure: any[] = [
-      { key: "codeEnreg", label: "Code Enreg" },
-      { key: "nom", label: "Nom" },
-      { key: "domici", label: "Domiciliation" },
-      { key: "banque", label: "Banque" },
-      { key: "guichet", label: "Guichet" },
-      { key: "compte", label: "Compte Débité" },
-      { key: "montant", label: "Montant", type: "montant" },
-      { key: "libelle", label: "Libellé Opérat" },
-     
-    ];
-    
+  dataStructureTxt: any[] = [
+    { key: "codeEnreg", label: "Code Enreg" },
+    { key: "nom", label: "Béneficiaire" },
+    { key: "domici", label: "Domiciliation" },
+    { key: "banque", label: "Banque" },
+    { key: "guichet", label: "Guichet" },
+    { key: "compte", label: "Compte Débité" },
+    { key: "montant", label: "Montant", type: "montant" },
+    { key: "libelle", label: "Libellé Opérat" },
 
-    displayedColumns: string[] = [
-      "codeEnreg",
-      "nom",
-      "domici",
-      "banque",
-      "guichet",
-      "compte",
-      "montant",
-      "libelle",
-      
-    ];
-    
+  ];
+  
+
+  displayedColumnsTxt: string[] =this.dataStructureTxt.map((o) => o.key);
+
+  dataStructureXls:any[] = [
+    { key: "nom", label: "Béneficiaire" },
+    { key: "banque", label: "Banque" },
+    { key: "guichet", label: "Guichet" },
+    { key: "compte", label: "Compte Débité" },
+    { key: "montant", label: "Montant", type: "montant" },
+    { key: "libelle", label: "Libellé Opérat" },
+    { key: "cleRib", label: "Cle Rib" },
+
+  ];
+  
+  displayedColumnsXls: string[] =this.dataStructureXls.map((o) => o.key);
+  
   totalRows: number = 0;
   nombreSalaire: number;
   hasError = false;
@@ -107,6 +106,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   ) {
     this.salaireForm = this._formBuilder.group({
       fichierSalaire: [""], //
+      idCompteClient: ["", Validators.required],
     });
   }
 
@@ -182,27 +182,30 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       this.detailsData=[];
-      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+      this.fileExtension = selectedFile.name.split(".").pop().toLowerCase();
       const fileNameWithExtension = selectedFile.name;
       const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
       this.nomFichierCharger = fileNameWithoutExtension;
-    this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension);
+      this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension);
     
- //   console.log("this.salaireForm.get",this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension))
-    this._changeDetectorRef.markForCheck();
-      if (fileExtension === "txt") {
+      this._changeDetectorRef.markForCheck();
+      if (this.fileExtension === "txt") {
         // Traiter le fichier comme un fichier texte
       
         this.processTextFile(selectedFile);
-      } else if (fileExtension === "xlsx") {
+      } else if (this.fileExtension === "xlsx") {
         // Traiter le fichier comme un fichier Excel
-       
         this.processExcelFile(selectedFile);
       } else {
         // Gérer le cas où l'extension de fichier n'est ni txt ni xlsx
-        console.error("Format de fichier non pris en charge.");
-        // Vous pouvez ici définir un message d'erreur à afficher à l'utilisateur
+        this.alert = { type: 'error', message: "Format de fichier non pris en charge." };
+        // Show the alert
+        this.showAlert = true;
+        
+        this._changeDetectorRef.markForCheck();
       }
+
+      
     }
   }
 
@@ -243,7 +246,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
 
   processExcelFile(selectedFile: File) {
     const fileReader = new FileReader();
-    this.addRibColumn();
+   // this.addRibColumn();
     console.log(selectedFile, "selectedFile");
     fileReader.onload = (e) => {
       const arrayBuffer = e.target.result;
@@ -268,12 +271,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     fileReader.readAsArrayBuffer(selectedFile);
   }
 
-  addRibColumn () {
-    
-    this.dataStructure.push({ key: 'cleRib', label: 'Cle RIB' });
-     this.displayedColumns.push('cleRib');
-    this._changeDetectorRef.detectChanges();
-  }
+
 
   convertDateToDateTime(dateStr: string): string {
     if (dateStr.length !== 5) {
