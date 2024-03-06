@@ -72,8 +72,8 @@ export class CreerRemiseService {
   getCompteByEntreprise(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiUrl}/compteClient/entreprise`).pipe(
       tap((response) => {
-        console.log('test======================================');
-        console.log(response);
+        console.log('test======================================', response);
+  
         this._compteEntreprises.next(response);
       })
     );

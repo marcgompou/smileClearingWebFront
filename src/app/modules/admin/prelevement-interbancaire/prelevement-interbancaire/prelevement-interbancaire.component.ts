@@ -160,6 +160,9 @@ export class PrelevementInterbancaireComponent implements OnInit, OnDestroy {
   }
 
   onFileSelected(event: any) {
+
+  
+    
     try {
       const selectedFile = event.target.files[0];
       if (selectedFile) {

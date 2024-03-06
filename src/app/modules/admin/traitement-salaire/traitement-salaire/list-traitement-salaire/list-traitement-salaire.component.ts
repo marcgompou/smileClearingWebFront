@@ -140,9 +140,9 @@ export class ListTraitementSalaireComponent implements OnInit, AfterViewInit, On
       dateDebut: [new Date().toISOString().split('T')[0], [Validators.required]],
       dateFin: [new Date().toISOString().split('T')[0], [Validators.required]],
       compte:['1', [Validators.required]],
+      
     });
     this.loadCompte();
-  
   }
 
   onSubmit(){

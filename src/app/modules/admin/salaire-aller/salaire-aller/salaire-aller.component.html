@@ -32,7 +32,7 @@
                             <input type="file" #fileInput (change)="onFileSelected($event)" accept=".rec,.txt,.xls,.xlsx"
                                 style="display: none" />
                         </mat-form-field>
-                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
+                        <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4 ml-4">
                             <mat-select formControlName="idCompteClient" matInput id="idCompteClient" required>
                                 <mat-option hidden value="" style="color: #888; ">Choisir Compte</mat-option>
                                 <mat-option *ngFor="let  compteEntreprise of listeCompteEntreprise" [value]="compteEntreprise.id"> 

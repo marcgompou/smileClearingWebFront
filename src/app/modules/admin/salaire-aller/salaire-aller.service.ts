@@ -8,6 +8,7 @@ import { CompteEntreprises } from './salaire-aller.type';
   providedIn: 'root'
 })
 export class SalaireAllerService {
+  private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _compteEntreprises: BehaviorSubject<CompteEntreprises[] | null> = new BehaviorSubject(null);
 
   

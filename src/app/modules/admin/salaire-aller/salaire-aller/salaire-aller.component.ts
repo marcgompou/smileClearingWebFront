@@ -55,7 +55,9 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  salaireForm: FormGroup;
+  salaireForm = new FormGroup({
+    idCompteClient: new FormControl<any>('', Validators.required)
+  }) as FormGroup;
   nomFichierCharger: string = "";
     codeEnreg;
     nom;
@@ -118,10 +120,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   // closeAlert() {
   //   this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   // }
-  compteClientForm = new FormGroup({
-    idCompteClient: new FormControl<any>('', Validators.required)
-
-  })
+  
   
   onSubmit() {
     this.showAlert = false;
@@ -187,20 +186,17 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       const fileNameWithExtension = selectedFile.name;
       const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
       this.nomFichierCharger = fileNameWithoutExtension;
-      
-  console.log("fileNameWithoutExtension",fileNameWithoutExtension) ;
     this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension);
-    //this.salaireForm.get('fichierSalaire')?.setValue(this.nomFichierCharger);
     
-    console.log("this.salaireForm.get",this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension))
+ //   console.log("this.salaireForm.get",this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension))
     this._changeDetectorRef.markForCheck();
       if (fileExtension === "txt") {
         // Traiter le fichier comme un fichier texte
-        this.clearFile();
+      
         this.processTextFile(selectedFile);
       } else if (fileExtension === "xlsx") {
         // Traiter le fichier comme un fichier Excel
-        this.clearFile();
+       
         this.processExcelFile(selectedFile);
       } else {
         // Gérer le cas où l'extension de fichier n'est ni txt ni xlsx
