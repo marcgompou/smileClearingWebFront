@@ -463,6 +463,14 @@ export class NavigationService {
               permission: SecService.permissions.ROLE_SUPERADMIN,
             },
             {
+              id: "parametreWorkflow",
+              title: "Parametrage Workflow",
+              type: "basic",
+              //icon : 'heroicons_outline:support',
+              link: "/parametreWorkflow",
+              permission: SecService.permissions.ROLE_SUPERADMIN,
+            },
+            {
               id: "parametreAgence",
               title: "Parametrage Agence Bancaire",
               type: "basic",

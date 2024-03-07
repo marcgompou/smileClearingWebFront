@@ -218,6 +218,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/compteAfb120/compteAfb.module').then(m => m.CompteAfbModule)
             },
             {
+                path: 'parametreWorkflow',
+                data: { breadcrumb: 'Parametrage des workflows' },
+                loadChildren: () => import('app/modules/admin/workflow/workflow.module').then(m => m.WorkflowModule)
+            },
+            {
                 path: 'monProfil',
                 data: { breadcrumb: 'Mon profil' },
                 loadChildren: () => import('app/modules/admin/user-profile/user-profile.module').then(m => m.UserProfileModule)
