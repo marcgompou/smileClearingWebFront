@@ -278,14 +278,12 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
       },
       {
         key: "statut",
-        libelle: "Statut",
-        placeholder: "Ex: 1",
-        type: "number",
-        validators: {
-          minValue: 1,
-          maxValue: 1,
-          required: true,
-        },
+        label: "Etat",
+        type: "status",
+        statusValues: [
+          { value: 1, libelle: "Activé", color: "#68D391" },
+          { value: 21, libelle: "Désactivé", color: "#F56565" },
+        ],
       },
 
       {
