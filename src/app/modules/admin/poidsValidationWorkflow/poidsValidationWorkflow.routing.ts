@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 import { CanDeactivateCompteDetails } from 'app/modules/admin/compte/compte.guards';
-import { CompteAfbComponent } from 'app/modules/admin/compteAfb120/compteAfb/compteAfb.component';
-import { ListAfbComponent } from 'app/modules/admin/compteAfb120/compteAfb/list/list.component';
+import { PoidsValidationWorkflowComponent } from 'app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow/poidsValidationWorkflow.component';
+import {  ListPoidsValidationWorkflowComponent } from 'app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow/list/list.component';
 import { CreateComponent } from '../common/create/create/create.component';
 import { LoadDataResolver } from '../common/table-data/table-data.resolver';
 import { DetailsComponent } from '../common/details/details/details.component';
@@ -9,16 +9,16 @@ import { LoadDetailsResolver } from '../common/details/details.resolvers';
 import { EntreprisesResolver } from '../entreprise/entreprise/entreprise.resolver';
 import { AgencesResolver } from '../agence/agence/agence.resolver';
 
-const endpoint = "compteAfb120";
-export const compteAfbRoutes: Route[] = [
+const endpoint = "workflow";
+export const poidsValidationWorkflowRoutes: Route[] = [
     {
         path: '',
-        component: CompteAfbComponent,
+        component: PoidsValidationWorkflowComponent,
         children: [
             {
                 path: '',
 
-                component: ListAfbComponent,
+                component: ListPoidsValidationWorkflowComponent,
                 resolve: {
                     data: LoadDataResolver,
                     entreprise  : EntreprisesResolver,
@@ -52,7 +52,7 @@ export const compteAfbRoutes: Route[] = [
                             data:EntreprisesResolver,
                             
                         },
-                        component    : CompteAfbComponent,
+                        component    : PoidsValidationWorkflowComponent,
                     }
 
 

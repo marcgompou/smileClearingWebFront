@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CompteAfbComponent } from './compteAfb/compteAfb.component';
-import { ListAfbComponent } from './compteAfb/list/list.component';
+import { PoidsValidationWorkflowComponent } from './poidsValidationWorkflow/poidsValidationWorkflow.component';
+import { ListPoidsValidationWorkflowComponent } from './poidsValidationWorkflow/list/list.component';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,7 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 //import * as moment from 'moment';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { SharedModule } from 'app/shared/shared.module';
-import { compteAfbRoutes } from 'app/modules/admin/compteAfb120/compteAfb.routing';
+import { poidsValidationWorkflowRoutes } from 'app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow.routing';
 import { TableDataModule } from "../common/table-data/table-data.module";
 import { CreateModule } from "../common/create/create.module";
 import { DetailsComponent } from '../common/details/details/details.component';
@@ -31,12 +31,12 @@ import { DetailsModule } from '../common/details/details.module';
 
 @NgModule({
     declarations: [
-        CompteAfbComponent,
-        ListAfbComponent,
+        PoidsValidationWorkflowComponent,
+        ListPoidsValidationWorkflowComponent,
         
     ],
     imports: [
-        RouterModule.forChild(compteAfbRoutes),
+        RouterModule.forChild(poidsValidationWorkflowRoutes),
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -61,7 +61,7 @@ import { DetailsModule } from '../common/details/details.module';
         DetailsModule
     ]
 })
-export class CompteAfbModule { }
+export class PoidsValidationWorkflowModule { }
 
 
 

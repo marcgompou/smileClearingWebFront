@@ -17,23 +17,9 @@
 
                     <!-- Title -->
                     <div>
-                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des Comptes AFB120</div>
+                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des Poids de Validation Workflow</div>
                         <div class="ml-0.5 font-medium text-secondary">
-                            <ng-container *ngIf="_dataSource ">
-                                <ng-container *ngIf="_nombreCompte">
-                                    <span>
-
-                                        {{_nombreCompte }}
-                                        {{_nombreCompte | i18nPlural: {
-                                        '=0' : 'Aucun compte',
-                                        '=1' : 'compte',
-                                        'other': 'comptes'
-                                        } }}
-
-                                    </span>
-
-                                </ng-container>
-                            </ng-container>
+                        
 
                         </div>
                     </div>
@@ -52,28 +38,17 @@
                         <!-- Add compte button -->
                         <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['./create']">
                             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">Créer un compte AFB120</span>
+                            <span class="ml-2 mr-1">Créer un Poids de Validation Workflow</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Comptes list -->
-                <!-- <ng-container *ngIf="_dataSource ">
-                    <ng-container *ngIf="_dataSource.filteredData ">
-                        <span >
-                            {{_dataSource.filteredData.length | i18nPlural: {
-                                '=0'   : 'Aucun compte',
-                                '=1'   : 'compte',
-                                'other': 'comptes'
-                            } }}
-                        </span>
-                    </ng-container>
-                </ng-container>-->
+              
                 <div class="relative">
 
 
-                    <app-table-data [endpoint]="'compteAfb120'" 
-                        [title]="'Liste des Comptes'"
+                    <app-table-data [endpoint]="'workflow'" 
+                        [title]="'Liste des Poids de Validation Workflow'"
                         [displayedColumns]="displayedColumns" 
                         [dataStructure]="dataStructure" 
                         [idRow]="'id'"

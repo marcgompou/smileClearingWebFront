@@ -471,6 +471,14 @@ export class NavigationService {
               permission: SecService.permissions.ROLE_SUPERADMIN,
             },
             {
+              id: "parametrePoidsValidationWorkflow",
+              title: "Parametrage Poids Validation Workflow",
+              type: "basic",
+              //icon : 'heroicons_outline:support',
+              link: "/parametrePoidsValidationWorkflow",
+              permission: SecService.permissions.ROLE_SUPERADMIN,
+            },
+            {
               id: "parametreAgence",
               title: "Parametrage Agence Bancaire",
               type: "basic",

@@ -223,6 +223,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/modules/admin/workflow/workflow.module').then(m => m.WorkflowModule)
             },
             {
+                path: 'parametrePoidsValidationWorkflow',
+                data: { breadcrumb: 'Parametrage des poids de validation des workflows' },
+                loadChildren: () => import('app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow.module').then(m => m.PoidsValidationWorkflowModule)
+            },
+            {
                 path: 'monProfil',
                 data: { breadcrumb: 'Mon profil' },
                 loadChildren: () => import('app/modules/admin/user-profile/user-profile.module').then(m => m.UserProfileModule)
