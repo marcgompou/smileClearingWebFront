@@ -126,9 +126,9 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     this.showAlert = false;
     this.isLoading = true;
     let data = {
-      salaireEnteteDto: this.headerData,
-      salaireDetailsDto: this.detailsData,
-      salaireTotalDto: this.totalData,
+      salaireEntete: this.headerData,
+      salaireDetails: this.detailsData,
+      salaireTotal: this.totalData,
     };
 
     this._salaireAllerService.createSalaire(data).subscribe({

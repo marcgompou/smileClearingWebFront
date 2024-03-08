@@ -106,21 +106,6 @@ export class CompteService
     }
 
 
-    getagence():Observable<any>
-    {
-
-        return this._httpClient.get<any>(`${environment.apiUrl}/agence`).pipe(
-            tap((response) => {
-                console.log('test======================================');
-                console.log(response);
-              //  response.sort((a,b)=>(a.creationDate<b.creationDate)? 1:-1);
-               
-                this._agence.next(response);
-                
-            })
-        );
-        //console.log(HttpClient);
-    }
     /**
      * Get client by id
      * @param id 

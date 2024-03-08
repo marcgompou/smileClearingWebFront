@@ -117,6 +117,11 @@ export class DetailsComponent implements OnInit,OnChanges {
           if (field?.validators?.minValue) {
             validators.push(Validators.min(field.validators.minValue));
           }
+
+          if (field?.validators?.maxValue) {
+            validators.push(Validators.max(field.validators.maxValue));
+          }
+
           if(field?.validators?.regex){
             validators.push(Validators.pattern(field.validators.regex));
           }
@@ -153,7 +158,7 @@ export class DetailsComponent implements OnInit,OnChanges {
         });
       
 
-      console.log("Form====>",this.form)
+        console.log("Form====>",this.form)
       }
       catch(error){
 
