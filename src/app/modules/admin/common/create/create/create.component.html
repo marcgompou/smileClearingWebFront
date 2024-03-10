@@ -117,6 +117,21 @@ mat-icon-button
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('regex')">Format incorrect</mat-error>
                   
                   </mat-form-field>
+
+                  <mat-form-field *ngIf="fieldConfig?.type === 'autocomplete'" [ngClass]="_fieldClass" >
+                    <mat-label>{{ fieldConfig.libelle }}</mat-label>
+                    <input type="text"
+                           placeholder="{{ fieldConfig?.placeholder }}"
+                           aria-label="{{ fieldConfig?.libelle }}"
+                           matInput
+                           [formControlName]="fieldConfig.key"
+                           [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.value">
+                        {{option.libelle}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
             
                   <mat-radio-group *ngIf="fieldConfig?.type === 'radio'" [formControlName]="fieldConfig.key">
                     <mat-radio-button *ngFor="let option of fieldConfig.options" [value]="option">
@@ -140,6 +155,12 @@ mat-icon-button
                         <mat-error *ngIf="form.get(fieldConfig.key)?.hasError('regex')">Format incorrect</mat-error>
                     
                   </mat-form-field>
+
+              
+
+                 
+
+                  
             </ng-container>
 
                 

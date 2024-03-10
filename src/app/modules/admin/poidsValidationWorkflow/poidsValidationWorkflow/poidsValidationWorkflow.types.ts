@@ -1,10 +1,8 @@
 
 export class PoidsValidationWorkflow {
   codeWorkflow?:string;
-  idUtilisateur:number;
- emailUtilisateur:string;
+ emailUtilisateur?:string;
   poids:number;
- statut:number;
   dateCreation ?:Date;
  dateModification ?:Date;
 
@@ -15,13 +13,11 @@ export class PoidsValidationWorkflow {
   public static constructorPoidsValidationWorkflow(data: any) {
     console.log('--------Workflow data----------',data);
   	const res:PoidsValidationWorkflow={
-      codeWorkflow:data.codeWorkflow,
-      idUtilisateur:data.idUtilisateur,
-      emailUtilisateur:data.emailUtilisateur,
-      poids:data.poids,
-      statut:data.statut,
-      dateCreation:data.dateCreation,
-      dateModification:data.dateModification
+      codeWorkflow:data?.codeWorkflow,
+      emailUtilisateur:data?.emailUtilisateur,
+      poids:data?.poids,
+      dateCreation:data?.dateCreation,
+      dateModification:data?.dateModification
     };
      
     console.log('--------PoidsValidationWorkflow res----------',res);

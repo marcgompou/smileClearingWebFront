@@ -64,6 +64,36 @@ export class UtilisateursByIdResolver implements Resolve<any>
     let id: string = route.params['id'];
     return this._utilisateursService.getUtilisateurById(id);
   }
+
+
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UtilisateursResolver implements Resolve<any>
+{
+  /**
+   * Constructor
+   */
+  constructor(private _utilisateursService: UtilisateursService) {
+  }
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Resolver
+   *
+   * @param route
+   * @param state
+   */
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResponseContrat> {
+    let id: string = route.params['id'];
+    return this._utilisateursService.getUtilisateurs();
+  }
+
+  
 }
 
 

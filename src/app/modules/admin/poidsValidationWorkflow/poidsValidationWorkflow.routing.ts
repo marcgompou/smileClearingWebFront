@@ -7,9 +7,9 @@ import { LoadDataResolver } from '../common/table-data/table-data.resolver';
 import { DetailsComponent } from '../common/details/details/details.component';
 import { LoadDetailsResolver } from '../common/details/details.resolvers';
 import { EntreprisesResolver } from '../entreprise/entreprise/entreprise.resolver';
-import { AgencesResolver } from '../agence/agence/agence.resolver';
+import {  UtilisateursResolver } from '../neoapps/utilisateurs/utilisateurs/utilisateurs.resolver';
 
-const endpoint = "workflow";
+const endpoint = "poidsValidationWorkflows";
 export const poidsValidationWorkflowRoutes: Route[] = [
     {
         path: '',
@@ -21,9 +21,7 @@ export const poidsValidationWorkflowRoutes: Route[] = [
                 component: ListPoidsValidationWorkflowComponent,
                 resolve: {
                     data: LoadDataResolver,
-                    entreprise  : EntreprisesResolver,
-                    agence : AgencesResolver
-                   
+                    utilisateur : UtilisateursResolver,
                 },
                 data: { breadcrumb: 'Liste', endpoint: endpoint },
 
@@ -54,8 +52,6 @@ export const poidsValidationWorkflowRoutes: Route[] = [
                         },
                         component    : PoidsValidationWorkflowComponent,
                     }
-
-
                 ]
             }
         ]

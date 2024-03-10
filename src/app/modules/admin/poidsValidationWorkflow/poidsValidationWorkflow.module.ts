@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { PoidsValidationWorkflowComponent } from './poidsValidationWorkflow/poidsValidationWorkflow.component';
 import { ListPoidsValidationWorkflowComponent } from './poidsValidationWorkflow/list/list.component';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,8 @@ import { TableDataModule } from "../common/table-data/table-data.module";
 import { CreateModule } from "../common/create/create.module";
 import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -44,7 +46,11 @@ import { DetailsModule } from '../common/details/details.module';
         MatDividerModule,
         MatFormFieldModule,
         MatIconModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AsyncPipe,
         MatInputModule,
+        MatAutocompleteModule,
         MatMenuModule,
         MatMomentDateModule,
         MatProgressBarModule,

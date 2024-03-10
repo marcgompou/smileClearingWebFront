@@ -33,6 +33,7 @@ import { CreateComponent } from "app/modules/admin/common/create/create/create.c
 import { EntrepriseService } from "app/modules/admin/entreprise/entreprise/entreprise.service";
 import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
 import { TableDataService } from "app/modules/admin/common/table-data/table-data.services";
+import { UtilisateursService } from "app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service";
 
 @Component({
   selector: "PoidsValidationWorkflow",
@@ -42,7 +43,7 @@ import { TableDataService } from "app/modules/admin/common/table-data/table-data
 export class ListPoidsValidationWorkflowComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;
   drawerMode: "side" | "over";
-
+  pageSize = 100;
   /**DataTable */
   selectedRowIndex: any;
   private _searchTerms = new Subject<string>();
@@ -61,8 +62,8 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
 
   public dataStructure = [
     {
-      key: "idUtilisateur",
-      label: "Nom Utilisateur",
+      key: "emailUtilisateur",
+      label: "Email Utilisateur",
     },
     {
       key: "codeWorkflow",
@@ -70,16 +71,8 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
     },
 
     {
-      key: "emailUtilisateur",
-      label: "Email",
-    },
-    {
       key: "poids",
       label: "poids de signature",
-    },
-    {
-      key: "statut",
-      label: "Statut",
     },
 
     {
@@ -92,18 +85,26 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
       label: "Date modification",
       type: "date",
     },
+    {
+      key: "statut",
+      label: "Etat",
+      type: "status",
+      statusValues: [
+        { value: 1, libelle: "Activé", color: "#68D391" },
+        { value: 21, libelle: "Désactivé", color: "#F56565" },
+      ],
+    },
   ];
 
-  _entreprises: any[];
-
+  _utilisateurs: any[];
   public displayedColumns: string[] = [
     "idUtilisateur",
     "codeWorkflow",
     "emailUtilisateur",
     "poids",
-    "statut",
     "dateCreation",
     "dateModification",
+    "statut",
   ];
 
   /**
@@ -112,7 +113,7 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _activatedRoute: ActivatedRoute,
-    private _entrepriseService: EntrepriseService,
+    private _utilisateurService: UtilisateursService,
     private _tableDataService: TableDataService,
     private _router: Router,
     private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -134,7 +135,7 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
       }
     });
 
-    this.loadEntreprises();
+    this.loadUtilisateurs();
 
     // Subscribe to media changes
     this._fuseMediaWatcherService.onMediaChange$
@@ -216,16 +217,16 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
     return item.id || index;
   }
 
-  loadEntreprises() {
-    this._entrepriseService.entreprises$
+  loadUtilisateurs() {
+    this._utilisateurService.utilisateurs$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (response: any) => {
-          console.log("Response===> :", response);
-          this._entreprises = response.data?.map((el) => {
+          console.log("Response utilisateur===> :", response);
+          this._utilisateurs = response.data?.map((el) => {
             return {
-              value: el.identreprise,
-              libelle: el.nomEntreprise,
+              value: el.email,
+              libelle: el.email,
             };
           });
           this._changeDetectorRef.markForCheck();
@@ -235,25 +236,29 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
 
   openCreateComponent(component: CreateComponent) {
     component.matDrawer = this.matDrawer;
-    component.endpoint = "workflow";
-    component.formTitle = "WORKFLOW";
+    component.endpoint = "poidsValidationWorkflows";
+    component.formTitle = "Poids Validation Workflow";
     component.constructorPayload =
       PoidsValidationWorkflow.constructorPoidsValidationWorkflow;
     component.formFields = [
       {
-        key: "idUtilisateur",
-        libelle: "Utilisateur",
-        type: "select",
-        options: this._entreprises,
+        key: "emailUtilisateur",
+        libelle: "Email Utilisateur",
+        type: "autocomplete",
+        placeholder: "Ex: xxxx@mail.com",
+        typeSearch: "utilisateur",
+
         validators: {
           required: true,
         },
+        options: this._utilisateurs,
       },
 
       {
         key: "codeWorkflow",
         libelle: "Code Workflow",
         type: "select",
+        disabled:true,
         options: [
           {
             value: "WORKFLOW_SALAIRE",
@@ -272,37 +277,20 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
         type: "number",
         validators: {
           minValue: 1,
-          maxValue: 10,
+          maxValue: 100,
           required: true,
         },
       },
       {
         key: "statut",
-        label: "Etat",
-        type: "status",
-        statusValues: [
-          { value: 1, libelle: "Activé", color: "#68D391" },
-          { value: 21, libelle: "Désactivé", color: "#F56565" },
-        ],
+        libelle: "Statut",
+        type: "select",
+        disabled:true,
+        writeInCreate:false,
+        options: [{ value: 21, libelle: "Désactivé" }, { value: 1, libelle: "Activé" }],
       },
 
-      {
-        key: "dateCreation",
-        libelle: "Date Creation",
-        type: "date",
-        validators: {
-          required: true,
-        },
-      },
-
-      {
-        key: "dateModification",
-        libelle: "Date Modification",
-        type: "date",
-        validators: {
-          required: true,
-        },
-      },
+     
     ];
   }
 }

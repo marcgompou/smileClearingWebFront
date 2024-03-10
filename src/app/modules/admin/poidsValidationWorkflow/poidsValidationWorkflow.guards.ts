@@ -7,7 +7,7 @@ import { DetailsComponent } from '../common/details/details/details.component';
 @Injectable({
     providedIn: 'root'
 })
-export class CanDeactivateWorkflowDetails implements CanDeactivate<DetailsComponent>
+export class CanDeactivatePoidsValidationWorkflowDetails implements CanDeactivate<DetailsComponent>
 {
     canDeactivate(
         component: DetailsComponent,

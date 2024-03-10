@@ -13,11 +13,11 @@ export class Workflow {
   public static constructorWorkflow(data: any) {
     console.log('--------Workflow data----------',data);
   	const res:Workflow={
-      id:data.id,
-      dateCreation:data.dateCreation,
-      codeWorkflow:data.codeWorkflow,
-      niveauValidation:data.niveauValidation,
-      idEntreprise : data.idEntreprise,
+      id:data?.id,
+      dateCreation:data?.dateCreation,
+      codeWorkflow:data?.codeWorkflow,
+      niveauValidation:data?.niveauValidation,
+      idEntreprise : data?.idEntreprise,
     };
     
     return res; 

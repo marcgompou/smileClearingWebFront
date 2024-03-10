@@ -2,7 +2,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Observable, Subject, map, startWith } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDrawer } from '@angular/material/sidenav';
 import { CreateService } from '../create.service';
@@ -28,13 +28,12 @@ export class CreateComponent implements OnInit {
   //@Input("placeholder") placeholder:string ;
   
   @ViewChild('formNgForm') formNgForm: NgForm;
-
+  filteredOptions: Observable<string[]>;
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: ''
   };
   showAlert: boolean = false;
-
   editMode:boolean=false;
   //utilisateur connecté
   //le utilisateur à affiché
@@ -97,6 +96,7 @@ export class CreateComponent implements OnInit {
 
 
 
+  
 
 
 
@@ -124,8 +124,21 @@ export class CreateComponent implements OnInit {
       if(field?.writeInCreate==undefined || field?.writeInCreate==true){
         this.form.addControl(field.key, this.formBuilder.control('', validators));
       }
-      
-
+      if (field?.type == "autocomplete") {
+        this.filteredOptions = this.form.get(field.key).valueChanges.pipe(
+          startWith(''),
+          map((value) => {
+            const filterValue = value.toLowerCase();
+            return field.options.filter(x => x.libelle.toLowerCase().includes(filterValue));
+          } ),
+        );
+        
+        // this.filteredOptions[field.key] = this.form.get(field.key).valueChanges.pipe(
+        //   startWith(''),
+        // //  map((value) => this._filter(value || '')),
+       
+        // );
+      }
     });
 
     console.log("Form====>",this.form)
