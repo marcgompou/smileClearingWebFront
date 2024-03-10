@@ -98,7 +98,7 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
 
   _utilisateurs: any[];
   public displayedColumns: string[] = [
-    "idUtilisateur",
+  
     "codeWorkflow",
     "emailUtilisateur",
     "poids",
