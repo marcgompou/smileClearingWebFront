@@ -26,7 +26,7 @@ export class CanDeactivatePoidsValidationWorkflowDetails implements CanDeactivat
         // If the next state doesn't contain '/contacts'
         // it means we are navigating away from the
         // contacts app
-        if ( !nextState.url.includes('/compteClientAfb') )
+        if ( !nextState.url.includes('/poidsValidationWorkflows') )
         {
             // Let it navigate
             return true;

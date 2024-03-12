@@ -27,7 +27,7 @@
                         <ng-container>
                             <div
                                 class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
-                                Détails Transactions</div>
+                                Détails Prélèvement</div>
                         </ng-container>
                     </div>
                 </div>
@@ -37,12 +37,32 @@
                             <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
                             <span class="ml-2">Retour</span>
                         </button>
-                       <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerTransaction()" >
-                                <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
-                                <span class="ml-2">Générer Fichier AFB120</span>
+                        <ng-container *ngIf="salaireData?.statut==1" >
+                            <button class="ml-4" mat-flat-button [color]="'primary'" (click)="validerSalaire()">
+                                <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
+                                <span class="ml-2">Valider</span>
                             </button>
-                        
-                      
+                        </ng-container>
+                        <ng-container *ngIf="salaireData?.statut==1" >
+                            <button class="ml-4" mat-flat-button [color]="'warn'" (click)="AnnulerSalaire()">
+                                <mat-icon [svgIcon]="'mat_solid:delete'" ></mat-icon>
+                                <span class="ml-2">Annuler</span>
+                            </button>
+                        </ng-container>
+
+
+                        <ng-container *ngIf="salaireData?.statut==16">
+                            <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerSalaire()" >
+                                <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
+                                <span class="ml-2">Gérérer Fichier Retour</span>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="salaireData?.statut==16">
+                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerRelance()" >
+                                <mat-icon [svgIcon]="'mat_solid:refresh'" ></mat-icon>
+                                <span class="ml-2">Générer Fichier Relance</span>
+                            </button>
+                        </ng-container>
                     </form>
                 </div>
             </div>
@@ -54,17 +74,12 @@
                         <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Fichier Transaction : {{ transactionData?.nomFichier }}
+                                    Fichier prélèvement : {{ salaireData?.nomfichier }}
                                 </span>
                             </ng-container>
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    Ancien Solde : {{ ancienSolde | currency:'CFA':'symbol':'1.0-2' }}
-                                </span>
-                            </ng-container>
-                            <ng-container>
-                                <span class="inline-block align-middle">
-                                    Nouveau Solde : {{ nouveauSolde | currency:'CFA':'symbol':'1.0-2' }}
+                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
                                 </span>
                             </ng-container>
                         </div>
@@ -74,8 +89,8 @@
 
                         <!-- TABLEAU DES CHEQUES-->
                         <app-table-data 
-                            [endpoint]="'transaction'+id" 
-                            [title]="'Liste des Transaction'"
+                            [endpoint]="'salaire'+id" 
+                            [title]="'Liste des Salaire'"
                             [dataKey]="'data'"
                             [serverSideLoad]="false"
                             [displayedColumns]="displayedColumns" 

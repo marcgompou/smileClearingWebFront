@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ValiderSalaireComponent } from './valider-salaire/valider-salaire/valider-salaire.component';
 import { RouterModule } from '@angular/router';
+import { validerSalaireRoutes } from './valider-salaire.routing';
 import { SharedModule } from 'app/shared/shared.module';
+import { StatusComponent } from '../common/status/status.component';
+import { SalaireValiderComponent } from './valider-salaire/valider-salaire.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -21,26 +25,23 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DetailsSalaireComponent } from './valider-salaire/details-salaire/details-salaire.component';
 import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsImprimerComponent } from '../imprimer-remise/details-importation/details-imprimer.component';
 import { FuseAlertModule } from '@fuse/components/alert';
-import { traitementSalaireRoutes } from './traitement-salaire.routing';
-import { DetailsTraitementSalaireComponent } from './traitement-salaire/details-traitement-salaire/details-traitement-salaire.component';
-import { ListTraitementSalaireComponent } from './traitement-salaire/list-traitement-salaire/list-traitement-salaire.component';
-import { TraitementSalaireComponent } from './traitement-salaire/traitement-salaire.component';
 
 
 
 @NgModule({
   declarations: [
-   TraitementSalaireComponent,
-   //TransactionComponent,
-   DetailsTraitementSalaireComponent,
-   ListTraitementSalaireComponent,
+    ValiderSalaireComponent,
+    SalaireValiderComponent,
+   DetailsSalaireComponent,
   //  DetailsImprimerComponent,
   ],
-  exports:[DetailsComponent],
+  exports:[DetailsSalaireComponent],
   imports: [
     CommonModule,
         MatButtonModule,
@@ -66,8 +67,8 @@ import { TraitementSalaireComponent } from './traitement-salaire/traitement-sala
         DetailsModule,
         MatAutocompleteModule,
         FuseAlertModule,
-        RouterModule.forChild(traitementSalaireRoutes)
+        RouterModule.forChild(validerSalaireRoutes)
 
   ]
 })
-export class TraitementSalaireModule { }
+export class SalaireValiderModule { }

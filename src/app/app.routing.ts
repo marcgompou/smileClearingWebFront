@@ -127,8 +127,8 @@ export const appRoutes: Route[] = [
 
             {
                 path: 'validerSalaire',
-                data: { breadcrumb: 'Traitement salaire' },
-                loadChildren: () => import('app/modules/admin/traitement-salaire/traitement-salaire.module').then(m => m.TraitementSalaireModule)
+                data: { breadcrumb: 'Valider salaire' },
+                loadChildren: () => import('app/modules/admin/valider-salaire/valider-salaire.module').then(m => m.SalaireValiderModule)
             },
 
 

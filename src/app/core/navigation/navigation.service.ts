@@ -152,7 +152,7 @@ export class NavigationService {
           children: [
             {
               id: "validerSalaire",
-              title: "Charger salaire",
+              title: "Valider salaire",
               type: "basic",
               icon: "heroicons_solid:check-circle",
               link: "/validerSalaire",
