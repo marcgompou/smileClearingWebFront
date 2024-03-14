@@ -338,6 +338,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       banque: headerLine.substring(149, 154).trim(),
       compteCredite: compteCredite,
       zoneVide: "zoneVide",
+      extension : this.fileExtension,
+      
     };
   }
 
