@@ -345,8 +345,9 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       guichet: headerLine.substring(86, 91).trim(),
       compte: headerLine.substring(91, 102).trim(),
       idenf: headerLine.substring(102, 118).trim(),
-      banque: headerLine.substring(149, 154).trim(),
-      compteCredite: compteCredite,
+      banque: headerLine.substring(149, 155).trim(),
+      //compteCredite: headerLine.substring(92, 104).trim(), 
+      compteCredite : this.salaireForm.get('idCompteClient').value,
       zoneVide: "zoneVide",
       extension : this.fileExtension,
       
