@@ -254,18 +254,28 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      this._tableDataService.setDatas$(
-        rawData.slice(1).map((row) => ({
-          nom: row[0],
-          guichet: row[4],
-           compte : row[5],
-           montant : row[2],
-           libelle : row[1],
-           banque : row[3],
-           cleRib : row[6],
-        }))
-      );
-    
+      this.totalRows = rawData.length - 1;
+      const transformedData = rawData.slice(1).map((row) => ({
+        nom: row[0],
+        guichet: row[4],
+        compte: row[5],
+        montant: row[2],
+        libelle: row[1],
+        banque: row[3],
+        cleRib: row[6],
+      }));
+  
+      // Mise à jour des données via le service
+      this._tableDataService.setDatas$(transformedData);
+  
+      // Calcul du montant total en convertissant les valeurs en nombres et en s'assurant de ne pas inclure l'en-tête
+      const montantTotal = transformedData.reduce((acc, row) => acc + (Number(row.montant) || 0), 0);
+  
+      // Affectation du montant total à this.totalData.montant
+      this.totalData = { montant: montantTotal };
+   
+      this.isLoading = false;
+      this._changeDetectorRef.markForCheck();
       
     };
     fileReader.readAsArrayBuffer(selectedFile);
