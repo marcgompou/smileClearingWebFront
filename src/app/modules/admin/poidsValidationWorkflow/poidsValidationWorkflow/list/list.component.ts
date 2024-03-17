@@ -66,6 +66,10 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
       label: "Email Utilisateur",
     },
     {
+      key: "nomEntreprise",
+      label: "Entreprise",
+    },
+    {
       key: "codeWorkflow",
       label: "Code Workflow",
     },
@@ -100,6 +104,7 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
   public displayedColumns: string[] = [
   
     "codeWorkflow",
+    "nomEntreprise",
     "emailUtilisateur",
     "poids",
     "dateCreation",
@@ -238,16 +243,13 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
     component.matDrawer = this.matDrawer;
     component.endpoint = "poidsValidationWorkflows";
     component.formTitle = "Poids Validation Workflow";
-    component.constructorPayload =
-      PoidsValidationWorkflow.constructorPoidsValidationWorkflow;
+    component.constructorPayload =PoidsValidationWorkflow.constructorPoidsValidationWorkflow;
     component.formFields = [
       {
         key: "emailUtilisateur",
         libelle: "Email Utilisateur",
         type: "autocomplete",
         placeholder: "Ex: xxxx@mail.com",
-        typeSearch: "utilisateur",
-
         validators: {
           required: true,
         },
@@ -280,6 +282,13 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
           maxValue: 100,
           required: true,
         },
+      },
+      {
+        key: "dateCreation",
+        libelle: "Date creation",
+        type: "text",
+        writeInCreate:false,
+        disabled:true
       },
       {
         key: "statut",

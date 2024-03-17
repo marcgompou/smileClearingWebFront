@@ -120,10 +120,19 @@ export class CreateComponent implements OnInit {
       if(field?.validators?.regex){
         validators.push(Validators.pattern(field.validators.regex));
       }
+      if (field?.validators?.minValue) {
+        validators.push(Validators.min(field.validators.minValue));
+      }
+
+      if (field?.validators?.maxValue) {
+        validators.push(Validators.max(field.validators.maxValue));
+      }
+
       //If it's not provide field is write in create
       if(field?.writeInCreate==undefined || field?.writeInCreate==true){
         this.form.addControl(field.key, this.formBuilder.control('', validators));
       }
+      //TODO AUTOCOMPLETE FOR SEVERAL PARAMETER
       if (field?.type == "autocomplete") {
         this.filteredOptions = this.form.get(field.key).valueChanges.pipe(
           startWith(''),
@@ -140,6 +149,7 @@ export class CreateComponent implements OnInit {
         // );
       }
     });
+    this._changeDetectorRef.markForCheck();
 
     console.log("Form====>",this.form)
   }
