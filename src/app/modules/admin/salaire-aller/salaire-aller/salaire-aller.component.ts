@@ -137,6 +137,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         this.alert = {
           type: "success",
           message: "Enregistrement effectué avec succès",
+          
         };
         this.showAlert = true;
         this._changeDetectorRef.detectChanges();
@@ -220,6 +221,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         // Extrait les valeurs de l'en-tête du fichier
         if (i === 0) {
           this.extractHeaderValues(line);
+          
+          const compteTxt = this.headerData.compte;
         }
         // Extrait les détails pour chaque ligne, excepté la première et la dernière
         if (i > 0 && i < totalLines - 2) {
@@ -238,6 +241,18 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         this._tableDataService.setDatas$(this.detailsData);
         this.totalRows = this.detailsData.length;
       }
+      // Exemple de code pour extraire le compte du fichier TXT
+    
+ // Appel de la fonction extractHeaderValues pour extraire les informations de l'en-tête
+ //this.extractHeaderValues(headerLine);
+
+ // Récupération de la valeur du compte extraite de l'en-tête
+ const compteTxt = this.headerData.compte;
+
+
+    // Attribution de la valeur de compteTxt au contrôle de formulaire idCompteClient
+    this.salaireForm.get('idCompteClient')?.setValue(this.headerData.compte);
+    console.log ("this.headerData.compte",this.headerData.compte)
       this.isLoading = false;
       this._changeDetectorRef.markForCheck();
     };
@@ -344,10 +359,10 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       refer: headerLine.substring(54, 61).trim(),
       indrel: headerLine.substring(80, 81).trim(),
       guichet: headerLine.substring(86, 91).trim(),
-      compte: headerLine.substring(91, 102).trim(),
+
+      compte: headerLine.substring(91, 103).trim(),
       idenf: headerLine.substring(102, 118).trim(),
       banque: headerLine.substring(149, 155).trim(),
-      //compteCredite: headerLine.substring(92, 104).trim(), 
       compteCredite : this.salaireForm.get('idCompteClient').value,
       zoneVide: "zoneVide",
       extension : this.fileExtension,
