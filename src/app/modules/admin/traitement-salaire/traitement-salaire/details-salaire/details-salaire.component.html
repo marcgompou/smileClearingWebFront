@@ -1,0 +1,98 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+        [dismissible]="true"
+        [dismissed]="false"
+        [showIcon]="true"
+        [@shake]="alert.type === 'error'">
+        {{ alert.message }}
+    </fuse-alert>
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
+        <!-- Drawer -->
+        <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
+            [disableClose]="true" #matDrawer>
+            <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
+        </mat-drawer>
+         
+        <mat-drawer-content class="flex flex-col">
+            <!-- Header -->
+            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+                <!-- Loader -->
+                <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+                    <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+                </div>
+                <!-- Title -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                                Détails Salaire
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="flex items-center sm:mt-0 sm:ml-4">
+                    
+                    <!-- <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()"> -->
+                    <form>
+                        <button class="ml-4" type="'button'" (click)="goBackToList()" mat-stroked-button [color]="'accent'">
+                            <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
+                            <span class="ml-1 ">Retour</span>
+                        </button>
+                        <ng-container *ngIf="salaireRemiseData?.statut==13" >
+                            <button class="ml-4 sm:mt-2" mat-flat-button [color]="'primary'" (click)="cloturerSalaire()">
+                                <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
+                                <span class="ml-1">Clôturer</span>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="salaireRemiseData?.statut==3">
+                            <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerSalaireValider()" >
+                                <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
+                                <span class="ml-1">Générer Fichier</span>
+                            </button>
+                        </ng-container>
+
+                        <ng-container *ngIf="salaireRemiseData?.statut==16">
+                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerRelance()" >
+                                <mat-icon [svgIcon]="'mat_solid:refresh'" ></mat-icon>
+                                <span class="ml-2">Générer Fichier Relance</span>
+                            </button>
+                        </ng-container>
+                    </form>
+                </div>
+            </div>
+            <form class="flex flex-col ">
+                <!-- Main -->
+                <div class="flex flex-auto overflow-hidden">
+                    <!-- remiseCheques list -->
+                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+                        <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
+                            <ng-container>
+                                <span class="inline-block align-middle">
+                                    Fichier selectionné : {{ nomFichier }}
+                                </span>
+                            </ng-container>
+                            <ng-container>
+                                <span class="inline-block align-middle">
+                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
+                                </span>
+                            </ng-container>
+                        </div>
+                        <!-- TABLEAU DES PRELEVEMENTS -->
+                        <div class="relative">
+                        <app-table-data 
+                            [endpoint]="'salaire/admin'" 
+                            [title]="'Liste des Salaire'"
+                            [serverSideLoad]="false"
+                            [dataKey]="'data'"
+                            [displayedColumns]="displayedColumns" 
+                            [dataStructure]="dataStructure" 
+                            [idRow]="'id'"
+                            [canClick]="salaireRemiseData?.statut == 13">
+                        </app-table-data>
+                    </div>
+                    </div>
+                </div>
+            </form>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

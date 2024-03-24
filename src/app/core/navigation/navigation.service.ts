@@ -410,6 +410,26 @@ export class NavigationService {
            
           ],
         },
+
+        {
+          id: "pages",
+          title: "Workflows",
+          type: "collapsable",
+          icon: "heroicons_outline:adjustments",
+          permission: SecService.permissions.ROLE_ADMIN,
+          children: [
+            {
+              id: "Validation salaire",
+              title: "Validation salaire",
+              type: "basic",
+              icon: "heroicons_outline:arrow-circle-right",
+              link: "/traitementSalaire",
+              permission: SecService.permissions.ROLE_ADMIN,
+            },
+
+           
+          ],
+        },
       ],
     },
 
