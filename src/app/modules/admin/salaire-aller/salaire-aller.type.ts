@@ -1,18 +1,28 @@
 export interface Salaire {
    
-    IDEntreprise: string;
-    IDRemisePrelev: string;
-    Nomfichier: string;
-    CodeBanque: string;
-    Codeagence: string;
-    NumCompte: string;
-    numeroLigne: string;
-    typeLigne: string;
-    Montant: string;
-    Statut: string;
-    Motif: string;
-    NomClient: string;
-    DateCreation: Date;
+ 
+    nomFichier: string;
+    codeEnreg: string;
+    codeOperation: string;
+    extension: string;
+    idEntreprise: string;
+    nomEntrepriseFichier: string;
+    nombreVirement:string;
+    nomEntreprise: string;
+    numLigne: string;
+    codeEmeteur: string;
+    codccd: string;
+    dateEcheance: Date;
+    niveauValidation:string;
+    nomCompte: string;
+    refer: string;
+    indrel: string;
+    guichet: string;
+    compte: string;
+    idenf: string;
+    banque: string;
+    zoneVide: string
+
 }
 export class CompteEntreprises {
     id?: number;

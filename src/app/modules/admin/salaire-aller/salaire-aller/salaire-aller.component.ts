@@ -70,7 +70,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     { key: "domici", label: "Domiciliation" },
     { key: "banque", label: "Banque" },
     { key: "guichet", label: "Guichet" },
-    { key: "compte", label: "Compte Débité" },
+    { key: "compte", label: "Compte Credité" },
     { key: "montant", label: "Montant", type: "montant" },
     { key: "libelle", label: "Libellé Opérat" },
 
@@ -83,7 +83,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     { key: "nom", label: "Béneficiaire" },
     { key: "banque", label: "Banque" },
     { key: "guichet", label: "Guichet" },
-    { key: "compte", label: "Compte Débité" },
+    { key: "compte", label: "Compte Credité" },
     { key: "montant", label: "Montant", type: "montant" },
     { key: "libelle", label: "Libellé Opérat" },
     { key: "cleRib", label: "Cle Rib" },
@@ -345,6 +345,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         ? compteCrediteRaw.substring(1)
         : compteCrediteRaw;
     const dateOperStartIndex = compteCrediteRaw[0] === "0" ? 64 : 63;
+    
     this.headerData = {
       nomFichier: this.nomFichierCharger,
       nomFichierGenerer: "nomParDefaut",
@@ -353,8 +354,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       numLigne: parseInt(headerLine.substring(4, 12).trim(), 10),
       codeEmeteur: headerLine.substring(12, 18).trim(),
       codccd: headerLine.substring(18, 19).trim(),
-      dateEch: this.convertDateToDateTime(headerLine.substring(25, 30).trim()),
-      //nomEntreprise : headerLine.substring(30, 54).trim(),
+      dateEcheance: this.convertDateToDateTime(headerLine.substring(25, 30).trim()),
+       //nomEntreprise : headerLine.substring(30, 54).trim(),
       nomCompte : headerLine.substring(30, 54).trim(),
       refer: headerLine.substring(54, 61).trim(),
       indrel: headerLine.substring(80, 81).trim(),
@@ -395,6 +396,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     codeOperation;
     numligne;
     codeEmeteur;
+    dateEcheance;
     nom;
     domici;
     guichet;
@@ -405,6 +407,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   } {
     const codeEnreg = data.substring(0, 2).trim();
     const codeOperation = data.substring(2, 4).trim();
+    const dateEcheance = "2023-02-02";
     const numligne = data.substring(4, 12).trim();
     const codeEmeteur = data.substring(12, 18).trim();
     const nom = data.substring(30, 54).trim();
@@ -419,12 +422,14 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       codeOperation,
       numligne,
       codeEmeteur,
+      dateEcheance,
       nom,
       domici,
       guichet,
       compte,
       montant,
       libelle,
+    
       banque,
     };
   }

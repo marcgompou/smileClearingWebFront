@@ -59,10 +59,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
       "label": "Nom Entreprise"
     },
 
-    {
-      "key": "codeOperation",
-      "label": "Code Operation"
-    },
+   
     {
       "key": "codeAgence",
       "label": "Code Agence"
@@ -72,11 +69,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
       "label": "Numero Compte"
 
     },
-    {
-      "key": "libelleTransaction",
-      "label": "libelle Transaction"
-
-    },
+    
     {
       "key": "nombreVirement",
       "label": "Nombre Virement"
@@ -88,13 +81,27 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
 
     },
     {
+      "key": "dateEnregistrement",
+      "label": "Date Enregistrement",
+      "type": "date"
+    },
+    {
       "key": "dateEcheance",
       "label": "Date Echeance",
       "type": "date"
     },
+
+    {
+      "key": "niveauValidation",
+      "label": "Niveau Validation",
+     
+    },
+
+    
+
   ];
 
-  public displayedColumns: string[] = ['nomFichier', 'nomEntreprise', 'codeOperation', 'codeAgence', 'numeroCompte', 'libelleTransaction', 'nombreVirement', 'montantTotal', 'dateEcheance'];
+  public displayedColumns: string[] = ['nomFichier', 'nomEntreprise', 'codeAgence', 'numeroCompte', 'nombreVirement', 'montantTotal','dateEnregistrement', 'dateEcheance','niveauValidation'];
 
   sent = [];
   isLoading = false;
