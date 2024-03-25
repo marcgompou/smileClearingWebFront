@@ -31,7 +31,7 @@ import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsImprimerComponent } from '../imprimer-remise/details-importation/details-imprimer.component';
 import { FuseAlertModule } from '@fuse/components/alert';
-
+import { MatStepperModule } from '@angular/material/stepper';
 
 
 @NgModule({
@@ -60,6 +60,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
         MatSelectModule,
         MatSidenavModule,
         MatTableModule,
+        MatStepperModule,
         MatTooltipModule,
         FuseFindByKeyPipeModule,
         SharedModule,

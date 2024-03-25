@@ -49,7 +49,7 @@ export class TraitementSalaireService {
 
   getSalaireAtraitement(): Observable<any>
   {
-      return this._httpClient.get<any>(`${environment.apiUrl}/salaire/salaire?statut=3`).pipe(
+      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/salaires?statut=3`).pipe(
           tap((response) => {
             console.log('test======================================');
             console.log(response);
@@ -66,7 +66,7 @@ export class TraitementSalaireService {
 
   cloturerSalaire(idsalaire:string){
 
-    return this._httpClient.put<any>(`${environment.apiUrl}/salaire/admin/cloture/${idsalaire}`,null).pipe(
+    return this._httpClient.put<any>(`${environment.apiUrl}/salaires/admin/cloture/${idsalaire}`,null).pipe(
       tap((response) => {
         console.log(response);
       })
@@ -77,10 +77,10 @@ export class TraitementSalaireService {
 
   telechargerSalaireValider(id:string): Observable<Blob> {
     // Make a GET request to the file URL, specifying responseType as 'blob'
-    return this._httpClient.get(`${environment.apiUrl}/salaire/admin/telechargement/${id}`, { responseType: 'blob' });
+    return this._httpClient.get(`${environment.apiUrl}/salaires/admin/telechargement/${id}`, { responseType: 'blob' });
   }
   telechargerRelance(id: string): Observable<void> {
-    return this._httpClient.get(`${environment.apiUrl}/salaire/admin/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })
+    return this._httpClient.get(`${environment.apiUrl}/salaires/admin/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })
       .pipe(
         map((response: HttpResponse<ArrayBuffer>) => {
           console.log("===relance response===>",response)
@@ -112,7 +112,7 @@ export class TraitementSalaireService {
 
   getSalaireATraiter(id): Observable<any>
   {
-      return this._httpClient.get<any>(`${environment.apiUrl}/salaire/admin/atraiter/${id}`).pipe(
+      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/admin/atraiter/${id}`).pipe(
           tap((response) => {
             console.log('test======================================');
             console.log(response);

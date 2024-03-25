@@ -38,52 +38,59 @@ export class ListeTraitementSalaireComponent implements OnInit, OnDestroy {
   showAlert: boolean = false;
 
   public dataStructure = [
-
-
-
+   
     {
-      "key": "codeEmetteur",
-      "label": "Code emetteur"
+      "key": "nomFichier",
+      "label": "Nom Fichier"
     },
     {
-      "key": "nomfichier",
-      "label": "Nom fichier"
+      "key": "nomEntreprise",
+      "label": "Nom Entreprise"
     },
 
+   
     {
-      "key": "codeagence",
-      "label": "Code agence"
+      "key": "codeAgence",
+      "label": "Code Agence"
     },
     {
-      "key": "compteCredite",
-      "label": "Compte crédite"
-    },
-    {
-      "key": "nbSalaire",
-      "label": "Nombre salaire"
+      "key": "numeroCompte",
+      "label": "Numero Compte"
 
     },
+    
     {
-      "key": "mtTotal",
-      "label": "Montant total"
+      "key": "nombreVirement",
+      "label": "Nombre Virement"
 
     },
     {
-      "key": "dateEdition",
-      "label": "Date edition",
+      "key": "montantTotal",
+      "label": "Montant Total"
+
+    },
+    {
+      "key": "dateEnregistrement",
+      "label": "Date Enregistrement",
+      "type": "date"
+    },
+    {
+      "key": "dateEcheance",
+      "label": "Date Echeance",
       "type": "date"
     },
 
     {
-      "key": "dateEngistrement",
-      "label": "Date engistrement",
-      "type": "date"
+      "key": "niveauValidation",
+      "label": "Niveau Validation",
+     
     },
 
+    
 
   ];
 
-  public displayedColumns: string[] = ['codeEmetteur', 'nomfichier', 'codeagence', 'compteCredite', 'nbSalaire', 'mtTotal', 'dateEdition', 'dateEngistrement'];
+  public displayedColumns: string[] = ['nomFichier', 'nomEntreprise', 'codeAgence', 'numeroCompte', 'nombreVirement', 'montantTotal','dateEnregistrement', 'dateEcheance','niveauValidation'];
 
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -190,7 +197,7 @@ export class ListeTraitementSalaireComponent implements OnInit, OnDestroy {
 
   filtering(): void {
     this._filterObject.statut=this.statutSalaireForm.get('statut').value;
-    this._tableDataService._endpoint = `salaire/admin`;
+    this._tableDataService._endpoint = `salaires/admin`;
     this._tableDataService._filterObject = this._filterObject
     this._tableDataService._hasPagination = true;
     this._tableDataService._paginationObject = {

@@ -11,6 +11,8 @@ import { ValiderSalaireService } from '../valider-salaire.service';
 import {  MatDialog } from '@angular/material/dialog';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
+
+
 @Component({
   selector: 'app-details-salaire',
   templateUrl: './details-salaire.component.html',
@@ -36,69 +38,84 @@ export class DetailsSalaireComponent implements OnInit {
   };
   showAlert: boolean = false;
 
-  public dataStructure = [
-
+  public steps = [
     {
-      "key": "codeBanque",
+      "order": 0,
+      "title": "Étape 1",
+      "subtitle": "Description de l'étape 1"
+    },
+    {
+      "order": 1,
+      "title": "Étape 2",
+      "subtitle": "Description de l'étape 2"
+    },
+    {
+      "order": 2,
+      "title": "Étape 3",
+      "subtitle": "Description de l'étape 3"
+    },
+    {
+      "order": 3,
+      "title": "Étape 4",
+      "subtitle": "Description de l'étape 4"
+    },
+    {
+      "order": 4,
+      "title": "Étape 5",
+      "subtitle": "Description de l'étape 5"
+    }
+  ];
+  
+
+  public dataStructure = [
+    
+    {
+      "key": "nomBeneficiaire",
+      "label": "Nom Beneficiaire"
+    },
+    {
+      "key": "domiciliation",
+      "label": "Domiciliation"
+    },
+    {
+      "key": "banque",
       "label": "Code Banque"
     },
-
+    
     {
-      "key": "codeagence",
-      "label": "Code agence"
+      "key": "guichet",
+      "label": "Code banque"
 
     },
     {
-      "key": "numCompte",
+      "key": "compte",
       "label": "Numero compte"
     },
     {
-      "key": "motif",
+      "key": "cleRib",
+      "label": "Cle Rib"
+
+    },
+    {
+      "key": "libelle",
       "label": "Motif"
 
     },
-    {
-      "key": "nomClient",
-      "label": "Nom Débit"
-
-    },
-    {
-      "key": "nomBanque",
-      "label": "Nom banque"
-    },
-
+   
     {
       "key": "montant",
       "label": "Montant",
       "type": "montant"
 
     },
-
-    { 
-      key: 'statut', 
-      type:'status',
-      label: 'Etat prelev.', 
-      "statusValues":[
-        { value: 1, libelle: "Enregistré", color: "#2986cc" }, // Green
-        { value: 3, libelle: "Exporté", color: "#16537e" }, // Green
-        { value: 13, libelle: "Payé", color: "#68D391" }, // Green
-        { value: 10, libelle: "Debit. interdit", color: "#FF5733" }, // Orange
-        { value: 40, libelle: "Cpte. fermé", color: "#808080" }, // Gray
-        { value: 50, libelle: "Cpte. inexistant", color: "#FFD700" }, // Yellow
-        { value: 60, libelle: "Rejetée", color: "#F56565" } // Red
-      ]
-    },
-
-    {
-      "key": "dateEcheance",
-      "label": "Date echéance",
-      "type":"date"
-    },
+    
   ];
 
 
 
-  public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient","nomBanque","dateEcheance","statut"];
+  public displayedColumns: string[] = ["nomBeneficiaire","domiciliation","banque","guichet","compte","cleRib","libelle","montant"];
+course: any;
+trackByFn: any;
 
 
   
@@ -123,7 +140,7 @@ export class DetailsSalaireComponent implements OnInit {
     this._validerSalaireService.salaireRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("------------------------------------------------------------->",response?.data) 
       this.salaireData=response?.data;
-      this.montantTotal=response?.data?.mtTotal || 0;
+      this.montantTotal=response?.data?.montantTotal || 0;
      
     });
     this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
@@ -196,5 +213,7 @@ export class DetailsSalaireComponent implements OnInit {
     this._validerSalaireService.telechargerRelance(this.salaireData.id).pipe().subscribe();
     
   }
+  
+  
 
 }

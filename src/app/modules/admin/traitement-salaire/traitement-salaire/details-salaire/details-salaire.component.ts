@@ -53,7 +53,7 @@ export class DetailsSalaireComponent implements OnInit {
 
   public dataStructure = [
     {
-      "key": "codeBanque",
+      "key": "banque",
       "label": "Code banque"
     },
     {
@@ -79,7 +79,7 @@ export class DetailsSalaireComponent implements OnInit {
     { 
       key: 'statut', 
       type:'status',
-      label: 'Etat prelev.', 
+      label: 'Etat Sal.', 
       "statusValues":[
         { value: 1, libelle: "Enregistré", color: "#2986cc" }, // Green
         { value: 3, libelle: "Exporté", color: "#16537e" }, // Green
@@ -147,8 +147,8 @@ export class DetailsSalaireComponent implements OnInit {
       console.log("details salaireRemiseData 1111 response=======>",response)
       let result:any=response;
       try{
-        let findPrelevToRelance=result.data?.findIndex((el) =>  el.statut==10||el.statut==40);//debit interdit et rejeté
-        this.canRelance=findPrelevToRelance!=-1 && findPrelevToRelance!=null && findPrelevToRelance!=undefined;    
+        let findSalToRelance=result.data?.findIndex((el) =>  el.statut==10||el.statut==40);//debit interdit et rejeté
+        this.canRelance=findSalToRelance!=-1 && findSalToRelance!=null && findSalToRelance!=undefined;    
       }catch(error){
         console.log(error)
       }
@@ -267,9 +267,9 @@ export class DetailsSalaireComponent implements OnInit {
   openDetailComponent(component: DetailsComponent) {
 
     component.matDrawer = this.matDrawer;
-    component.formTitle = "PRELEVEMENT";
+    component.formTitle = "SALAIRE";
     component.constructorPayload = Salaire.constructorSalaire;
-    component.endpoint="salaire/admin/modificationEtatPaiement";
+    component.endpoint="salaires/admin/modificationEtatPaiement";
     component.loadDataOnInit=false;
     component.canDelete=false;
    

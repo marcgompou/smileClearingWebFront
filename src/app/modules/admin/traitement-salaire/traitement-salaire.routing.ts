@@ -6,8 +6,8 @@ import { ListeTraitementSalaireComponent } from './traitement-salaire/liste-trai
 import { TraitementSalaireComponent } from './traitement-salaire/traitement-salaire.component';
 import { LoadPrelevATraiterByIdResolver } from './traitement-salaire/traitement-salaire.resolver';
 
-const endpoint = "salaire/admin";
-const endpointDetails = "salaire/admin";
+const endpoint = "salaires/admin";
+const endpointDetails = "salaires/admin";
 
 export const traitementSalaireRoutes: Route[] =
 [

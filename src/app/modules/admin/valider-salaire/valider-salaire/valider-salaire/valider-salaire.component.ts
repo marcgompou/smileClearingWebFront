@@ -77,8 +77,8 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
     },
     {
       "key": "montantTotal",
-      "label": "Montant Total"
-
+      "label": "Montant Total",
+      "type": "montant"
     },
     {
       "key": "dateEnregistrement",
@@ -129,7 +129,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
       this._salaireList=res.data as any[];
       this.dataSource = new MatTableDataSource(res.data);
 
-      this.montantTotal=this._salaireList.reduce((a, b) => a + b.mtTotal, 0);
+      this.montantTotal=this._salaireList.reduce((a, b) => a + b.montantTotal, 0);
 
     });
     //getCompteByEntreprise();
@@ -285,7 +285,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value?event.value:"0";
       console.log('Valeur sélectionnée :', this.statut);
-      this._tableDataService._endpoint=`salaire?statut=${this.statut}`;
+      this._tableDataService._endpoint=`salaires?statut=${this.statut}`;
       this._tableDataService.getDatasByPath().subscribe();
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence

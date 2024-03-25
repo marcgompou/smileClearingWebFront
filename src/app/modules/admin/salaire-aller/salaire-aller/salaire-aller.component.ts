@@ -56,8 +56,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   salaireForm: FormGroup 
   nomFichierCharger: string = "";
   codeEnreg;
-  nom;
-  domici;
+  nomBeneficiaire;
+  domiciliation;
   guichet;
   compte;
   montant;
@@ -66,8 +66,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
 
   dataStructureTxt: any[] = [
     { key: "codeEnreg", label: "Code Enreg" },
-    { key: "nom", label: "Béneficiaire" },
-    { key: "domici", label: "Domiciliation" },
+    { key: "nomBeneficiaire", label: "Béneficiaire" },
+    { key: "domiciliation", label: "Domiciliation" },
     { key: "banque", label: "Banque" },
     { key: "guichet", label: "Guichet" },
     { key: "compte", label: "Compte Credité" },
@@ -80,7 +80,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   displayedColumnsTxt: string[] =this.dataStructureTxt.map((o) => o.key);
 
   dataStructureXls:any[] = [
-    { key: "nom", label: "Béneficiaire" },
+    { key: "nomBeneficiaire", label: "Béneficiaire" },
     { key: "banque", label: "Banque" },
     { key: "guichet", label: "Guichet" },
     { key: "compte", label: "Compte Credité" },
@@ -397,8 +397,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     numligne;
     codeEmeteur;
     dateEcheance;
-    nom;
-    domici;
+    nomBeneficiaire;
+    domiciliation;
     guichet;
     compte;
     montant;
@@ -410,8 +410,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     const dateEcheance = "2023-02-02";
     const numligne = data.substring(4, 12).trim();
     const codeEmeteur = data.substring(12, 18).trim();
-    const nom = data.substring(30, 54).trim();
-    const domici = data.substring(54, 79).trim();
+    const nomBeneficiaire = data.substring(30, 54).trim();
+    const domiciliation = data.substring(54, 79).trim();
     const guichet = data.substring(86, 91).trim();
     const compte = data.substring(92, 103).trim();
     const montant = data.substring(103, 119).trim();
@@ -423,8 +423,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       numligne,
       codeEmeteur,
       dateEcheance,
-      nom,
-      domici,
+      nomBeneficiaire,
+      domiciliation,
       guichet,
       compte,
       montant,

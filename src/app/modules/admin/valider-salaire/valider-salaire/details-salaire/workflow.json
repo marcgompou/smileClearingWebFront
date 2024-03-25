@@ -1,0 +1,32 @@
+{
+    "course": {
+      "steps": [
+        {
+          "order": 0,
+          "title": "Étape 1",
+          "subtitle": "Description de l'étape 1"
+        },
+        {
+          "order": 1,
+          "title": "Étape 2",
+          "subtitle": "Description de l'étape 2"
+        },
+        {
+          "order": 2,
+          "title": "Étape 3",
+          "subtitle": "Description de l'étape 3"
+        },
+        {
+          "order": 3,
+          "title": "Étape 4",
+          "subtitle": "Description de l'étape 4"
+        },
+        {
+          "order": 4,
+          "title": "Étape 5",
+          "subtitle": "Description de l'étape 5"
+        }
+      ]
+    }
+  }
+  

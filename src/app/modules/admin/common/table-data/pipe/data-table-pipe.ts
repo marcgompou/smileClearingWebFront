@@ -18,11 +18,19 @@ export class DataTablePipe implements PipeTransform {
     }
 
     private formatAmount(amount: number | string ): string {
-
+        console.log("==type amount==>",typeof amount);
         if (typeof amount !== "number") {
-            const amountNew = parseInt(amount, 10);
-            return `${amountNew.toFixed(0)}`;
-         }else
+          
+                const amountNew = parseInt(amount, 10);
+                if ( isNaN(amountNew) ) {
+                    return amount;
+                }
+                return `${amountNew.toFixed(0)}`;
+            
+
+         }
+         
+         else
          //retourner le resulta
          return `${amount.toFixed(0)}`;
      
