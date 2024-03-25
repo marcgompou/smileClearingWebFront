@@ -1,14 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDrawer } from '@angular/material/sidenav';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FuseAlertType } from '@fuse/components/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { ValiderSalaireService } from '../valider-salaire.service';
-import {  MatDialog } from '@angular/material/dialog';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 
 
@@ -19,7 +14,6 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
   styleUrls: ['./details-salaire.component.scss']
 })
 export class DetailsSalaireComponent implements OnInit {
-  @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
   salaireData: any;
   montantTotal: number = 0;
@@ -27,43 +21,38 @@ export class DetailsSalaireComponent implements OnInit {
   canRelance: boolean = false;
   id: string = "";
   isLoading = false;
-  pageSizeOptions: number[] = [10, 25];
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+ 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: ''
   };
   showAlert: boolean = false;
-
-  public steps = [
+  public historiques = [
     {
-      "order": 0,
-      "title": "Étape 1",
-      "subtitle": "Description de l'étape 1"
+      "id":"",
+      "dateModification":"string",
+      "emailUtilisateur":"string",
+      "commentaire":"string",
+      "etat":"string",
+      "niveau":"number"
     },
     {
-      "order": 1,
-      "title": "Étape 2",
-      "subtitle": "Description de l'étape 2"
+      "id":"",
+      "dateModification":"string",
+      "emailUtilisateur":"string",
+      "commentaire":"string",
+      "etat":"string",
+      "niveau":"number"
     },
     {
-      "order": 2,
-      "title": "Étape 3",
-      "subtitle": "Description de l'étape 3"
-    },
-    {
-      "order": 3,
-      "title": "Étape 4",
-      "subtitle": "Description de l'étape 4"
-    },
-    {
-      "order": 4,
-      "title": "Étape 5",
-      "subtitle": "Description de l'étape 5"
-    }
+      "id":"",
+      "dateModification":"string",
+      "emailUtilisateur":"string",
+      "commentaire":"string",
+      "etat":"string",
+      "niveau":"number"
+    }  
   ];
   
 

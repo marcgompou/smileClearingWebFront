@@ -3,11 +3,9 @@ import { CommonModule } from '@angular/common';
 import { PrelevementAllerComponent } from './prelevement-aller/prelevement-aller.component';
 import { RouterModule } from '@angular/router';
 import { prelevementAller } from './prelevement-aller.routing';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -51,7 +49,6 @@ import { TableDataModule } from '../common/table-data/table-data.module';
     FuseAlertModule,
     TableDataModule,
     RouterModule.forChild(prelevementAller)
-
   ]
 })
 export class PrelevementAllerModule { }

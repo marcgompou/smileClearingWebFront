@@ -59,6 +59,9 @@ import { HistoriqueComponentComponent } from './historique-component/historique-
     DetailsModule,
     MatAutocompleteModule,
     FuseAlertModule,
+  ],
+  exports:[
+    HistoriqueComponentComponent
   ]
 })
 export class HistoriqueModule { }

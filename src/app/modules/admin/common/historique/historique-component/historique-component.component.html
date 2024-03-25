@@ -1,40 +1,39 @@
 <div class="py-2 px-8">
     <ol>
-        <ng-container *ngFor="let step of course.steps; let last = last; trackBy: trackByFn">
-            <li
-                class="relative group py-6"
-                [class.current-step]="step.order === currentStep">
+        <ng-container *ngFor="let historique of historiques; let last = last; trackBy: trackByFn">
+            <li class="relative group py-6" [class.current-step]="step.order === currentStep">
                 <ng-container *ngIf="!last">
-                    <div
+                    <!-- <div
                         class="absolute top-6 left-4 w-0.5 h-full -ml-px"
                         [ngClass]="{'bg-primary': step.order < currentStep,
-                                    'bg-gray-300 dark:bg-gray-600': step.order >= currentStep}"></div>
+                                    'bg-gray-300 dark:bg-gray-600': step.order >= currentStep}"></div> -->
                 </ng-container>
                 <div
-                    class="relative flex items-start cursor-pointer"
-                    (click)="goToStep(step.order)">
+                    class="relative flex items-start cursor-pointer">
                     <div
                         class="flex flex-0 items-center justify-center w-8 h-8 rounded-full ring-2 ring-inset bg-card dark:bg-default"
-                        [ngClass]="{'bg-primary dark:bg-primary text-on-primary group-hover:bg-primary-800 ring-transparent': step.order < currentStep,
-                                    'ring-primary': step.order === currentStep,
-                                    'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': step.order > currentStep}">
+                        [ngClass]="{
+                                    'bg-primary dark:bg-primary text-on-primary group-hover:bg-primary-800 ring-transparent': historiques ==null,
+                                    'ring-primary': historiques.id !==null ,
+                                    'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': historique.id =='1'
+                                }">
                         <!-- Check icon, show if the step is completed -->
-                        <ng-container *ngIf="step.order < currentStep">
+                        <ng-container *ngIf="historiques.length < totalSteps">
                             <mat-icon
                                 class="icon-size-5 text-current"
                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
                         </ng-container>
                         <!-- Step order, show if the step is the current step -->
-                        <ng-container *ngIf="step.order === currentStep">
+                        <!-- <ng-container *ngIf="step.order === currentStep">
                             <div class="text-md font-semibold text-primary dark:text-primary-500">{{step.order + 1}}</div>
-                        </ng-container>
+                        </ng-container> -->
                         <!-- Step order, show if the step is not completed -->
-                        <ng-container *ngIf="step.order > currentStep">
+                        <!-- <ng-container *ngIf="historique.order > currentStep">
                             <div class="text-md font-semibold text-hint group-hover:text-secondary">{{step.order + 1}}</div>
-                        </ng-container>
+                        </ng-container> -->
                     </div>
                     <div class="ml-4">
-                        <div class="font-medium leading-4">{{step.title}}</div>
+                        <div class="font-medium leading-4">{{historique.title}}</div>
                         <div class="mt-1.5 text-md leading-4 text-secondary">{{step.subtitle}}</div>
                     </div>
                 </div>

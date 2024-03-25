@@ -4,7 +4,6 @@ import { ValiderSalaireComponent } from './valider-salaire/valider-salaire/valid
 import { RouterModule } from '@angular/router';
 import { validerSalaireRoutes } from './valider-salaire.routing';
 import { SharedModule } from 'app/shared/shared.module';
-import { StatusComponent } from '../common/status/status.component';
 import { SalaireValiderComponent } from './valider-salaire/valider-salaire.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,19 +25,18 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DetailsSalaireComponent } from './valider-salaire/details-salaire/details-salaire.component';
-import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DetailsImprimerComponent } from '../imprimer-remise/details-importation/details-imprimer.component';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { MatStepperModule } from '@angular/material/stepper';
+import { HistoriqueModule } from '../common/historique/historique.module';
 
 
 @NgModule({
   declarations: [
     ValiderSalaireComponent,
     SalaireValiderComponent,
-   DetailsSalaireComponent,
+    DetailsSalaireComponent,
   //  DetailsImprimerComponent,
   ],
   exports:[DetailsSalaireComponent],
@@ -68,6 +66,8 @@ import { MatStepperModule } from '@angular/material/stepper';
         DetailsModule,
         MatAutocompleteModule,
         FuseAlertModule,
+        HistoriqueModule,
+
         RouterModule.forChild(validerSalaireRoutes)
 
   ]

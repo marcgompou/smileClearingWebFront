@@ -1,30 +1,18 @@
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
+
   ChangeDetectorRef,
   Component,
-  OnDestroy,
   OnInit,
   ViewChild,
-  ViewEncapsulation,
 } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
+
 import { Subject, debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from "rxjs";
-import { fuseAnimations } from "@fuse/animations";
 import { Workflow } from "app/modules/admin/workflow/workflow/workflow.types";
-import { CompteService } from "app/modules/admin/compte/compte/compte.service";
 import { MatDrawer } from "@angular/material/sidenav";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
-import { MatTableDataSource } from "@angular/material/table";
-//import { WorkflowDefinition } from '../../workflow.definition';
-import { User } from "app/core/user/user.types";
-import { UserService } from "app/core/user/user.service";
-import { ResponseContrat } from "app/modules/admin/common/contrat/response.type";
 import { CreateComponent } from "app/modules/admin/common/create/create/create.component";
 import { EntrepriseService } from "app/modules/admin/entreprise/entreprise/entreprise.service";
-import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
 import { TableDataService } from "app/modules/admin/common/table-data/table-data.services";
 
 @Component({
@@ -36,19 +24,16 @@ export class ListWorkflowComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;
   drawerMode: "side" | "over";
 
-  /**DataTable */
+  /**DataTable Search*/
   selectedRowIndex: any;
   private _searchTerms = new Subject<string>();
   _filterObject:any={criteria:""};
 
  
 
-  /**compte */
-  _compte: Workflow[] = [];
+  /**workflow */
   entreprises: any[];
-  agences: any[];
 
-  _nombreUser = 0;
   flashMessage: "success" | "error" | null = null;
   isLoading: boolean = false;
   private _unsubscribeAll: Subject<any> = new Subject<any>();

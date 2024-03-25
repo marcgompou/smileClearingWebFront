@@ -1,15 +1,14 @@
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
+  // AfterViewInit,
+  // ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnDestroy,
+  // OnDestroy,
   OnInit,
   ViewChild,
-  ViewEncapsulation,
+  // ViewEncapsulation,
 } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
+
 import {
   Subject,
   debounceTime,
@@ -18,20 +17,20 @@ import {
   switchMap,
   takeUntil,
 } from "rxjs";
-import { fuseAnimations } from "@fuse/animations";
+// import { fuseAnimations } from "@fuse/animations";
 import { PoidsValidationWorkflow } from "app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow/poidsValidationWorkflow.types";
-import { CompteService } from "app/modules/admin/compte/compte/compte.service";
+// import { CompteService } from "app/modules/admin/compte/compte/compte.service";
 import { MatDrawer } from "@angular/material/sidenav";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
-import { MatTableDataSource } from "@angular/material/table";
+// import { MatTableDataSource } from "@angular/material/table";
 //import { WorkflowDefinition } from '../../workflow.definition';
 import { User } from "app/core/user/user.types";
 import { UserService } from "app/core/user/user.service";
-import { ResponseContrat } from "app/modules/admin/common/contrat/response.type";
+// import { ResponseContrat } from "app/modules/admin/common/contrat/response.type";
 import { CreateComponent } from "app/modules/admin/common/create/create/create.component";
-import { EntrepriseService } from "app/modules/admin/entreprise/entreprise/entreprise.service";
-import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
+// import { EntrepriseService } from "app/modules/admin/entreprise/entreprise/entreprise.service";
+// import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
 import { TableDataService } from "app/modules/admin/common/table-data/table-data.services";
 import { UtilisateursService } from "app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service";
 

@@ -1,16 +1,17 @@
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit } from '@angular/core';
 import { FuseAlertService } from '@fuse/components/alert';
 import { FuseUtilsService } from '@fuse/services/utils';
 import { any } from 'cypress/types/bluebird';
 import { Subject } from 'rxjs';
+import { Historique } from '../historique.type';
 
 @Component({
-  selector: 'app-historique-component',
+  selector: 'app-historique',
   templateUrl: './historique-component.component.html',
   styleUrls: ['./historique-component.component.scss']
 })
-export class HistoriqueComponentComponent implements OnInit {
+export class HistoriqueComponentComponent implements OnInit, AfterViewInit {
 
   // categories: Category[];
   // course: Course;
@@ -18,6 +19,9 @@ export class HistoriqueComponentComponent implements OnInit {
   drawerMode: 'over' | 'side' = 'side';
   drawerOpened: boolean = true;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  @Input("historiques") historiques:Historique[] ;
+  @Input("stepsIsNumeroted") stepsIsNumeroted:boolean=false ;
+  @Input("totalSteps") totalSteps:number ;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -27,8 +31,19 @@ export class HistoriqueComponentComponent implements OnInit {
 
     
    }
+ ngAfterViewInit(): void {
+        throw new Error('Method not implemented.');
+ }
 
   ngOnInit(): void {
+
+    if(this.historiques?.length<this.totalSteps)
+    {
+        while(this.historiques.length<this.totalSteps)
+        {
+            this.historiques.push({} as Historique);
+        }
+    }
   }
 
   goToStep(step: number): void
@@ -36,10 +51,6 @@ export class HistoriqueComponentComponent implements OnInit {
         // Set the current step
         this.currentStep = step;
 
-        // Go to the step
-    //    this.courseSteps.selectedIndex = this.currentStep;
-
-        // Mark for check
         this._changeDetectorRef.markForCheck();
     }
 
