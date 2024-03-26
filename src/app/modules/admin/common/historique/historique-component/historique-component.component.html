@@ -15,7 +15,7 @@
                         class="flex flex-0 items-center justify-center w-8 h-8 rounded-full ring-2 ring-inset bg-card dark:bg-default"
                         [ngClass]="{
                                     'bg-primary dark:bg-primary text-on-primary  ring-transparent': historique.traite==undefined,
-                                    'ring-primary': historiques.length + 1 > historique.niveau, 
+                                    'ring-primary': historiques.length == historique.niveau, 
                                     'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': historique.traite==false
                                 }">
 
@@ -41,7 +41,7 @@
                                 [svgIcon]="'heroicons_solid:check'"></mat-icon>
                         </ng-container>
                         <!-- Step order, show if the step is not completed -->
-                         <ng-container *ngIf="historiques.length + 1 === historique.niveau">
+                         <ng-container *ngIf="historiques.length == historique.niveau">
                             <div class="text-md font-semibold text-hint group-hover:text-secondary">{{historiques.niveau}}</div>
                         </ng-container> 
                     </div>

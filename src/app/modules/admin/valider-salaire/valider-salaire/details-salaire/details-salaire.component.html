@@ -4,7 +4,7 @@
     <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
         <mat-drawer class="w-full md:w-100 dark:bg-gray-120" [mode]="drawerMode" [opened]="false"  #matDrawer>
             <div class="flex flex-col items-start p-8 border-b">
-                <div class="flex items-center"> historique validation </div>
+                <div class="flex items-center mb-4 font-semibold tracking-tight leading-7 md:leading-snug truncate text-secondary dark:text-white"> Historique Validation</div>
             </div>
             <app-historique [historiques]="historiques" [stepsIsNumeroted]="false" [totalSteps]="5"></app-historique >
 
