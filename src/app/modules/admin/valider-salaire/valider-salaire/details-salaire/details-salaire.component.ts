@@ -31,24 +31,24 @@ export class DetailsSalaireComponent implements OnInit {
   public historiques = [
     {
       "id":"",
-      "dateModification":"string",
-      "emailUtilisateur":"string",
+      "dateModification":"26/03/2024 18:00:00",
+      "emailUtilisateur":"guillaume.kouadio@bridgebankgroup.com",
       "commentaire":"string",
       "etat":"string",
       "niveau":"number"
     },
     {
       "id":"",
-      "dateModification":"string",
-      "emailUtilisateur":"string",
+      "dateModification":"26/03/2024 05:00:00",
+      "emailUtilisateur":"maikol.ahoue@bridgebankgroup.com",
       "commentaire":"string",
       "etat":"string",
       "niveau":"number"
     },
     {
       "id":"",
-      "dateModification":"string",
-      "emailUtilisateur":"string",
+      "dateModification":"26/03/2024 10:05:00",
+      "emailUtilisateur":"marc.gompou@bridgebankgroup.com",
       "commentaire":"string",
       "etat":"string",
       "niveau":"number"

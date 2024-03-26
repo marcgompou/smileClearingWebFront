@@ -11,7 +11,7 @@ import { Historique } from '../historique.type';
   templateUrl: './historique-component.component.html',
   styleUrls: ['./historique-component.component.scss']
 })
-export class HistoriqueComponentComponent implements OnInit, AfterViewInit {
+export class HistoriqueComponentComponent implements OnInit {
 
   // categories: Category[];
   // course: Course;
@@ -22,6 +22,7 @@ export class HistoriqueComponentComponent implements OnInit, AfterViewInit {
   @Input("historiques") historiques:Historique[] ;
   @Input("stepsIsNumeroted") stepsIsNumeroted:boolean=false ;
   @Input("totalSteps") totalSteps:number ;
+  @Input("poidsValidationUsers") poidsValidationUsers:any ;
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -31,18 +32,25 @@ export class HistoriqueComponentComponent implements OnInit, AfterViewInit {
 
     
    }
- ngAfterViewInit(): void {
-        throw new Error('Method not implemented.');
- }
 
   ngOnInit(): void {
+    let index: number = this.historiques?.length ; // Déclaration et initialisation de la variable index
 
-    if(this.historiques?.length<this.totalSteps)
+    if(this.historiques?.length<this.totalSteps )
     {
+        index++;
         while(this.historiques.length<this.totalSteps)
         {
-            this.historiques.push({} as Historique);
+            this.historiques.push({
+                listeValideurs : ["marc.gompou1@bridgebankgroup.com","marc.gompou2@bridgebankgroup.com"],
+                niveau : index,
+                traite : false
+            } as Historique);
+
+            index++;
+
         }
+
     }
   }
 
