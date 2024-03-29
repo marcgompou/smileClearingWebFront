@@ -9,7 +9,7 @@ import { DetailsChequeComponent } from '../remise-aller/remise-aller/details-che
 import { DetailsSalaireComponent } from './valider-salaire/details-salaire/details-salaire.component';
 import { ValiderSalaireComponent } from './valider-salaire/valider-salaire/valider-salaire.component';
 import { SalaireValiderComponent } from './valider-salaire/valider-salaire.component';
-import { LoadPrelevRemiseByIdResolver } from './valider-salaire/valider-salaire.resolver';
+import { LoadSalaireByIdResolver, LoadSuiviSalaireResolver } from './valider-salaire/valider-salaire.resolver';
 
 const endpoint = "salaires";
 const endpointDetails = "salaires/details";
@@ -34,9 +34,10 @@ export const validerSalaireRoutes: Route[] =
                 component: DetailsSalaireComponent,
                 resolve: {
                     dataDetails: LoadSansPaginationDataResolver, //LoadDataResolver
-                    prelevRemise:LoadPrelevRemiseByIdResolver
+                    loadSalaireById:LoadSalaireByIdResolver,
+                    loadSuiviSalaire:LoadSuiviSalaireResolver
                 },
-                data: { breadcrumb: 'Details prélèvement', endpoint: endpointDetails },
+                data: { breadcrumb: 'Details salaire', endpoint: endpointDetails },
 
             }
         ]

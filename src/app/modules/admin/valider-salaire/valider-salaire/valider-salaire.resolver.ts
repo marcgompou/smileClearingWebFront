@@ -9,7 +9,7 @@ import { ValiderSalaireService } from './valider-salaire.service';
 @Injectable({
     providedIn: 'root'
   })
-  export class LoadPrelevRemiseByIdResolver implements Resolve<boolean> {
+  export class LoadSalaireByIdResolver implements Resolve<boolean> {
     /**
        * Constructor
        */
@@ -34,9 +34,39 @@ import { ValiderSalaireService } from './valider-salaire.service';
               })
           );
     }
-
-
-
-    
-  
   }
+
+ 
+@Injectable({
+  providedIn: 'root'
+})
+export class LoadSuiviSalaireResolver implements Resolve<boolean> {
+  /**
+     * Constructor
+     */
+  constructor(
+      private _suiviSalaireService: ValiderSalaireService,
+    private _router: Router)
+  {
+  }
+
+
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+  {
+        return this._suiviSalaireService.getHistoriqueSalaire(route.paramMap.get('id')).pipe(
+            // Error here means the requested product is not available
+            catchError((error) => {
+                console.error("--------------------------error resolver LoadPrelevRemiseByIdResolver-----------",error);  
+                // Navigate to there
+                this._router.navigateByUrl("home");
+                // Throw an error
+                throw error;
+            })
+        );
+  }
+}
+
+
+
+  

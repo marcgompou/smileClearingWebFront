@@ -196,18 +196,18 @@ trackByFn: any;
   }
 
   getHistoriqueSalaire(){
-    this._validerSalaireService.getHistoriqueSalaire(this.salaireData.id).pipe().subscribe((response)=>{
+    this._validerSalaireService.suiviSalaire$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("historique salaire", response)
-      this.historiques=response.data.historiques;
-      this.validators=response.data.validators;
-      console.log("validators===>",this.validators)
-      console.log("historiques===>",response.data.historiques.length)
-      this.totalStepsSalaire = response.data.validators.length + response.data.historiques.length;
+      let result:any=response;
+      this.historiques=result.data.historiques;
+      this.validators=result.data.validators;
+     this.totalStepsSalaire = result.data.validators.length + result.data.historiques.length;
       console.log("totalSteps===>",this.totalStepsSalaire)
       this._changeDetectorRef.markForCheck();
     })
   } 
 
+  
   telechargerSalaire(): void {
     
     this._validerSalaireService.telechargerRetourSalaire(this.salaireData.id).pipe().subscribe(blob => {

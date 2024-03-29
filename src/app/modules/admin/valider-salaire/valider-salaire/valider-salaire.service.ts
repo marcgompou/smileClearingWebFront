@@ -14,7 +14,7 @@ export class ValiderSalaireService {
 
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _salaireAvalides: BehaviorSubject< Salaire []| null> = new BehaviorSubject(null);
-  
+  private _suiviSalaire: BehaviorSubject< any | null> = new BehaviorSubject(null);
 
   /**
    * Constructor
@@ -35,9 +35,14 @@ export class ValiderSalaireService {
     return this._titulaire.asObservable();
   }
 
-  get SalaireAvalides$(): Observable<any[]> {
+  get salaireAvalides$(): Observable<any[]> {
     return this._salaireAvalides.asObservable();
   }
+
+  get suiviSalaire$(): Observable<any[]> {
+    return this._suiviSalaire.asObservable();
+  }
+
   // Setter to update the array
   public setSalaire$(newArray: Salaire[]): void {
     this._salaires.next(newArray);
@@ -48,16 +53,16 @@ export class ValiderSalaireService {
   }
 
 
-  getSalaireAvalider(): Observable<any>
-  {
-      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/salaires?statut=1`).pipe(
-          tap((response) => {
-            console.log('test======================================');
-            console.log(response);
-              this._salaireAvalides.next(response);
-          })
-      );
-  }
+  // getSalaireAvalider(): Observable<any>
+  // {
+  //     return this._httpClient.get<any>(`${environment.apiUrl}/salaires?statut=1`).pipe(
+  //         tap((response) => {
+  //           console.log('test======================================');
+  //           console.log(response);
+  //             this._salaireAvalides.next(response);
+  //         })
+  //     );
+  // }
 
   getHistoriqueSalaire(idsalaire:string): Observable<any>
   {
@@ -65,7 +70,7 @@ export class ValiderSalaireService {
           tap((response) => {
             console.log('test===============SuiviSalaire=======================',response);
             console.log(response);
-              this._salaireAvalides.next(response);
+              this._suiviSalaire.next(response);
           })
       );
   }

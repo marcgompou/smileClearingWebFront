@@ -220,7 +220,7 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
 
 
   loadCompte() {
-    this._salaireService.SalaireAvalides$.pipe(takeUntil(this._unsubscribeAll)
+    this._salaireService.salaireAvalides$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
       next: (response: any) => {
         console.log("Response compteEntreprises ===>", response);
