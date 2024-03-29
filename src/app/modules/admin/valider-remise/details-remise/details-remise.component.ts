@@ -133,6 +133,8 @@ export class DetailsRemiseComponent implements OnInit {
     return found ? found.label : "";
   }
 
+  
+
   constructor(private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _chequeService: CreerRemiseService,
@@ -164,6 +166,7 @@ export class DetailsRemiseComponent implements OnInit {
   });
 
 
+ 
 // this._validerRemiseService.remise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
 //   console.log("details remise remise response=======>",response)
 //   this.remiseData=response;
@@ -171,7 +174,17 @@ export class DetailsRemiseComponent implements OnInit {
 //  // remiseData.data.remise
 //   this._changeDetectorRef.markForCheck(); data.remise.mtTotal
 // })
+// historique: any;
+// getHistoriqueSalaires(): void {
 
+//   this.dataService.getHistoriqueSalaires()
+//   .subscribe(data => {
+//     this.historique = data;
+//     console.log('Historique des salaires : ', this.historique);
+//   });
+
+// }
+   
 
 this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
   console.log("details remise remise response=======>",response)
@@ -263,7 +276,7 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
         }
     );
 
-    
+  
 
     deleteObjectDialog.afterClosed().subscribe({
         next:(response)=>{
@@ -373,6 +386,8 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
    
    
   };
+
+
  
   
   // this._changeDetectorRef.markForCheck();

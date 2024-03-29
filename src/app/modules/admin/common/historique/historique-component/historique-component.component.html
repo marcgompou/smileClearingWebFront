@@ -42,11 +42,11 @@
                         </ng-container>
                         <!-- Step order, show if the step is not completed -->
                          <ng-container *ngIf="historiques.length == historique.niveau">
-                            <div class="text-md font-semibold text-hint group-hover:text-secondary">{{historiques.niveau}}</div>
+                            <div class="text-md font-semibold text-hint group-hover:text-secondary">{{historique.niveau}}</div>
                         </ng-container> 
                     </div>
                     <div class="ml-4" *ngIf=" historique.traite==undefined ">
-                        <div class="font-medium leading-4">{{historique.emailUtilisateur}}</div>
+                        <div class="font-medium leading-4">{{historique.modificationUser}}</div>
                         <div class="mt-1.5 text-md leading-4 text-secondary">{{historique.dateModification}}</div>
                         <div class="mt-1.5 text-md leading-4 text-secondary">{{historique.commentaire}}</div>
                     </div>

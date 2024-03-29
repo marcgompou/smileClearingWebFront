@@ -59,8 +59,18 @@ export class ValiderSalaireService {
       );
   }
 
+  getHistoriqueSalaire(idsalaire:string): Observable<any>
+  {
+      return this._httpClient.get<any>(`${environment.apiUrl}/SuiviSalaire/${idsalaire}`).pipe(
+          tap((response) => {
+            console.log('test===============SuiviSalaire=======================',response);
+            console.log(response);
+              this._salaireAvalides.next(response);
+          })
+      );
+  }
 
-  getSalaireRemiseById(id): Observable<any>
+  getSalaireById(id): Observable<any>
   {
       return this._httpClient.get<any>(`${environment.apiUrl}/salaires/${id}`).pipe(
           tap((response) => {

@@ -131,7 +131,7 @@ export class NavigationService {
           title: "Salaire",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
-          permission: SecService.permissions.ROLE_VALID_SALAIRE, //CHARG_SALAIRE
+          permission: SecService.permissions.ROLE_CHARG_SALAIRE, //CHARG_SALAIRE
           children: [
             {
               id: "chargerSalaire",
@@ -139,7 +139,7 @@ export class NavigationService {
               type: "basic",
               icon: "heroicons_outline:arrow-circle-down",
               link: "/chargerSalaire",
-              permission: SecService.permissions.ROLE_VALID_SALAIRE , //CHARG_SALAIRE
+              permission: SecService.permissions.ROLE_CHARG_SALAIRE , //CHARG_SALAIRE
             },
           ],
         },

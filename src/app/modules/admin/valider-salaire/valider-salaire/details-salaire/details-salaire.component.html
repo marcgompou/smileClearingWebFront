@@ -6,7 +6,7 @@
             <div class="flex flex-col items-start p-8 border-b">
                 <div class="flex items-center mb-4 font-semibold tracking-tight leading-7 md:leading-snug truncate text-secondary dark:text-white"> Historique Validation</div>
             </div>
-            <app-historique [historiques]="historiques" [stepsIsNumeroted]="false" [totalSteps]="5"></app-historique >
+            <app-historique [historiques]="historiques" [validationUsers]="validators" [stepsIsNumeroted]="false" [totalSteps]= "totalStepsSalaire"></app-historique >
 
 
 
@@ -45,6 +45,13 @@
                                     <span class="ml-2">Retour</span>
                                 </button>
                                 <!-- Autres boutons ici -->
+                                <ng-container *ngIf="salaireData?.statut==1">
+                                <button class="ml-4 sm:mt-2"   mat-flat-button [color]="'primary'" (click)="validerSalaire()"
+                                [disabled]="montantTotal==0">
+                                <mat-icon [svgIcon]="'mat_solid:done'"></mat-icon>
+                                <span class="ml-2 ">Valider</span>
+                            </button>
+                        </ng-container>
                             </form>
                         </div>
                     </div>

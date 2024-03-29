@@ -112,9 +112,10 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
 
   //CYCLE DE VIE
   ngOnInit() {
-    this._tableDataService.setDatas$([]);
+   // this._tableDataService.setDatas$([]);
     this.salaireForm.get("fichierSalaire")?.setValue(this.label);
     this.loadCompte();
+    
   }
 
   // closeAlert() {
@@ -377,6 +378,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     const codeEmeteur = data.substring(12, 18).trim();
     const numligne = data.substring(4, 12).trim();
     const montant = data.substring(102, 118).trim();
+
     
     // const numLigne = data.substring(4, 12).trim() || null;
     // const dateEmission =  this.convertDateToDateTime(data.substring(8, 14).trim()) || null;

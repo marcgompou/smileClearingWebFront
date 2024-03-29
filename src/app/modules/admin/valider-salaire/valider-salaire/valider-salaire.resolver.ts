@@ -23,7 +23,7 @@ import { ValiderSalaireService } from './valider-salaire.service';
   
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
     {
-          return this._salaireService.getSalaireRemiseById(route.paramMap.get('id')).pipe(
+          return this._salaireService.getSalaireById(route.paramMap.get('id')).pipe(
               // Error here means the requested product is not available
               catchError((error) => {
                   console.error("--------------------------error resolver LoadPrelevRemiseByIdResolver-----------",error);  
@@ -34,5 +34,9 @@ import { ValiderSalaireService } from './valider-salaire.service';
               })
           );
     }
+
+
+
+    
   
   }

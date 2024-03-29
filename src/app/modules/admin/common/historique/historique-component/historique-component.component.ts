@@ -11,7 +11,7 @@ import { Historique } from '../historique.type';
   templateUrl: './historique-component.component.html',
   styleUrls: ['./historique-component.component.scss']
 })
-export class HistoriqueComponentComponent implements OnInit {
+export class HistoriqueComponentComponent implements OnInit, AfterViewInit {
 
   // categories: Category[];
   // course: Course;
@@ -22,7 +22,7 @@ export class HistoriqueComponentComponent implements OnInit {
   @Input("historiques") historiques:Historique[] ;
   @Input("stepsIsNumeroted") stepsIsNumeroted:boolean=false ;
   @Input("totalSteps") totalSteps:number ;
-  @Input("poidsValidationUsers") poidsValidationUsers:any ;
+  @Input("validationUsers") validationUsers: string[][] = [];
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -32,26 +32,29 @@ export class HistoriqueComponentComponent implements OnInit {
 
     
    }
+    ngAfterViewInit(): void {
+        let index: number = 0;
+        let niveau: number = this.historiques?.length+1 ; // Déclaration et initialisation de la variable index
+    console.log("validationUsers******",this.validationUsers)
+        if(this.historiques?.length<this.totalSteps )
+        {
+          
+            while(this.historiques.length<this.totalSteps)
+            {
+                this.historiques.push({
+                    listeValideurs : this.validationUsers[index] ? this.validationUsers[index] : [],
+                    niveau : niveau,
+                    traite : false
+                } as Historique);
+                index++;
+                niveau++;
+            }
+    
+        };
+    }
 
   ngOnInit(): void {
-    let index: number = this.historiques?.length ; // Déclaration et initialisation de la variable index
-
-    if(this.historiques?.length<this.totalSteps )
-    {
-        index++;
-        while(this.historiques.length<this.totalSteps)
-        {
-            this.historiques.push({
-                listeValideurs : ["marc.gompou1@bridgebankgroup.com","marc.gompou2@bridgebankgroup.com"],
-                niveau : index,
-                traite : false
-            } as Historique);
-
-            index++;
-
-        }
-
-    }
+   
   }
 
   goToStep(step: number): void

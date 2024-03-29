@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <form class="flex items-center sm:mt-0 sm:ml-4" [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
+                    <form class="flex items-center sm:mt-0 sm:ml-4" [formGroup]="salaireForm" (ngSubmit)="onSubmit()">
                         <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
 
                             <!-- <mat-label>Statut</mat-label> -->
@@ -47,6 +47,9 @@
                                 <mat-option value="1">A Valider</mat-option>
                                 <mat-option value="4">Exporté</mat-option>
                             </mat-select> 
+
+
+                            
                         </mat-form-field>
                        
                     </form>
@@ -72,7 +75,7 @@
                         <!-- TABLEAU -->
                         
 
-                        <app-table-data [endpoint]="'salaire'" [title]="'Liste des salaires'"
+                        <app-table-data [endpoint]="'salaires'" [title]="'Liste des salaires'"
                         [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
                         [canClick]="true">
 

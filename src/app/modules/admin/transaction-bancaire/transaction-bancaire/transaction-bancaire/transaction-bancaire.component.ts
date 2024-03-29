@@ -91,7 +91,7 @@ export class TransactionComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     {
       "key": "numeroCompte",
-      "label": "numeroCompte",
+      "label": "Numero de Compte",
 
     },
 

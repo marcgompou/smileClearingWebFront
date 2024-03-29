@@ -21,6 +21,8 @@ export class DetailsSalaireComponent implements OnInit {
   canRelance: boolean = false;
   id: string = "";
   isLoading = false;
+  totalStepsSalaire : number = 0;
+  historiques: any[] = [];
  
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   alert: { type: FuseAlertType; message: string } = {
@@ -28,32 +30,32 @@ export class DetailsSalaireComponent implements OnInit {
     message: ''
   };
   showAlert: boolean = false;
-  public historiques = [
-    {
-      "id":"",
-      "dateModification":"26/03/2024 18:00:00",
-      "emailUtilisateur":"guillaume.kouadio@bridgebankgroup.com",
-      "commentaire":"string",
-      "etat":"string",
-      "niveau":"number"
-    },
-    {
-      "id":"",
-      "dateModification":"26/03/2024 05:00:00",
-      "emailUtilisateur":"maikol.ahoue@bridgebankgroup.com",
-      "commentaire":"string",
-      "etat":"string",
-      "niveau":"number"
-    },
-    {
-      "id":"",
-      "dateModification":"26/03/2024 10:05:00",
-      "emailUtilisateur":"marc.gompou@bridgebankgroup.com",
-      "commentaire":"string",
-      "etat":"string",
-      "niveau":"number"
-    }  
-  ];
+  // public historiques = [
+  //   {
+  //     "id":"",
+  //     "dateModification":"26/03/2024 18:00:00",
+  //     "emailUtilisateur":"guillaume.kouadio@bridgebankgroup.com",
+  //     "commentaire":"string",
+  //     "etat":"string",
+  //     "niveau":"number"
+  //   },
+  //   {
+  //     "id":"",
+  //     "dateModification":"26/03/2024 05:00:00",
+  //     "emailUtilisateur":"maikol.ahoue@bridgebankgroup.com",
+  //     "commentaire":"string",
+  //     "etat":"string",
+  //     "niveau":"number"
+  //   },
+  //   {
+  //     "id":"",
+  //     "dateModification":"26/03/2024 10:05:00",
+  //     "emailUtilisateur":"marc.gompou@bridgebankgroup.com",
+  //     "commentaire":"string",
+  //     "etat":"string",
+  //     "niveau":"number"
+  //   }  
+  // ];
   
 
   public dataStructure = [
@@ -105,6 +107,9 @@ export class DetailsSalaireComponent implements OnInit {
   public displayedColumns: string[] = ["nomBeneficiaire","domiciliation","banque","guichet","compte","cleRib","libelle","montant"];
 course: any;
 trackByFn: any;
+  historique: any;
+  validators: any;
+  
 
 
   
@@ -132,6 +137,8 @@ trackByFn: any;
       this.montantTotal=response?.data?.montantTotal || 0;
      
     });
+    this.getHistoriqueSalaire(); 
+   
     this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("details salaire response=======>",response)
       let result:any=response;
@@ -162,6 +169,7 @@ trackByFn: any;
             this._changeDetectorRef.markForCheck();
         }
     );
+   
   }
 
   validerSalaire(){
@@ -186,6 +194,19 @@ trackByFn: any;
       
     });
   }
+
+  getHistoriqueSalaire(){
+    this._validerSalaireService.getHistoriqueSalaire(this.salaireData.id).pipe().subscribe((response)=>{
+      console.log("historique salaire", response)
+      this.historiques=response.data.historiques;
+      this.validators=response.data.validators;
+      console.log("validators===>",this.validators)
+      console.log("historiques===>",response.data.historiques.length)
+      this.totalStepsSalaire = response.data.validators.length + response.data.historiques.length;
+      console.log("totalSteps===>",this.totalStepsSalaire)
+      this._changeDetectorRef.markForCheck();
+    })
+  } 
 
   telechargerSalaire(): void {
     

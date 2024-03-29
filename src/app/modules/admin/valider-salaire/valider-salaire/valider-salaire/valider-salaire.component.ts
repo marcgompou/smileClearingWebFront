@@ -112,7 +112,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
   // remises$: Observable<Remise[]>;
   _salaireList:any[]=[];
 
-  compteClientForm = new FormGroup({
+  salaireForm = new FormGroup({
     statut: new FormControl('', Validators.required),
 
   })
@@ -123,13 +123,22 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
 
   //CYCLE DE VIE
   ngOnInit() {
+    this.salaireForm = this._formBuilder.group({
+      statut: ['1']
+      //mySelect: ['option2'] // Set the default value here
+    });
 
+   
     
     this._tableDataService.datas$.subscribe((res:any) => {
       this._salaireList=res.data as any[];
       this.dataSource = new MatTableDataSource(res.data);
 
-      this.montantTotal=this._salaireList.reduce((a, b) => a + b.montantTotal, 0);
+if (this._salaireList !== undefined && this._salaireList !== null) {
+  this.montantTotal=this._salaireList.reduce((a, b) => a + b?.montantTotal, 0);
+}
+
+     
 
     });
     //getCompteByEntreprise();
@@ -154,10 +163,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
       )
       .subscribe();
 
-      this.compteClientForm = this._formBuilder.group({
-        statut: ['1']
-        //mySelect: ['option2'] // Set the default value here
-      });
+    
 
   }
   constructor(
@@ -283,7 +289,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   onSelectChange(event: MatSelectChange) {
-    this.statut = event.value?event.value:"0";
+    this.statut = event.value?event.value:"1";
       console.log('Valeur sélectionnée :', this.statut);
       this._tableDataService._endpoint=`salaires?statut=${this.statut}`;
       this._tableDataService.getDatasByPath().subscribe();

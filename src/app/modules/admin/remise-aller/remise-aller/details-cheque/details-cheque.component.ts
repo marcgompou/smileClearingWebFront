@@ -341,7 +341,9 @@ loadData():void{
   }
 
   onSubmit() {
+    console.log ("this log ---------------------------");
     if (this.form.valid) {
+      
       //const formData = this.form.getRawValue(); 
       const formData = this.constructorPayload(this.form.getRawValue());
 
@@ -480,7 +482,7 @@ supprimer(): void {
 
 
   updateCheque(): void {
-    
+    console.log("update cheque");
     if (this.form.valid) {
 
 
