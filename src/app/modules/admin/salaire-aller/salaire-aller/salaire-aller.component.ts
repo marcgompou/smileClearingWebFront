@@ -130,7 +130,11 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.showAlert = false;
     this.isLoading = true;
-   const nomCompte= this.salaireForm.value.idCompteClient;
+    const comptetest = this.listeCompteEntreprise.find((x) => x.compte == this.salaireForm.value.idCompteClient);
+  const codeGuichet = comptetest.agence;
+  const nomCompte = comptetest.designation;
+    const compte= this.salaireForm.value.idCompteClient;
+   console.log("comptetest----------------comptetest----------------",comptetest);
     let data = {
       salaireEntete: {
         // Autres propriétés...
@@ -146,8 +150,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         nomCompte: nomCompte,
         refer: this.headerData.refer,
         indrel: this.headerData.indrel,
-        guichet: this.headerData.guichet,
-        compte: nomCompte,
+        guichet: codeGuichet,
+        compte: compte,
         idenf: this.headerData.idenf,
         banque: this.headerData.banque,
         compteCredite: this.salaireForm.get('idCompteClient').value,
