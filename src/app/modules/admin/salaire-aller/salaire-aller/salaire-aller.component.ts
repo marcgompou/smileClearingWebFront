@@ -63,7 +63,11 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   montant;
   libelle;
   banque;
-
+  codeOperation;
+  dateEcheance ;
+  numligne ;
+  codeEmeteur ;
+  numCompte ;
   dataStructureTxt: any[] = [
     { key: "codeEnreg", label: "Code Enreg" },
     { key: "nomBeneficiaire", label: "Béneficiaire" },
@@ -244,8 +248,6 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       }
       // Exemple de code pour extraire le compte du fichier TXT
     
- // Appel de la fonction extractHeaderValues pour extraire les informations de l'en-tête
- //this.extractHeaderValues(headerLine);
 
  // Récupération de la valeur du compte extraite de l'en-tête
  const compteTxt = this.headerData.compte;
@@ -262,7 +264,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
 
   processExcelFile(selectedFile: File) {
     const fileReader = new FileReader();
-   // this.addRibColumn();
+      // this.addRibColumn();
     console.log(selectedFile, "selectedFile");
     fileReader.onload = (e) => {
       const arrayBuffer = e.target.result;
@@ -272,27 +274,71 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       this.totalRows = rawData.length - 1;
       const transformedData = rawData.slice(1).map((row) => ({
-        nom: row[0],
+        nomBeneficiaire:row[0],
         guichet: row[4],
+        compteCredite: row[5],
         compte: row[5],
-        montant: row[2],
+        montant: row[2].toString(),
         libelle: row[1],
-        banque: row[3],
+        banque: row[3],   
+        codeEmeteur: "",
+        codeEnreg: "06",
+        codeOperation: "",
+        dateEcheance: "2020-07-02",
+        domiciliation:"",
+        
+        numligne:this.totalRows.toString() , 
         cleRib: row[6],
+        
       }));
-  
+      
+      this.fileExtension = selectedFile.name.split(".").pop().toLowerCase();
       // Mise à jour des données via le service
       this._tableDataService.setDatas$(transformedData);
-  
+      console.log("transformedData-------------------", transformedData);
       // Calcul du montant total en convertissant les valeurs en nombres et en s'assurant de ne pas inclure l'en-tête
-      const montantTotal = transformedData.reduce((acc, row) => acc + (Number(row.montant) || 0), 0);
-  
+      const montantTotal = transformedData.reduce((acc, row) => acc + (Number(row.montant) || 0), 0);  
       // Affectation du montant total à this.totalData.montant
-      this.totalData = { montant: montantTotal };
-   
+      this.totalData = { montant: montantTotal 
+         ,codeEnreg :"08",
+         codeOperation:"",
+         codeEmeteur:"",
+        numligne:this.totalRows.toString() , 
+      };
+      this.detailsData = transformedData;
       this.isLoading = false;
       this._changeDetectorRef.markForCheck();
-      
+      //this.extension : this.fileExtension,
+      this.headerData = {
+        nomFichier: this.nomFichierCharger,
+      nomFichierGenerer: "nomParDefaut",
+      codeEnreg:"03",
+      codeOperation: "02",
+      numLigne: this.totalRows,
+      codeEmeteur: "",
+      codccd: "",
+      dateEcheance: "",
+       //nomEntreprise : headerLine.substring(30, 54).trim(),
+      nomCompte : this.salaireForm.get('idCompteClient').value,
+      refer: "",
+      indrel: "",
+      guichet: "",
+      //compte: transformedData.com,
+      //idenf: headerLine.substring(102, 118).trim(),
+      banque: "CI131",
+      compte :  "111111111111",
+  
+      //this.form.get('compte').value
+      zoneVide: "zoneVide",
+      extension : this.fileExtension,
+        
+      };
+      console.log("compte------------recupcompte",this.salaireForm.get('idCompteClient').value );
+ 
+   
+      const fileContent = e.target.result as string;
+      //const lines = fileContent.split("\n"); // Split the content into lines
+      //const this.totalRows = lines.length;
     };
     fileReader.readAsArrayBuffer(selectedFile);
   }
@@ -371,6 +417,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       
     };
   }
+
+  
 
   extractTotalData(data: string) {
     const codeEnreg = data.substring(0, 2).trim();

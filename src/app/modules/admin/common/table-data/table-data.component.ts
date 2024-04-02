@@ -33,7 +33,7 @@ interface filterForm {
   styleUrls: ["./table-data.component.scss"],
   // encapsulation  : ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
-  // animations     : fuseAnimations
+   animations     : fuseAnimations
 })
 export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(

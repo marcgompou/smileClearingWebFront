@@ -70,6 +70,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
         DetailsModule,
         MatAutocompleteModule,
         FuseAlertModule,
+        
         RouterModule.forChild(validerRemiseRoutes)
 
   ]

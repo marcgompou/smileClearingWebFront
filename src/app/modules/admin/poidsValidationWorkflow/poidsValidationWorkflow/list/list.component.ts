@@ -33,11 +33,13 @@ import { CreateComponent } from "app/modules/admin/common/create/create/create.c
 // import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
 import { TableDataService } from "app/modules/admin/common/table-data/table-data.services";
 import { UtilisateursService } from "app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service";
+import { fuseAnimations } from "@fuse/animations";
 
 @Component({
   selector: "PoidsValidationWorkflow",
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"],
+  animations: fuseAnimations
 })
 export class ListPoidsValidationWorkflowComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;

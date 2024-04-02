@@ -15,11 +15,13 @@ import { Subject, takeUntil } from 'rxjs';
 import { ImporterRemiseService } from '../importer-remise/importer-remise.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteChequeConfirmationComponent } from '../../remise-aller/remise-aller/details-cheque/delete-confirmation/delete-cheque-confirmation.component';
+import { fuseAnimations } from '@fuse/animations/public-api';
 
 @Component({
   selector: 'app-details-cheque-importer',
   templateUrl: './details-cheque-importer.component.html',
-  styleUrls: ['./details-cheque-importer.component.scss']
+  styleUrls: ['./details-cheque-importer.component.scss'],
+  animations: fuseAnimations
 })
 export class DetailsChequeImporterComponent implements OnInit {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;

@@ -31,6 +31,7 @@ import { TableDataService } from "app/modules/admin/common/table-data/table-data
   selector: "app-list",
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"],
+  animations: fuseAnimations,
 })
 export class ListAfbComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;

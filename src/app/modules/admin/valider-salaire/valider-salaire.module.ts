@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { MatStepperModule } from '@angular/material/stepper';
 import { HistoriqueModule } from '../common/historique/historique.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { HistoriqueModule } from '../common/historique/historique.module';
         MatAutocompleteModule,
         FuseAlertModule,
         HistoriqueModule,
+        
 
         RouterModule.forChild(validerSalaireRoutes)
 

@@ -14,11 +14,13 @@ import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
 import { CreateComponent } from "app/modules/admin/common/create/create/create.component";
 import { EntrepriseService } from "app/modules/admin/entreprise/entreprise/entreprise.service";
 import { TableDataService } from "app/modules/admin/common/table-data/table-data.services";
+import { fuseAnimations } from "@fuse/animations";
 
 @Component({
   selector: "app-list",
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"],
+  animations: fuseAnimations,
 })
 export class ListWorkflowComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;

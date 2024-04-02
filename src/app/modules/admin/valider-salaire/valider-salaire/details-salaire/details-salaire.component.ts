@@ -5,12 +5,14 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { ValiderSalaireService } from '../valider-salaire.service';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
+import { fuseAnimations } from '@fuse/animations';
 
 
 
 @Component({
   selector: 'app-details-salaire',
   templateUrl: './details-salaire.component.html',
+  animations     : fuseAnimations,
   styleUrls: ['./details-salaire.component.scss']
 })
 export class DetailsSalaireComponent implements OnInit {
@@ -172,17 +174,42 @@ trackByFn: any;
    
   }
 
-  validerSalaire(){
+  validerSalaire() {
     console.log("valider salaire id", this.salaireData);
-    this._validerSalaireService.validerSalaire(this.salaireData.id).pipe().subscribe({
-      next:(response)=>{
+    this._validerSalaireService.validerSalaire(this.salaireData.id).subscribe({
+      next: (response) => {
           console.log(response);
           this.goBackToList();
           this.showAlert = true;
+      },
+      error: (error) => {
+          console.error('Une erreur s\'est produite :', error);
+          // Gérer l'erreur ici (affichage d'un message d'erreur, journalisation, etc.)
       }
-      
     });
-  }
+}
+
+  
+
+
+  // validerRemise(){
+    
+  //   this._validerRemiseService.validerRemise(this.remiseData.data.remise.id).pipe().subscribe({
+  //     next:(response)=>{
+  //         console.log(response);
+  //         this.goBackToList();
+  //         this.alert = { type: 'success', message: response.message };
+  //         this.showAlert = true;
+  //     },
+  //    error: (error) => {
+  //      console.error('Error : ', JSON.stringify(error));
+  //      this.alert = { type: 'error', message: error.error.message??error.message };
+  //      this.showAlert = true;
+  //      this._changeDetectorRef.detectChanges();
+  //    }
+  //   });
+  // }
+
   AnnulerSalaire(){
     console.log("valider salaire id", this.salaireData);
     this._validerSalaireService.validerSalaire(this.salaireData.id).pipe().subscribe({

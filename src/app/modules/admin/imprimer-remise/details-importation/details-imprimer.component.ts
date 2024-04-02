@@ -33,11 +33,13 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import { UserService } from "app/core/user/user.service";
 import { User } from "app/core/user/user.types";
 import { LogoBGG } from "../../common/imagesBase64/logoBBG";
+import { fuseAnimations } from "@fuse/animations/public-api";
 
 @Component({
   selector: "app-details-remise",
   templateUrl: "./details-imprimer.component.html",
   styleUrls: ["./details-imprimer.component.scss"],
+  animations: fuseAnimations,
 })
 export class DetailsImprimerComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;

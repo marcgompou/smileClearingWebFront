@@ -9,11 +9,13 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, catchError, of, takeUntil } from 'rxjs';
 import { TransactionService } from '../transaction-bancaire.service';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-details-transaction',
   templateUrl: './details-transaction.component.html',
-  styleUrls: ['./details-transaction.component.scss']
+  styleUrls: ['./details-transaction.component.scss'],
+  animations: fuseAnimations
 })
 export class DetailsTransactionComponent implements OnInit {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;

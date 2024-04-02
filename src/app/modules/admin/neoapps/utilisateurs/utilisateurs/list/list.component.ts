@@ -12,11 +12,13 @@ import { DetailsComponent } from 'app/modules/admin/common/details/details/detai
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 import { EntrepriseService } from 'app/modules/admin/entreprise/entreprise/entreprise.service';
 import { UtilisateursService } from '../utilisateurs.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss']
+    styleUrls: ['./list.component.scss'],
+    animations: fuseAnimations
 })
 export class ListComponent implements OnInit,OnDestroy {
 

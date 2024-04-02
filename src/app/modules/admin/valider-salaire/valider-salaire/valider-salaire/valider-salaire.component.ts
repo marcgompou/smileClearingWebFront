@@ -32,7 +32,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
   listeCompteEntreprise: any[] = [];
   montantTotal: number = 0;
   //nombreRemise: number = 0;
-  statut: string = "0";
+  statut: string = "1";
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
@@ -123,10 +123,7 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
 
   //CYCLE DE VIE
   ngOnInit() {
-    this.salaireForm = this._formBuilder.group({
-      statut: ['1']
-      //mySelect: ['option2'] // Set the default value here
-    });
+   
 
    
     
@@ -163,7 +160,11 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
       )
       .subscribe();
 
-    
+      this.salaireForm = this._formBuilder.group({
+        statut: '1'
+        //mySelect: ['option2'] // Set the default value here
+      });
+      console.log("statut----------------",this.statut);
 
   }
   constructor(

@@ -118,6 +118,67 @@ export class NavigationService {
         },
       ],
     },
+    //Virement
+    // {
+    //   id: "smilecheckweb-viements",
+    //   title: "VIREMENTS",
+    //   subtitle: "",
+    //   type: "group",
+    //   icon: "heroicons_outline:document-download",
+    //   permission: SecService.permissions.ROLE_CHARG_SALAIRE, //CHARG_SALAIRE
+    //   children: [
+    //     {
+    //       id: "pages",
+    //       title: "Virement Sica",
+    //       type: "collapsable",
+    //       icon: "heroicons_outline:document-download",
+    //       permission: SecService.permissions.ROLE_CHARG_SALAIRE, //CHARG_SALAIRE
+    //       children: [
+    //         {
+    //           id: "chargerSalaire",
+    //           title: "Enregistrer virement",
+    //           type: "basic",
+    //           icon: "heroicons_outline:arrow-circle-down",
+    //           link: "/chargerSalaire",
+    //           permission: SecService.permissions.ROLE_CHARG_SALAIRE , //CHARG_SALAIRE
+    //         },
+    //         {
+    //           id: "chargerSalaire",
+    //           title: "Valider virement",
+    //           type: "basic",
+    //           icon: "heroicons_outline:arrow-circle-down",
+    //           link: "/chargerSalaire",
+    //           permission: SecService.permissions.ROLE_CHARG_SALAIRE , //CHARG_SALAIRE
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       id: "pages",
+    //       title: "Virement Instantané (PI)",
+    //       type: "collapsable",
+    //       icon: "heroicons_outline:clipboard-check",
+    //       permission: SecService.permissions.ROLE_VALID_SALAIRE, //CHARG_SALAIRE
+    //       children: [
+    //         {
+    //           id: "enregistrerPi",
+    //           title: "Enregistrer virement instantané",
+    //           type: "basic",
+    //           icon: "heroicons_solid:check-circle",
+    //           link: "/validerSalaire",
+    //           permission: SecService.permissions.ROLE_VALID_SALAIRE,
+    //         },
+    //         {
+    //           id: "validerPi",
+    //           title: "Valider virement instantané",
+    //           type: "basic",
+    //           icon: "heroicons_solid:check-circle",
+    //           link: "/validerSalaire",
+    //           permission: SecService.permissions.ROLE_VALID_SALAIRE,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     //Salaire
     {
       id: "smilecheckweb-salaires",
