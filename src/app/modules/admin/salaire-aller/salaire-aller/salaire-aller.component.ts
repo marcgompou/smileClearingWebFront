@@ -130,8 +130,33 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.showAlert = false;
     this.isLoading = true;
+   const nomCompte= this.salaireForm.value.idCompteClient;
     let data = {
-      salaireEntete: this.headerData,
+      salaireEntete: {
+        // Autres propriétés...
+    
+        nomFichier: this.nomFichierCharger,
+        nomFichierGenerer: "nomParDefaut",
+        codeEnreg: this.headerData.codeEnreg,
+        codeOperation: this.headerData.codeOperation,
+        numLigne: this.headerData.numLigne,
+        codeEmeteur: this.headerData.codeEmeteur,
+        codccd: this.headerData.codccd,
+        dateEcheance: this.headerData.dateEcheance,
+        nomCompte: nomCompte,
+        refer: this.headerData.refer,
+        indrel: this.headerData.indrel,
+        guichet: this.headerData.guichet,
+        compte: nomCompte,
+        idenf: this.headerData.idenf,
+        banque: this.headerData.banque,
+        compteCredite: this.salaireForm.get('idCompteClient').value,
+        zoneVide: "zoneVide",
+        extension: this.headerData.extension,
+      },
+       //salaireEntete:this.headerData,
+      
+      //compte :  ,
       salaireDetails: this.detailsData,
       salaireTotal: this.totalData,
     };
@@ -264,6 +289,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
 
   processExcelFile(selectedFile: File) {
     const fileReader = new FileReader();
+    //const nomCompte = this.salaireForm.get('idCompteClient')?.value;
+   
       // this.addRibColumn();
     console.log(selectedFile, "selectedFile");
     fileReader.onload = (e) => {
@@ -319,14 +346,15 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       codccd: "",
       dateEcheance: "",
        //nomEntreprise : headerLine.substring(30, 54).trim(),
-      nomCompte : this.salaireForm.get('idCompteClient').value,
+    //   let nomCompte = ;
+      nomCompte : this.salaireForm.value.idCompteClient,
       refer: "",
       indrel: "",
       guichet: "",
       //compte: transformedData.com,
       //idenf: headerLine.substring(102, 118).trim(),
       banque: "CI131",
-      compte :  "111111111111",
+      compte :  this.salaireForm.value.idCompteClient,
   
       //this.form.get('compte').value
       zoneVide: "zoneVide",
