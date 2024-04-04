@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TraitementSalaireComponent } from './traitement-salaire/traitement-salaire/traitement-salaire.component';
 import { RouterModule } from '@angular/router';
 import { traitementSalaireRoutes } from './traitement-salaire.routing';
 import { SharedModule } from 'app/shared/shared.module';
-import { StatusComponent } from '../common/status/status.component';
+import { SalaireTraitementComponent } from './traitement-salaire/traitement-salaire.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -24,21 +25,20 @@ import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key';
 import { TableDataModule } from '../common/table-data/table-data.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DetailsSalaireComponent } from './traitement-salaire/details-salaire/details-salaire.component';
-import { DetailsComponent } from '../common/details/details/details.component';
 import { DetailsModule } from '../common/details/details.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DetailsImprimerComponent } from '../imprimer-remise/details-importation/details-imprimer.component';
-import { ListeTraitementSalaireComponent } from './traitement-salaire/liste-traitement-salaire/liste-traitement-salaire.component';
-import { TraitementSalaireComponent } from './traitement-salaire/traitement-salaire.component';
 import { FuseAlertModule } from '@fuse/components/alert';
-
+import { MatStepperModule } from '@angular/material/stepper';
+import { HistoriqueModule } from '../common/historique/historique.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
   declarations: [
     TraitementSalaireComponent,
-    ListeTraitementSalaireComponent,
+    SalaireTraitementComponent,
     DetailsSalaireComponent,
+  //  DetailsImprimerComponent,
   ],
   exports:[DetailsSalaireComponent],
   imports: [
@@ -59,6 +59,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
         MatSelectModule,
         MatSidenavModule,
         MatTableModule,
+        MatStepperModule,
         MatTooltipModule,
         FuseFindByKeyPipeModule,
         SharedModule,
@@ -66,7 +67,9 @@ import { FuseAlertModule } from '@fuse/components/alert';
         DetailsModule,
         MatAutocompleteModule,
         FuseAlertModule,
+        HistoriqueModule,
         RouterModule.forChild(traitementSalaireRoutes)
+
   ]
 })
-export class TraitementSalaireModule { }
+export class SalaireTraitementModule { }

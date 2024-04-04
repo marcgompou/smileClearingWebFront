@@ -1,197 +1,134 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDrawer } from '@angular/material/sidenav';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FuseAlertType } from '@fuse/components/alert';
-import { Salaire } from '../../salaire.type';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TableDataService } from '../../../common/table-data/table-data.services';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { TraitementSalaireService } from '../traitement-salaire.service';
-import { DetailsComponent } from 'app/modules/admin/common/details/details/details.component';
+import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 import { fuseAnimations } from '@fuse/animations';
+
+
 
 @Component({
   selector: 'app-details-salaire',
   templateUrl: './details-salaire.component.html',
-  styleUrls: ['./details-salaire.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: fuseAnimations
+  animations     : fuseAnimations,
+  styleUrls: ['./details-salaire.component.scss']
 })
 export class DetailsSalaireComponent implements OnInit {
-  @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
-  noData: any;
   salaireData: any;
-  salaireRemiseData: any;
   montantTotal: number = 0;
   nombreRemise: number = 0;
-  remiseIsInCorrect: boolean = true;
+  canRelance: boolean = false;
   id: string = "";
   isLoading = false;
-
-  totalRows = 0;
-  pageSize = 10;
-  currentPage = 0;
-  pageSizeOptions: number[] = [10, 25];
-  canRelance: boolean = false;
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  totalStepsSalaire : number = 0;
+  historiques: any[] = [];
+ 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: ''
   };
-  chequeData: any;
   showAlert: boolean = false;
-
-
+  public nomFichier: string = "-";
 
   public dataStructure = [
-    {
-      "key": "banque",
-      "label": "Code banque"
-    },
-    {
-      "key": "codeagence",
-      "label": "Code agence"
-
-    },
-    {
-      "key": "numCompte",
-      "label": "Numero de Compte"
-    },
-    {
-      "key": "nomfichier",
-      "label": "Nom fichier"
-    },
-
     
     {
-      "key": "montant",
-      "label": "Montant"
-
-    },
-    { 
-      key: 'statut', 
-      type:'status',
-      label: 'Etat Sal.', 
-      "statusValues":[
-        { value: 1, libelle: "Enregistré", color: "#2986cc" }, // Green
-        { value: 3, libelle: "Exporté", color: "#16537e" }, // Green
-        { value: 13, libelle: "Payé", color: "#68D391" }, // Green
-        { value: 10, libelle: "Debit. interdit", color: "#FF5733" }, // Orange
-        { value: 40, libelle: "Cpte. fermé", color: "#808080" }, // Gray
-        { value: 50, libelle: "Cpte. inexistant", color: "#FFD700" }, // Yellow
-        { value: 60, libelle: "Rejetée", color: "#F56565" } // Red
-      ]
+      "key": "nomBeneficiaire",
+      "label": "Nom Beneficiaire"
     },
     {
-      "key": "motif",
+      "key": "domiciliation",
+      "label": "Domiciliation"
+    },
+    {
+      "key": "banque",
+      "label": "Code Banque"
+    },
+    
+    {
+      "key": "guichet",
+      "label": "Code banque"
+
+    },
+    {
+      "key": "compte",
+      "label": "Numero compte"
+    },
+    {
+      "key": "cleRib",
+      "label": "Cle Rib"
+
+    },
+    {
+      "key": "libelle",
       "label": "Motif"
 
     },
+   
     {
-      "key": "nomClient",
-      "label": "Nom du Client"
+      "key": "montant",
+      "label": "Montant",
+      "type": "montant"
 
     },
-
-  
-
-
+    
   ];
-  public displayedColumns: string[] = ["codeBanque","codeagence","numCompte","montant","motif","nomClient","statut"];
+
+
+
+  public displayedColumns: string[] = ["nomBeneficiaire","domiciliation","banque","guichet","compte","cleRib","libelle","montant"];
+course: any;
+trackByFn: any;
+  historique: any;
+  validators: any;
   
 
 
-
   
-  
-  public nomFichier: string = "-";
-  montantTo: any;
-  onBackdropClicked(): void {
-    // Go back to the list
-    this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
-  }
 
   goBackToList(): void {
     // Go back to the list
     this._router.navigate(['../../'], { relativeTo: this._activatedRoute });
-
     // Mark for check
     this._changeDetectorRef.markForCheck();
   }
 
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
-   // private _chequeService: CreerSalaireService,
     private _traitementSalaireService:TraitementSalaireService,
-    //private _telechargerSalaireService:ValiderSalaireService,
-    private _tableDataService: TableDataService,
     private _fuseMediaWatcherService: FuseMediaWatcherService,
+    private _tableDataService:TableDataService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router) {}
 
   ngOnInit(): void {
+    //Recuperation de la ligne selectionner dans la liste des salaire de tableData common
+    this._traitementSalaireService.salaireRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("------------------------------------------------------------->",response?.data) 
+      this.salaireData=response?.data;
+      this.montantTotal=response?.data?.montantTotal || 0;
+     
+    });
+    this.getHistoriqueSalaire(); 
    
-
     this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details salaireRemiseData 1111 response=======>",response)
+      console.log("details salaire response=======>",response)
       let result:any=response;
-      try{
-        let findSalToRelance=result.data?.findIndex((el) =>  el.statut==10||el.statut==40);//debit interdit et rejeté
-        this.canRelance=findSalToRelance!=-1 && findSalToRelance!=null && findSalToRelance!=undefined;    
-      }catch(error){
-        console.log(error)
-      }
+      let findPrelevToRelance=result?.data?.findIndex((el) =>  el.statut==10||el.statut==40);//debit interdit et rejeté
+      this.canRelance=findPrelevToRelance!=-1 && findPrelevToRelance!=null && findPrelevToRelance!=undefined;    
+      console.log("canRelance===>",this.canRelance)
     });
-
-
-    this._tableDataService.data$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("details salaireRemiseData 1111 response=======>",response)
-      let result:any=response;
-      try{
-        console.log("details salaireRemiseData 22222 response=======>",response)
-        this.salaireData=response;
-        this.montantTo=response?.montant || 0;
-        console.log("details salaireRemiseData 333 response=======>",this.salaireData)
-         }catch(error){
-        console.log(error)
-      }
-    });
-    
-    this._traitementSalaireService.salaire$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("----------------salaire$777----------------------------->",response) 
-      this.salaireRemiseData=response?.data;
-      try{
-        this.montantTotal=this.salaireRemiseData?.mtTotal || 0;
-        this.nomFichier=this.salaireRemiseData?.nomfichier || '';
-      }catch(error){
-        console.log(error)
-        this.montantTotal=0;
-      }
-      this._changeDetectorRef.detectChanges();
-
-    });
-
-
-
 
     this._activatedRoute.params.subscribe(params => {
       this.id = params['id'];
     })
 
 
-
-
+    // Subscribe to media changes
     this._fuseMediaWatcherService.onMediaChange$
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe(({matchingAliases}) => {
@@ -208,99 +145,95 @@ export class DetailsSalaireComponent implements OnInit {
             this._changeDetectorRef.markForCheck();
         }
     );
+   
   }
 
-
-
-
-  cloturerSalaire(){
+  traitementSalaire() {
     console.log("traitement salaire id", this.salaireData);
-    this._traitementSalaireService.cloturerSalaire(this.id).pipe().subscribe({
+    this._traitementSalaireService.traitementSalaire(this.salaireData.id).subscribe({
+      next: (response) => {
+          console.log(response);
+          this.goBackToList();
+          this.showAlert = true;
+      },
+      error: (error) => {
+          console.error('Une erreur s\'est produite :', error);
+          // Gérer l'erreur ici (affichage d'un message d'erreur, journalisation, etc.)
+      }
+    });
+}
+
+telechargerSalaireValider(): void {
+    
+  this._traitementSalaireService.telechargerSalaireValider(this.id).pipe().subscribe(blob => {
+    // Create a temporary anchor element and trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download =  this.nomFichier+".rec"; // Set the desired file name
+    link.click();
+  });
+}
+
+
+  // traitementRemise(){
+    
+  //   this._traitementRemiseService.traitementRemise(this.remiseData.data.remise.id).pipe().subscribe({
+  //     next:(response)=>{
+  //         console.log(response);
+  //         this.goBackToList();
+  //         this.alert = { type: 'success', message: response.message };
+  //         this.showAlert = true;
+  //     },
+  //    error: (error) => {
+  //      console.error('Error : ', JSON.stringify(error));
+  //      this.alert = { type: 'error', message: error.error.message??error.message };
+  //      this.showAlert = true;
+  //      this._changeDetectorRef.detectChanges();
+  //    }
+  //   });
+  // }
+
+  AnnulerSalaire(){
+    console.log("traitement salaire id", this.salaireData);
+    this._traitementSalaireService.traitementSalaire(this.salaireData.id).pipe().subscribe({
       next:(response)=>{
           console.log(response);
           this.goBackToList();
-      },error:(error)=>{
-          console.error('Error : ', JSON.stringify(error));
-          // Set the alert
-          this.alert = { type: 'error', message: error.error.message??error.error };
-          // Show the alert
           this.showAlert = true;
-          this._changeDetectorRef.detectChanges();
       }
+      
     });
   }
 
-  telechargerSalaireValider(): void {
+  getHistoriqueSalaire(){
+    this._traitementSalaireService.suiviSalaire$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
+      console.log("historique salaire", response)
+      let result:any=response;
+      this.historiques=result.data.historiques;
+      this.validators=result.data.validators;
+     this.totalStepsSalaire = result.data.validators.length + result.data.historiques.length;
+      console.log("totalSteps===>",this.totalStepsSalaire)
+      this._changeDetectorRef.markForCheck();
+    })
+  } 
+
+  
+  telechargerSalaire(): void {
     
-    this._traitementSalaireService.telechargerSalaireValider(this.id).pipe().subscribe(blob => {
+    this._traitementSalaireService.telechargerRetourSalaire(this.salaireData.id).pipe().subscribe(blob => {
       // Create a temporary anchor element and trigger the download
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download =  this.nomFichier+".rec"; // Set the desired file name
+      link.download = this.salaireData.nomfichier+".emi"; // Set the desired file name
+      console.log("statut prel",this.salaireData.statut);
       link.click();
     });
   }
   telechargerRelance(): void {
-    this._traitementSalaireService.telechargerRelance(this.id).pipe().subscribe({
-      next:(response)=>{
-        console.log(response);
-        this.goBackToList();
-      },error:(error)=>{
-        
-        //console.log('Error : ', error.);
-        const dataString = new TextDecoder().decode(error.error);
-        const data = JSON.parse(dataString);
-        console.log('error 123',dataString);
-        // Set the alert
-        this.alert = { type: 'error', message: data.message };
-        // Show the alert
-        this.showAlert = true;
-        this._changeDetectorRef.detectChanges();
-      }
-
-    });
+    this._traitementSalaireService.telechargerRelance(this.salaireData.id).pipe().subscribe();
     
   }
-
-
-
-  openDetailComponent(component: DetailsComponent) {
-
-    component.matDrawer = this.matDrawer;
-    component.formTitle = "SALAIRE";
-    component.constructorPayload = Salaire.constructorSalaire;
-    component.endpoint="salaires/admin/modificationEtatPaiement";
-    component.loadDataOnInit=false;
-    component.canDelete=false;
-   
-    
-    //Initialisation formulaire details
-    component.formFields = [
-      
-      {
-        key: "statut",
-        libelle: "Etat Paiement",
-        type:"select",
-        
-        
-        options:[
-          
-          {
-            value: "60",
-            libelle: "Rejeté",
-          },
-          {
-            value: "13",
-            libelle: "Reglé",
-          }
-
-        ],
-
-        validators: {
-          required: true
-        }
-      },
-    ]
-  }
+  
+  
 
 }

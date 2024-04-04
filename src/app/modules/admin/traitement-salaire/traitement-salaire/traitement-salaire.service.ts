@@ -8,12 +8,14 @@ import { Salaire } from '../salaire.type';
   providedIn: 'root'
 })
 export class TraitementSalaireService {
+  // private _remise: BehaviorSubject<Remise | null> = new BehaviorSubject(null);
   private _salaires: BehaviorSubject<Salaire[] | null> = new BehaviorSubject(null);
+  private _salaireRemise: BehaviorSubject<any | null> = new BehaviorSubject(null);
+
   private _titulaire: BehaviorSubject<any> = new BehaviorSubject(null);
   private _salaireAvalides: BehaviorSubject< Salaire []| null> = new BehaviorSubject(null);
-  private _salaire: BehaviorSubject<Salaire | null> = new BehaviorSubject(null);
-  
-
+  private _suiviSalaire: BehaviorSubject< any | null> = new BehaviorSubject(null);
+private _salaireservice: BehaviorSubject< any | null> = new BehaviorSubject(null);
   /**
    * Constructor
    */
@@ -22,41 +24,59 @@ export class TraitementSalaireService {
 
  
   // Getter for the observable
-  get salaire$(): Observable<any> {
-    return this._salaire.asObservable();
-  }
-
-  get salaires$(): Observable<any[]> {
+  get salaire$(): Observable<any[]> {
     return this._salaires.asObservable();
+  }
+  get salaireRemise$(): Observable<any> {
+    return this._salaireRemise.asObservable();
   }
 
   get titulaire$(): Observable<any[]> {
     return this._titulaire.asObservable();
   }
 
-  get SalaireAvalides$(): Observable<any[]> {
+  get salaireAvalides$(): Observable<any[]> {
     return this._salaireAvalides.asObservable();
   }
+
+  get suiviSalaire$(): Observable<any[]> {
+    return this._suiviSalaire.asObservable();
+  }
+
   // Setter to update the array
-  public setSalaires$(newArray: Salaire[]): void {
+  public setSalaire$(newArray: Salaire[]): void {
     this._salaires.next(newArray);
   }
 
- 
-  public setSalaire$(newArray: Salaire): void {
-    this._salaire.next(newArray);
+  public setSalaireRemise$(newArray: Salaire[]): void {
+    this._salaireRemise.next(newArray);
   }
 
-  getSalaireAtraitement(): Observable<any>
+
+
+  getHistoriqueSalaire(idsalaire:string): Observable<any>
   {
-      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/salaires?statut=3`).pipe(
+      return this._httpClient.get<any>(`${environment.apiUrl}/SuiviSalaire/${idsalaire}`).pipe(
           tap((response) => {
-            console.log('test======================================');
+            console.log('test===============SuiviSalaire=======================',response);
             console.log(response);
-              this._salaireAvalides.next(response);
+              this._suiviSalaire.next(response);
           })
       );
   }
+
+  getSalaireById(id): Observable<any>
+  {
+      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/${id}`).pipe(
+          tap((response) => {
+            console.log('test======================================');
+            console.log(response);
+              this._salaireRemise.next(response);
+          })
+      );
+  }
+
+
    //Table data service
 
   updateDataTable(value: any) {
@@ -64,11 +84,13 @@ export class TraitementSalaireService {
     this._salaires.next(value);
   }
 
-  cloturerSalaire(idsalaire:string){
+  traitementSalaire(idsalaire:string){
 
-    return this._httpClient.put<any>(`${environment.apiUrl}/salaires/admin/cloture/${idsalaire}`,null).pipe(
+    return this._httpClient.put<any>(`${environment.apiUrl}/salaires/validation/${idsalaire}`,null).pipe(
       tap((response) => {
+        console.log('testidsalaire======================================');
         console.log(response);
+        //this._remiseAvalides.next(response);
       })
     );
 
@@ -77,10 +99,18 @@ export class TraitementSalaireService {
 
   telechargerSalaireValider(id:string): Observable<Blob> {
     // Make a GET request to the file URL, specifying responseType as 'blob'
-    return this._httpClient.get(`${environment.apiUrl}/salaires/admin/telechargement/${id}`, { responseType: 'blob' });
+    return this._httpClient.get(`${environment.apiUrl}/salaires/telechargementSalaire/${id}`, { responseType: 'blob' });
   }
+
+  telechargerRetourSalaire(id:string): Observable<Blob> {
+    // Make a GET request to the file URL, specifying responseType as 'blob'
+    return this._httpClient.get(`${environment.apiUrl}/salaires/telechargementRetour/${id}`, { responseType: 'blob' });
+  }
+
+
+
   telechargerRelance(id: string): Observable<void> {
-    return this._httpClient.get(`${environment.apiUrl}/salaires/admin/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })
+    return this._httpClient.get(`${environment.apiUrl}/salaires/telechargementReprise/${id}`, { responseType: 'arraybuffer', observe: 'response' })
       .pipe(
         map((response: HttpResponse<ArrayBuffer>) => {
           console.log("===relance response===>",response)
@@ -110,17 +140,22 @@ export class TraitementSalaireService {
     document.body.removeChild(downloadLink);
   }
 
-  getSalaireATraiter(id): Observable<any>
-  {
-      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/admin/atraiter/${id}`).pipe(
-          tap((response) => {
-            console.log('test======================================');
-            console.log(response);
-              this._salaire.next(response);
-          })
-      );
-  }
 
+
+
+  //TODO AJOUTER UN MODAL DE CONFIRMATION
+  supprimerRemise(idRemise:string){
+
+    return this._httpClient.delete<any>(`${environment.apiUrl}/remise/${idRemise}`).pipe(
+      tap((response) => {
+        console.log('test======================================');
+        console.log(response);
+        //this._remiseAvalides.next(response);
+      })
+    );
+
+
+  }
 
 
 

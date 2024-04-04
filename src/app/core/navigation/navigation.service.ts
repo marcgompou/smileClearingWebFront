@@ -480,8 +480,8 @@ export class NavigationService {
           permission: SecService.permissions.ROLE_ADMIN,
           children: [
             {
-              id: "Validation salaire",
-              title: "Validation salaire",
+              id: "traitementSalaire",
+              title: "Traiter salaire",
               type: "basic",
               icon: "heroicons_outline:arrow-circle-right",
               link: "/traitementSalaire",

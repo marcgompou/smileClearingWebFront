@@ -1,43 +1,41 @@
 import { Route } from '@angular/router';
 import { LoadDataResolver, LoadSansPaginationDataResolver } from '../common/table-data/table-data.resolver';
+import { LoadDetailsResolver } from '../common/details/details.resolvers';
 import { DetailsComponent } from '../common/details/details/details.component';
+import { DetailsChequeComponent } from '../remise-aller/remise-aller/details-cheque/details-cheque.component';
 import { DetailsSalaireComponent } from './traitement-salaire/details-salaire/details-salaire.component';
-import { ListeTraitementSalaireComponent } from './traitement-salaire/liste-traitement-salaire/liste-traitement-salaire.component';
-import { TraitementSalaireComponent } from './traitement-salaire/traitement-salaire.component';
-import { LoadPrelevATraiterByIdResolver } from './traitement-salaire/traitement-salaire.resolver';
+import { TraitementSalaireComponent } from './traitement-salaire/traitement-salaire/traitement-salaire.component';
+import { SalaireTraitementComponent } from './traitement-salaire/traitement-salaire.component';
+import { LoadSalaireByIdResolver, LoadSuiviSalaireResolver } from './traitement-salaire/traitement-salaire.resolver';
 
-const endpoint = "salaires/admin";
-const endpointDetails = "salaires/admin";
+const endpoint = "salaires";
+const endpointDetails = "salaires/details";
 
 export const traitementSalaireRoutes: Route[] =
 [
     {
         path: '',
-        component: TraitementSalaireComponent,
+        component: SalaireTraitementComponent,
         data: { breadcrumb: 'Liste', endpoint: endpoint },
         children: [
             {
                 path: '',
-                component: ListeTraitementSalaireComponent,
+                component: TraitementSalaireComponent,
                 resolve: {
-                    data: LoadDataResolver,
+                    data: LoadSansPaginationDataResolver,
+
                 },
             },
             {
                 path: 'details/:id',
                 component: DetailsSalaireComponent,
                 resolve: {
-                    data: LoadSansPaginationDataResolver,
-                    salaire:LoadPrelevATraiterByIdResolver
+                    dataDetails: LoadSansPaginationDataResolver, //LoadDataResolver
+                    loadSalaireById:LoadSalaireByIdResolver,
+                    loadSuiviSalaire:LoadSuiviSalaireResolver
                 },
-                data: { breadcrumb: 'Détails salaire ', endpoint: endpointDetails },
-                children: [
-                    {
-                        path: 'details/:id',
-                        component: DetailsComponent,
-                        data:{ breadcrumb: 'Details paiement', endpoint: endpointDetails },
-                    }
-                ]
+                data: { breadcrumb: 'Details salaire', endpoint: endpointDetails },
+
             }
         ]
     }

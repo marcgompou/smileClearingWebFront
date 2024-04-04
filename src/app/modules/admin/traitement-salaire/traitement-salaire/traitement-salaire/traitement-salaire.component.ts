@@ -5,28 +5,26 @@ import { MatSort } from '@angular/material/sort';
 import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable } from 'rxjs';
 import { Salaire } from '../../salaire.type';
 import { fuseAnimations } from '@fuse/animations';
-import { ValiderSalaireService } from '../valider-salaire.service';
+import { TraitementSalaireService } from '../traitement-salaire.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { MatSelectChange } from '@angular/material/select';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
-import { LoadPoidsValidationUserResolver } from '../valider-salaire.resolver';
-import { PoidsValidationWorkflowService } from 'app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow/poidsValidationWorkflow.service';
 //import {img} from './image';
 
 @Component({
-  selector: 'app-valider-salaire',
-  templateUrl: './valider-salaire.component.html',
-  styleUrls: ['valider-salaire.component.scss'],
+  selector: 'app-traitement-salaire',
+  templateUrl: './traitement-salaire.component.html',
+  styleUrls: ['traitement-salaire.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: fuseAnimations
 })
 
 
-export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TraitementSalaireComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
   // noData: any;
@@ -172,11 +170,11 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
-    private _salaireService: ValiderSalaireService,
+    private _salaireService: TraitementSalaireService,
     private _activatedRoute: ActivatedRoute,
     private _tableDataService:TableDataService,
     private _router: Router,
-    private _validerSalaireService:ValiderSalaireService,
+    private _traitementSalaireService:TraitementSalaireService,
 
 
   ) {
@@ -213,7 +211,6 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
 
   }
 
-
   onBackdropClicked(): void {
     // Go back to the list
     this._router.navigate(['./'], { relativeTo: this._activatedRoute });
@@ -221,6 +218,8 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
     // Mark for check
     this._changeDetectorRef.markForCheck();
   }
+
+
   loadCompte() {
     this._salaireService.salaireAvalides$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({

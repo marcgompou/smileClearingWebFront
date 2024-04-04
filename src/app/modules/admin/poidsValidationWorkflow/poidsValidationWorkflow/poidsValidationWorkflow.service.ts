@@ -12,7 +12,7 @@ export class PoidsValidationWorkflowService
 {   
     private _poidsValidationWorkflow: BehaviorSubject<PoidsValidationWorkflow[] | null> = new BehaviorSubject(null);
     private _client: BehaviorSubject<PoidsValidationWorkflow | null> = new BehaviorSubject(null);
-
+    private _poidsValidationUser: BehaviorSubject<number[] | null> = new BehaviorSubject(null);
     /**
      * Constructor
      */
@@ -30,6 +30,10 @@ export class PoidsValidationWorkflowService
      get poidsValidationWorkflow$(): Observable<any> {
         return this._poidsValidationWorkflow.asObservable();
     }
+    get poidsValidationUser$(): Observable<any> {
+        return this._poidsValidationUser.asObservable();
+    }
+
 
     /**
      * Getter for client
@@ -102,7 +106,16 @@ export class PoidsValidationWorkflowService
         //console.log(HttpClient);
     }
 
-
+    getPoidsValidationUser(): Observable<any>
+    {
+        return this._httpClient.get<any>(`${environment.apiUrl}/PoidsValidationWorkflows/user/WORKFLOW_SALAIRE`).pipe(
+            tap((response) => {
+              console.log('test======================================');
+              console.log(response);
+                this._poidsValidationUser.next(response);
+            })
+        );
+    }
     /**
      * Get client by id
      * @param id 

@@ -45,13 +45,19 @@
                                     <span class="ml-2">Retour</span>
                                 </button>
                                 <!-- Autres boutons ici -->
-                                <ng-container *ngIf="salaireData?.statut==1">
-                                <button class="ml-4 sm:mt-2"   mat-flat-button [color]="'primary'" (click)="validerSalaire()"
-                                [disabled]="montantTotal==0">
-                                <mat-icon [svgIcon]="'mat_solid:done'"></mat-icon>
-                                <span class="ml-2 ">Valider</span>
-                            </button>
-                        </ng-container>
+                                <ng-container *ngIf="salaireData?.statut == 1 && poidsValidationUser.includes(salaireData?.niveauValidation)">
+                                    <button class="ml-4 sm:mt-2" mat-flat-button [color]="'primary'" (click)="validerSalaire()" [disabled]="montantTotal==0">
+                                        <mat-icon [svgIcon]="'mat_solid:done'"></mat-icon>
+                                        <span class="ml-2">Valider</span>
+                                    </button>
+                                </ng-container>  
+                                <ng-container *ngIf="salaireData?.statut == 1 && poidsValidationUser.includes(salaireData?.niveauValidation)">
+                                    <button class="ml-4 sm:mt-2" mat-flat-button [color]="'warn'" (click)="rejeterSalaire()"
+                                    [disabled]="montantTotal==0">
+                                    <mat-icon [svgIcon]="'mat_solid:delete'"></mat-icon>
+                                    <span class="ml-2">Supprimer</span>
+                                </button>
+                                </ng-container>                                 
                             </form>
                         </div>
                     </div>

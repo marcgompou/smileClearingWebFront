@@ -87,6 +87,9 @@ export class ValiderSalaireService {
   }
 
 
+
+
+
    //Table data service
 
   updateDataTable(value: any) {
@@ -97,6 +100,19 @@ export class ValiderSalaireService {
   validerSalaire(idsalaire:string){
 
     return this._httpClient.put<any>(`${environment.apiUrl}/salaires/validation/${idsalaire}`,null).pipe(
+      tap((response) => {
+        console.log('testidsalaire======================================');
+        console.log(response);
+        //this._remiseAvalides.next(response);
+      })
+    );
+
+
+  }
+
+  rejeterSalaire(idsalaire:string){
+
+    return this._httpClient.put<any>(`${environment.apiUrl}/salaires/rejet/${idsalaire}`,null).pipe(
       tap((response) => {
         console.log('testidsalaire======================================');
         console.log(response);
@@ -160,6 +176,17 @@ export class ValiderSalaireService {
     );
 
 
+  }
+
+  delete(id: string, endpoint: any): Observable<any> {
+    return this._httpClient.delete<any>(`${environment.apiUrl}/${endpoint}/${id}`).pipe(
+      catchError((error) => {
+        throw error;
+      }),
+      switchMap((response: any) => {
+        return of(response);
+      })
+    );
   }
 
 

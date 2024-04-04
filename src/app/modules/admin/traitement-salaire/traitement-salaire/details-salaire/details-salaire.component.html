@@ -1,98 +1,101 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
-    <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
-        [dismissible]="true"
-        [dismissed]="false"
-        [showIcon]="true"
-        [@shake]="alert.type === 'error'">
-        {{ alert.message }}
-    </fuse-alert>
-    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
-        <!-- Drawer -->
-        <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
-            [disableClose]="true" #matDrawer>
-            <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
-        </mat-drawer>
-         
-        <mat-drawer-content class="flex flex-col">
-            <!-- Header -->
-            <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
-                <!-- Loader -->
-                <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
-                    <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
-                </div>
-                <!-- Title -->
-                <div class="flex flex-auto items-center min-w-0">
-                    <div class="flex flex-col min-w-0 ml-4">
-                        <ng-container>
-                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
-                                Détails Salaire
-                            </div>
-                        </ng-container>
-                    </div>
-                </div>
-                <div class="flex items-center sm:mt-0 sm:ml-4">
-                    
-                    <!-- <form [formGroup]="compteClientForm" (ngSubmit)="onSubmit()"> -->
-                    <form>
-                        <button class="ml-4" type="'button'" (click)="goBackToList()" mat-stroked-button [color]="'accent'">
-                            <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
-                            <span class="ml-1 ">Retour</span>
-                        </button>
-                        <ng-container *ngIf="salaireRemiseData?.statut==13" >
-                            <button class="ml-4 sm:mt-2" mat-flat-button [color]="'primary'" (click)="cloturerSalaire()">
-                                <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
-                                <span class="ml-1">Clôturer</span>
-                            </button>
-                        </ng-container>
-                        <ng-container *ngIf="salaireRemiseData?.statut==3">
-                            <button class="ml-4" mat-flat-button [color]="'primary'"  (click)="telechargerSalaireValider()" >
-                                <mat-icon [svgIcon]="'mat_solid:cloud_download'" ></mat-icon>
-                                <span class="ml-1">Générer Fichier</span>
-                            </button>
-                        </ng-container>
 
-                        <ng-container *ngIf="salaireRemiseData?.statut==16">
-                            <button class="ml-4" mat-flat-button [color]="'warn'" [disabled]="!canRelance" (click)="telechargerRelance()" >
-                                <mat-icon [svgIcon]="'mat_solid:refresh'" ></mat-icon>
-                                <span class="ml-2">Générer Fichier Relance</span>
+<div class="absolute inset-0 flex flex-row min-w-0">
+    <!-- Sidenav -->
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+        <mat-drawer class="w-full md:w-100 dark:bg-gray-120" [mode]="drawerMode" [opened]="false"  #matDrawer>
+            <div class="flex flex-col items-start p-8 border-b">
+                <div class="flex items-center mb-4 font-semibold tracking-tight leading-7 md:leading-snug truncate text-secondary dark:text-white"> Historique Validation</div>
+            </div>
+            <app-historique [historiques]="historiques" [validationUsers]="validators" [stepsIsNumeroted]="false" [totalSteps]= "totalStepsSalaire"></app-historique >
+
+
+
+        </mat-drawer>
+
+        <!-- Contenu principal -->
+        <mat-drawer-content class="flex flex-col">
+            <!-- Main -->
+            <div class="flex flex-col flex-auto min-w-0">
+                <!-- Contenu principal -->
+                <div class="flex flex-col flex-auto min-w-0">
+                    <!-- Fuse alert -->
+                    <fuse-alert *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type" [dismissible]="true" [dismissed]="false" [showIcon]="true" [@shake]="alert.type === 'error'">
+                        {{ alert.message }}
+                    </fuse-alert>
+
+                    <!-- Header -->
+                    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b bg-white dark:bg-gray-900">
+                        <!-- Loader -->
+                        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+                            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+                        </div>
+                        <!-- Title -->
+                        <div class="flex flex-auto items-center min-w-0">
+                            <div class="flex flex-col min-w-0 ml-4">
+                                <ng-container>
+                                    <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                                        Détails Salaires</div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="flex items-center sm:mt-0 sm:ml-4">
+                            <form>
+                                <button class="ml-4" type="'button'" (click)="goBackToList()" mat-stroked-button [color]="'accent'">
+                                    <mat-icon [svgIcon]="'mat_solid:arrow_back'"></mat-icon>
+                                    <span class="ml-2">Retour</span>
+                                </button>
+                                <!-- Autres boutons ici -->
+                                <ng-container *ngIf="salaireData?.statut==4">
+                                <button class="ml-4 sm:mt-2"   mat-flat-button [color]="'primary'" (click)="telechargerSalaireValider()"
+                                [disabled]="montantTotal==0">
+                                <mat-icon [svgIcon]="'mat_solid:done'"></mat-icon>
+                                <span class="ml-2 ">Générer Fichier</span>
                             </button>
                         </ng-container>
+                            </form>
+                        </div>
+                    </div>
+                    <form class="flex flex-col flex-auto overflow-auto">
+                        <!-- Main -->
+                        <div class="flex flex-auto">
+                            <!-- remiseCheques list -->
+                            <div class="flex flex-col flex-auto sm:mb-18">
+                                <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5">
+                                    <ng-container>
+                                        <button mat-icon-button
+                                        (click)="matDrawer.toggle()"
+                                        [disableRipple]="true"
+                                        matTooltip= "{{ matDrawer.opened ? 'Fermer Historique' : 'Afficher Historique' }}">
+                                    <mat-icon>{{ matDrawer.opened ? 'close' : 'menu' }}</mat-icon>
+                                </button>
+                                
+                                        
+                                    </ng-container>
+                                    <ng-container>
+                                        <span class="inline-block align-middle">
+                                            Fichier Salaire : {{ salaireData?.nomFichier }}
+                                        </span>
+                                    </ng-container>
+                                    <!-- Autres éléments ici -->
+                                </div>
+                                <!-- Contenu -->
+                                <!-- TABLEAU DES CHEQUES-->
+                                <app-table-data 
+                                    [endpoint]="'salaire'+id" 
+                                    [title]="'Liste des Salaire'"
+                                    [dataKey]="'data'"
+                                    [serverSideLoad]="false"
+                                    [displayedColumns]="displayedColumns" 
+                                    [dataStructure]="dataStructure" 
+                                    [idRow]="'id'"
+                                    [canClick]="false">
+                                </app-table-data>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
-            <form class="flex flex-col ">
-                <!-- Main -->
-                <div class="flex flex-auto overflow-hidden">
-                    <!-- remiseCheques list -->
-                    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
-                        <div class="flex space-x-4 items-center relative back  py-4 px-6 md:px-8 text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5" >
-                            <ng-container>
-                                <span class="inline-block align-middle">
-                                    Fichier selectionné : {{ nomFichier }}
-                                </span>
-                            </ng-container>
-                            <ng-container>
-                                <span class="inline-block align-middle">
-                                    Montant total : {{ montantTotal | currency:'CFA':'symbol':'1.0-2' }}
-                                </span>
-                            </ng-container>
-                        </div>
-                        <!-- TABLEAU DES PRELEVEMENTS -->
-                        <div class="relative">
-                        <app-table-data 
-                            [endpoint]="'salaires/admin'" 
-                            [title]="'Liste des Salaire'"
-                            [serverSideLoad]="false"
-                            [dataKey]="'data'"
-                            [displayedColumns]="displayedColumns" 
-                            [dataStructure]="dataStructure" 
-                            [idRow]="'id'"
-                            [canClick]="salaireRemiseData?.statut == 13">
-                        </app-table-data>
-                    </div>
-                    </div>
-                </div>
-            </form>
         </mat-drawer-content>
     </mat-drawer-container>
 </div>
+```

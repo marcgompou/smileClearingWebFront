@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-    selector       : 'app-traitement-salaire',
+    selector       : 'salaire-traitement',
     templateUrl    : './traitement-salaire.component.html',
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TraitementSalaireComponent
+export class SalaireTraitementComponent
 {
     /**
      * Constructor

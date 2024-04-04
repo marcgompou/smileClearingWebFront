@@ -6,29 +6,67 @@ import { TraitementSalaireService } from './traitement-salaire.service';
 
 @Injectable({
     providedIn: 'root'
-})
-export class LoadPrelevATraiterByIdResolver implements Resolve<boolean> {
+  })
+  export class LoadSalaireByIdResolver implements Resolve<boolean> {
     /**
        * Constructor
        */
     constructor(
-        private _traitementSalaireService: TraitementSalaireService,
-        private _router: Router) {
+        private _salaireService: TraitementSalaireService,
+      private _router: Router)
+    {
     }
+  
+  
+  
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+    {
+          return this._salaireService.getSalaireById(route.paramMap.get('id')).pipe(
+              // Error here means the requested product is not available
+              catchError((error) => {
+                  console.error("--------------------------error resolver LoadPrelevRemiseByIdResolver-----------",error);  
+                  // Navigate to there
+                  this._router.navigateByUrl("home");
+                  // Throw an error
+                  throw error;
+              })
+          );
+    }
+  }
 
 
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-        return this._traitementSalaireService.getSalaireATraiter(route.paramMap.get('id')).pipe(
+ 
+@Injectable({
+  providedIn: 'root'
+})
+export class LoadSuiviSalaireResolver implements Resolve<boolean> {
+  /**
+     * Constructor
+     */
+  constructor(
+      private _suiviSalaireService: TraitementSalaireService,
+    private _router: Router)
+  {
+  }
+
+
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+  {
+        return this._suiviSalaireService.getHistoriqueSalaire(route.paramMap.get('id')).pipe(
             // Error here means the requested product is not available
             catchError((error) => {
-                console.error("--------------------------error resolver LoadPrelevRemiseByIdResolver-----------", error);
+                console.error("--------------------------error resolver LoadPrelevRemiseByIdResolver-----------",error);  
                 // Navigate to there
                 this._router.navigateByUrl("home");
                 // Throw an error
                 throw error;
             })
         );
-    }
-
+  }
 }
+
+
+
+  

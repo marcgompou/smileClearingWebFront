@@ -31,6 +31,7 @@ import { FuseAlertModule } from '@fuse/components/alert';
 import { MatStepperModule } from '@angular/material/stepper';
 import { HistoriqueModule } from '../common/historique/historique.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DeleteSalaireConfirmationComponent } from './valider-salaire/details-salaire/delete-confirmation/delete-salaire-confirmation.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ValiderSalaireComponent,
     SalaireValiderComponent,
     DetailsSalaireComponent,
+    DeleteSalaireConfirmationComponent,  
   //  DetailsImprimerComponent,
   ],
   exports:[DetailsSalaireComponent],

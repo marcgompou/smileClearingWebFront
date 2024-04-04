@@ -6,6 +6,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { ValiderSalaireService } from '../valider-salaire.service';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 import { fuseAnimations } from '@fuse/animations';
+import { PoidsValidationWorkflowService } from 'app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow/poidsValidationWorkflow.service';
+import {  DeleteSalaireConfirmationComponent } from './delete-confirmation/delete-salaire-confirmation.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -21,6 +24,7 @@ export class DetailsSalaireComponent implements OnInit {
   montantTotal: number = 0;
   nombreRemise: number = 0;
   canRelance: boolean = false;
+  poidsValidationUser: number[] = [];
   id: string = "";
   isLoading = false;
   totalStepsSalaire : number = 0;
@@ -32,34 +36,6 @@ export class DetailsSalaireComponent implements OnInit {
     message: ''
   };
   showAlert: boolean = false;
-  // public historiques = [
-  //   {
-  //     "id":"",
-  //     "dateModification":"26/03/2024 18:00:00",
-  //     "emailUtilisateur":"guillaume.kouadio@bridgebankgroup.com",
-  //     "commentaire":"string",
-  //     "etat":"string",
-  //     "niveau":"number"
-  //   },
-  //   {
-  //     "id":"",
-  //     "dateModification":"26/03/2024 05:00:00",
-  //     "emailUtilisateur":"maikol.ahoue@bridgebankgroup.com",
-  //     "commentaire":"string",
-  //     "etat":"string",
-  //     "niveau":"number"
-  //   },
-  //   {
-  //     "id":"",
-  //     "dateModification":"26/03/2024 10:05:00",
-  //     "emailUtilisateur":"marc.gompou@bridgebankgroup.com",
-  //     "commentaire":"string",
-  //     "etat":"string",
-  //     "niveau":"number"
-  //   }  
-  // ];
-  
-
   public dataStructure = [
     
     {
@@ -104,10 +80,7 @@ export class DetailsSalaireComponent implements OnInit {
     
   ];
 
-
-
   public displayedColumns: string[] = ["nomBeneficiaire","domiciliation","banque","guichet","compte","cleRib","libelle","montant"];
-course: any;
 trackByFn: any;
   historique: any;
   validators: any;
@@ -129,12 +102,14 @@ trackByFn: any;
     private _fuseMediaWatcherService: FuseMediaWatcherService,
     private _tableDataService:TableDataService,
     private _activatedRoute: ActivatedRoute,
+    private _dialog: MatDialog,
+    private _poidsValidationUser: PoidsValidationWorkflowService,
     private _router: Router) {}
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des salaire de tableData common
     this._validerSalaireService.salaireRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("------------------------------------------------------------->",response?.data) 
+      console.log("---------------------------SALAIREDATA---------------------------------->",response?.data) 
       this.salaireData=response?.data;
       this.montantTotal=response?.data?.montantTotal || 0;
      
@@ -171,6 +146,8 @@ trackByFn: any;
             this._changeDetectorRef.markForCheck();
         }
     );
+    this.getPoidsValidationUser();
+    console.log("poidsValidationUser***************", this.poidsValidationUser);
    
   }
 
@@ -189,26 +166,36 @@ trackByFn: any;
     });
 }
 
-  
 
-
-  // validerRemise(){
+rejeterSalaire(){
     
-  //   this._validerRemiseService.validerRemise(this.remiseData.data.remise.id).pipe().subscribe({
-  //     next:(response)=>{
-  //         console.log(response);
-  //         this.goBackToList();
-  //         this.alert = { type: 'success', message: response.message };
-  //         this.showAlert = true;
-  //     },
-  //    error: (error) => {
-  //      console.error('Error : ', JSON.stringify(error));
-  //      this.alert = { type: 'error', message: error.error.message??error.message };
-  //      this.showAlert = true;
-  //      this._changeDetectorRef.detectChanges();
-  //    }
-  //   });
-  // }
+  const deleteObjectDialog = this._dialog.open(
+    DeleteSalaireConfirmationComponent,
+      {
+        data:  { 
+            id:this.id,
+            cheques:null,
+            endpoint:"salaires"
+          }
+      }
+  );
+
+  deleteObjectDialog.afterClosed().subscribe(result => {
+    if (result) { 
+      this._validerSalaireService.rejeterSalaire(this.id).pipe().subscribe({
+        next:(response)=>{
+            console.log(response);
+            this.goBackToList();
+            this.showAlert = true;
+        }
+        
+      });
+    }
+  });
+
+}
+
+  
 
   AnnulerSalaire(){
     console.log("valider salaire id", this.salaireData);
@@ -233,7 +220,17 @@ trackByFn: any;
       this._changeDetectorRef.markForCheck();
     })
   } 
-
+  getPoidsValidationUser() {
+    this._poidsValidationUser.poidsValidationUser$.pipe(takeUntil(this._unsubscribeAll)
+    ).subscribe({
+      next: (response: any) => {
+        console.log("Response compteEntreprises ===>", response);
+        if (response == null) { response = []; }
+        this.poidsValidationUser = response.data;
+        this._changeDetectorRef.markForCheck();
+      }
+    })
+   }
   
   telechargerSalaire(): void {
     
@@ -241,8 +238,8 @@ trackByFn: any;
       // Create a temporary anchor element and trigger the download
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.download = this.salaireData.nomfichier+".emi"; // Set the desired file name
-      console.log("statut prel",this.salaireData.statut);
+      link.download = this.salaireData.nomfichier; // Set the desired file name
+      console.log("nom du fichier --------------------",this.salaireData.nomfichier);
       link.click();
     });
   }
