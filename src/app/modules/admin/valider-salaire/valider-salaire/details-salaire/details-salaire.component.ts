@@ -179,16 +179,16 @@ rejeterSalaire(){
   );
 
   deleteObjectDialog.afterClosed().subscribe(result => {
-    if (result) { 
-      this._validerSalaireService.rejeterSalaire(this.id,result).pipe().subscribe({
-        next:(response)=>{
-            console.log(response);
-            this.goBackToList();
-            this.showAlert = true;
-        }
+    // if (result) { 
+    //   this._validerSalaireService.rejeterSalaire(this.id,result).pipe().subscribe({
+    //     next:(response)=>{
+    //         console.log(response);
+    //         this.goBackToList();
+    //         this.showAlert = true;
+    //     }
         
-      });
-    }
+    //   });
+    // }
   });
 
 }
