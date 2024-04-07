@@ -3,48 +3,56 @@
         <ng-container *ngFor="let historique of historiques; let last = last; trackBy: trackByFn">
             <!-- <li class="relative group py-6" [class.current-step]="step.order === currentStep"> -->
                 <li class="relative group py-6">
+
+                    <!-- les traits reliant les ronds  -->
                 <ng-container *ngIf="!last">
                     <div
                         class="absolute top-6 left-4 w-0.5 h-full -ml-px"
                         [ngClass]="{'bg-primary': historique.traite==undefined,
-                                    'bg-gray-300 dark:bg-gray-600': historique.traite==false}"></div> 
+                                    'bg-gray-300 dark:bg-gray-600': historique.traite==false}"
+                                    >
+                                    
+                                </div> 
                 </ng-container>
                 <div
                     class="relative flex items-start cursor-pointer">
+                    <!-- cercle orange vert et rouge dans le premier block -->
                     <div
                         class="flex flex-0 items-center justify-center w-8 h-8 rounded-full ring-2 ring-inset bg-card dark:bg-default"
                         [ngClass]="{
                                     'bg-primary dark:bg-primary text-on-primary  ring-transparent': historique.traite==undefined,
-                                    'ring-primary': historiques.length == historique.niveau, 
-                                    'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': historique.traite==false
+                                    'ring-primary ': historiques.length == historique.niveau, 
+                                    'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': historique.traite==false,
+                                    'bg-red-500 ring-red-300 dark:ring-red-300 group-hover:ring-red-300': historique.etat == 15,
+                                    'bg-green-500 ring-green-500 dark:ring-green-500 group-hover:ring-green-500': historique.etat == 4
                                 }">
 
 
-                <!-- <div
-                class="absolute top-6 left-4 w-0.5 h-full -ml-px"
-                [ngClass]="{'bg-primary': step.order < currentStep,
-                  'bg-gray-300 dark:bg-gray-600': step.order >= currentStep}"></div> -->
-                        <!-- Check icon, show if the step is completed -->
-
-                        <!-- <ng-container *ngIf="historiques.length < totalSteps">
-                            <mat-icon
-                                class="icon-size-5 text-current"
-                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
-                        </ng-container> -->
-                        <!-- Step order, show if the step is the current step -->
+               
                          <ng-container *ngIf="historique.traite==false">
                             <div class="text-md font-semibold text-primary dark:text-primary-500">{{historique.niveau}}</div>
+                        
+                        
                         </ng-container> 
-                        <ng-container *ngIf="historique.traite==undefined">
-                            <mat-icon
-                                class="icon-size-5 text-current"
-                                [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                        <!-- le ckeck dans chaque cercle -->
+                        <ng-container >
+                            <mat-icon *ngIf="historique.traite==undefined && historique.etat!==15" class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                            <mat-icon *ngIf="historique.traite==undefined && historique.etat===15" class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:trash'"></mat-icon>
+                       
                         </ng-container>
+                       
                         <!-- Step order, show if the step is not completed -->
-                         <ng-container *ngIf="historiques.length == historique.niveau">
-                            <div class="text-md font-semibold text-hint group-hover:text-secondary">{{historiques.niveau}}</div>
+                        
+
+                        <ng-container *ngIf="historiques.length == historique.niveau">
+                            <div class="text-md font-semibold" [ngClass]="{'ring-red-00 dark:ring-red-400': historique.etat == 15, 'ring-green-400 dark:ring-green-400': historique.etat == 4}">
+                                {{historiques.niveau}}
+                            </div>
                         </ng-container> 
+                        
                     </div>
+
+                    <!-- commentaire et information de chaque etape -->
                     <div class="ml-4" *ngIf=" historique.traite==undefined ">
                         <div class="font-medium leading-4">{{historique.modificationUser}}</div>
                         <div class="mt-1.5 text-md leading-4 text-secondary">{{historique.dateModification}}</div>

@@ -50,14 +50,13 @@
 
                     <!-- input Confirmation -->
                     <ng-container>
-                        <div class="flex mt-4">
+                        <div class="flex-auto">
                             <form #formNgForm="ngForm" [formGroup]="form">
-                                <mat-form-field class="flex-auto">
+                                <mat-form-field class="flex-auto w-full">
                                     <input matInput placeholder="Entrer un commentaire"  id="commentaire"  matInput formControlName="commentaire">
                                     <mat-error *ngIf="form.get('commentaire')?.hasError('required')">Ce champ est obligatoire</mat-error>
                                     <mat-error *ngIf="form.get('commentaire')?.hasError('maxLength')">La longueur minimun est "5" caractères</mat-error>
                                     <mat-error *ngIf="form.get('commentaire')?.hasError('minLength')">La longueur max est "200" caractères</mat-error>
-
                                 </mat-form-field>
                             </form>
                         </div>
