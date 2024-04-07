@@ -174,9 +174,6 @@ rejeterSalaire(){
       {
         data:  { 
             id:this.id,
-            commentaire:
-              "Commentaire",
-            endpoint:"salaires/rejet"
           }
       }
   );

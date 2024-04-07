@@ -51,9 +51,15 @@
                     <!-- input Confirmation -->
                     <ng-container>
                         <div class="flex mt-4">
-                            <mat-form-field class="flex-auto">
-                                <input matInput placeholder="Entrer un commentaire" #inputConfirmation>
-                            </mat-form-field>
+                            <form #formNgForm="ngForm" [formGroup]="form">
+                                <mat-form-field class="flex-auto">
+                                    <input matInput placeholder="Entrer un commentaire"  id="commentaire"  matInput formControlName="commentaire">
+                                    <mat-error *ngIf="form.get('commentaire')?.hasError('required')">Ce champ est obligatoire</mat-error>
+                                    <mat-error *ngIf="form.get('commentaire')?.hasError('maxLength')">La longueur minimun est "5" caractères</mat-error>
+                                    <mat-error *ngIf="form.get('commentaire')?.hasError('minLength')">La longueur max est "200" caractères</mat-error>
+
+                                </mat-form-field>
+                            </form>
                         </div>
                     </ng-container>
 
@@ -73,10 +79,10 @@
                     </button>
                     <!-- Accept -->
                     <button class="order-first sm:order-last" mat-flat-button [color]="'warn'" (click)="supprimer()"
-                        [disabled]="!inputConfirmation.value || isLoading">
-                        <span *ngIf="!isLoading">J'accèpte</span>
+                        [disabled]="(!form.valid) || isLoading">
+                        <span *ngIf="!isLoading">Rejeter</span>
                         <mat-spinner strokeWidth="5" diameter="30" class="warn" *ngIf="isLoading">
-                        </mat-spinner>
+                    </mat-spinner>
                     </button>
                 </div>
 
