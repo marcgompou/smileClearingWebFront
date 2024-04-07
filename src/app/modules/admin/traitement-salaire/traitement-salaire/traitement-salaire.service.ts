@@ -97,9 +97,33 @@ private _salaireservice: BehaviorSubject< any | null> = new BehaviorSubject(null
 
   }
 
-  telechargerSalaireValider(id:string): Observable<Blob> {
-    // Make a GET request to the file URL, specifying responseType as 'blob'
-    return this._httpClient.get(`${environment.apiUrl}/salaires/telechargementSalaire/${id}`, { responseType: 'blob' });
+  // telechargerSalaireValider(id:string): Observable<Blob> {
+  //   // Make a GET request to the file URL, specifying responseType as 'blob'
+  //   return this._httpClient.get(`${environment.apiUrl}/salaires/telechargementSalaire/${id}`, { responseType: 'blob' });
+  // }
+
+  telechargerSalaireValider(id: string): Observable<{ blob: Blob, fileName: string }> {
+    return this._httpClient.get(`${environment.apiUrl}/salaires/telechargementSalaire/${id}`, { responseType: 'blob', observe: 'response' })
+      .pipe(
+        map((response: HttpResponse<Blob>) => {
+          const blob = response.body;
+          const fileName = this.getFileNameFromResponseHeader(response.headers);
+          return { blob, fileName };
+        })
+      );
+  }
+
+   private getFileNameFromResponseHeader(headers: HttpHeaders): string {
+    const contentDispositionHeader: string | null = headers.get('Content-Disposition');
+    console.log("contentDispositionHeader=====>",contentDispositionHeader)
+    if (contentDispositionHeader) {
+      const match = contentDispositionHeader.match(/filename=(.+);/);
+      console.log("match=====>",match)
+      return match ? match[1] : 'salaire.rec'; // Si le nom de fichier n'est pas trouvé, utiliser un nom par défaut
+    } else {
+      console.error("Impossible de récupérer le nom de fichier à partir de l'en-tête de la réponse.");
+      return 'salaire.rec'; // Fallback si l'en-tête n'est pas présent
+    }
   }
 
   telechargerRetourSalaire(id:string): Observable<Blob> {

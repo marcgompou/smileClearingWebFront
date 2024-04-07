@@ -9,97 +9,78 @@
                 <mat-icon class="text-current" svgIcon="heroicons_outline:exclamation"></mat-icon>
             </div>
         </ng-container>
-        <div class="text-lg font-medium">Suppression</div>
-        <button
-            mat-icon-button
-            (click)="closeModal()"
-            [tabIndex]="-1">
+        <div class="text-lg font-medium">Rejeter</div>
+        <button mat-icon-button (click)="closeModal()" [tabIndex]="-1">
             <!-- <mat-icon
                 class="text-current"
-                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                [svgIcon]="'heroicons_outline:x'"></mat-icon> -->
         </button>
     </div>
 
     <!-- Compose form -->
-    <div
-        class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto" >
+    <form>
+        <div class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto">
 
-        <!-- Alert -->
-        <fuse-alert
-            class="mt-4"
-            *ngIf="showAlert"
-            [appearance]="'outline'"
-            [showIcon]="false"
-            [type]="alert.type"
-            [@shake]="alert.type === 'error'">
-            {{alert.message}}
-        </fuse-alert>
+            <!-- Alert -->
+            <fuse-alert class="mt-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
+                [@shake]="alert.type === 'error'">
+                {{alert.message}}
+            </fuse-alert>
 
-        <!-- Content-->
-        <div class="flex flex-auto overflow-hidden mt-4">
+            <!-- Content-->
+            <div class="flex flex-auto overflow-hidden mt-4">
 
-            <div class="flex flex-col flex-auto sm:mb-3 overflow-hidden sm:overflow-y-auto">
+                <div class="flex flex-col flex-auto sm:mb-3 overflow-hidden sm:overflow-y-auto">
 
-                <!-- Message -->
-                <ng-container>
-                    <div class="text-secondary sm:text-lg xs:text-sm">
-                        <ng-container *ngIf="isLoading == true; else elseTemplate">
-                            <span>Suppression en cours d'exécution...</span>
-                        </ng-container>
-                        <ng-template #elseTemplate>
-                            <h1 class="mb-4 text-xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-3xl dark:text-white">
-                                 Êtes-vous sûr de vouloir supprimer ? 
-                            </h1>
-                            <span> Entrer <strong>oui</strong> pour accepter</span>
-                        </ng-template>
-                    </div>
-                </ng-container>
+                    <!-- Message -->
+                    <ng-container>
+                        <div class="text-secondary sm:text-lg xs:text-sm">
+                            <ng-container *ngIf="isLoading == true; else elseTemplate">
+                                <span>rejet en cours d'exécution...</span>
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                <h1
+                                    class="mb-4 text-xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-3xl dark:text-white">
+                                    Êtes-vous sûr de vouloir rejeter ?
+                                </h1>
+                                <!-- <span> Entrer <strong>oui</strong> pour accepter</span> -->
+                            </ng-template>
+                        </div>
+                    </ng-container>
 
-                <!-- input Confirmation -->
-                <ng-container>
-                    <div class="flex mt-4">
-                        <mat-form-field class="flex-auto">
-                            <input
-                                matInput
-                                placeholder="oui" #inputConfirmation>
-                        </mat-form-field>
-                    </div>
-                </ng-container>
+                    <!-- input Confirmation -->
+                    <ng-container>
+                        <div class="flex mt-4">
+                            <mat-form-field class="flex-auto">
+                                <input matInput placeholder="Entrer un commentaire" #inputConfirmation>
+                            </mat-form-field>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mt-4 sm:mt-6">
+
+                <div class="-ml-2"></div>
+
+                <div class="flex items-center mt-4 sm:mt-0">
+                    <!-- Save as draft -->
+                    <button class="sm:mx-3" mat-stroked-button (click)="closeModal()">
+                        <span>Je refuse</span>
+                    </button>
+                    <!-- Accept -->
+                    <button class="order-first sm:order-last" mat-flat-button [color]="'warn'" (click)="supprimer()"
+                        [disabled]="!inputConfirmation.value || isLoading">
+                        <span *ngIf="!isLoading">J'accèpte</span>
+                        <mat-spinner strokeWidth="5" diameter="30" class="warn" *ngIf="isLoading">
+                        </mat-spinner>
+                    </button>
+                </div>
 
             </div>
 
         </div>
-        
-        <!-- Actions -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between mt-4 sm:mt-6">
-            
-            <div class="-ml-2"></div>
-
-            <div class="flex items-center mt-4 sm:mt-0">
-                <!-- Save as draft -->
-                <button
-                    class="sm:mx-3"
-                    mat-stroked-button
-                    (click)="closeModal()">
-                    <span>Je refuse</span>
-                </button>
-                <!-- Accept -->
-                <button
-                    class="order-first sm:order-last"
-                    mat-flat-button
-                    [color]="'warn'"
-                    (click)="supprimer()"
-                    [disabled]="inputConfirmation.value != 'oui' || isLoading">
-                    <span *ngIf="!isLoading">J'accèpte</span>
-                    <mat-spinner strokeWidth="5" 
-                        diameter="30" 
-                        class="warn"
-                        *ngIf="isLoading">
-                    </mat-spinner>
-                </button>
-            </div>
-            
-        </div>
-    </div>
-
-
+    </form>

@@ -110,18 +110,33 @@ export class ValiderSalaireService {
 
   }
 
-  rejeterSalaire(idsalaire:string){
+  // rejeterSalaire(idsalaire:string,commentaire:string){
 
-    return this._httpClient.put<any>(`${environment.apiUrl}/salaires/rejet/${idsalaire}`,null).pipe(
+  //   return this._httpClient.put<any>(`${environment.apiUrl}/salaires/rejet/${idsalaire}`,null).pipe(
+  //     tap((response) => {
+  //       console.log('testidsalaire======================================');
+  //       console.log(response);
+  //       //this._remiseAvalides.next(response);
+  //     })
+  //   );
+  // }
+
+
+  rejeterSalaire(idsalaire: string, commentaire: string): Observable<any> {
+    // Créez un objet contenant le commentaire à envoyer avec la requête
+    const requestBody = { commentaire };
+  
+    return this._httpClient.put<any>(`${environment.apiUrl}/salaires/rejet/${idsalaire}`, requestBody).pipe(
       tap((response) => {
-        console.log('testidsalaire======================================');
-        console.log(response);
-        //this._remiseAvalides.next(response);
+        console.log('Réponse de la requête de rejet du salaire :', response);
+      }),
+      catchError((error) => {
+        console.error('Une erreur s\'est produite lors du rejet du salaire :', error);
+        return throwError(error); // Renvoyez l'erreur pour que le composant puisse la gérer
       })
     );
-
-
   }
+  
 
   telechargerRetourSalaire(id:string): Observable<Blob> {
     // Make a GET request to the file URL, specifying responseType as 'blob'

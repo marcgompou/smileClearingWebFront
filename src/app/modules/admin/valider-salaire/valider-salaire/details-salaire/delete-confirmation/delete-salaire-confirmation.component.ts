@@ -5,7 +5,6 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Utils } from 'app/modules/admin/common/utils/utils';
 import { ValiderSalaireService } from '../../valider-salaire.service';
-//import { CreerRemiseService } from '../../valider-salaire.service';
 
 
 @Component({
@@ -30,8 +29,7 @@ export class DeleteSalaireConfirmationComponent {
     private _dialog: MatDialogRef<DeleteSalaireConfirmationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: 
     { 
-      id:any
-      cheques:any[];
+      id:any;
       endpoint:string|null;
     },
   ) { }
@@ -46,12 +44,12 @@ export class DeleteSalaireConfirmationComponent {
     this.isLoading = true;
 
     if(this.data.endpoint){
-     //DELETE WITH ENDPOINT FOR CHEQUE
+     //DELETE WITH ENDPOINT FOR SALAIRE
      this._salaireRemise.delete(this.data.id,this.data.endpoint).subscribe({
       next: (response) => {
           this.alert = {
             type: 'success',
-            message: "Supprimession effectué."
+            message: "Rejet effectué."
           };
           this.showAlert = true;
           this.isLoading = false;
@@ -70,23 +68,14 @@ export class DeleteSalaireConfirmationComponent {
       });
 
     }
-    else{ 
-      //FOR LOCAL DELETE
-      console.log("cheque data",this.data.cheques)
-      console.log("id",this.data.id);
-      const deleteResult=this.data.cheques.filter((el,index)=>{return index!=this.data.id})
-      this._salaireRemise.updateDataTable(deleteResult);
-    }
-
+   
     this.alert = {
       type: 'success',
-      message: "Suppression effectuée."
+      message: "rejet effectuée."
     };
     this.showAlert = true;
     this.isLoading = false;
     this._dialog.close({isDeleted:true});
-    
-
     //NotifyDialog
     this.openNotifyDialog();
   }
@@ -96,7 +85,7 @@ export class DeleteSalaireConfirmationComponent {
     const notifyDialog = this._fuseConfirmationService.open(
       {
         "title": `<h1 class="mb-4 text-xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-3xl dark:text-white"> Succès </h1>`,
-        "message": `<span>Suppression réussie.</span>
+        "message": `<span>Rejet effectué avec succes.</span>
                     <br>
                     <mat-icon class="icon-size-25" [color]="'primary'" [svgIcon]="'heroicons_outline:badge-check'"></mat-icon>`,
         "icon": {

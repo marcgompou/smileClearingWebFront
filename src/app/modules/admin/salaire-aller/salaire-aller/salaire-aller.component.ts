@@ -65,6 +65,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   banque;
   codeOperation;
   dateEcheance ;
+  nomEntreprise;
   numligne ;
   codeEmeteur ;
   numCompte ;
@@ -132,7 +133,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const comptetest = this.listeCompteEntreprise.find((x) => x.compte == this.salaireForm.value.idCompteClient);
   const codeGuichet = comptetest.agence;
-  const nomCompte = comptetest.designation;
+  const nomCompteClient =  comptetest.designation;
     const compte= this.salaireForm.value.idCompteClient;
    console.log("comptetest----------------comptetest----------------",comptetest);
     let data = {
@@ -147,7 +148,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         codeEmeteur: this.headerData.codeEmeteur,
         codccd: this.headerData.codccd,
         dateEcheance: this.headerData.dateEcheance,
-        nomCompte: nomCompte,
+        nomEntreprise: this.headerData.nomEntreprise,
         refer: this.headerData.refer,
         indrel: this.headerData.indrel,
         guichet: codeGuichet,
@@ -434,7 +435,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       codeEmeteur: headerLine.substring(12, 18).trim(),
       codccd: headerLine.substring(18, 19).trim(),
       dateEcheance: this.convertDateToDateTime(headerLine.substring(25, 30).trim()),
-       //nomEntreprise : headerLine.substring(30, 54).trim(),
+      nomEntreprise : headerLine.substring(30, 54).trim(),
       nomCompte : headerLine.substring(30, 54).trim(),
       refer: headerLine.substring(54, 61).trim(),
       indrel: headerLine.substring(80, 81).trim(),
@@ -495,7 +496,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     const nomBeneficiaire = data.substring(30, 54).trim();
     const domiciliation = data.substring(54, 79).trim();
     const guichet = data.substring(86, 91).trim();
-    const compte = data.substring(92, 103).trim();
+    const compte = data.substring(91, 103).trim();
     const montant = data.substring(103, 119).trim();
     const libelle = data.substring(119, 150).trim();
     const banque = data.substring(150, 155).trim();

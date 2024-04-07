@@ -47,7 +47,9 @@
                             <span>Suppression en cours d'exécution...</span>
                         </ng-container>
                         <ng-template #elseTemplate>
-                            <h1 class="mb-4 text-xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-3xl dark:text-white"> Êtes-vous sûr de vouloir exécuter cette opération ? </h1>
+                            <h1 class="mb-4 text-xl text-center font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl lg:text-3xl dark:text-white">
+                                 Êtes-vous sûr de vouloir supprimer ? 
+                            </h1>
                             <span> Entrer <strong>oui</strong> pour accepter</span>
                         </ng-template>
                     </div>
@@ -88,7 +90,7 @@
                     [color]="'warn'"
                     (click)="supprimer()"
                     [disabled]="inputConfirmation.value != 'oui' || isLoading">
-                    <span *ngIf="!isLoading">J'accepte</span>
+                    <span *ngIf="!isLoading">J'accèpte</span>
                     <mat-spinner strokeWidth="5" 
                         diameter="30" 
                         class="warn"

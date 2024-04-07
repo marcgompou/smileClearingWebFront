@@ -174,15 +174,16 @@ rejeterSalaire(){
       {
         data:  { 
             id:this.id,
-            cheques:null,
-            endpoint:"salaires"
+            commentaire:
+              "Commentaire",
+            endpoint:"salaires/rejet"
           }
       }
   );
 
   deleteObjectDialog.afterClosed().subscribe(result => {
     if (result) { 
-      this._validerSalaireService.rejeterSalaire(this.id).pipe().subscribe({
+      this._validerSalaireService.rejeterSalaire(this.id,result).pipe().subscribe({
         next:(response)=>{
             console.log(response);
             this.goBackToList();

@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TraitementSalaireService } from '../traitement-salaire.service';
 import { TableDataService } from 'app/modules/admin/common/table-data/table-data.services';
 import { fuseAnimations } from '@fuse/animations';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 
 
@@ -103,7 +104,9 @@ trackByFn: any;
     private _fuseMediaWatcherService: FuseMediaWatcherService,
     private _tableDataService:TableDataService,
     private _activatedRoute: ActivatedRoute,
+    private _httpClient: HttpClient,
     private _router: Router) {}
+
 
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des salaire de tableData common
@@ -163,35 +166,39 @@ trackByFn: any;
     });
 }
 
-telechargerSalaireValider(): void {
-    
-  this._traitementSalaireService.telechargerSalaireValider(this.id).pipe().subscribe(blob => {
-    // Create a temporary anchor element and trigger the download
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download =  this.nomFichier+".rec"; // Set the desired file name
-    link.click();
-  });
+telechargerSalaireValider(url: string,id): void {
+    // Vérifier si l'id est défini
+    if (!this.id) {
+      console.error("L'identifiant est requis pour télécharger le salaire.");
+      return; // Arrêter l'exécution si l'ID est manquant
+    }
+  
+    this._traitementSalaireService.telechargerSalaireValider(this.id).subscribe({
+      next: ({ blob, fileName }) => {
+        // Créer un élément d'ancrage temporaire pour déclencher le téléchargement
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+      },
+      error: (error: any) => {
+        console.error("Une erreur s'est produite lors du téléchargement du salaire :", error);
+        // Gérer l'erreur ici, par exemple afficher un message à l'utilisateur
+      }
+    });
+
 }
 
-
-  // traitementRemise(){
-    
-  //   this._traitementRemiseService.traitementRemise(this.remiseData.data.remise.id).pipe().subscribe({
-  //     next:(response)=>{
-  //         console.log(response);
-  //         this.goBackToList();
-  //         this.alert = { type: 'success', message: response.message };
-  //         this.showAlert = true;
-  //     },
-  //    error: (error) => {
-  //      console.error('Error : ', JSON.stringify(error));
-  //      this.alert = { type: 'error', message: error.error.message??error.message };
-  //      this.showAlert = true;
-  //      this._changeDetectorRef.detectChanges();
-  //    }
-  //   });
-  // }
+//  telechargerSalaire(): void {
+  
+//    this._traitementSalaireService.telechargerSalaireValider(this.id).pipe().subscribe(blob => {
+//      // Create a temporary anchor element and trigger the download
+//      const link = document.createElement('a');
+//      link.href = window.URL.createObjectURL(blob);
+//      link.download =  this.nomFichier+".rec"; // Set the desired file name
+//      link.click();
+//    });
+//  }
 
   AnnulerSalaire(){
     console.log("traitement salaire id", this.salaireData);
