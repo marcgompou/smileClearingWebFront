@@ -12,7 +12,8 @@ import { SharedModule } from 'app/shared/shared.module';
 import { AuthSignInComponent } from 'app/modules/auth/sign-in/sign-in.component';
 import { authSignInRoutes } from 'app/modules/auth/sign-in/sign-in.routing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { NgxCaptchaModule } from 'ngx-captcha';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
     declarations: [
         AuthSignInComponent
@@ -28,7 +29,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         FuseCardModule,
         FuseAlertModule,
         SharedModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        NgxCaptchaModule,
+        ReactiveFormsModule
     ]
 })
 export class AuthSignInModule

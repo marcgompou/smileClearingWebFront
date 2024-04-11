@@ -36,6 +36,7 @@ export class AuthSignInComponent implements OnInit {
   login2FACodeForm: UntypedFormGroup;
 
   passwordModifForm: UntypedFormGroup;
+  captchaErrorMessage: string = '';
 
   showAlert: boolean = false;
   loginStatus: string = "login";
@@ -66,6 +67,7 @@ export class AuthSignInComponent implements OnInit {
     this.signInForm = this._formBuilder.group({
       username: ["", [Validators.required, Validators.email]],
       password: ["", Validators.required],
+      recaptcha: ["", Validators.required],
     });
   }
 
@@ -81,7 +83,12 @@ export class AuthSignInComponent implements OnInit {
    */
   signIn(): void {
     // Return if the form is invalid
+    if (!this.signInForm.get('recaptcha').value) {
+      this.captchaErrorMessage = 'Veuillez compléter le captcha.';
+      return;
+  }
     if (this.signInForm.invalid) return;
+   
 
     // Disable the form
     this.signInForm.disable();
