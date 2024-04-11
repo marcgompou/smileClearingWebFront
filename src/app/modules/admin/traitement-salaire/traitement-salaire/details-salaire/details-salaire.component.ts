@@ -111,8 +111,9 @@ trackByFn: any;
   ngOnInit(): void {
     //Recuperation de la ligne selectionner dans la liste des salaire de tableData common
     this._traitementSalaireService.salaireRemise$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
-      console.log("------------------------------------------------------------->",response?.data) 
+      console.log("-----------------------------------------------------test-------->",response?.data) 
       this.salaireData=response?.data;
+      console.log ("salaireData=>",this.salaireData)
       this.montantTotal=response?.data?.montantTotal || 0;
      
     });

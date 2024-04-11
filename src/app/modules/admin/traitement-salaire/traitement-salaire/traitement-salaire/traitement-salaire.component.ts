@@ -292,7 +292,7 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value?event.value:"1";
       console.log('Valeur sélectionnée :', this.statut);
-      this._tableDataService._endpoint=`salaires?statut=${this.statut}`;
+      this._tableDataService._endpoint=`salaires/admin/?statut=${this.statut}`;
       this._tableDataService.getDatasByPath().subscribe();
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence

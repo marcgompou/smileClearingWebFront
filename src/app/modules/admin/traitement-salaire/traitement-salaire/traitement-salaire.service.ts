@@ -56,7 +56,7 @@ private _salaireservice: BehaviorSubject< any | null> = new BehaviorSubject(null
 
   getHistoriqueSalaire(idsalaire:string): Observable<any>
   {
-      return this._httpClient.get<any>(`${environment.apiUrl}/SuiviSalaire/${idsalaire}`).pipe(
+      return this._httpClient.get<any>(`${environment.apiUrl}/SuiviSalaire/admin/${idsalaire}`).pipe(
           tap((response) => {
             console.log('test===============SuiviSalaire=======================',response);
             console.log(response);
@@ -67,7 +67,7 @@ private _salaireservice: BehaviorSubject< any | null> = new BehaviorSubject(null
 
   getSalaireById(id): Observable<any>
   {
-      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/${id}`).pipe(
+      return this._httpClient.get<any>(`${environment.apiUrl}/salaires/admin/${id}`).pipe(
           tap((response) => {
             console.log('test======================================');
             console.log(response);

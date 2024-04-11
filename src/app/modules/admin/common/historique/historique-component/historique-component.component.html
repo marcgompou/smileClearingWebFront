@@ -24,7 +24,8 @@
                                     'ring-primary ': historiques.length == historique.niveau, 
                                     'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': historique.traite==false,
                                     'bg-red-500 ring-red-500 dark:ring-red-500 group-hover:ring-red-900': historique.etat == 15,
-                                    'bg-green-500 ring-green-500 dark:ring-green-500 group-hover:ring-green-900': historique.etat == 4
+                                    'bg-green-500 ring-green-500 dark:ring-green-500 group-hover:ring-green-900': historique.etat == 4,
+                                    'bg-green-700 ring-green-700 dark:ring-green-700 group-hover:ring-green-700': historique.etat == 5
                                 }">
 
 
@@ -36,9 +37,10 @@
                         </ng-container> 
                         <!-- le ckeck dans chaque cercle -->
                         <ng-container >
-                            <mat-icon *ngIf="historique.traite==undefined && historique.etat!==15" class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                            <mat-icon *ngIf="historique.traite==undefined && historique.etat!==15 && historique.etat!==5" class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                            
                             <mat-icon *ngIf="historique.traite==undefined && historique.etat===15" class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:trash'"></mat-icon>
-                       
+                            <mat-icon *ngIf="historique.traite==undefined && historique.etat===5" class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-down'"></mat-icon>
                         </ng-container>
                        
                         <!-- Step order, show if the step is not completed -->

@@ -38,7 +38,9 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
     isNotUserAdmin=true;
     rolesList: string[] =  ['CHARG_PRELEVEMENT','VISUALISATION','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','SUPERADMIN','CREATION','ADMIN','VALID_PRELEVEMENT_INTER_BANK','CHARG_AFB120','CHARG_PRELEVEMENT_INTER_BANK','CHARG_SALAIRE','CONSULT_SALAIRE','CONSULT_VALEUR_SALAIRE','VALID_SALAIRE'];
     disabledOptions:string[]=[];
-    rolesForNonAdmin=['CHARG_PRELEVEMENT','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','CREATION','VALID_PRELEVEMENT_INTER_BANK','CHARG_AFB120','CHARG_PRELEVEMENT_INTER_BANK','CONSULT_SALAIRE','CONSULT_VALEUR_SALAIRE','CHARG_SALAIRE','VALIDATION_SALAIRE'];
+    rolesForNonAdmin=['CHARG_PRELEVEMENT','EXPORTATION','VALID_PRELEVEMENT','VALIDATION','CREATION','VALID_PRELEVEMENT_INTER_BANK','CHARG_AFB120','CHARG_PRELEVEMENT_INTER_BANK','CHARG_SALAIRE','VALIDATION_SALAIRE'];
+    rolesUniversel=['CONSULT_SALAIRE','CONSULT_VALEUR_SALAIRE'];
+   
     entreprises: any[];
 
    
@@ -113,7 +115,7 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
                 }
                 });
                 //this.createUserForm.get('roles').setValue(roles);
-                this.disabledOptions=this.rolesForNonAdmin;
+                this.disabledOptions=this.rolesForNonAdmin ;
 
 
             }else{

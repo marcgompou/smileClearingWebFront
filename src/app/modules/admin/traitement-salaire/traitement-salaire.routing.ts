@@ -8,8 +8,8 @@ import { TraitementSalaireComponent } from './traitement-salaire/traitement-sala
 import { SalaireTraitementComponent } from './traitement-salaire/traitement-salaire.component';
 import { LoadSalaireByIdResolver, LoadSuiviSalaireResolver } from './traitement-salaire/traitement-salaire.resolver';
 
-const endpoint = "salaires";
-const endpointDetails = "salaires/details";
+const endpoint = "salaires/admin";
+const endpointDetails = "salaires/admin/atraiter";
 
 export const traitementSalaireRoutes: Route[] =
 [
