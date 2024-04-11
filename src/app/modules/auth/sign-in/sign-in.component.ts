@@ -84,7 +84,7 @@ export class AuthSignInComponent implements OnInit {
   signIn(): void {
     // Return if the form is invalid
     if (!this.signInForm.get('recaptcha').value) {
-      this.captchaErrorMessage = 'Veuillez compléter le captcha.';
+      this.captchaErrorMessage = 'Veuillez valider le captcha.';
       return;
   }
     if (this.signInForm.invalid) return;
