@@ -38,7 +38,6 @@ export class ImporterRemiseComponent implements OnInit, OnDestroy {
   remiseIsInCorrect: boolean = true;
   //listEntreprise: any;
 
-  selectedProject: string = 'ACME Corp. Backend App';
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
@@ -63,9 +62,6 @@ export class ImporterRemiseComponent implements OnInit, OnDestroy {
   showAlert: boolean = false;
 
   public dataStructure = [
-
-
-   
     {
       "key": "reference",
       "label": "Référence"
@@ -95,18 +91,13 @@ export class ImporterRemiseComponent implements OnInit, OnDestroy {
 
   public displayedColumns: string[] = ['reference', 'nbremise', 'nbcheque', 'montantTotal', 'dateExport'];
 
-  sent = [];
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   selectedRemise: any | null = null;
   selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  // remises$: Observable<Remise[]>;
-  scannerIsConnected = false;
-
 
   entrepriseForm = new FormGroup({
-    
     identreprise: new FormControl('', Validators.required),
 
   })
