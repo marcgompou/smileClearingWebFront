@@ -73,9 +73,13 @@
                         <!-- TABLEAU -->
                         
 
-                        <app-table-data [endpoint]="'prelevement'" [title]="'Liste des prelevements'"
-                        [displayedColumns]="displayedColumns" [dataStructure]="dataStructure" [idRow]="'id'"
-                        [canClick]="true">
+                        <app-table-data [endpoint]="'prelevement'" 
+                        [title]="'Liste des prelevements'"
+                        [displayedColumns]="displayedColumns" 
+                        [dataStructure]="dataStructure" 
+                        [idRow]="'id'"
+                        [canClick]="true"
+                        [filterObject]="_filterObject">
 
                     </app-table-data>
 

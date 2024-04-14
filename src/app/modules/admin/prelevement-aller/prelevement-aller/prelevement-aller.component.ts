@@ -52,6 +52,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   prelevementForm: FormGroup
   nomFichierCharger:string='';
+  desactivebouton = true;
   dataStructure = [
     { key: 'codeOperation', label: 'Code Operation' },
     { key: 'codeEnreg', label: 'Code Enreg' },
@@ -128,6 +129,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
         this.alert = { type: 'error', message: error.error.message ?? error.message };
         this.showAlert = true;
         this.isLoading = false;
+       
         this._changeDetectorRef.detectChanges();
       }
     });
@@ -150,7 +152,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
     this.headerData={}
     this.totalData={}
     this.totalRows = 0;
-    
+    this.desactivebouton = true;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = null;
     }
@@ -212,9 +214,20 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
 
 
    convertDateToDateTime(dateStr: string): string  {
+    
     if (dateStr.length !== 6) {
       // Vérifier la longueur de la chaîne d'entrée
       console.error("La chaîne de date doit avoir une longueur de 6 caractères.");
+   
+        // Affichage d'un message d'erreur
+      //  console.error('Error : ', JSON.stringify(error));
+        this.alert = { type: 'error', message:  "La chaîne de date opération doit avoir une longueur de 6 caractères." };
+        this.showAlert = true;
+        this.desactivebouton = false;
+        this.isLoading = false;
+        this._changeDetectorRef.detectChanges();
+      
+
       return "";
     }
   

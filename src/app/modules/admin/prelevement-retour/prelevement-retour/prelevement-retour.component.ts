@@ -73,7 +73,7 @@ export class PrelevementRetourComponent implements OnInit, OnDestroy {
         { value: 1, libelle: "Debit. interdit", color: "#FF5733" }, // Orange
         { value: 4, libelle: "Cpte. fermé", color: "#808080" }, // Gray
         { value: 5, libelle: "Cpte. inexistant", color: "#FFD700" }, // Yellow
-        { value: 6, libelle: "Rejetée", color: "#F56565" } // Red
+        { value: 6, libelle: "Rejeté", color: "#F56565" } // Red
       ]
     },
     { key: 'montant', label: 'Montant' }

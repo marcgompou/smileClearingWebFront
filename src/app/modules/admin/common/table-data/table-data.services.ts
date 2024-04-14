@@ -21,6 +21,11 @@ export class  TableDataService {
     public _id:string|null="";  //Pour la recuperation du path parameter
     public _hasPagination:Boolean=true; //permet de savoir si on doit tenir compte de la pagination
     public _filterObject: any;
+    public paginationObject$: BehaviorSubject<any| null> = new BehaviorSubject(null);
+
+           
+    
+    
 
     /**
      * Constructor
@@ -56,6 +61,11 @@ export class  TableDataService {
         this.datas.next(data);
     }
 
+    public setPaginationObject$(paginationObject:any):void{
+    
+        this.paginationObject$.next(paginationObject);
+    }
+
     getDatas(): Observable<any> {
         //Verifier que filter object exist
         let filterString = "";
@@ -69,6 +79,7 @@ export class  TableDataService {
             filterString="";
         }
         //Si On tient compte de la pagination
+        console.log("this._paginationObject****************", this._paginationObject);
         if(this._hasPagination){
             
             // if(!this._paginationObject){
@@ -96,6 +107,7 @@ export class  TableDataService {
             filterString=filterString+"?"+paginationString;
 
         }
+        console.log("filtering-----------------", filterString);
         return this._httpClient.get<any>(`${environment.apiUrl}/${this._endpoint}/${filterString}`).pipe(
             tap((response) => {
                 //response.sort((a, b) => (a.creationDate < b.creationDate) ? 1 : -1);
@@ -106,6 +118,7 @@ export class  TableDataService {
 
     }
 
+    
     getDatasByPath(): Observable<any> {
 
 
@@ -118,6 +131,8 @@ export class  TableDataService {
         );
 
     }
+
+
     // getDatas(filerObject:any,paginationObject:any): Observable<any[]> {
 
 

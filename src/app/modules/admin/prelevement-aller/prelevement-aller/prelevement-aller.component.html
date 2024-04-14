@@ -33,7 +33,7 @@
                                 style="display: none" />
                         </mat-form-field>
                         <button class="ml-4 " mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="(!prelevementForm.valid) || totalRows==0 ">
+                            [disabled]="(!prelevementForm.valid) || !desactivebouton || totalRows==0 ">
                             <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
                             <span>Enregistrer</span>
                         </button>

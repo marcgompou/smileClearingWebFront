@@ -109,6 +109,7 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
     statut: new FormControl('', Validators.required),
 
   })
+  public _filterObject: { statut: string; };
 
  
 
@@ -355,8 +356,21 @@ export class ValiderPrelevementComponent implements OnInit, AfterViewInit, OnDes
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value?event.value:"0";
       console.log('Valeur sélectionnée :', this.statut);
-      this._tableDataService._endpoint=`prelevement?statut=${this.statut}`;
-      this._tableDataService.getDatasByPath().subscribe();
+      console.log("this._tableDataService._paginationObjectv2-----",this._tableDataService._paginationObject);
+      this._tableDataService._hasPagination=true;
+      this._tableDataService._endpoint=`prelevement`;
+      this._tableDataService._filterObject = {statut: this.statut};
+      const paginationObject = {
+        page: 0,
+          size: 10
+      }
+    this._tableDataService._paginationObject = paginationObject;
+ 
+  this._tableDataService.setPaginationObject$ (paginationObject);
+  this._filterObject = {statut: this.statut};
+   
+      console.log("this._tableDataService._filterObject-----",this._tableDataService._filterObject);
+      this._tableDataService.getDatas().subscribe();
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence
     }

@@ -33,7 +33,7 @@ interface filterForm {
   styleUrls: ["./table-data.component.scss"],
   // encapsulation  : ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
-   animations     : fuseAnimations
+  animations: fuseAnimations,
 })
 export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
@@ -47,17 +47,17 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input("dataStructure") dataStructure: filterForm[];
   @Input("displayedColumns") displayedColumns: string[];
   data: any[];
-  @Input("endpoint") endpoint: string="";
+  @Input("endpoint") endpoint: string = "";
   @Input("serverSideLoad") serverSideLoad: boolean = true;
   @Input("filterFormBasic") filterFormBasic: filterForm[];
   @Input("filterFormAdvance") filterFormAdvance: filterForm[];
-  @Input("title") title: string="";
+  @Input("title") title: string = "";
   @Input("canClick") canClick: boolean = false;
   @Input("idRow") idRow: string = "";
   /*** Peut prendre la valeur '$' si les donnée sont directement accessibles depuis la racine ***/
-  @Input("dataKey") dataKey = "data"; 
+  @Input("dataKey") dataKey = "data";
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  private selectedRowIndex: any=undefined;
+  private selectedRowIndex: any = undefined;
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
     message: "",
@@ -75,7 +75,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
 
   isLoading = false;
-  public totalRows:number = 0;
+  public totalRows: number = 0;
   pageSize: number = 10;
   currentPage: number = 0;
   pageSizeOptions: number[] = [10, 25];
@@ -93,10 +93,13 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this._detailsService.id$.subscribe((id) => {
-      this.selectedRowIndex=id||undefined;
-      console.log("=============_detailsService==========>",this.selectedRowIndex);
-    })
-
+      this.selectedRowIndex = id || undefined;
+      console.log(
+        "=============_detailsService==========>",
+        this.selectedRowIndex
+      );
+    });
+    this.handleForeignPaginationChange();
     this._changeDetectorRef.markForCheck();
   }
 
@@ -106,23 +109,28 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
         this._router.navigate(["./details", row[this.idRow]], {
           relativeTo: this._activatedRoute,
         });
-  
+
         this.selectedRowIndex = row[this.idRow];
         this._tableDateService.setData$(row);
         this._changeDetectorRef.markForCheck();
       } catch (error) {
         console.log("error in table data", error);
-        this.selectedRowIndex =undefined;    
-        this._tableDateService.setData$(null);  
-         console.error("Une erreur est survenue lors de la sélection de la ligne : ", error);
+        this.selectedRowIndex = undefined;
+        this._tableDateService.setData$(null);
+        console.error(
+          "Une erreur est survenue lors de la sélection de la ligne : ",
+          error
+        );
         // Vous pouvez également afficher un message à l'utilisateur, enregistrer l'erreur dans un service de journalisation, etc.
       }
     }
   }
-  selectedRowChangeColor(id):void {
-    this.selectedRowIndex= this.dataSource.data?.find(item => item[this.idRow] === id) ??undefined;
+  selectedRowChangeColor(id): void {
+    this.selectedRowIndex =
+      this.dataSource.data?.find((item) => item[this.idRow] === id) ??
+      undefined;
   }
-  
+
   /**
    * On destroy
    */
@@ -145,29 +153,57 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
       this.paginationObject
     );
 
-
-    if(this.serverSideLoad){
+    if (this.serverSideLoad) {
       this.paginationObject = {
         size: event.pageSize,
         page: event.pageIndex,
       };
+
+      console.log(
+        "paginationObjectbis------------------------",
+        this.paginationObject
+      );
+      this._tableDateService._hasPagination = true;
       this._tableDateService._paginationObject = this.paginationObject;
+      this._tableDateService.setPaginationObject$ (this.paginationObject);
       this._tableDateService._endpoint = this.endpoint;
       this._tableDateService._filterObject = this.filterObject;
-      this._tableDateService.getDatas().pipe().subscribe();
-    }else{
 
-       // Calculate the start and end index based on the page size and page index
+      this._tableDateService.getDatas().pipe().subscribe();
+      // this._tableDateService.datas$.subscribe({
+      //   next: (response: any) => {
+      //     console.log("Response table data difference v100============> :", response);
+      //       this.totalRows = response?.totalCount ||0;
+      //       this.currentPage = response?.page || 0;
+      //       this.pageSize = response?.pageSize || 0;
+      //       this._changeDetectorRef.markForCheck();
+      //   },
+      // error: (error) => {
+      //   //not show historique
+      //   this.showData = false;
+      //   console.error("Error : ", JSON.stringify(error));
+      //   // Set the alert
+      //   this.alert = {
+      //     type: "error",
+      //     message: error.error.message ?? error.error,
+      //   };
+      //   // Show the alert
+      //   this.showAlert = true;
+
+      //   this._changeDetectorRef.markForCheck();
+      // },
+      // })
+    } else {
+      // Calculate the start and end index based on the page size and page index
       const startIndex = event.pageIndex * event.pageSize;
       const endIndex = startIndex + event.pageSize;
-      this.pageSize=event.pageSize;
-      this.currentPage=event.pageIndex;
-      console.log("start and end index",startIndex +' '+ endIndex);
+      this.pageSize = event.pageSize;
+      this.currentPage = event.pageIndex;
+      console.log("start and end index", startIndex + " " + endIndex);
       // Slice the data to display the current page
       const pageData = this.data.slice(startIndex, endIndex);
-      this.dataSource.data = pageData
-      console.log("length===>",this.data.length);
-
+      this.dataSource.data = pageData;
+      console.log("length===>", this.data.length);
     }
     this._changeDetectorRef.markForCheck();
   }
@@ -177,7 +213,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   getValueByPath(obj, path) {
     let value = obj;
 
-    if(path=="$"||path==""){
+    if (path == "$" || path == "") {
       return value;
     }
     const pathParts = path.split(".");
@@ -194,13 +230,38 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     return value;
   }
 
+  handleForeignPaginationChange() {
+    this._tableDateService.paginationObject$.subscribe({
+      next: (response: any) => {
+        console.log("Response  handleForeignPaginationChange===> :", response);
+       
+        this.currentPage = response?.page || 0;
+        this.pageSize = response?.size || 0;
+        this._changeDetectorRef.markForCheck();
+      },
+      error: (error) => {
+        //not show historique
+        this.showData = false;
+        console.error("Error : ", JSON.stringify(error));
+        // Set the alert
+        this.alert = {
+          type: "error",
+          message: error.error.message ?? error.error,
+        };
+        // Show the alert
+        this.showAlert = true;
+
+        this._changeDetectorRef.markForCheck();
+      },
+    });
+  }
+
   /**
    * Récuperer les données du tableau  de l'objet
    */
   loadData(): void {
-
     console.log("reload===> :");
-    this.selectedRowIndex=undefined;
+    this.selectedRowIndex = undefined;
     // Hide the alert
     this._tableDateService._paginationObject = this.paginationObject;
     this._tableDateService._endpoint = this.endpoint;
@@ -217,35 +278,39 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
             response = [];
           }
           data = this.getValueByPath(response, this.dataKey);
-          this.data=data;
+          this.data = data;
 
-          if(this.serverSideLoad){
+          if (this.serverSideLoad) {
             this.dataSource = new MatTableDataSource<any>(data);
-            console.log("response?.totalCount ||0;",response?.totalCount ||0);
-            console.log("response ||0;",response);
-            console.log("response?.totalCount ||0;",response?.totalCount);
+            console.log("response?.totalCount ||0;", response?.totalCount || 0);
+            console.log("response ||0;", response);
+            console.log("response?.totalCount ||0;", response?.totalCount);
 
-            this.totalRows = response?.totalCount ||0;
+            this.totalRows = response?.totalCount || 0;
             this.currentPage = response?.page || 0;
             this.pageSize = response?.pageSize || 0;
             this._changeDetectorRef.markForCheck();
-
-          }else{
+          } else {
             const startIndex = this.currentPage * this.pageSize;
             const endIndex = startIndex + this.pageSize;
 
             this.dataSource = new MatTableDataSource<any>([]);
             //Si toutes les données sont chargées une seule fois ?
-            console.log("start and end index",this.currentPage +' '+ this.pageSize);
-            
+            console.log(
+              "start and end index",
+              this.currentPage + " " + this.pageSize
+            );
+
             //si le tableau est vide
-            console.log("========dtleng========>",data.length)
-            if(data.length){
-              this.dataSource = new MatTableDataSource(data.slice(startIndex, endIndex));           
+            console.log("========dtleng========>", data.length);
+            if (data.length) {
+              this.dataSource = new MatTableDataSource(
+                data.slice(startIndex, endIndex)
+              );
             }
-            this.totalRows =  data.length;
+            this.totalRows = data.length;
           }
-          
+
           this._changeDetectorRef.markForCheck();
         },
         error: (error) => {
@@ -263,7 +328,5 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
           this._changeDetectorRef.markForCheck();
         },
       });
-  
-  
-    }
+  }
 }

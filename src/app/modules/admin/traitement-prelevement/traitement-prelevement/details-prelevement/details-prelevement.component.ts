@@ -87,7 +87,7 @@ export class DetailsPrelevementComponent implements OnInit {
         { value: 10, libelle: "Debit. interdit", color: "#FF5733" }, // Orange
         { value: 40, libelle: "Cpte. fermé", color: "#808080" }, // Gray
         { value: 50, libelle: "Cpte. inexistant", color: "#FFD700" }, // Yellow
-        { value: 60, libelle: "Rejetée", color: "#F56565" } // Red
+        { value: 60, libelle: "Rejeté", color: "#F56565" } // Red
       ]
     },
     {
