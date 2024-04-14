@@ -14,10 +14,10 @@
 </div>
 
 
-    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
+    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
 
         <!-- Drawer -->
-        <mat-drawer class="w-full md:w-160 " [mode]="drawerMode" [opened]="false" [position]="'end'"
+        <mat-drawer class="w-full md:w-160 " [opened]="false" [position]="'end'"
             [disableClose]="true" #matDrawer>
             <!-- <router-outlet (activate)="openDetailComponent($event)"></router-outlet> -->
         </mat-drawer>
@@ -31,16 +31,15 @@
                 <div class="flex flex-auto items-center min-w-0">
                     <div class="flex flex-col min-w-0 ml-4">
                         <ng-container>
-                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
+                            <div class="text-sm md:text-2xl font-semibold tracking-tight leading-7 md:leading-snug truncate">
                                 Validation Prelevement
                             </div>
                         </ng-container>
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <form class="flex items-center sm:mt-0 sm:ml-4" [formGroup]="compteClientForm" (ngSubmit)="onSubmit()">
+                    <form class="flex items-center sm:mt-0 sm:ml-4" [formGroup]="statutPrelevementForm">
                         <mat-form-field class="max-w-xs fuse-mat-dense fuse-mat-rounded min-w-64 mt-4">
-
                             <!-- <mat-label>Statut</mat-label> -->
                             <mat-select formControlName="statut" matInput id="statut" required
                                 placeholder="Selectionner un statut" (selectionChange)="onSelectChange($event)">
@@ -79,7 +78,9 @@
                         [dataStructure]="dataStructure" 
                         [idRow]="'id'"
                         [canClick]="true"
-                        [filterObject]="_filterObject">
+                        (filterChanged)="onFilterChange($event)"
+                        [filterObject]="_filterObject"
+                        >
 
                     </app-table-data>
 

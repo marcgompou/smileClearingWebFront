@@ -25,7 +25,7 @@ export const validerPrelevementRoutes: Route[] =
                 path: '',
                 component: ValiderPrelevementComponent,
                 resolve: {
-                    data: LoadSansPaginationDataResolver,
+                    data: LoadDataResolver//LoadSansPaginationDataResolver,
 
                 },
             },

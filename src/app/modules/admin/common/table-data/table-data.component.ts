@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  Output, EventEmitter,
   ViewEncapsulation,
 } from "@angular/core";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
@@ -43,6 +44,8 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _activatedRoute: ActivatedRoute
   ) {}
+
+  @Output() filterChanged = new EventEmitter<any>(); //Output event pour detecter les changement sur filterObject
   @Input("filterObject") filterObject: any = null;
   @Input("dataStructure") dataStructure: filterForm[];
   @Input("displayedColumns") displayedColumns: string[];
@@ -80,10 +83,28 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
   currentPage: number = 0;
   pageSizeOptions: number[] = [10, 25];
   _displayedColumns: string[];
-
   //Permet d'acceder plus facilement aux données sans utiliser les fonctions
   //(les fonction causes des soucis de performances du aux appels multiples a chaque rendue)
   restructuredData: any = {};
+
+  //Est declancher lorsque filterObject change
+  ngOnChanges() {
+    console.log('Le filtre a changé -------------------------------------->: ', this.filterObject);
+    //reinitialisation de la page
+    if(this.filterObject){
+      this._tableDateService._filterObject = this.filterObject;
+      this._tableDateService._hasPagination = true;
+
+      if (this.paginator && this.paginator.pageIndex !== 0) {
+        this.paginator.firstPage(); //entraine le declanchement de pageChange avec page =0;
+      }else{
+        this._tableDateService.getDatas().pipe().subscribe();
+
+      }
+      this._changeDetectorRef.markForCheck();
+    }
+  }
+
 
   ngOnInit(): void {
     //Load initial data
@@ -99,7 +120,6 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedRowIndex
       );
     });
-    this.handleForeignPaginationChange();
     this._changeDetectorRef.markForCheck();
   }
 
@@ -165,34 +185,9 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
       );
       this._tableDateService._hasPagination = true;
       this._tableDateService._paginationObject = this.paginationObject;
-      this._tableDateService.setPaginationObject$ (this.paginationObject);
       this._tableDateService._endpoint = this.endpoint;
       this._tableDateService._filterObject = this.filterObject;
-
       this._tableDateService.getDatas().pipe().subscribe();
-      // this._tableDateService.datas$.subscribe({
-      //   next: (response: any) => {
-      //     console.log("Response table data difference v100============> :", response);
-      //       this.totalRows = response?.totalCount ||0;
-      //       this.currentPage = response?.page || 0;
-      //       this.pageSize = response?.pageSize || 0;
-      //       this._changeDetectorRef.markForCheck();
-      //   },
-      // error: (error) => {
-      //   //not show historique
-      //   this.showData = false;
-      //   console.error("Error : ", JSON.stringify(error));
-      //   // Set the alert
-      //   this.alert = {
-      //     type: "error",
-      //     message: error.error.message ?? error.error,
-      //   };
-      //   // Show the alert
-      //   this.showAlert = true;
-
-      //   this._changeDetectorRef.markForCheck();
-      // },
-      // })
     } else {
       // Calculate the start and end index based on the page size and page index
       const startIndex = event.pageIndex * event.pageSize;
@@ -230,31 +225,7 @@ export class TableDataComponent implements OnInit, AfterViewInit, OnDestroy {
     return value;
   }
 
-  handleForeignPaginationChange() {
-    this._tableDateService.paginationObject$.subscribe({
-      next: (response: any) => {
-        console.log("Response  handleForeignPaginationChange===> :", response);
-       
-        this.currentPage = response?.page || 0;
-        this.pageSize = response?.size || 0;
-        this._changeDetectorRef.markForCheck();
-      },
-      error: (error) => {
-        //not show historique
-        this.showData = false;
-        console.error("Error : ", JSON.stringify(error));
-        // Set the alert
-        this.alert = {
-          type: "error",
-          message: error.error.message ?? error.error,
-        };
-        // Show the alert
-        this.showAlert = true;
 
-        this._changeDetectorRef.markForCheck();
-      },
-    });
-  }
 
   /**
    * Récuperer les données du tableau  de l'objet

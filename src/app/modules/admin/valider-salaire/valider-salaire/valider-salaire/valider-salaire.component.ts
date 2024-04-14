@@ -164,7 +164,6 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
 
       this.salaireForm = this._formBuilder.group({
         statut: '1'
-        //mySelect: ['option2'] // Set the default value here
       });
       console.log("statut----------------",this.statut);
 

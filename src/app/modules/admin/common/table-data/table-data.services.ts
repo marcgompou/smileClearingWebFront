@@ -21,7 +21,7 @@ export class  TableDataService {
     public _id:string|null="";  //Pour la recuperation du path parameter
     public _hasPagination:Boolean=true; //permet de savoir si on doit tenir compte de la pagination
     public _filterObject: any;
-    public paginationObject$: BehaviorSubject<any| null> = new BehaviorSubject(null);
+    public paginationObject: BehaviorSubject<any| null> = new BehaviorSubject(null);
 
            
     
@@ -61,11 +61,6 @@ export class  TableDataService {
         this.datas.next(data);
     }
 
-    public setPaginationObject$(paginationObject:any):void{
-    
-        this.paginationObject$.next(paginationObject);
-    }
-
     getDatas(): Observable<any> {
         //Verifier que filter object exist
         let filterString = "";
@@ -82,16 +77,9 @@ export class  TableDataService {
         console.log("this._paginationObject****************", this._paginationObject);
         if(this._hasPagination){
             
-            // if(!this._paginationObject){
-            //     this._paginationObject = {
-            //         page: 0,
-            //         size: 10
-            //     };
-            // }
-            // Definir une valeur par defaut
             this._paginationObject.page = this._paginationObject?.page ?? 0;
             this._paginationObject.size = this._paginationObject?.size ?? 10;
-            
+            //this.setPaginationObject$(this._paginationObject);
             paginationString = Object.entries(this._paginationObject)
                 .filter(([key, value]) => value) // Exclude falsy values
                 .map(([key, value]) => `${key}=${value}`)
