@@ -3,7 +3,6 @@ import {
   OnInit,
   ViewChild,
   ViewEncapsulation,
-  AfterViewInit,
 } from "@angular/core";
 import {
   UntypedFormBuilder,
@@ -26,7 +25,6 @@ import { AuthService } from "app/core/auth/auth.service";
 })
 export class AuthSignInComponent implements OnInit {
   @ViewChild("signInNgForm") signInNgForm: NgForm;
-
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
     message: "",
@@ -117,7 +115,7 @@ export class AuthSignInComponent implements OnInit {
           // Re-enable the form
           this.signInForm.enable();
           // Reset the form
-          this.signInNgForm.resetForm();
+          //this.signInNgForm.resetForm();
           switch (response.status) {
             case 400:
               this.displayErrors("Nom d'utilisateur ou mot de passe incorrect");

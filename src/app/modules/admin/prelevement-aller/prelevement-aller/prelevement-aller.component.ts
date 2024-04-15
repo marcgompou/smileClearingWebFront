@@ -183,11 +183,11 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
               this.extractHeaderValues(line);
             }
             //Details
-            if(i>0 && i<totalLines-2){
+            if(i>0 && i<totalLines-1){
               this.detailsData.push(this.extractDetails(line));
             }
             // CALL FUNCTION TO RETRIEVE THE LAST LINE 
-            if (i === totalLines-2) {
+            if (i === totalLines-1) {
               this.extractTotalData(line);
             }
           }
