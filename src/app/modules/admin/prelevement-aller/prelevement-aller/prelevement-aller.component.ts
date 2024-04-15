@@ -265,6 +265,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
       compteCredite: compteCredite,
       nom: headerLine.substring(33, 57).trim(),
       codeEmeteur: headerLine.substring(57, 62).trim(),
+      codeEmeteurSuite: headerLine.substring(62, 63),
       //dateOper:  this.convertDateToDateTime(headerLine.substring(63, 69).trim()),
       dateOper: this.convertDateToDateTime(headerLine.substring(dateOperStartIndex, dateOperStartIndex + 6).trim()),
       zoneVide: "zoneVide",
