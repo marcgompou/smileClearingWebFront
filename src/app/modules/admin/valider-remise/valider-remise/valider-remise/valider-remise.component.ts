@@ -24,8 +24,7 @@ import { TableDataService } from 'app/modules/admin/common/table-data/table-data
 })
 
 
-export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+export class ValiderRemiseComponent implements OnInit, OnDestroy {
   drawerMode: 'side' | 'over';
   // noData: any;
   remiseData: any;
@@ -34,19 +33,7 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
   nombreRemise: number = 0;
   statut: string = "0";
   remiseIsInCorrect: boolean = true;
-  //listeCompteEntreprise: any;
-  enregistrerRemise() {
-    throw new Error('Method not implemented.');
-  }
-  selectedProject: string = 'ACME Corp. Backend App';
-
-  @ViewChild(MatPaginator) private _paginator: MatPaginator;
-  @ViewChild(MatSort) private _sort: MatSort;
-
-  title = 'socketrv';
-  command = 'StartScanner';
-  action = 'CONNECT';
-  received: Remise[] = [];
+ 
   totalRows = 0;
   pageSize = 10;
   currentPage = 0;
@@ -89,7 +76,6 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
 
   public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal'];
 
-  sent = [];
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   selectedRemise: any | null = null;
@@ -101,10 +87,8 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
 
   compteClientForm = new FormGroup({
     statut: new FormControl('', Validators.required),
-
   })
 
- 
 
 
 
@@ -112,14 +96,11 @@ export class ValiderRemiseComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit() {
 
     
-this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
-  takeUntil(this._unsubscribeAll),
-          
+  this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((res:any) => {
+  takeUntil(this._unsubscribeAll)
   console.log ("res-----------", res.data.length);
   this.dataSource = new MatTableDataSource(res.data);
-
- 
-})
+  })
     //getCompteByEntreprise();
     this.loadCompte();
    
@@ -157,28 +138,9 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
     private _validerRemiseService:ValiderRemiseService,
   ) {
   }
-  closeAlert() {
-    this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
-  }
-  selectedRow(row) {
-    const index = this.dataSource.data.indexOf(row);
-    this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
-    this._changeDetectorRef.markForCheck();
-    this.remiseData = row;
-  }
 
-  updateList(newMatTable: MatTableDataSource<any>) {
-    this.dataSource = newMatTable;
-    this._changeDetectorRef.markForCheck();
-  }
 
-  getColumnHeaderText(column: string): string {
 
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-
-  }
 
   onBackdropClicked(): void {
     // Go back to the list
@@ -195,9 +157,7 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
       next: (response: any) => {
         console.log("Response compteEntreprises ===>", response);
         if (response == null) { response = []; }
-
         this.listeCompteEntreprise = response.data;
-
         this._changeDetectorRef.markForCheck();
       },
       error: (error) => {
@@ -215,48 +175,7 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
 
   }
 
- 
-  /**
-     * After view init
-     */
-  ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      this._sort.sort({
-        id: 'name',
-        start: 'asc',
-        disableClear: true
-      });
 
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-
-      // If the user changes the sort order...
-      this._sort.sortChange
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(() => {
-          // Reset back to the first page
-          this._paginator.pageIndex = 0;
-
-          // Close the details
-          this.closeDetails();
-        });
-
-      // Get products if sort or page changes
-      merge(this._sort.sortChange, this._paginator.page).pipe(
-        switchMap(() => {
-          this.closeDetails();
-          this.isLoading = true;
-          // return this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-          //TODO RETURN CORRECT VALUE
-          return null;
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      ).subscribe();
-    }
-  }
 
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value?event.value:"0";
@@ -265,51 +184,29 @@ this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((r
       this._tableDataService.getDatasByPath().pipe(takeUntil(this._unsubscribeAll)).subscribe();
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence
-    }
+  }
 
-
-    // this._importerRemiseService.importerRemise(this.idEntreprise).pipe(takeUntil(this._unsubscribeAll)).subscribe({
-    //   next:(response)=>{
-    //       console.log(response);
-    //       this._tableDataService._endpoint=`exportation?idEntreprise=${this.idEntreprise}`;
-    //       this._tableDataService.getDatasByPath().subscribe();
-    //       this._changeDetectorRef.markForCheck();
-  
-    //   } 
-    // })
-  //   return this._httpClient.get<any>(`${environment.apiUrl}/remise/entreprise?statut=1`).pipe(
-  //     tap((response) => {
-  //       console.log('test======================================');
-  //       console.log(response);
-  //         this._remiseAvalides.next(response);
-  //     })
-  // );
 
   onSubmit() {
-
-    //let listRemises: any[] = [];
     
-  this._validerRemiseService.exporterRemise().pipe(takeUntil(this._unsubscribeAll)).subscribe({
-
-    next:(response)=>{
-      console.log(response);
-      this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
-      this._tableDataService.getDatasByPath() .pipe(takeUntil(this._unsubscribeAll)).subscribe();
-      this._changeDetectorRef.markForCheck();
-      this.alert = { type: 'success', message: response.message };
-      this.showAlert = true;
-  } ,
-  error: (error) => {
-    console.error('Error : ', JSON.stringify(error));
-    this.alert = { type: 'error', message: error.error.message??error.message };
-    this.showAlert = true;
-    this._changeDetectorRef.detectChanges();
-  }
-  
-}
+      this._validerRemiseService.exporterRemise().pipe(takeUntil(this._unsubscribeAll)).subscribe({
+      next:(response)=>{
+        console.log(response);
+        this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
+        this._tableDataService.getDatasByPath() .pipe(takeUntil(this._unsubscribeAll)).subscribe();
+        this._changeDetectorRef.markForCheck();
+        this.alert = { type: 'success', message: response.message };
+        this.showAlert = true;
+      } ,
+        error: (error) => {
+          console.error('Error : ', JSON.stringify(error));
+          this.alert = { type: 'error', message: error.error.message??error.message };
+          this.showAlert = true;
+          this._changeDetectorRef.detectChanges();
+        }
+        
+      }
     )
-
-
   }
 
 
