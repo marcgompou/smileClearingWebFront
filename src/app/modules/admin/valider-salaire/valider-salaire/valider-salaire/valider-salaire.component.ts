@@ -118,7 +118,7 @@ export class ValiderSalaireComponent implements OnInit, OnDestroy {
       this._salaireList=res.data as any[];
   //    this.dataSource = new MatTableDataSource(res.data);
 console.log("this._salaireList------",this._salaireList)  ;
-if (this._salaireList !== undefined && this._salaireList !== null) {
+if (this._salaireList !== undefined && this._salaireList !== null && this._salaireList?.length > 0) {
   this.montantTotal=this._salaireList.reduce((a, b) => a + b?.montantTotal, 0);
 }
 

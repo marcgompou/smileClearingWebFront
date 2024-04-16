@@ -119,7 +119,11 @@ trackByFn: any;
     this._tableDataService.datas$.pipe(takeUntil(this._unsubscribeAll)).subscribe((response)=>{
       console.log("details salaire response=======>",response)
       let result:any=response;
-      let findPrelevToRelance=result?.data?.findIndex((el) =>  el.statut==10||el.statut==40);//debit interdit et rejeté
+      let findPrelevToRelance= null ;
+      if (result?.data?.length > 0) {
+        findPrelevToRelance=result?.data?.findIndex((el) =>  el.statut==10||el.statut==40 );//debit interdit et rejeté
+      }
+      
       this.canRelance=findPrelevToRelance!=-1 && findPrelevToRelance!=null && findPrelevToRelance!=undefined;    
       console.log("canRelance===>",this.canRelance)
     });
