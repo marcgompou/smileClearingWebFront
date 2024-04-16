@@ -178,6 +178,7 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
           const totalLines = lines.length;
           for (let i = 0; i < totalLines; i++) {
             const line = lines[i];
+            console.log("======line.substring(0, 2).trim()=====>",line.substring(0, 2).trim());
             // CALL FUNCTION TO RETRIEVE THE HEADER //031
             if (line.substring(0, 2).trim()==="031") {
               this.extractHeaderValues(line);
