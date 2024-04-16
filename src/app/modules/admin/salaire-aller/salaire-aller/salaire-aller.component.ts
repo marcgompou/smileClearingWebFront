@@ -254,17 +254,16 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       for (let i = 0; i < totalLines; i++) {
         const line = lines[i];
         // Extrait les valeurs de l'en-tête du fichier
-        if (i === 0) {
+        if (line.substring(0, 2).trim()==="03") {
           this.extractHeaderValues(line);
-          
-          const compteTxt = this.headerData.compte;
+     
         }
         // Extrait les détails pour chaque ligne, excepté la première et la dernière
-        if (i > 0 && i < totalLines - 2) {
+        if (line.substring(0, 2).trim()==="06") {
           this.detailsData.push(this.extractDetails(line));
         }
         // Extrait les données totales de la dernière ligne
-        if (i === totalLines - 2) {
+        if (line.substring(0, 2).trim()==="08") {
           this.extractTotalData(line);
         }
 
