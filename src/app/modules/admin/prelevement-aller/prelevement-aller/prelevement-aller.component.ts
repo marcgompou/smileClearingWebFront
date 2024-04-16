@@ -179,15 +179,15 @@ export class PrelevementAllerComponent  implements OnInit, OnDestroy  {
           for (let i = 0; i < totalLines; i++) {
             const line = lines[i];
             // CALL FUNCTION TO RETRIEVE THE HEADER //031
-            if (line.substring(0, 2).trim()==="031") {
+            if (line.substring(0, 3).trim()==="031") {
               this.extractHeaderValues(line);
             }
             // DETAILS //032
-            if(line.substring(0, 2).trim()==="032"){
+            if(line.substring(0, 3).trim()==="032"){
               this.detailsData.push(this.extractDetails(line));
             }
             // CALL FUNCTION TO RETRIEVE THE LAST LINE //039
-            if (line.substring(0, 2).trim()==="039") {
+            if (line.substring(0, 3).trim()==="039") {
               this.extractTotalData(line);
             }
           }
