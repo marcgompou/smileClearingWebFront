@@ -26,23 +26,15 @@ import { PoidsValidationWorkflowService } from 'app/modules/admin/poidsValidatio
 })
 
 
-export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ValiderSalaireComponent implements OnInit, OnDestroy {
   @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
   drawerMode: 'side' | 'over';
   // noData: any;
-  remiseData: any;
-  listeCompteEntreprise: any[] = [];
+
+  listeSalaire: any[] = [];
   montantTotal: number = 0;
   //nombreRemise: number = 0;
   statut: string = "1";
-
-  @ViewChild(MatPaginator) private _paginator: MatPaginator;
-  @ViewChild(MatSort) private _sort: MatSort;
-
-
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
 
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
@@ -105,11 +97,11 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
 
   public displayedColumns: string[] = ['nomFichier', 'nomEntreprise', 'codeAgence', 'numeroCompte', 'nombreVirement', 'montantTotal','dateEnregistrement', 'dateEcheance','niveauValidation'];
 
-  sent = [];
+ // sent = [];
   isLoading = false;
-  searchInputControl: UntypedFormControl = new UntypedFormControl();
-  selectedRemise: any | null = null;
-  selectedRemiseForm: UntypedFormGroup;
+ // searchInputControl: UntypedFormControl = new UntypedFormControl();
+  //selectedRemise: any | null = null;
+  //selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   // remises$: Observable<Remise[]>;
   _salaireList:any[]=[];
@@ -119,20 +111,13 @@ export class ValiderSalaireComponent implements OnInit, AfterViewInit, OnDestroy
 
   })
 
- 
-
-
-
   //CYCLE DE VIE
   ngOnInit() {
-   
 
-   
-    
     this._tableDataService.datas$.subscribe((res:any) => {
       this._salaireList=res.data as any[];
-      this.dataSource = new MatTableDataSource(res.data);
-
+  //    this.dataSource = new MatTableDataSource(res.data);
+console.log("this._salaireList------",this._salaireList)  ;
 if (this._salaireList !== undefined && this._salaireList !== null) {
   this.montantTotal=this._salaireList.reduce((a, b) => a + b?.montantTotal, 0);
 }
@@ -141,31 +126,31 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
 
     });
     //getCompteByEntreprise();
-    this.loadCompte();
-   
+  //  this.loadCompte();
+    this.salaireForm = this._formBuilder.group({
+      statut: '1'
+    });
 
     // Subscribe to search input field value changes
-    this.searchInputControl.valueChanges
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        debounceTime(300),
-        switchMap((query) => {
-          this.closeDetails();
-          this.isLoading = true;
-          //TODO RETURN CORRECT VALUE
-          return null;
-          //   return this._inventoryService.getProducts(0, 10, 'name', 'asc', query);
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe();
+    // this.searchInputControl.valueChanges
+    //   .pipe(
+    //     takeUntil(this._unsubscribeAll),
+    //     debounceTime(300),
+    //     switchMap((query) => {
+        
+    //       this.isLoading = true;
+    //       //TODO RETURN CORRECT VALUE
+    //       return null;
+    //       //   return this._inventoryService.getProducts(0, 10, 'name', 'asc', query);
+    //     }),
+    //     map(() => {
+    //       this.isLoading = false;
+    //     })
+    //   )
+    //   .subscribe();
 
-      this.salaireForm = this._formBuilder.group({
-        statut: '1'
-      });
-      console.log("statut----------------",this.statut);
+    
+    //   console.log("statut----------------",this.statut);
 
   }
   constructor(
@@ -184,42 +169,11 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
 
   }
 
-
-
   closeAlert() {
     this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
   }
-  selectedRow(row) {
-
-    const index = this.dataSource.data.indexOf(row);
-    this._router.navigate(['./details', index], { relativeTo: this._activatedRoute });
-    this._changeDetectorRef.markForCheck();
-    this.remiseData = row;
 
 
-  }
-
-  updateList(newMatTable: MatTableDataSource<any>) {
-    this.dataSource = newMatTable;
-    this._changeDetectorRef.markForCheck();
-  }
-
-  getColumnHeaderText(column: string): string {
-
-    //  console.log("column===>",column)
-    let found = this.dataStructure.find(e => e.key == column);
-    return found ? found.label : "";
-
-  }
-
-
-  onBackdropClicked(): void {
-    // Go back to the list
-    this._router.navigate(['./'], { relativeTo: this._activatedRoute });
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
-  }
   loadCompte() {
     this._salaireService.salaireAvalides$.pipe(takeUntil(this._unsubscribeAll)
     ).subscribe({
@@ -227,7 +181,7 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
         console.log("Response compteEntreprises ===>", response);
         if (response == null) { response = []; }
 
-        this.listeCompteEntreprise = response.data;
+        this.listeSalaire = response.data;
 
         this._changeDetectorRef.markForCheck();
       },
@@ -246,48 +200,6 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
 
   }
 
- 
-  /**
-     * After view init
-     */
-  ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      this._sort.sort({
-        id: 'name',
-        start: 'asc',
-        disableClear: true
-      });
-
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-
-      // If the user changes the sort order...
-      this._sort.sortChange
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(() => {
-          // Reset back to the first page
-          this._paginator.pageIndex = 0;
-
-          // Close the details
-          this.closeDetails();
-        });
-
-      // Get products if sort or page changes
-      merge(this._sort.sortChange, this._paginator.page).pipe(
-        switchMap(() => {
-          this.closeDetails();
-          this.isLoading = true;
-          // return this._inventoryService.getProducts(this._paginator.pageIndex, this._paginator.pageSize, this._sort.active, this._sort.direction);
-          //TODO RETURN CORRECT VALUE
-          return null;
-        }),
-        map(() => {
-          this.isLoading = false;
-        })
-      ).subscribe();
-    }
-  }
 
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value?event.value:"1";
@@ -318,24 +230,4 @@ if (this._salaireList !== undefined && this._salaireList !== null) {
   }
 
 
-
-
-  closeDetails(): void {
-    this.selectedRemise = null;
-  }
-
-
-
-  toggleDetails(numChq: string): void {
-    // If the product is already selected...
-    if (this.selectedRemise && this.selectedRemise.numChq === numChq) {
-      // Close the details
-      this.closeDetails();
-      return;
-    }
-
-
-
-
-  }
 }
