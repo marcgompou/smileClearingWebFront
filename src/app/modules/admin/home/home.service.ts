@@ -57,16 +57,16 @@ export class HomeService
     // }
 
 
-    // getEntreprises(): Observable<any>
-    // {   
-        
-    //     return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
-    //         tap((response) => {
-    //             console.log("get entreprises stat accessible ", response)
-    //             this._entreprise.next(response);
-    //         })
-    //     );
-    // }
+     getEntreprises(): Observable<any>
+     {   
+      
+         return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
+             tap((response) => {
+                 console.log("get entreprises stat accessible ", response)
+                 this._entreprise.next(response);
+             })
+         );
+     }
 
 
   

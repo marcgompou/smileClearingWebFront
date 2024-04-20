@@ -5,8 +5,6 @@ import { ChangeDetectionStrategy,
 
 import { fuseAnimations } from '@fuse/animations';
 
-
-
 @Component({
     selector     : 'home',
     templateUrl  : './home.component.html',
@@ -19,7 +17,6 @@ import { fuseAnimations } from '@fuse/animations';
 export class HomeComponent implements OnInit, OnDestroy
 {
  
-
 constructor()
 {
 }
@@ -27,7 +24,6 @@ ngOnInit(): void
 { 
 
 }
-
 
 /**
  * On destroy
@@ -51,9 +47,5 @@ trackByFn(index: number, item: any): any
 {
     return item.id || index;
 }
-
-
-
-
     
 }

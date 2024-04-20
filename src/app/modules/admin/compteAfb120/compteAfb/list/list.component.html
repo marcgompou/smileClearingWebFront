@@ -1,90 +1,98 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
-    <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
+  <mat-drawer-container
+    class="flex-auto h-full bg-card dark:bg-transparent"
+    (backdropClick)="onBackdropClicked()"
+  >
+    <!-- Drawer -->
+    <mat-drawer
+      class="w-full md:w-160 dark:bg-gray-900"
+      [mode]="drawerMode"
+      [opened]="false"
+      [position]="'end'"
+      [disableClose]="true"
+      #matDrawer
+    >
+      <router-outlet (activate)="openCreateComponent($event)"></router-outlet>
+    </mat-drawer>
 
-        <!-- Drawer -->
-        <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
-            [disableClose]="true" #matDrawer>
-            <router-outlet (activate)="openCreateComponent($event)"></router-outlet>
-        </mat-drawer>
-
-        <mat-drawer-content class="flex flex-col">
-
-            <!-- Main -->
-            <div class="flex-auto">
-
-                <!-- Header -->
-                <div class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b">
-
-                    <!-- Title -->
-                    <div>
-                        <div class="text-4xl font-extrabold tracking-tight leading-none">Liste des Comptes AFB120</div>
-                        <div class="ml-0.5 font-medium text-secondary">
-                            <ng-container *ngIf="_dataSource ">
-                                <ng-container *ngIf="_nombreCompte">
-                                    <span>
-
-                                        {{_nombreCompte }}
-                                        {{_nombreCompte | i18nPlural: {
-                                        '=0' : 'Aucun compte',
-                                        '=1' : 'compte',
-                                        'other': 'comptes'
-                                        } }}
-
-                                    </span>
-
-                                </ng-container>
-                            </ng-container>
-
-                        </div>
-                    </div>
-
-                    <!-- Main actions -->
-                    <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
-                        <!-- Search -->
-                        <div class="flex-auto">
-                            <mat-form-field
-                                class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded w-full min-w-50">
-                                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:search'"></mat-icon>
-                                <input id="filter_table" matInput (keyup)="applyFilter($event)" [autocomplete]="'off'"
-                                    [placeholder]="'Rechercher des comptes'">
-                            </mat-form-field>
-                        </div>
-                        <!-- Add compte button -->
-                        <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['./create']">
-                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">Créer un compte AFB120</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Comptes list -->
-                <!-- <ng-container *ngIf="_dataSource ">
-                    <ng-container *ngIf="_dataSource.filteredData ">
-                        <span >
-                            {{_dataSource.filteredData.length | i18nPlural: {
-                                '=0'   : 'Aucun compte',
-                                '=1'   : 'compte',
-                                'other': 'comptes'
-                            } }}
-                        </span>
-                    </ng-container>
-                </ng-container>-->
-                <div class="relative">
-
-
-                    <app-table-data [endpoint]="'compteAfb120'" 
-                        [title]="'Liste des Comptes'"
-                        [displayedColumns]="displayedColumns" 
-                        [dataStructure]="dataStructure" 
-                        [idRow]="'id'"
-                        [filterObject]="_filterObject"   
-                        [canClick]="true">
-                    </app-table-data>
-                </div>
-
+    <mat-drawer-content class="flex flex-col">
+      <!-- Main -->
+      <div class="flex-auto">
+        <!-- Header -->
+        <div
+          class="flex flex-col sm:flex-row md:flex-col flex-auto justify-between py-8 px-6 md:px-8 border-b"
+        >
+          <!-- Title -->
+          <div>
+            <div class="text-4xl font-extrabold tracking-tight leading-none">
+              Liste des Comptes AFB120
             </div>
+            <div class="ml-0.5 font-medium text-secondary">
+              <ng-container *ngIf="_dataSource">
+                <ng-container *ngIf="_nombreCompte">
+                  <span>
+                    {{ _nombreCompte }}
+                    {{
+                      _nombreCompte
+                        | i18nPlural
+                          : {
+                              "=0": "Aucun compte",
+                              "=1": "compte",
+                              other: "comptes"
+                            }
+                    }}
+                  </span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
 
-        </mat-drawer-content>
-
-    </mat-drawer-container>
+          <!-- Main actions -->
+          <div class="flex items-center mt-4 sm:mt-0 md:mt-4">
+            <!-- Search -->
+            <div class="flex-auto">
+              <mat-form-field
+                class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded w-full min-w-50"
+              >
+                <mat-icon
+                  class="icon-size-5"
+                  matPrefix
+                  [svgIcon]="'heroicons_solid:search'"
+                ></mat-icon>
+                <input
+                  id="filter_table"
+                  matInput
+                  (keyup)="applyFilter($event)"
+                  [autocomplete]="'off'"
+                  [placeholder]="'Rechercher des comptes'"
+                />
+              </mat-form-field>
+            </div>
+            <!-- Add compte button -->
+            <button
+              class="ml-4"
+              mat-flat-button
+              [color]="'primary'"
+              [routerLink]="['./create']"
+            >
+              <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+              <span class="ml-2 mr-1">Créer un compte AFB120</span>
+            </button>
+          </div>
+        </div>
+        <div class="relative">
+          <app-table-data
+            [endpoint]="'compteAfb120'"
+            [title]="'Liste des Comptes'"
+            [displayedColumns]="displayedColumns"
+            [dataStructure]="dataStructure"
+            [idRow]="'id'"
+            [filterObject]="_filterObject"
+            [canClick]="true"
+          >
+          </app-table-data>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>

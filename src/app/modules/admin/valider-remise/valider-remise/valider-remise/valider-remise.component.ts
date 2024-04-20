@@ -1,13 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {  ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormGroup, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { takeUntil, debounceTime, switchMap, map, Subject, merge, Observable } from 'rxjs';
-import { Remise } from '../../remise.type';
+import { takeUntil, debounceTime, switchMap, map, Subject} from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { ValiderRemiseService } from '../valider-remise.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseAlertType } from '@fuse/components/alert';
 import { MatSelectChange } from '@angular/material/select';
@@ -75,7 +73,7 @@ export class ValiderRemiseComponent implements OnInit, OnDestroy {
   ];
 
   public displayedColumns: string[] = ['reference', 'dateCreation', 'numCompte', 'nbCheques', 'mtTotal'];
-
+  public _filterObject: {  statut: string; };
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   selectedRemise: any | null = null;
@@ -102,7 +100,7 @@ export class ValiderRemiseComponent implements OnInit, OnDestroy {
   this.dataSource = new MatTableDataSource(res.data);
   })
     //getCompteByEntreprise();
-    this.loadCompte();
+  //  this.loadCompte();
    
 
     // Subscribe to search input field value changes
@@ -138,9 +136,6 @@ export class ValiderRemiseComponent implements OnInit, OnDestroy {
     private _validerRemiseService:ValiderRemiseService,
   ) {
   }
-
-
-
 
   onBackdropClicked(): void {
     // Go back to the list
@@ -179,9 +174,10 @@ export class ValiderRemiseComponent implements OnInit, OnDestroy {
 
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value?event.value:"0";
-      console.log('Valeur sélectionnée :', this.statut);
-      this._tableDataService._endpoint=`remise/entreprise?statut=${this.statut}`;
-      this._tableDataService.getDatasByPath().pipe(takeUntil(this._unsubscribeAll)).subscribe();
+    console.log('Valeur sélectionnée :', this.statut);
+    this._filterObject = { statut: this.statut,};
+    this.onFilterChange(this._filterObject); //On transmet la nouvelle valeur du filtre
+
       this._changeDetectorRef.markForCheck();
       // Utilisez selectedValue pour prendre des mesures en conséquence
   }
@@ -228,16 +224,11 @@ export class ValiderRemiseComponent implements OnInit, OnDestroy {
   closeDetails(): void {
     this.selectedRemise = null;
   }
-  toggleDetails(numChq: string): void {
-    // If the product is already selected...
-    if (this.selectedRemise && this.selectedRemise.numChq === numChq) {
-      // Close the details
-      this.closeDetails();
-      return;
-    }
+ 
 
-
-
-
+  onFilterChange(newFilter: any) {
+    // Réagir aux changements de filtre
+    console.log('Le filtre a changé dans le composant enfant : ', newFilter);
   }
+
 }
