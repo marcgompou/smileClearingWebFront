@@ -42,8 +42,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   label = "Charger fichier salaire";
   //Form
   @ViewChild("fileInput", { static: false }) fileInput: any;
-  fileExtension:string=""
- 
+  fileExtension: string = "";
+
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
     message: "",
@@ -53,7 +53,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   isLoading = false;
   searchInputControl: UntypedFormControl = new UntypedFormControl();
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  salaireForm: FormGroup 
+  salaireForm: FormGroup;
   nomFichierCharger: string = "";
   codeEnreg;
   nomBeneficiaire;
@@ -64,11 +64,11 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   libelle;
   banque;
   codeOperation;
-  dateEcheance ;
+  dateEcheance;
   nomEntreprise;
-  numligne ;
-  codeEmeteur ;
-  numCompte ;
+  numligne;
+  codeEmeteur;
+  numCompte;
   dataStructureTxt: any[] = [
     { key: "codeEnreg", label: "Code Enreg" },
     { key: "nomBeneficiaire", label: "Béneficiaire" },
@@ -78,13 +78,11 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     { key: "compte", label: "Compte Credité" },
     { key: "montant", label: "Montant", type: "montant" },
     { key: "libelle", label: "Libellé Opérat" },
-
   ];
-  
 
-  displayedColumnsTxt: string[] =this.dataStructureTxt.map((o) => o.key);
+  displayedColumnsTxt: string[] = this.dataStructureTxt.map((o) => o.key);
 
-  dataStructureXls:any[] = [
+  dataStructureXls: any[] = [
     { key: "nomBeneficiaire", label: "Béneficiaire" },
     { key: "banque", label: "Banque" },
     { key: "guichet", label: "Guichet" },
@@ -92,11 +90,10 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     { key: "montant", label: "Montant", type: "montant" },
     { key: "libelle", label: "Libellé Opérat" },
     { key: "cleRib", label: "Cle Rib" },
-
   ];
-  
-  displayedColumnsXls: string[] =this.dataStructureXls.map((o) => o.key);
-  
+
+  displayedColumnsXls: string[] = this.dataStructureXls.map((o) => o.key);
+
   totalRows: number = 0;
   nombreSalaire: number;
   hasError = false;
@@ -105,10 +102,10 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
     private _salaireAllerService: SalaireAllerService,
-    private _tableDataService: TableDataService,
-   // private _compteEntreprises: BehaviorSubject<CompteEntreprises[] | null> = new BehaviorSubject(null);
+    private _tableDataService: TableDataService
+  ) // private _compteEntreprises: BehaviorSubject<CompteEntreprises[] | null> = new BehaviorSubject(null);
 
-  ) {
+  {
     this.salaireForm = this._formBuilder.group({
       fichierSalaire: [""], //
       idCompteClient: ["", Validators.required],
@@ -117,29 +114,27 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
 
   //CYCLE DE VIE
   ngOnInit() {
-   // this._tableDataService.setDatas$([]);
+    // this._tableDataService.setDatas$([]);
     this.salaireForm.get("fichierSalaire")?.setValue(this.label);
     this.loadCompte();
-    
   }
-
-  // closeAlert() {
-  //   this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
-  // }
-  
-  
   onSubmit() {
     this.showAlert = false;
     this.isLoading = true;
-    const comptetest = this.listeCompteEntreprise.find((x) => x.compte == this.salaireForm.value.idCompteClient);
-  const codeGuichet = comptetest.agence;
-  const nomCompteClient =  comptetest.designation;
-    const compte= this.salaireForm.value.idCompteClient;
-   console.log("comptetest----------------comptetest----------------",comptetest);
+    const comptetest = this.listeCompteEntreprise.find(
+      (x) => x.compte == this.salaireForm.value.idCompteClient
+    );
+    const codeGuichet = comptetest.agence;
+    const nomCompteClient = comptetest.designation;
+    const compte = this.salaireForm.value.idCompteClient;
+    console.log(
+      "comptetest----------------comptetest----------------",
+      comptetest
+    );
     let data = {
       salaireEntete: {
         // Autres propriétés...
-    
+
         nomFichier: this.nomFichierCharger,
         nomFichierGenerer: "nomParDefaut",
         codeEnreg: this.headerData.codeEnreg,
@@ -155,12 +150,12 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         compte: compte,
         idenf: this.headerData.idenf,
         banque: this.headerData.banque,
-        compteCredite: this.salaireForm.get('idCompteClient').value,
+        compteCredite: this.salaireForm.get("idCompteClient").value,
         zoneVide: "zoneVide",
         extension: this.headerData.extension,
       },
-       //salaireEntete:this.headerData,
-      
+      //salaireEntete:this.headerData,
+
       //compte :  ,
       salaireDetails: this.detailsData,
       salaireTotal: this.totalData,
@@ -172,7 +167,6 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         this.alert = {
           type: "success",
           message: "Enregistrement effectué avec succès",
-          
         };
         this.showAlert = true;
         this._changeDetectorRef.detectChanges();
@@ -217,31 +211,35 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      this.detailsData=[];
+      this.detailsData = [];
       this.fileExtension = selectedFile.name.split(".").pop().toLowerCase();
       const fileNameWithExtension = selectedFile.name;
-      const fileNameWithoutExtension:string = fileNameWithExtension.split('.').slice(0, -1).join('.')??"";
+      const fileNameWithoutExtension: string =
+        fileNameWithExtension.split(".").slice(0, -1).join(".") ?? "";
       this.nomFichierCharger = fileNameWithoutExtension;
-      this.salaireForm.get('fichierSalaire')?.setValue(fileNameWithoutExtension);
-    
+      this.salaireForm
+        .get("fichierSalaire")
+        ?.setValue(fileNameWithoutExtension);
+
       this._changeDetectorRef.markForCheck();
       if (this.fileExtension === "txt") {
         // Traiter le fichier comme un fichier texte
-      
+
         this.processTextFile(selectedFile);
       } else if (this.fileExtension === "xlsx") {
         // Traiter le fichier comme un fichier Excel
         this.processExcelFile(selectedFile);
       } else {
         // Gérer le cas où l'extension de fichier n'est ni txt ni xlsx
-        this.alert = { type: 'error', message: "Format de fichier non pris en charge." };
+        this.alert = {
+          type: "error",
+          message: "Format de fichier non pris en charge.",
+        };
         // Show the alert
         this.showAlert = true;
-        
+
         this._changeDetectorRef.markForCheck();
       }
-
-      
     }
   }
 
@@ -254,21 +252,17 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       for (let i = 0; i < totalLines; i++) {
         const line = lines[i];
         // Extrait les valeurs de l'en-tête du fichier
-        if (line.substring(0, 2).trim()==="03") {
+        if (line.substring(0, 2).trim() === "03") {
           this.extractHeaderValues(line);
-     
         }
         // Extrait les détails pour chaque ligne, excepté la première et la dernière
-        if (line.substring(0, 2).trim()==="06") {
+        if (line.substring(0, 2).trim() === "06") {
           this.detailsData.push(this.extractDetails(line));
         }
         // Extrait les données totales de la dernière ligne
-        if (line.substring(0, 2).trim()==="08") {
+        if (line.substring(0, 2).trim() === "08") {
           this.extractTotalData(line);
         }
-
-
-        
       }
       // Après avoir traité toutes les lignes
       if (this.detailsData.length > 0) {
@@ -276,15 +270,13 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         this.totalRows = this.detailsData.length;
       }
       // Exemple de code pour extraire le compte du fichier TXT
-    
 
- // Récupération de la valeur du compte extraite de l'en-tête
- const compteTxt = this.headerData.compte;
+      // Récupération de la valeur du compte extraite de l'en-tête
+      const compteTxt = this.headerData.compte;
 
-
-    // Attribution de la valeur de compteTxt au contrôle de formulaire idCompteClient
-    this.salaireForm.get('idCompteClient')?.setValue(this.headerData.compte);
-    console.log ("this.headerData.compte",this.headerData.compte)
+      // Attribution de la valeur de compteTxt au contrôle de formulaire idCompteClient
+      this.salaireForm.get("idCompteClient")?.setValue(this.headerData.compte);
+      console.log("this.headerData.compte", this.headerData.compte);
       this.isLoading = false;
       this._changeDetectorRef.markForCheck();
     };
@@ -294,8 +286,8 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
   processExcelFile(selectedFile: File) {
     const fileReader = new FileReader();
     //const nomCompte = this.salaireForm.get('idCompteClient')?.value;
-   
-      // this.addRibColumn();
+
+    // this.addRibColumn();
     console.log(selectedFile, "selectedFile");
     fileReader.onload = (e) => {
       const arrayBuffer = e.target.result;
@@ -305,36 +297,39 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       this.totalRows = rawData.length - 1;
       const transformedData = rawData.slice(1).map((row) => ({
-        nomBeneficiaire:row[0],
+        nomBeneficiaire: row[0],
         guichet: row[4],
         compteCredite: row[5],
         compte: row[5],
         montant: row[2].toString(),
         libelle: row[1],
-        banque: row[3],   
+        banque: row[3],
         codeEmeteur: "",
         codeEnreg: "06",
         codeOperation: "",
         dateEcheance: "2020-07-02",
-        domiciliation:"",
-        
-        numligne:this.totalRows.toString() , 
+        domiciliation: "",
+
+        numligne: this.totalRows.toString(),
         cleRib: row[6],
-        
       }));
-      
+
       this.fileExtension = selectedFile.name.split(".").pop().toLowerCase();
       // Mise à jour des données via le service
       this._tableDataService.setDatas$(transformedData);
       console.log("transformedData-------------------", transformedData);
       // Calcul du montant total en convertissant les valeurs en nombres et en s'assurant de ne pas inclure l'en-tête
-      const montantTotal = transformedData.reduce((acc, row) => acc + (Number(row.montant) || 0), 0);  
+      const montantTotal = transformedData.reduce(
+        (acc, row) => acc + (Number(row.montant) || 0),
+        0
+      );
       // Affectation du montant total à this.totalData.montant
-      this.totalData = { montant: montantTotal 
-         ,codeEnreg :"08",
-         codeOperation:"",
-         codeEmeteur:"",
-        numligne:this.totalRows.toString() , 
+      this.totalData = {
+        montant: montantTotal,
+        codeEnreg: "08",
+        codeOperation: "",
+        codeEmeteur: "",
+        numligne: this.totalRows.toString(),
       };
       this.detailsData = transformedData;
       this.isLoading = false;
@@ -342,40 +337,39 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       //this.extension : this.fileExtension,
       this.headerData = {
         nomFichier: this.nomFichierCharger,
-      nomFichierGenerer: "nomParDefaut",
-      codeEnreg:"03",
-      codeOperation: "02",
-      numLigne: this.totalRows,
-      codeEmeteur: "",
-      codccd: "",
-      dateEcheance: "",
-       //nomEntreprise : headerLine.substring(30, 54).trim(),
-    //   let nomCompte = ;
-      nomCompte : this.salaireForm.value.idCompteClient,
-      refer: "",
-      indrel: "",
-      guichet: "",
-      //compte: transformedData.com,
-      //idenf: headerLine.substring(102, 118).trim(),
-      banque: "CI131",
-      compte :  this.salaireForm.value.idCompteClient,
-  
-      //this.form.get('compte').value
-      zoneVide: "zoneVide",
-      extension : this.fileExtension,
-        
+        nomFichierGenerer: "nomParDefaut",
+        codeEnreg: "03",
+        codeOperation: "02",
+        numLigne: this.totalRows,
+        codeEmeteur: "",
+        codccd: "",
+        dateEcheance: "",
+        //nomEntreprise : headerLine.substring(30, 54).trim(),
+        //   let nomCompte = ;
+        nomCompte: this.salaireForm.value.idCompteClient,
+        refer: "",
+        indrel: "",
+        guichet: "",
+        //compte: transformedData.com,
+        //idenf: headerLine.substring(102, 118).trim(),
+        banque: "CI131",
+        compte: this.salaireForm.value.idCompteClient,
+
+        //this.form.get('compte').value
+        zoneVide: "zoneVide",
+        extension: this.fileExtension,
       };
-      console.log("compte------------recupcompte",this.salaireForm.get('idCompteClient').value );
- 
-   
+      console.log(
+        "compte------------recupcompte",
+        this.salaireForm.get("idCompteClient").value
+      );
+
       const fileContent = e.target.result as string;
       //const lines = fileContent.split("\n"); // Split the content into lines
       //const this.totalRows = lines.length;
     };
     fileReader.readAsArrayBuffer(selectedFile);
   }
-
-
 
   convertDateToDateTime(dateStr: string): string {
     if (dateStr.length !== 5) {
@@ -424,7 +418,7 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
         ? compteCrediteRaw.substring(1)
         : compteCrediteRaw;
     const dateOperStartIndex = compteCrediteRaw[0] === "0" ? 64 : 63;
-    
+
     this.headerData = {
       nomFichier: this.nomFichierCharger,
       nomFichierGenerer: "nomParDefaut",
@@ -433,9 +427,11 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       numLigne: parseInt(headerLine.substring(4, 12).trim(), 10),
       codeEmeteur: headerLine.substring(12, 18).trim(),
       codccd: headerLine.substring(18, 19).trim(),
-      dateEcheance: this.convertDateToDateTime(headerLine.substring(25, 30).trim()),
-      nomEntreprise : headerLine.substring(30, 54).trim(),
-      nomCompte : headerLine.substring(30, 54).trim(),
+      dateEcheance: this.convertDateToDateTime(
+        headerLine.substring(25, 30).trim()
+      ),
+      nomEntreprise: headerLine.substring(30, 54).trim(),
+      nomCompte: headerLine.substring(30, 54).trim(),
       refer: headerLine.substring(54, 61).trim(),
       indrel: headerLine.substring(80, 81).trim(),
       guichet: headerLine.substring(86, 91).trim(),
@@ -443,14 +439,11 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       compte: headerLine.substring(91, 103).trim(),
       idenf: headerLine.substring(102, 118).trim(),
       banque: headerLine.substring(149, 155).trim(),
-      compteCredite : this.salaireForm.get('idCompteClient').value,
+      compteCredite: this.salaireForm.get("idCompteClient").value,
       zoneVide: "zoneVide",
-      extension : this.fileExtension,
-      
+      extension: this.fileExtension,
     };
   }
-
-  
 
   extractTotalData(data: string) {
     const codeEnreg = data.substring(0, 2).trim();
@@ -459,7 +452,6 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
     const numligne = data.substring(4, 12).trim();
     const montant = data.substring(102, 118).trim();
 
-    
     // const numLigne = data.substring(4, 12).trim() || null;
     // const dateEmission =  this.convertDateToDateTime(data.substring(8, 14).trim()) || null;
 
@@ -511,32 +503,37 @@ export class SalaireAllerComponent implements OnInit, OnDestroy {
       compte,
       montant,
       libelle,
-    
+
       banque,
     };
   }
 
-  loadCompte(){
-    this._salaireAllerService.compteEntreprises$.pipe(takeUntil(this._unsubscribeAll)
-    ).subscribe({
-        next: (response:any) => {
+  loadCompte() {
+    this._salaireAllerService.compteEntreprises$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: (response: any) => {
           console.log("Response compteEntreprises ===>", response);
-          if(response==null){response=[];}
+          if (response == null) {
+            response = [];
+          }
           this.listeCompteEntreprise = response.data;
           this._changeDetectorRef.markForCheck();
-        }, 
+        },
         error: (error) => {
           //not show historique
           //this.showData = false;
-          console.error('Error : ',JSON.stringify(error));
+          console.error("Error : ", JSON.stringify(error));
           // Set the alert
-          this.alert = { type: 'error', message: error.error.message??error.error };
+          this.alert = {
+            type: "error",
+            message: error.error.message ?? error.error,
+          };
           // Show the alert
           this.showAlert = true;
-          
-          this._changeDetectorRef.markForCheck();
-        }
-    });
 
+          this._changeDetectorRef.markForCheck();
+        },
+      });
   }
 }

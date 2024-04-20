@@ -1,13 +1,4 @@
-import {
-  // AfterViewInit,
-  // ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  // OnDestroy,
-  OnInit,
-  ViewChild,
-  // ViewEncapsulation,
-} from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
 
 import {
   Subject,
@@ -17,20 +8,11 @@ import {
   switchMap,
   takeUntil,
 } from "rxjs";
-// import { fuseAnimations } from "@fuse/animations";
 import { PoidsValidationWorkflow } from "app/modules/admin/poidsValidationWorkflow/poidsValidationWorkflow/poidsValidationWorkflow.types";
-// import { CompteService } from "app/modules/admin/compte/compte/compte.service";
 import { MatDrawer } from "@angular/material/sidenav";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
-// import { MatTableDataSource } from "@angular/material/table";
-//import { WorkflowDefinition } from '../../workflow.definition';
-import { User } from "app/core/user/user.types";
-import { UserService } from "app/core/user/user.service";
-// import { ResponseContrat } from "app/modules/admin/common/contrat/response.type";
 import { CreateComponent } from "app/modules/admin/common/create/create/create.component";
-// import { EntrepriseService } from "app/modules/admin/entreprise/entreprise/entreprise.service";
-// import { AgenceService } from "app/modules/admin/agence/agence/agence.service";
 import { TableDataService } from "app/modules/admin/common/table-data/table-data.services";
 import { UtilisateursService } from "app/modules/admin/neoapps/utilisateurs/utilisateurs/utilisateurs.service";
 import { fuseAnimations } from "@fuse/animations";
@@ -39,7 +21,7 @@ import { fuseAnimations } from "@fuse/animations";
   selector: "PoidsValidationWorkflow",
   templateUrl: "./list.component.html",
   styleUrls: ["./list.component.scss"],
-  animations: fuseAnimations
+  animations: fuseAnimations,
 })
 export class ListPoidsValidationWorkflowComponent implements OnInit {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;
@@ -103,7 +85,6 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
 
   _utilisateurs: any[];
   public displayedColumns: string[] = [
-  
     "codeWorkflow",
     "nomEntreprise",
     "emailUtilisateur",
@@ -244,7 +225,8 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
     component.matDrawer = this.matDrawer;
     component.endpoint = "poidsValidationWorkflows";
     component.formTitle = "Poids Validation Workflow";
-    component.constructorPayload =PoidsValidationWorkflow.constructorPoidsValidationWorkflow;
+    component.constructorPayload =
+      PoidsValidationWorkflow.constructorPoidsValidationWorkflow;
     component.formFields = [
       {
         key: "emailUtilisateur",
@@ -261,7 +243,7 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
         key: "codeWorkflow",
         libelle: "Code Workflow",
         type: "select",
-        disabled:true,
+        disabled: true,
         options: [
           {
             value: "WORKFLOW_SALAIRE",
@@ -288,19 +270,20 @@ export class ListPoidsValidationWorkflowComponent implements OnInit {
         key: "dateCreation",
         libelle: "Date creation",
         type: "text",
-        writeInCreate:false,
-        disabled:true
+        writeInCreate: false,
+        disabled: true,
       },
       {
         key: "statut",
         libelle: "Statut",
         type: "select",
-        disabled:true,
-        writeInCreate:false,
-        options: [{ value: 21, libelle: "Désactivé" }, { value: 1, libelle: "Activé" }],
+        disabled: true,
+        writeInCreate: false,
+        options: [
+          { value: 21, libelle: "Désactivé" },
+          { value: 1, libelle: "Activé" },
+        ],
       },
-
-     
     ];
   }
 }

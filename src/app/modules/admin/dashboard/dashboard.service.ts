@@ -4,9 +4,6 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import * as moment from 'moment';
 import { environment } from 'environments/environment';
 
-
-
-
 @Injectable({
     providedIn: 'root'
 })
@@ -15,11 +12,9 @@ export class DashboardService
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
     private _entreprise: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  
     constructor(private _httpClient: HttpClient)
     {
     }
-
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
@@ -55,7 +50,6 @@ export class DashboardService
         );
     }
 
-
     getDataDashboard(dateDebut:string,dateFin:string,idEntreprise:any=null): Observable<any>
     {   
         let params:HttpParams = new HttpParams();
@@ -74,11 +68,8 @@ export class DashboardService
             })
         );
     }
-
-
     getEntreprises(): Observable<any>
-    {   
-        
+    {      
         return this._httpClient.get<any>(`${environment.apiUrl}/entreprises/all`).pipe(
             tap((response) => {
                 console.log("get entreprises stat accessible ", response)

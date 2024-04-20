@@ -1,20 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { environment } from "environments/environment";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class PrelevementAllerService {
+  constructor(private _httpClient: HttpClient) {}
 
-  
-  constructor(private _httpClient: HttpClient) {
+  createPrelevement(data: any): Observable<any> {
+    return this._httpClient.post<any>(
+      `${environment.apiUrl}/prelevement/`,
+      data
+    );
   }
-
-  createPrelevement(data: any):  Observable<any>{
-    return this._httpClient.post<any>(`${environment.apiUrl}/prelevement/`,data)
-  }
-
-
 }

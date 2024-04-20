@@ -5,24 +5,16 @@
     [showIcon]="true"
         [@shake]="alert.type === 'error'">
         {{ alert.message }}
-
-   
     </fuse-alert>
     <!-- <router-outlet></router-outlet> -->
-
-
     <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent" (backdropClick)="onBackdropClicked()">
-
         <!-- Drawer -->
         <mat-drawer class="w-full md:w-160 dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
             [disableClose]="true" #matDrawer>
             <router-outlet (activate)="openDetailComponent($event)"></router-outlet>
         </mat-drawer>
-
         <mat-drawer-content class="flex flex-col">
-
             <!-- Header -->
-
             <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
                 <!-- Loader -->
                 <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
@@ -31,8 +23,6 @@
                 <!-- Title -->
                 
                 <div class="flex flex-auto items-center min-w-0">
-                    
-        
                     <div class="flex flex-col min-w-0 ml-4">
                         <ng-container>
                             <div
@@ -56,11 +46,6 @@
                             <mat-icon [svgIcon]="'mat_solid:done'" ></mat-icon>
                             <span class="ml-2">Valider</span>
                         </button>
-                        <!-- <button class="ml-4" mat-flat-button [color]="'primary'" type="submit"
-                            [disabled]="(!compteClientForm.valid )|| (remiseIsInCorrect)">
-                            <mat-icon [svgIcon]="'mat_solid:save'"></mat-icon>
-                            <span class="ml-2">Valider</span>
-                        </button> -->
                     </form>
                 </div>
             </div>
@@ -73,7 +58,6 @@
                            
                             <ng-container>
                                 <span class="inline-block align-middle">
-                                    <!-- Nombre de chèque : {{ nombreCheque }} -->
                                 </span>
                             </ng-container>
                             <ng-container>
@@ -82,11 +66,6 @@
                                 </span>
                             </ng-container>
                         </div>
-
-                        
-
-
-
                         <!-- TABLEAU DES CHEQUES-->
                         <app-table-data 
                             [endpoint]="'remise/export'+id" 
@@ -97,15 +76,9 @@
                             [idRow]="'reference'"
                             [canClick]="true">
                         </app-table-data>
-
-
-                        
-
                     </div>
-
                 </div>
             </form>
         </mat-drawer-content>
-
     </mat-drawer-container>
 </div>

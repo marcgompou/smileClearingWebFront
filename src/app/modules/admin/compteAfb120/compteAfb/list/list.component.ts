@@ -10,7 +10,14 @@ import {
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
-import { Subject, debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from "rxjs";
+import {
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  switchMap,
+  takeUntil,
+} from "rxjs";
 import { fuseAnimations } from "@fuse/animations";
 import { CompteAfb } from "app/modules/admin/compteAfb120/compteAfb/compteAfb.types";
 import { CompteService } from "app/modules/admin/compte/compte/compte.service";
@@ -41,7 +48,7 @@ export class ListAfbComponent implements OnInit {
   selectedRowIndex: any;
   _dataSource: MatTableDataSource<CompteAfb>;
   private _searchTerms = new Subject<string>();
-  _filterObject:any={criteria:""};
+  _filterObject: any = { criteria: "" };
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
   @ViewChild(MatSort) private _sort: MatSort;
@@ -83,7 +90,7 @@ export class ListAfbComponent implements OnInit {
       key: "designation",
       label: "Libelle du compte",
     },
-    
+
     {
       key: "statut",
       label: "Etat",
@@ -152,11 +159,11 @@ export class ListAfbComponent implements OnInit {
       {
         key: "cleRib",
         libelle: "Cle Rib",
-        validators: { 
+        validators: {
           min: 2,
           max: 2,
           required: true,
-          regex:/\b\d{2}\b/
+          regex: /\b\d{2}\b/,
         },
       },
 
@@ -169,18 +176,16 @@ export class ListAfbComponent implements OnInit {
           required: true,
         },
       },
-      
+
       {
         key: "identreprise",
         libelle: "Entreprise",
         type: "select",
         options: this._entreprises,
         validators: {
-          required: true
+          required: true,
         },
       },
-
-      
     ];
   }
   /**
@@ -231,19 +236,21 @@ export class ListAfbComponent implements OnInit {
         this._changeDetectorRef.markForCheck();
       });
 
-      this._searchTerms
+    this._searchTerms
       .pipe(
         debounceTime(300), // Adjust the debounce time (in milliseconds) as needed
         distinctUntilChanged(),
         // Ignore if the new term is the same as the previous term
-        filter((term: string) => !(term.startsWith('[') && !term.endsWith(']'))), // Filter out undesired terms
+        filter(
+          (term: string) => !(term.startsWith("[") && !term.endsWith("]"))
+        ), // Filter out undesired terms
         switchMap((term: string) => {
-          this._filterObject={ criteria: term }
+          this._filterObject = { criteria: term };
           this._tableDataService._filterObject = { criteria: term };
           this._tableDataService._hasPagination = true;
           this._tableDataService._paginationObject = {
             page: 0,
-            size: 10
+            size: 10,
           };
           return this._tableDataService.getDatas();
         })
@@ -252,9 +259,6 @@ export class ListAfbComponent implements OnInit {
         // Perform any additional actions after the data is retrieved.
         this._changeDetectorRef.detectChanges();
       });
-
-
-
 
     this._entrepriseService.entreprises$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -272,19 +276,11 @@ export class ListAfbComponent implements OnInit {
           this._changeDetectorRef.markForCheck();
         },
         error: (error) => {
-          // //not show historique
-          // this.showData = false;
-          // console.error('Error : ',JSON.stringify(error));
-          // // Set the alert
-          // this.alert = { type: 'error', message: error.error.message??error.error };
-          // // Show the alert
-          // this.showAlert = true;
-
           this._changeDetectorRef.markForCheck();
         },
       });
 
-      this._agenceService.agences$
+    this._agenceService.agences$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (response: any) => {
@@ -300,20 +296,9 @@ export class ListAfbComponent implements OnInit {
           this._changeDetectorRef.markForCheck();
         },
         error: (error) => {
-          // //not show historique
-          // this.showData = false;
-          // console.error('Error : ',JSON.stringify(error));
-          // // Set the alert
-          // this.alert = { type: 'error', message: error.error.message??error.error };
-          // // Show the alert
-          // this.showAlert = true;
-
           this._changeDetectorRef.markForCheck();
         },
       });
-    // Get the Comptes
-    //  this.getCompte();
-
     // get user
     this.getConnectedUser();
   }

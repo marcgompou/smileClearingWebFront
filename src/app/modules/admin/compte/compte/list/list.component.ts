@@ -256,19 +256,11 @@ export class ListComponent implements OnInit {
           this._changeDetectorRef.markForCheck();
         },
         error: (error) => {
-          // //not show historique
-          // this.showData = false;
-          // console.error('Error : ',JSON.stringify(error));
-          // // Set the alert
-          // this.alert = { type: 'error', message: error.error.message??error.error };
-          // // Show the alert
-          // this.showAlert = true;
-
           this._changeDetectorRef.markForCheck();
         },
       });
 
-      this._agenceService.agences$
+    this._agenceService.agences$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (response: any) => {
@@ -284,14 +276,6 @@ export class ListComponent implements OnInit {
           this._changeDetectorRef.markForCheck();
         },
         error: (error) => {
-          // //not show historique
-          // this.showData = false;
-          // console.error('Error : ',JSON.stringify(error));
-          // // Set the alert
-          // this.alert = { type: 'error', message: error.error.message??error.error };
-          // // Show the alert
-          // this.showAlert = true;
-
           this._changeDetectorRef.markForCheck();
         },
       });

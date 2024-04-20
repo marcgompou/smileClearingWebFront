@@ -71,11 +71,11 @@ export class EntreprisesForStatResolver implements Resolve<any>
      *
      * @param route
      * @param state
-     */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
-    {
-        return this._homeService.getEntreprises();
-    }
+    //  */
+    // resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
+    // {
+    //     return this._homeService.getEntreprises();
+    // }
 
     
 }

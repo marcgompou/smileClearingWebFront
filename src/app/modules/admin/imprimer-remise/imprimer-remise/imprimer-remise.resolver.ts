@@ -1,32 +1,18 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
-import { catchError, Observable } from 'rxjs';
-import { ImprimerRemiseService } from './imprimer-remise.service';
+import { Injectable } from "@angular/core";
+import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
+import { Observable } from "rxjs";
+import { ImprimerRemiseService } from "./imprimer-remise.service";
 
 //Pas necessaire pour l'instant
- @Injectable({
-     providedIn: 'root'
- })
-// export class LoadDataRemiseEntrepriseResolver implements Resolve<boolean> {
-//     /**
-//      * Constructor
-//      */
-//     constructor( private _validerRemiseEntrepriseService: ValiderRemiseService) {}
-
-//     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-//         return this._validerRemiseEntrepriseService.getRemiseAvalider();
-//     }
-//}
-
+@Injectable({
+  providedIn: "root",
+})
 export class LoadDataEntrepriseResolver implements Resolve<boolean> {
-    /**
-     * Constructor
-     */
-    constructor( private _entreprises: ImprimerRemiseService) {}
-    
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        return this._entreprises.getEntreprise();
-    }
-
-    
+  /**
+   * Constructor
+   */
+  constructor(private _entreprises: ImprimerRemiseService) {}
+  resolve(route: ActivatedRouteSnapshot): Observable<any> {
+    return this._entreprises.getEntreprise();
+  }
 }

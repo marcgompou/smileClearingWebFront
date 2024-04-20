@@ -160,10 +160,10 @@ export class DetailsImprimerComponent implements OnInit {
           console.log("responsetest", response);
           //Permet d'initialiser les polices à utiliser
 
-          const imageBlocks = response.data.map(el => ({
+          const imageBlocks = response.data.map((el) => ({
             image: el.imagerecto,
             width: 100, // adjust the width as needed
-            alignment: 'center',
+            alignment: "center",
             margin: [0, 10, 0, 20], // adjust the margins as needed
           }));
 
@@ -187,10 +187,17 @@ export class DetailsImprimerComponent implements OnInit {
             "Novembre",
             "Décembre",
           ];
-          const formattedDate: string = `${(currentDate.getDate() < 10 ? "0" : "") + currentDate.getDate() } ${
-            mois[currentDate.getMonth()]
-          } ${currentDate.getFullYear()}`;
-          var headers = ["N° Chèque","Code banque","Agence", "Compte", "Clé RIB", "Montant"];
+          const formattedDate: string = `${
+            (currentDate.getDate() < 10 ? "0" : "") + currentDate.getDate()
+          } ${mois[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+          var headers = [
+            "N° Chèque",
+            "Code banque",
+            "Agence",
+            "Compte",
+            "Clé RIB",
+            "Montant",
+          ];
           //Code BANQUE, N cheque, Agence, Compte (titulaire) , clerib , mongant
           //Generation du pdf
           const documentDefinition = {
@@ -205,7 +212,7 @@ export class DetailsImprimerComponent implements OnInit {
                       columns: [
                         {
                           width: "*",
-                          text:"Entreprise : " + nomEntreprise,
+                          text: "Entreprise : " + nomEntreprise,
                           alignment: "left",
                           fontSize: 14,
                           bold: true,
@@ -225,7 +232,7 @@ export class DetailsImprimerComponent implements OnInit {
             },
             footer: function (currentPage, pageCount) {
               return {
-                text: "-"+currentPage.toString() + " sur " + pageCount+"-",
+                text: "-" + currentPage.toString() + " sur " + pageCount + "-",
                 alignment: "center",
                 fontSize: 12,
               };
@@ -246,14 +253,13 @@ export class DetailsImprimerComponent implements OnInit {
               },
               {
                 style: "tableExample",
-                alignement:'center',
+                alignement: "center",
                 margin: [30, 0, 20, 0],
                 table: {
                   headerRows: 1,
                   body: [
                     headers,
                     ...response.data.map((item) => [
-
                       item.numChqTitu,
                       item.codeBanqueTitu,
                       item.agenceRem,
@@ -276,7 +282,7 @@ export class DetailsImprimerComponent implements OnInit {
                       },
                     ],
                   ],
-                  widths: [60,80,50,100,50,100], // Largeurs des colonnes, ajustez-les selon vos besoins
+                  widths: [60, 80, 50, 100, 50, 100], // Largeurs des colonnes, ajustez-les selon vos besoins
                 },
               },
             ],
@@ -314,9 +320,6 @@ export class DetailsImprimerComponent implements OnInit {
             type: "error",
             message: error?.error?.message ?? error?.error,
           };
-          // Show the alert
-          // this.showAlert = false;
-          // this._changeDetectorRef.markForCheck();
         },
         complete: () => {
           this.isLoading = false;
