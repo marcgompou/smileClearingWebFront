@@ -193,15 +193,6 @@ export class ValiderRemiseComponent implements OnInit, OnDestroy {
      this._filterObject = { statut: this.statut };
      this.onFilterChange(this._filterObject); //On transmet la nouvelle valeur du filtre
      this._changeDetectorRef.markForCheck();
-     // Utilisez selectedValue pour prendre des mesures en conséquence
-
-
-    // this.statut = event.value ? event.value : "0";
-    // console.log("Valeur sélectionnée :", this.statut);
-    // this._tableDataService._endpoint = `remise?statut=${this.statut}`;
-    // this._tableDataService.getDatasByPath().subscribe();
-    // this._changeDetectorRef.markForCheck();
-    // // Utilisez selectedValue pour prendre des mesures en conséquence
   }
 
   onSubmit() {

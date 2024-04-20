@@ -33,13 +33,11 @@ import { TableDataService } from "app/modules/admin/common/table-data/table-data
 export class ValiderSalaireComponent implements OnInit, OnDestroy {
   @ViewChild("matDrawer", { static: true }) matDrawer: MatDrawer;
   drawerMode: "side" | "over";
-  // noData: any;
 
   listeSalaire: any[] = [];
   montantTotal: number = 0;
-  //nombreRemise: number = 0;
   statut: string = "1";
-
+  _filterObject:any={};
   alert: { type: FuseAlertType; message: string } = {
     type: "success",
     message: "",
@@ -103,13 +101,8 @@ export class ValiderSalaireComponent implements OnInit, OnDestroy {
     "niveauValidation",
   ];
 
-  // sent = [];
   isLoading = false;
-  // searchInputControl: UntypedFormControl = new UntypedFormControl();
-  //selectedRemise: any | null = null;
-  //selectedRemiseForm: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  // remises$: Observable<Remise[]>;
   _salaireList: any[] = [];
 
   salaireForm = new FormGroup({
@@ -120,78 +113,40 @@ export class ValiderSalaireComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._tableDataService.datas$.subscribe((res: any) => {
       this._salaireList = res.data as any[];
-      //    this.dataSource = new MatTableDataSource(res.data);
-      console.log("this._salaireList------", this._salaireList);
       if (
         this._salaireList !== undefined &&
         this._salaireList !== null &&
         this._salaireList?.length > 0
       ) {
         this.montantTotal = this._salaireList.reduce(
-          (a, b) => a + b?.montantTotal,
-          0
-        );
+          (a, b) => a + b?.montantTotal,0 );
       }
     });
     this.salaireForm = this._formBuilder.group({
       statut: "1",
     });
   }
+
+
   constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
     private _formBuilder: UntypedFormBuilder,
-    private _salaireService: ValiderSalaireService,
-    private _activatedRoute: ActivatedRoute,
-    private _tableDataService: TableDataService,
-    private _router: Router,
-    private _validerSalaireService: ValiderSalaireService
-  ) {}
+    private _tableDataService: TableDataService) {
 
-  closeAlert() {
-    this.showAlert = false; // Définir showAlert à false pour masquer l'alerte lorsque l'utilisateur clique sur la croix
-  }
-  loadCompte() {
-    this._salaireService.salaireAvalides$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe({
-        next: (response: any) => {
-          console.log("Response compteEntreprises ===>", response);
-          if (response == null) {
-            response = [];
-          }
-
-          this.listeSalaire = response.data;
-
-          this._changeDetectorRef.markForCheck();
-        },
-        error: (error) => {
-          //not show historique
-          //this.showData = false;
-          console.error("Error : ", JSON.stringify(error));
-          // Set the alert
-          this.alert = {
-            type: "error",
-            message: error.error.message ?? error.error,
-          };
-          // Show the alert
-          this.showAlert = true;
-
-          this._changeDetectorRef.markForCheck();
-        },
-      });
   }
 
   onSelectChange(event: MatSelectChange) {
     this.statut = event.value ? event.value : "1";
     console.log("Valeur sélectionnée :", this.statut);
-    this._tableDataService._endpoint = `salaires?statut=${this.statut}`;
-    this._tableDataService.getDatasByPath().subscribe();
-    this._changeDetectorRef.markForCheck();
-    // Utilisez selectedValue pour prendre des mesures en conséquence
+    this._filterObject = { statut: this.statut };
+    this.onFilterChange(this._filterObject); //On transmet la nouvelle valeur du filtre
   }
 
-  onSubmit() {}
 
+
+  onFilterChange(newFilter: any) {
+    console.log("Le filtre a changé dans le composant enfant : ", newFilter);
+  }
+  
   /**
    * On destroy
    */
