@@ -345,7 +345,7 @@ export class NavigationService {
           title: "Transaction Bancaire",
           type: "collapsable",
           icon: "heroicons_outline:document-download",
-          permission: SecService.permissions.ROLE_CHARG_AFB120, //TODO
+          permission: SecService.permissions.ROLE_CONSULT_AFB120, //TODO
           children: [
             {
               id: "operationBancaire",
@@ -353,7 +353,7 @@ export class NavigationService {
               type: "basic",
               icon: "heroicons_outline:arrow-circle-down",
               link: "/operationBancaire",
-              permission: SecService.permissions.ROLE_CHARG_AFB120,
+              permission: SecService.permissions.ROLE_CONSULT_AFB120,
             },
            
           ],
