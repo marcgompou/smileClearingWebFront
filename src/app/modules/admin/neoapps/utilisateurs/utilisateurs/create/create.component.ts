@@ -124,24 +124,13 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
                 this.createUserForm.get('identreprise').enable();
                 this.createUserForm.get('identreprise').setValidators([Validators.required]);
                 this.disabledOptions=[];
-
                 this._changeDetectorRef.detectChanges();
-
             }
-
-            
             console.log("===roles===>",roles);
-
         });
-
-      
-
-
-
     }
 
     isOptionDisable(optionValue):boolean{
-
         return this.disabledOptions.includes(optionValue);
     }
 
@@ -153,7 +142,6 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
-
         // Dispose the overlays if they are still on the DOM
         if ( this._tagsPanelOverlayRef )
         {
@@ -171,29 +159,11 @@ export class UtilisateursCreateComponent implements OnInit, OnDestroy
             return;
         }
 
-        // Disable the form
-        //this.createUserForm.disable();
-
         // Hide the alert
         this.showAlert = false;
 
         const utilisateur = Utilisateurs.constructorUtilisateur(this.createUserForm.value);
         // const utilisateur = {
-        //   email: this.createUserForm.value.email,
-        //   nom: this.createUserForm.value.nom,
-        //   prenom: this.createUserForm.value.prenom,
-        //   numeroTel: this.createUserForm.value.numeroTel,
-        //   identreprise: this.createUserForm.value.identreprise,
-        //   fonction: this.createUserForm.value.fonction,
-        //   typeMfa: 1 ,
-        //   token  : "",
-        //   statut  : true,
-        //   roles  :this.createUserForm.value.roles,
-        //   statutMfa  : false,
-        //   isConfirme : false,
-        //   password:"",
-        //   operateur: this.createUserForm.value.operateur||"----"
-        // } ;
         console.log(utilisateur)
 
         
