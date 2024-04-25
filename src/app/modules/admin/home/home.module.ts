@@ -25,6 +25,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { Subject } from 'rxjs';
 import {  HomeRoutes } from './home.routing';
 import { MatNativeDateModule } from '@angular/material/core';
+import { QuickChatModule } from "../../../layout/common/quick-chat/quick-chat.module";
 
 const exampleRoutes: Route[] = [
     {
@@ -37,8 +38,7 @@ const exampleRoutes: Route[] = [
     declarations: [
         HomeComponent
     ],
-    imports     : [
-        
+    imports: [
         CommonModule,
         SharedModule,
         CommonModule,
@@ -62,9 +62,10 @@ const exampleRoutes: Route[] = [
         MatAutocompleteModule,
         FuseAlertModule,
         MatFormFieldModule,
-        MatDatepickerModule, 
+        MatDatepickerModule,
         MatNativeDateModule,
         RouterModule.forChild(HomeRoutes),
+        QuickChatModule
     ]
 })
 export class HomeModule

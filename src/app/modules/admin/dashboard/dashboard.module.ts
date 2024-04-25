@@ -26,6 +26,8 @@ import { Subject } from 'rxjs';
 import { DashBoardRoutes } from './dashboard.routing';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { QuickChatModule } from "../../../layout/common/quick-chat/quick-chat.module";
+import { MessagesModule } from "../../../layout/common/messages/messages.module";
 
 const exampleRoutes: Route[] = [
     {
@@ -38,8 +40,7 @@ const exampleRoutes: Route[] = [
     declarations: [
         DashboardComponent
     ],
-    imports     : [
-        
+    imports: [
         CommonModule,
         SharedModule,
         CommonModule,
@@ -63,9 +64,11 @@ const exampleRoutes: Route[] = [
         MatAutocompleteModule,
         FuseAlertModule,
         MatFormFieldModule,
-        MatDatepickerModule, 
+        MatDatepickerModule,
         MatNativeDateModule,
         RouterModule.forChild(DashBoardRoutes),
+        QuickChatModule,
+        MessagesModule
     ]
 })
 export class DashboardModule
