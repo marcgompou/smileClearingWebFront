@@ -3,42 +3,46 @@
         <div class="w-full max-w-3xl">
             <div class=" flex flex-col space-y-4">
                 <!-- Header -->
-                <div class="pl-6 relative w-full h-40 sm:h-26">
+                <div class="pl-6 relative w-full h-15 sm:h-15">
                     <!-- Close button -->
-                    <div class="flex items-center justify-between w-full max-w-3xl mx-auto pt-6 ">
-                        <div class="text-3xl font-extrabold tracking-tight leading-none">MODIFICATION - {{formTitle}}
+                    <div class="flex items-center justify-between w-full max-w-3xl mx-auto pt-4">
+                        <div class="text-xl font-extrabold tracking-tight leading-none ml-4">{{formTitle}}</div>
+                        <div class="flex items-center ml-auto space-x-2">
+                            <div>
+                                <button mat-icon-button [matTooltip]="'Options'" [matMenuTriggerFor]="moreMenu">
+                                    <mat-icon [color]="'primary'" [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
+                                </button>
+                                <mat-menu #moreMenu="matMenu">
+                                    <button *ngFor="let actionButtons of actionsButtons"
+                                        [disabled]="data[actionButtons?.disabledKey]==actionButtons?.disableValue &&  actionButtons.disabledKey!=undefined"
+                                        mat-menu-item type="button" 
+                                        (click)="handleButtonClick(actionButtons)">
+                                        <mat-icon [svgIcon]="actionButtons.icon"></mat-icon>
+                                        <span>{{actionButtons.label}}</span>
+                                    </button>
+                                    <button [disabled]="!this.canDelete" mat-menu-item type="button" [matTooltip]="'Supprimer'"
+                                        (click)="supprimer()">
+                                        <mat-icon color="warn" class="text-red-500" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                        <span>Supprimer</span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <div>
+                                <a mat-icon-button [matTooltip]="'Fermer'" class="mr-4"  (click)="closeForm()">
+                                    <mat-icon [color]="'primary'" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                </a>
+                            </div>
                         </div>
-                        <button mat-icon-button [matMenuTriggerFor]="moreMenu">
-                            <mat-icon [color]="'primary'" [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
-                        </button>
-
-                        <mat-menu #moreMenu="matMenu">
-                            <button *ngFor="let actionButtons of actionsButtons"
-                                [disabled]="data[actionButtons?.disabledKey]==actionButtons?.disableValue &&  actionButtons.disabledKey!=undefined"
-                                mat-menu-item type="button" [matTooltip]="actionButtons.label"
-                                (click)="handleButtonClick(actionButtons)">
-                                <mat-icon [svgIcon]="actionButtons.icon"></mat-icon>
-                                <span>{{actionButtons.label}}</span>
-                            </button>
-                            <button [disabled]="!this.canDelete" mat-menu-item type="button" [matTooltip]="'Supprimer'"
-                                (click)="supprimer()">
-                                <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                                <span>Supprimer</span>
-                            </button>
-                        </mat-menu>
-
-                        <a mat-icon-button [matTooltip]="'Close'" (click)="closeForm()">
-                            <mat-icon [color]="'primary'" [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                        </a>
                     </div>
+                    
+
                 </div>
-                <!-- alert Fields  class="mt-8 -mb-4"-->
-                <div class="pl-6  pr-6 pt-0 py-0 sm:p-12 sm:pt-0" *ngIf="showAlert">
+                <!-- <div class="pl-6  pr-6 pt-0 py-0 sm:p-12 sm:pt-0" *ngIf="showAlert">
                     <fuse-alert [appearance]="'outline'" [showIcon]="false" [type]="alert.type" [dismissible]="true"
                         [dismissed]="false" [showIcon]="true" [@shake]="alert.type === 'error'">
                         {{ alert.message }}
                     </fuse-alert>
-                </div>
+                </div> -->
                 <!--TODO IMPROVE- DESIGN DISPLAY READONLY INFORMATION -->
                 <form class="flex flex-col rounded overflow-hidden" #formNgForm="ngForm">
                     <div class="pl-0 pr-0 ? py-1 sm:p-0 sm:pt-0">
